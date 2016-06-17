@@ -17,18 +17,20 @@ namespace Extension\Templavoila\Controller\Preview;
 /**
  * Default controller
  */
-class DefaultController {
+class DefaultController
+{
 
-	/**
-	 * @param array $row
-	 * @param string $table
-	 * @param string $output
-	 * @param boolean $alreadyRendered
-	 * @param object $ref
-	 *
-	 * @return string
-	 */
-	public function render_previewContent($row, $table, $output, $alreadyRendered, &$ref) {
-		return '<strong>' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->sL(\TYPO3\CMS\Backend\Utility\BackendUtility::getLabelFromItemlist('tt_content', 'CType', $row['CType'])) . '</strong>';
-	}
+    /**
+     * @param array $row
+     * @param string $table
+     * @param string $output
+     * @param boolean $alreadyRendered
+     * @param object $ref
+     *
+     * @return string
+     */
+    public function render_previewContent($row, $table, $output, $alreadyRendered, &$ref)
+    {
+        return '<strong>' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->sL(\TYPO3\CMS\Backend\Utility\BackendUtility::getLabelFromItemlist('tt_content', 'CType', $row['CType'])) . '</strong>';
+    }
 }

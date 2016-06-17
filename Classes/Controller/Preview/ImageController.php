@@ -17,33 +17,34 @@ namespace Extension\Templavoila\Controller\Preview;
 /**
  * Image controller
  */
-class ImageController extends TextController {
+class ImageController extends TextController
+{
 
-	/**
-	 * @var string
-	 */
-	protected $previewField = 'image';
+    /**
+     * @var string
+     */
+    protected $previewField = 'image';
 
-	/**
-	 * @param array $row
-	 * @param string $table
-	 * @param string $output
-	 * @param boolean $alreadyRendered
-	 * @param object $ref
-	 *
-	 * @return string
-	 */
-	public function render_previewContent($row, $table, $output, $alreadyRendered, &$ref) {
+    /**
+     * @param array $row
+     * @param string $table
+     * @param string $output
+     * @param boolean $alreadyRendered
+     * @param object $ref
+     *
+     * @return string
+     */
+    public function render_previewContent($row, $table, $output, $alreadyRendered, &$ref)
+    {
+        $label = $this->getPreviewLabel();
 
-		$label = $this->getPreviewLabel();
+        if ($ref->currentElementBelongsToCurrentPage) {
+            $text = $ref->link_edit('<strong>' . $label . '</strong>', 'tt_content', $row['uid']);
+        } else {
+            $text = '<strong>' . $label . '</strong>';
+        }
+        $text .= \TYPO3\CMS\Backend\Utility\BackendUtility::thumbCode($row, 'tt_content', 'image', $ref->doc->backPath);
 
-		if ($ref->currentElementBelongsToCurrentPage) {
-			$text = $ref->link_edit('<strong>' . $label . '</strong>', 'tt_content', $row['uid']);
-		} else {
-			$text = '<strong>' . $label . '</strong>';
-		}
-		$text .= \TYPO3\CMS\Backend\Utility\BackendUtility::thumbCode($row, 'tt_content', 'image', $ref->doc->backPath);
-
-		return $text;
-	}
+        return $text;
+    }
 }

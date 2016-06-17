@@ -19,39 +19,41 @@ namespace Extension\Templavoila\Utility\StaticDataStructure;
  *
  * @author Steffen Kamper  <info@sk-typo3.de>
  */
-class ToolsUtility {
+class ToolsUtility
+{
 
-	/**
-	 * @param array $conf
-	 */
-	static public function readStaticDsFilesIntoArray($conf) {
-		$paths = array_unique(array('fce' => $conf['staticDS.']['path_fce'], 'page' => $conf['staticDS.']['path_page']));
-		foreach ($paths as $type => $path) {
-			$absolutePath = \TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName($path);
-			$files = \TYPO3\CMS\Core\Utility\GeneralUtility::getFilesInDir($absolutePath, 'xml', TRUE);
-			// if all files are in the same folder, don't resolve the scope by path type
-			if (count($paths) == 1) {
-				$type = FALSE;
-			}
-			foreach ($files as $filePath) {
-				$staticDataStructure = array();
-				$pathInfo = pathinfo($filePath);
+    /**
+     * @param array $conf
+     */
+    public static function readStaticDsFilesIntoArray($conf)
+    {
+        $paths = array_unique(array('fce' => $conf['staticDS.']['path_fce'], 'page' => $conf['staticDS.']['path_page']));
+        foreach ($paths as $type => $path) {
+            $absolutePath = \TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName($path);
+            $files = \TYPO3\CMS\Core\Utility\GeneralUtility::getFilesInDir($absolutePath, 'xml', true);
+            // if all files are in the same folder, don't resolve the scope by path type
+            if (count($paths) == 1) {
+                $type = false;
+            }
+            foreach ($files as $filePath) {
+                $staticDataStructure = array();
+                $pathInfo = pathinfo($filePath);
 
-				$staticDataStructure['title'] = $pathInfo['filename'];
-				$staticDataStructure['path'] = substr($filePath, strlen(PATH_site));
-				$iconPath = $pathInfo['dirname'] . '/' . $pathInfo['filename'] . '.gif';
-				if (file_exists($iconPath)) {
-					$staticDataStructure['icon'] = substr($iconPath, strlen(PATH_site));
-				}
+                $staticDataStructure['title'] = $pathInfo['filename'];
+                $staticDataStructure['path'] = substr($filePath, strlen(PATH_site));
+                $iconPath = $pathInfo['dirname'] . '/' . $pathInfo['filename'] . '.gif';
+                if (file_exists($iconPath)) {
+                    $staticDataStructure['icon'] = substr($iconPath, strlen(PATH_site));
+                }
 
-				if (($type !== FALSE && $type === 'fce') || strpos($pathInfo['filename'], '(fce)') !== FALSE) {
-					$staticDataStructure['scope'] = \Extension\Templavoila\Domain\Model\AbstractDataStructure::SCOPE_FCE;
-				} else {
-					$staticDataStructure['scope'] = \Extension\Templavoila\Domain\Model\AbstractDataStructure::SCOPE_PAGE;
-				}
+                if (($type !== false && $type === 'fce') || strpos($pathInfo['filename'], '(fce)') !== false) {
+                    $staticDataStructure['scope'] = \Extension\Templavoila\Domain\Model\AbstractDataStructure::SCOPE_FCE;
+                } else {
+                    $staticDataStructure['scope'] = \Extension\Templavoila\Domain\Model\AbstractDataStructure::SCOPE_PAGE;
+                }
 
-				$GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['templavoila']['staticDataStructures'][] = $staticDataStructure;
-			}
-		}
-	}
+                $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['templavoila']['staticDataStructures'][] = $staticDataStructure;
+            }
+        }
+    }
 }

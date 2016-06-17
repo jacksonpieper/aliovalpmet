@@ -15,18 +15,20 @@
 /**
  * Ajax class for displaying content form a file
  */
-class tx_templavoila_cm1_ajax {
+class tx_templavoila_cm1_ajax
+{
 
-	/**
-	 * Return the content of the current "displayFile"
-	 *
-	 * @param array $params
-	 * @param object $ajaxObj
-	 *
-	 * @return void
-	 */
-	public function getDisplayFileContent($params, &$ajaxObj) {
-		$session = \Extension\Templavoila\Utility\GeneralUtility::getBackendUser()->getSessionData(\TYPO3\CMS\Core\Utility\GeneralUtility::_GP('key'));
-		echo \TYPO3\CMS\Core\Utility\GeneralUtility::getUrl(\TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName($session['displayFile']));
-	}
+    /**
+     * Return the content of the current "displayFile"
+     *
+     * @param array $params
+     * @param object $ajaxObj
+     *
+     * @return void
+     */
+    public function getDisplayFileContent($params, &$ajaxObj)
+    {
+        $session = \Extension\Templavoila\Utility\GeneralUtility::getBackendUser()->getSessionData(\TYPO3\CMS\Core\Utility\GeneralUtility::_GP('key'));
+        echo \TYPO3\CMS\Core\Utility\GeneralUtility::getUrl(\TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName($session['displayFile']));
+    }
 }

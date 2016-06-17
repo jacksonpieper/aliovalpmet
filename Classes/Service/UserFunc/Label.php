@@ -21,17 +21,19 @@ namespace Extension\Templavoila\Service\UserFunc;
  *
  * @author  Michael Klapper <michael.klapper@aoemedia.de>
  */
-class Label {
+class Label
+{
 
-	/**
-	 * Retrive the label for TCAFORM title attribute.
-	 *
-	 * @param array $params Current record array
-	 * @param object
-	 *
-	 * @return void
-	 */
-	public function getLabel(&$params, &$pObj) {
-		$params['title'] = \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->sL($params['row']['title']);
-	}
+    /**
+     * Retrive the label for TCAFORM title attribute.
+     *
+     * @param array $params Current record array
+     * @param object
+     *
+     * @return void
+     */
+    public function getLabel(&$params, &$pObj)
+    {
+        $params['title'] = \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->sL($params['row']['title']);
+    }
 }

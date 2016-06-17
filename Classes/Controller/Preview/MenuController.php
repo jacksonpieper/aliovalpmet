@@ -17,19 +17,21 @@ namespace Extension\Templavoila\Controller\Preview;
 /**
  * Menu controller
  */
-class MenuController extends TextController {
+class MenuController extends TextController
+{
 
-	/**
-	 * @var string
-	 */
-	protected $previewField = 'menu_type';
+    /**
+     * @var string
+     */
+    protected $previewField = 'menu_type';
 
-	/**
-	 * @param array $row
-	 *
-	 * @return string
-	 */
-	protected function getPreviewData($row) {
-		return \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->sL(\TYPO3\CMS\Backend\Utility\BackendUtility::getLabelFromItemlist('tt_content', $this->previewField, $row[$this->previewField]));
-	}
+    /**
+     * @param array $row
+     *
+     * @return string
+     */
+    protected function getPreviewData($row)
+    {
+        return \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->sL(\TYPO3\CMS\Backend\Utility\BackendUtility::getLabelFromItemlist('tt_content', $this->previewField, $row[$this->previewField]));
+    }
 }

@@ -6,16 +6,16 @@ $_EXTCONF = unserialize($_EXTCONF);
 
 // Adding the two plugins TypoScript:
 \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addPItoST43(
-	$_EXTKEY,
-	'pi1/class.tx_templavoila_pi1.php',
-	'_pi1',
-	'CType',
-	1
+    $_EXTKEY,
+    'pi1/class.tx_templavoila_pi1.php',
+    '_pi1',
+    'CType',
+    1
 );
 
 $tvSetup = array('plugin.tx_templavoila_pi1.disableExplosivePreview = 1');
 if (!$_EXTCONF['enable.']['renderFCEHeader']) {
-	$tvSetup[] = 'tt_content.templavoila_pi1.10 >';
+    $tvSetup[] = 'tt_content.templavoila_pi1.10 >';
 }
 
 //sectionIndex replacement
@@ -26,18 +26,18 @@ $tvSetup[] = 'tt_content.menu.20.3 = USER
 ';
 
 \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addTypoScript(
-	$_EXTKEY,
-	'setup',
-	implode(PHP_EOL, $tvSetup),
-	43
+    $_EXTKEY,
+    'setup',
+    implode(PHP_EOL, $tvSetup),
+    43
 );
 
 \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addPageTSConfig(
-	'<INCLUDE_TYPOSCRIPT: source="FILE:EXT:' . $_EXTKEY . '/Configuration/TSConfig/Page.ts">'
+    '<INCLUDE_TYPOSCRIPT: source="FILE:EXT:' . $_EXTKEY . '/Configuration/TSConfig/Page.ts">'
 );
 
 \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addUserTSConfig(
-	'<INCLUDE_TYPOSCRIPT: source="FILE:EXT:' . $_EXTKEY . '/Configuration/TSConfig/User.ts">'
+    '<INCLUDE_TYPOSCRIPT: source="FILE:EXT:' . $_EXTKEY . '/Configuration/TSConfig/User.ts">'
 );
 
 // Adding Page Template Selector Fields to root line:
@@ -75,7 +75,7 @@ $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['templavoila']['mod1']['renderPreviewCont
 $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['templavoila']['mod1']['renderPreviewContent']['templavoila_pi1'] = 'EXT:templavoila/Classes/Controller/Preview/NullController.php:&Extension\Templavoila\Controller\Preview\NullController';
 
 $GLOBALS['TYPO3_CONF_VARS']['BE']['AJAX']['tx_templavoila_mod1_ajax::moveRecord'] =
-	'EXT:templavoila/mod1/class.tx_templavoila_mod1_ajax.php:tx_templavoila_mod1_ajax->moveRecord';
+    'EXT:templavoila/mod1/class.tx_templavoila_mod1_ajax.php:tx_templavoila_mod1_ajax->moveRecord';
 
 $GLOBALS['TYPO3_CONF_VARS']['BE']['AJAX']['tx_templavoila_cm1_ajax::getDisplayFileContent'] =
-	'EXT:templavoila/cm1/class.tx_templavoila_cm1_ajax.php:tx_templavoila_cm1_ajax->getDisplayFileContent';
+    'EXT:templavoila/cm1/class.tx_templavoila_cm1_ajax.php:tx_templavoila_cm1_ajax->getDisplayFileContent';
