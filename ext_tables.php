@@ -13,7 +13,18 @@ if (TYPO3_MODE === 'BE') {
         'web',
         'txtemplavoilaM1',
         'top',
-        \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($_EXTKEY) . 'mod1/'
+        '',
+        [
+            'name' => 'web_txtemplavoilaM1',
+            'access' => 'admin',
+            'routeTarget' => \Extension\Templavoila\Controller\Backend\PageModuleController::class . '::processRequest',
+            'labels' => [
+                'll_ref' => 'LLL:EXT:templavoila/Resources/Private/Language/locallang_mod.xlf',
+                'tabs_images' => [
+                    'tab' => 'EXT:templavoila/Resources/Public/Icon/Modules/PageModuleIcon.png'
+                ]
+            ]
+        ]
     );
 
     \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addModule(

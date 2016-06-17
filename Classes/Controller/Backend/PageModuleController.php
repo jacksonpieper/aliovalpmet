@@ -1,4 +1,6 @@
 <?php
+namespace Extension\Templavoila\Controller\Backend;
+
 /*
  * This file is part of the TYPO3 CMS project.
  *
@@ -19,13 +21,18 @@
  * @coauthor   Kasper Skaarhoj <kasperYYYY@typo3.com>
  * @coauthor   Dmitry Dulepov <dmitry@typo3.org>
  */
-unset($MCONF);
-require(dirname(__FILE__) . '/conf.php');
-require($BACK_PATH . 'init.php');
-$LANG->includeLLFile('EXT:templavoila/mod1/locallang.xlf');
-$BE_USER->modAccess($MCONF, 1); // This checks permissions and exits if the users has no permission for entry.
+use Psr\Http\Message\ResponseInterface;
+use TYPO3\CMS\Backend\Module\AbstractModule;
+use TYPO3\CMS\Core\Http\Response;
+use TYPO3\CMS\Core\Http\ServerRequest;
 
-\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('cms', 1);
+//unset($MCONF);
+//require(dirname(__FILE__) . '/conf.php');
+//require($BACK_PATH . 'init.php');
+//$LANG->includeLLFile('EXT:templavoila/mod1/locallang.xlf');
+//$BE_USER->modAccess($MCONF, 1); // This checks permissions and exits if the users has no permission for entry.
+
+//\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('cms', 1);
 
 /**
  * Module 'Page' for the 'templavoila' extension.
@@ -35,7 +42,7 @@ $BE_USER->modAccess($MCONF, 1); // This checks permissions and exits if the user
  * @package TYPO3
  * @subpackage    tx_templavoila
  */
-class tx_templavoila_module1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass
+class PageModuleController extends AbstractModule
 {
 
     /**
@@ -338,6 +345,19 @@ class tx_templavoila_module1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass
      * @var integer
      */
     const DOKTYPE_NORMAL_EDIT = 1;
+
+    /**
+     * @param ServerRequest $request
+     * @param Response $response
+     *
+     * @return ResponseInterface
+     * @throws \RuntimeException
+     * @throws \TYPO3\CMS\Fluid\View\Exception\InvalidTemplateResourceException
+     */
+    public function index(ServerRequest $request, Response $response)
+    {
+        return $response;
+    }
 
     /*******************************************
      *
@@ -3156,7 +3176,7 @@ class tx_templavoila_module1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass
 
 // Make instance:
 /* @var $SOBE tx_templavoila_module1 */
-$SOBE = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\tx_templavoila_module1::class);
-$SOBE->init();
-$SOBE->main();
-$SOBE->printContent();
+//$SOBE = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\tx_templavoila_module1::class);
+//$SOBE->init();
+//$SOBE->main();
+//$SOBE->printContent();
