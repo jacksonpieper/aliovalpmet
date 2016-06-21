@@ -275,22 +275,22 @@ class tx_templavoila_dbnewcontentel
 
             // add document inline javascript
             $this->doc->JScode = $this->doc->wrapScriptTags('
-				function goToalt_doc()	{	//
-					' . $this->onClickEvent . '
-				}
+                function goToalt_doc()    {    //
+                    ' . $this->onClickEvent . '
+                }
 
-				Event.observe(window, \'load\', function() {
-					if(top.refreshMenu) {
-						top.refreshMenu();
-					} else {
-						top.TYPO3ModuleMenu.refreshMenu();
-					}
+                Event.observe(window, \'load\', function() {
+                    if(top.refreshMenu) {
+                        top.refreshMenu();
+                    } else {
+                        top.TYPO3ModuleMenu.refreshMenu();
+                    }
 
-					if(top.shortcutFrame) {
-						top.shortcutFrame.refreshShortcuts();
-					}
-				});
-			');
+                    if(top.shortcutFrame) {
+                        top.shortcutFrame.refreshShortcuts();
+                    }
+                });
+            ');
 
             // Traverse items for the wizard.
             // An item is either a header or an item rendered with a title/description and icon:
@@ -308,7 +308,7 @@ class tx_templavoila_dbnewcontentel
                     $newRecordLink = 'index.php?' . $this->linkParams() . '&createNewRecord=' . rawurlencode($this->parentRecord) . $wInfo['params'];
 
                     $content .= $this->elementWrapper['wizardPart'][0] . '<a href="' . htmlspecialchars($newRecordLink) . '">
-						<img' . \TYPO3\CMS\Backend\Utility\IconUtility::skinImg($this->doc->backPath, $wInfo['icon'], '') . ' alt="" /></a>' . $this->elementWrapper['wizardPart'][1];
+                        <img' . \TYPO3\CMS\Backend\Utility\IconUtility::skinImg($this->doc->backPath, $wInfo['icon'], '') . ' alt="" /></a>' . $this->elementWrapper['wizardPart'][1];
 
                     // Title + description:
                     $content .= $this->elementWrapper['wizardPart'][0] . '<a href="' . htmlspecialchars($newRecordLink) . '"><strong>' . htmlspecialchars($wInfo['title']) . '</strong><br />' . nl2br(htmlspecialchars(trim($wInfo['description']))) . '</a>' . $this->elementWrapper['wizardPart'][1];
@@ -325,10 +325,10 @@ class tx_templavoila_dbnewcontentel
             // Add the wizard table to the content, wrapped in tabs:
             if ($this->config['renderMode'] == 'tabs') {
                 $this->doc->inDocStylesArray[] = '
-					.typo3-dyntabmenu-divs { background-color: #fafafa; border: 1px solid #000; width: 680px; }
-					.typo3-dyntabmenu-divs table { margin: 15px; }
-					.typo3-dyntabmenu-divs table td { padding: 3px; }
-				';
+                    .typo3-dyntabmenu-divs { background-color: #fafafa; border: 1px solid #000; width: 680px; }
+                    .typo3-dyntabmenu-divs table { margin: 15px; }
+                    .typo3-dyntabmenu-divs table td { padding: 3px; }
+                ';
                 $code = \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('sel1', true) . '<br /><br />' . $this->doc->getDynTabMenu($menuItems, 'new-content-element-wizard', false, false, 100);
             } else {
                 $code = \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('sel1', true) . '<br /><br />';

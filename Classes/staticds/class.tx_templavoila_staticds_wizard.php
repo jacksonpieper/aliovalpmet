@@ -84,12 +84,12 @@ class tx_templavoila_staticds_wizard
                         ? \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->sL('LLL:EXT:templavoila/Resources/Private/Language/template_conf.xlf:staticDS.wizard.submit3')
                         : \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->sL('LLL:EXT:templavoila/Resources/Private/Language/template_conf.xlf:staticDS.wizard.submit2');
                     $controls .= '<br /><input type="hidden" name="dsWizardStep" value="1" />
-					<input type="submit" name="dsWizardDoIt" value="' . $submitText . '" />';
+                    <input type="submit" name="dsWizardDoIt" value="' . $submitText . '" />';
                 }
                 break;
             default:
                 $controls .= '<input type="hidden" name="dsWizardStep" value="1" />
-				<input type="submit" name="dsWizardDoIt" value="' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->sL('LLL:EXT:templavoila/Resources/Private/Language/template_conf.xlf:staticDS.wizard.submit1') . '" />';
+                <input type="submit" name="dsWizardDoIt" value="' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->sL('LLL:EXT:templavoila/Resources/Private/Language/template_conf.xlf:staticDS.wizard.submit1') . '" />';
                 break;
         }
 
@@ -153,17 +153,17 @@ class tx_templavoila_staticds_wizard
             'scope, title'
         );
         $out = '<table id="staticDSwizard_getdsrecords"><thead>
-			<tr class="bgColor5">
-				<td style="vertical-align:middle;">' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->sL('LLL:EXT:templavoila/Resources/Private/Language/template_conf.xlf:staticDS.wizard.uid') . '</td>
-				<td style="vertical-align:middle;">' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->sL('LLL:EXT:templavoila/Resources/Private/Language/template_conf.xlf:staticDS.wizard.pid') . '</td>
-				<td style="vertical-align:middle;">' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->sL('LLL:EXT:templavoila/Resources/Private/Language/template_conf.xlf:staticDS.wizard.title') . '</td>
-				<td style="vertical-align:middle;">' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->sL('LLL:EXT:templavoila/Resources/Private/Language/template_conf.xlf:staticDS.wizard.scope') . '</td>
-				<td style="vertical-align:middle;">' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->sL('LLL:EXT:templavoila/Resources/Private/Language/template_conf.xlf:staticDS.wizard.usage') . '</td>
-				<td>
-					<label for="sdw-checkall">' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->sL('LLL:EXT:templavoila/Resources/Private/Language/template_conf.xlf:staticDS.wizard.selectall') . '</label>
-					<input type="checkbox" class="checkbox" id="sdw-checkall" name="sdw-checkall" onclick="$$(\'.staticDScheck\').each(function(e){e.checked=$(\'sdw-checkall\').checked;});" value="1" ' .
+            <tr class="bgColor5">
+                <td style="vertical-align:middle;">' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->sL('LLL:EXT:templavoila/Resources/Private/Language/template_conf.xlf:staticDS.wizard.uid') . '</td>
+                <td style="vertical-align:middle;">' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->sL('LLL:EXT:templavoila/Resources/Private/Language/template_conf.xlf:staticDS.wizard.pid') . '</td>
+                <td style="vertical-align:middle;">' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->sL('LLL:EXT:templavoila/Resources/Private/Language/template_conf.xlf:staticDS.wizard.title') . '</td>
+                <td style="vertical-align:middle;">' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->sL('LLL:EXT:templavoila/Resources/Private/Language/template_conf.xlf:staticDS.wizard.scope') . '</td>
+                <td style="vertical-align:middle;">' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->sL('LLL:EXT:templavoila/Resources/Private/Language/template_conf.xlf:staticDS.wizard.usage') . '</td>
+                <td>
+                    <label for="sdw-checkall">' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->sL('LLL:EXT:templavoila/Resources/Private/Language/template_conf.xlf:staticDS.wizard.selectall') . '</label>
+                    <input type="checkbox" class="checkbox" id="sdw-checkall" name="sdw-checkall" onclick="$$(\'.staticDScheck\').each(function(e){e.checked=$(\'sdw-checkall\').checked;});" value="1" ' .
                     ($checkAll ? 'checked="checked"' : '') . ' /></td>
-		</tr></thead><tbody>';
+        </tr></thead><tbody>';
         foreach ($rows as $row) {
             $dirPath = \TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName($row['scope'] == 2 ? $conf['path_fce'] : $conf['path_page']);
             $dirPath = $dirPath . (substr($dirPath, -1) == '/' ? '' : '/');
@@ -223,11 +223,11 @@ class tx_templavoila_staticds_wizard
                 }
             }
             $out .= '<tr class="bgColor' . ($row['scope'] == 1 ? 3 : 6) . '">
-			<td style="text-align: center;padding: 0,3px;">' . $row['uid'] . '</td>
-			<td style="text-align: center;padding: 0,3px;">' . $row['pid'] . '</td>
-			<td style="padding: 0,3px;">' . htmlspecialchars($row['title']) . '</td>
-			<td style="padding: 0,3px;">' . ($row['scope'] == 1 ? 'Page' : 'FCE') . '</td>
-			<td style="text-align: center;padding: 0,3px;">' . $usage[0]['count(*)'] . '</td>';
+            <td style="text-align: center;padding: 0,3px;">' . $row['uid'] . '</td>
+            <td style="text-align: center;padding: 0,3px;">' . $row['pid'] . '</td>
+            <td style="padding: 0,3px;">' . htmlspecialchars($row['title']) . '</td>
+            <td style="padding: 0,3px;">' . ($row['scope'] == 1 ? 'Page' : 'FCE') . '</td>
+            <td style="text-align: center;padding: 0,3px;">' . $usage[0]['count(*)'] . '</td>';
             if (count($writeDsIds) && in_array($row['uid'], $writeDsIds)) {
                 $out .= '<td class="nobr" style="text-align: right;padding: 0,3px;">written to "' . $outPath . '"</td>';
             } else {
@@ -243,9 +243,9 @@ class tx_templavoila_staticds_wizard
             } else {
                 $out .= '<h4>' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->sL('LLL:EXT:templavoila/Resources/Private/Language/template_conf.xlf:staticDS.wizard.description2.1') . '</h4>';
                 $out .= '<p>
-				<input type="checkbox" class="checkbox" name="staticDSwizardoptions[updateRecords]" id="sdw-updateRecords" value="1" />
-				<label for="sdw-updateRecords">' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->sL('LLL:EXT:templavoila/Resources/Private/Language/template_conf.xlf:staticDS.wizard.updaterecords') . '</label><br />
-				</p>';
+                <input type="checkbox" class="checkbox" name="staticDSwizardoptions[updateRecords]" id="sdw-updateRecords" value="1" />
+                <label for="sdw-updateRecords">' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->sL('LLL:EXT:templavoila/Resources/Private/Language/template_conf.xlf:staticDS.wizard.updaterecords') . '</label><br />
+                </p>';
             }
         }
 

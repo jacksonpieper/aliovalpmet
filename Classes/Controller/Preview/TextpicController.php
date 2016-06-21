@@ -53,11 +53,11 @@ class TextpicController extends TextController
         }
 
         return '
-		<table>
-			<tr>
-				<td valign="top">' . $text . '</td>
-				<td valign="top">' . $thumbnail . '</td>
-			</tr>
-		</table>';
+        <table>
+            <tr>
+                <td valign="top">' . $text . '</td>
+                <td valign="top">' . $thumbnail . '</td>
+            </tr>
+        </table>';
     }
 }

@@ -282,17 +282,17 @@ class tx_templavoila_mod1_wizards
                 $previewIcon = '<input type="image" class="c-inputButton" name="i0" value="0" src="' . $previewIconFilename . '" title="" />';
                 $description = $defaultTO['description'] ? htmlspecialchars($defaultTO['description']) : \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('template_descriptiondefault', true);
                 $tmplHTML [] = '<table style="float:left; width: 100%;" valign="top">
-				<tr>
-					<td colspan="2" nowrap="nowrap">
-						<h3 class="bgColor3-20">' . htmlspecialchars(\Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('template_titleInherit')) . '</h3>
-					</td>
-				</tr><tr>
-					<td valign="top">' . $previewIcon . '</td>
-					<td width="120" valign="top">
-						<p><h4>' . htmlspecialchars(\Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->sL($defaultTO['title'])) . '</h4>' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->sL($description) . '</p>
-					</td>
-				</tr>
-				</table>';
+                <tr>
+                    <td colspan="2" nowrap="nowrap">
+                        <h3 class="bgColor3-20">' . htmlspecialchars(\Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('template_titleInherit')) . '</h3>
+                    </td>
+                </tr><tr>
+                    <td valign="top">' . $previewIcon . '</td>
+                    <td width="120" valign="top">
+                        <p><h4>' . htmlspecialchars(\Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->sL($defaultTO['title'])) . '</h4>' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->sL($description) . '</p>
+                    </td>
+                </tr>
+                </table>';
 
                 $dsRepo = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\Extension\Templavoila\Domain\Repository\DataStructureRepository::class);
                 $toRepo = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\Extension\Templavoila\Domain\Repository\TemplateRepository::class);
@@ -369,10 +369,10 @@ class tx_templavoila_mod1_wizards
                                 $aTagB = '<a href="' . htmlspecialchars(\TYPO3\CMS\Core\Utility\GeneralUtility::linkThisScript(['templateFile' => $absPath])) . '">';
                                 $aTagE = '</a>';
                                 $tmplHTML [] = '<table style="float:left; width: 100%;" valign="top"><tr><td colspan="2" nowrap="nowrap">
-					<h3 class="bgColor3-20">' . $aTagB . htmlspecialchars($import->dat['header']['meta']['title'] ? $import->dat['header']['meta']['title'] : basename($absPath)) . $aTagE . '</h3></td></tr>
-					<tr><td valign="top">' . $aTagB . $iconTag . $aTagE . '</td><td valign="top"><p>' . htmlspecialchars($import->dat['header']['meta']['description']) . '</p>
-						<em>Levels: ' . (count($pageTree) > 1 ? 'Deep structure' : 'Single page') . '<br/>
-						File: ' . basename($absPath) . '</em></td></tr></table>';
+                    <h3 class="bgColor3-20">' . $aTagB . htmlspecialchars($import->dat['header']['meta']['title'] ? $import->dat['header']['meta']['title'] : basename($absPath)) . $aTagE . '</h3></td></tr>
+                    <tr><td valign="top">' . $aTagB . $iconTag . $aTagE . '</td><td valign="top"><p>' . htmlspecialchars($import->dat['header']['meta']['description']) . '</p>
+                        <em>Levels: ' . (count($pageTree) > 1 ? 'Deep structure' : 'Single page') . '<br/>
+                        File: ' . basename($absPath) . '</em></td></tr></table>';
                             }
                         }
                     }

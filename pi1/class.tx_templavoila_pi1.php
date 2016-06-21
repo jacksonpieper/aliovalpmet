@@ -148,8 +148,8 @@ class tx_templavoila_pi1 extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
                     $vKey = (!$langDisabled && $langChildren) ? 'v' . $GLOBALS['TSFE']->sys_language_isocode : 'vDEF';
                 } else {
                     return $this->formatError('
-						Couldn\'t find a Data Structure set with uid/file=' . $conf['ds'] . '
-						Please put correct DS and TO into your TS setup first.');
+                        Couldn\'t find a Data Structure set with uid/file=' . $conf['ds'] . '
+                        Please put correct DS and TO into your TS setup first.');
                 }
             } else {
                 $lKey = 'lDEF';
@@ -401,21 +401,21 @@ class tx_templavoila_pi1 extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
                         }
                     } else {
                         $content = $this->formatError('Template Object could not be unserialized successfully.
-							Are you sure you saved mapping information into Template Object with UID "' . $row['tx_templavoila_to'] . '"?');
+                            Are you sure you saved mapping information into Template Object with UID "' . $row['tx_templavoila_to'] . '"?');
                     }
                 } else {
                     $content = $this->formatError('Couldn\'t find Template Object with UID "' . $row['tx_templavoila_to'] . '".
-						Please make sure a Template Object is accessible.');
+                        Please make sure a Template Object is accessible.');
                 }
             } else {
                 $content = $this->formatError('You haven\'t selected a Template Object yet for table/uid "' . $table . '/' . $row['uid'] . '".
-					Without a Template Object TemplaVoila cannot map the XML content into HTML.
-					Please select a Template Object now.');
+                    Without a Template Object TemplaVoila cannot map the XML content into HTML.
+                    Please select a Template Object now.');
             }
         } else {
             $content = $this->formatError('
-				Couldn\'t find a Data Structure set for table/row "' . $table . ':' . $row['uid'] . '".
-				Please select a Data Structure and Template Object first.');
+                Couldn\'t find a Data Structure set for table/row "' . $table . ':' . $row['uid'] . '".
+                Please select a Data Structure and Template Object first.');
         }
 
         return $content;
@@ -757,15 +757,15 @@ class tx_templavoila_pi1 extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
         }
         //
         $output = '
-			<!-- TemplaVoila ERROR message: -->
-			<div class="tx_templavoila_pi1-error" style="
-					border: 2px red solid;
-					background-color: yellow;
-					color: black;
-					text-align: center;
-					padding: 20px 20px 20px 20px;
-					margin: 20px 20px 20px 20px;
-					">' .
+            <!-- TemplaVoila ERROR message: -->
+            <div class="tx_templavoila_pi1-error" style="
+                    border: 2px red solid;
+                    background-color: yellow;
+                    color: black;
+                    text-align: center;
+                    padding: 20px 20px 20px 20px;
+                    margin: 20px 20px 20px 20px;
+                    ">' .
             '<strong>TemplaVoila ERROR:</strong><br /><br />' . nl2br(htmlspecialchars(trim($string))) .
             '</div>';
 
@@ -793,85 +793,85 @@ class tx_templavoila_pi1 extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
         switch ($table) {
             case 'pages':
                 $tRows[] = '<tr style="background-color: #ABBBB4;">
-						<td colspan="2"><b>Page:</b> ' . htmlspecialchars(\TYPO3\CMS\Core\Utility\GeneralUtility::fixed_lgd_cs($row['title'], 30)) . ' <em>[UID:' . $row['uid'] . ']</em></td>
-					</tr>';
+                        <td colspan="2"><b>Page:</b> ' . htmlspecialchars(\TYPO3\CMS\Core\Utility\GeneralUtility::fixed_lgd_cs($row['title'], 30)) . ' <em>[UID:' . $row['uid'] . ']</em></td>
+                    </tr>';
                 break;
             case 'tt_content':
                 $tRows[] = '<tr style="background-color: #ABBBB4;">
-						<td colspan="2"><b>Flexible Content:</b> ' . htmlspecialchars(\TYPO3\CMS\Core\Utility\GeneralUtility::fixed_lgd_cs($row['header'], 30)) . ' <em>[UID:' . $row['uid'] . ']</em></td>
-					</tr>';
+                        <td colspan="2"><b>Flexible Content:</b> ' . htmlspecialchars(\TYPO3\CMS\Core\Utility\GeneralUtility::fixed_lgd_cs($row['header'], 30)) . ' <em>[UID:' . $row['uid'] . ']</em></td>
+                    </tr>';
                 break;
             default:
                 $tRows[] = '<tr style="background-color: #ABBBB4;">
-						<td colspan="2">Table "' . $table . '" <em>[UID:' . $row['uid'] . ']</em></td>
-					</tr>';
+                        <td colspan="2">Table "' . $table . '" <em>[UID:' . $row['uid'] . ']</em></td>
+                    </tr>';
                 break;
         }
 
         // Draw data structure:
         if (is_numeric($srcPointer)) {
             $tRows[] = '<tr>
-					<td valign="top"><b>Data Structure:</b></td>
-					<td>' . htmlspecialchars(\TYPO3\CMS\Core\Utility\GeneralUtility::fixed_lgd_cs($DSrec['title'], 30)) . ' <em>[UID:' . $srcPointer . ']</em>' .
+                    <td valign="top"><b>Data Structure:</b></td>
+                    <td>' . htmlspecialchars(\TYPO3\CMS\Core\Utility\GeneralUtility::fixed_lgd_cs($DSrec['title'], 30)) . ' <em>[UID:' . $srcPointer . ']</em>' .
                 ($DSrec['previewicon'] ? '<br/><img src="uploads/tx_templavoila/' . $DSrec['previewicon'] . '" alt="" />' : '') .
                 '</td>
-		</tr>';
+        </tr>';
         } else {
             $tRows[] = '<tr>
-					<td valign="top"><b>Data Structure:</b></td>
-					<td>' . htmlspecialchars($srcPointer) . '</td>
-				</tr>';
+                    <td valign="top"><b>Data Structure:</b></td>
+                    <td>' . htmlspecialchars($srcPointer) . '</td>
+                </tr>';
         }
 
         // Template Object:
         $tRows[] = '<tr>
-				<td valign="top"><b>Template Object:</b></td>
-				<td>' . htmlspecialchars(\TYPO3\CMS\Core\Utility\GeneralUtility::fixed_lgd_cs($TOrec['title'], 30)) . ' <em>[UID:' . $TOrec['uid'] . ']</em>' .
+                <td valign="top"><b>Template Object:</b></td>
+                <td>' . htmlspecialchars(\TYPO3\CMS\Core\Utility\GeneralUtility::fixed_lgd_cs($TOrec['title'], 30)) . ' <em>[UID:' . $TOrec['uid'] . ']</em>' .
             ($TOrec['previewicon'] ? '<br/><img src="uploads/tx_templavoila/' . $TOrec['previewicon'] . '" alt="" />' : '') .
             '</td>
-	</tr>';
+    </tr>';
         if ($TOrec['description']) {
             $tRows[] = '<tr>
-					<td valign="top" nowrap="nowrap">&nbsp; &nbsp; &nbsp; Description:</td>
-					<td>' . htmlspecialchars($TOrec['description']) . '</td>
-				</tr>';
+                    <td valign="top" nowrap="nowrap">&nbsp; &nbsp; &nbsp; Description:</td>
+                    <td>' . htmlspecialchars($TOrec['description']) . '</td>
+                </tr>';
         }
         $tRows[] = '<tr>
-				<td valign="top" nowrap="nowrap">&nbsp; &nbsp; &nbsp; Template File:</td>
-				<td>' . htmlspecialchars($TOrec['fileref']) . '</td>
-			</tr>';
+                <td valign="top" nowrap="nowrap">&nbsp; &nbsp; &nbsp; Template File:</td>
+                <td>' . htmlspecialchars($TOrec['fileref']) . '</td>
+            </tr>';
         $tRows[] = '<tr>
-				<td valign="top" nowrap="nowrap">&nbsp; &nbsp; &nbsp; Render type:</td>
-				<td>' . htmlspecialchars($TOrec['rendertype'] ? $TOrec['rendertype'] : 'Normal') . '</td>
-			</tr>';
+                <td valign="top" nowrap="nowrap">&nbsp; &nbsp; &nbsp; Render type:</td>
+                <td>' . htmlspecialchars($TOrec['rendertype'] ? $TOrec['rendertype'] : 'Normal') . '</td>
+            </tr>';
         $tRows[] = '<tr>
-				<td valign="top" nowrap="nowrap">&nbsp; &nbsp; &nbsp; Language:</td>
-				<td>' . htmlspecialchars($TOrec['sys_language_uid'] ? $TOrec['sys_language_uid'] : 'Default') . '</td>
-			</tr>';
+                <td valign="top" nowrap="nowrap">&nbsp; &nbsp; &nbsp; Language:</td>
+                <td>' . htmlspecialchars($TOrec['sys_language_uid'] ? $TOrec['sys_language_uid'] : 'Default') . '</td>
+            </tr>';
         $tRows[] = '<tr>
-				<td valign="top" nowrap="nowrap">&nbsp; &nbsp; &nbsp; Local Proc.:</td>
-				<td>' . htmlspecialchars($TOrec['localprocessing'] ? 'Yes' : '-') . '</td>
-			</tr>';
+                <td valign="top" nowrap="nowrap">&nbsp; &nbsp; &nbsp; Local Proc.:</td>
+                <td>' . htmlspecialchars($TOrec['localprocessing'] ? 'Yes' : '-') . '</td>
+            </tr>';
 
         // Compile information table:
         $infoArray = '<table style="border:1px solid black; background-color: #D9D5C9; font-family: verdana,arial; font-size: 10px;" border="0" cellspacing="1" cellpadding="1">
-						' . implode('', $tRows) . '
-						</table>';
+                        ' . implode('', $tRows) . '
+                        </table>';
 
         // Compile information:
         $id = 'templavoila-preview-' . \TYPO3\CMS\Core\Utility\GeneralUtility::shortMD5(microtime());
         $content = '<div style="text-align: left; position: absolute; display:none; filter: alpha(Opacity=90);" id="' . $id . '">
-						' . $infoArray . '
-					</div>
-					<div id="' . $id . '-wrapper" style=""
-						onmouseover="
-							document.getElementById(\'' . $id . '\').style.display=\'block\';
-							document.getElementById(\'' . $id . '-wrapper\').attributes.getNamedItem(\'style\').nodeValue = \'border: 2px dashed #333366;\';
-								"
-						onmouseout="
-							document.getElementById(\'' . $id . '\').style.display=\'none\';
-							document.getElementById(\'' . $id . '-wrapper\').attributes.getNamedItem(\'style\').nodeValue = \'\';
-								">' .
+                        ' . $infoArray . '
+                    </div>
+                    <div id="' . $id . '-wrapper" style=""
+                        onmouseover="
+                            document.getElementById(\'' . $id . '\').style.display=\'block\';
+                            document.getElementById(\'' . $id . '-wrapper\').attributes.getNamedItem(\'style\').nodeValue = \'border: 2px dashed #333366;\';
+                                "
+                        onmouseout="
+                            document.getElementById(\'' . $id . '\').style.display=\'none\';
+                            document.getElementById(\'' . $id . '-wrapper\').attributes.getNamedItem(\'style\').nodeValue = \'\';
+                                ">' .
             $content .
             '</div>';
 

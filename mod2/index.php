@@ -150,21 +150,21 @@ class tx_templavoila_module2 extends \TYPO3\CMS\Backend\Module\BaseScriptClass
             // Adding classic jumpToUrl function, needed for the function menu.
             // Also, the id in the parent frameset is configured.
             $this->doc->JScode = $this->doc->wrapScriptTags('
-				function jumpToUrl(URL)	{ //
-					document.location = URL;
-					return false;
-				}
-				function setHighlight(id)	{	//
-					if (top.fsMod) {
-						top.fsMod.recentIds["web"]=id;
-						top.fsMod.navFrameHighlightedID["web"]="pages"+id+"_"+top.fsMod.currentBank;	// For highlighting
+                function jumpToUrl(URL)    { //
+                    document.location = URL;
+                    return false;
+                }
+                function setHighlight(id)    {    //
+                    if (top.fsMod) {
+                        top.fsMod.recentIds["web"]=id;
+                        top.fsMod.navFrameHighlightedID["web"]="pages"+id+"_"+top.fsMod.currentBank;    // For highlighting
 
-						if (top.content && top.content.nav_frame && top.content.nav_frame.refresh_nav)	{
-							top.content.nav_frame.refresh_nav();
-						}
-					}
-				}
-			');
+                        if (top.content && top.content.nav_frame && top.content.nav_frame.refresh_nav)    {
+                            top.content.nav_frame.refresh_nav();
+                        }
+                    }
+                }
+            ');
 
             $this->doc->loadJavascriptLib('sysext/backend/Resources/Public/JavaScript/tabmenu.js');
 
@@ -296,24 +296,24 @@ class tx_templavoila_module2 extends \TYPO3\CMS\Backend\Module\BaseScriptClass
         // Traverse the pages found and list in a table:
         $tRows = [];
         $tRows[] = '
-			<tr class="bgColor5 tableheader">
-				<td>' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('storagefolders', true) . '</td>
-				<td>' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('datastructures', true) . '</td>
-				<td>' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('templateobjects', true) . '</td>
-			</tr>';
+            <tr class="bgColor5 tableheader">
+                <td>' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('storagefolders', true) . '</td>
+                <td>' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('datastructures', true) . '</td>
+                <td>' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('templateobjects', true) . '</td>
+            </tr>';
 
         if (is_array($list)) {
             foreach ($list as $pid) {
                 $path = $this->findRecordsWhereUsed_pid($pid);
                 if ($path) {
                     $tRows[] = '
-						<tr class="bgColor4">
-							<td><a href="index.php?id=' . $pid . '" onclick="setHighlight(' . $pid . ')">' .
+                        <tr class="bgColor4">
+                            <td><a href="index.php?id=' . $pid . '" onclick="setHighlight(' . $pid . ')">' .
                         \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIconForRecord('pages', \TYPO3\CMS\Backend\Utility\BackendUtility::getRecord('pages', $pid)) .
                         htmlspecialchars($path) . '</a></td>
-							<td>' . $dsRepo->getDatastructureCountForPid($pid) . '</td>
-							<td>' . $toRepo->getTemplateCountForPid($pid) . '</td>
-						</tr>';
+                            <td>' . $dsRepo->getDatastructureCountForPid($pid) . '</td>
+                            <td>' . $toRepo->getTemplateCountForPid($pid) . '</td>
+                        </tr>';
                 }
             }
 
@@ -483,14 +483,14 @@ class tx_templavoila_module2 extends \TYPO3\CMS\Backend\Module\BaseScriptClass
                         $rTODres = $this->renderTODisplay($toObj, $scope);
                         $TOcontent .= '<a name="to-' . $toObj->getKey() . '"></a>' . $rTODres['HTML'];
                         $indexTO .= '
-							<tr class="bgColor4">
-								<td>&nbsp;&nbsp;&nbsp;</td>
-								<td><a href="#to-' . $toObj->getKey() . '">' . htmlspecialchars($toObj->getLabel()) . $toObj->hasParentTemplate() . '</a></td>
-								<td>&nbsp;</td>
-								<td>&nbsp;</td>
-								<td align="center">' . $rTODres['mappingStatus'] . '</td>
-								<td align="center">' . $rTODres['usage'] . '</td>
-							</tr>';
+                            <tr class="bgColor4">
+                                <td>&nbsp;&nbsp;&nbsp;</td>
+                                <td><a href="#to-' . $toObj->getKey() . '">' . htmlspecialchars($toObj->getLabel()) . $toObj->hasParentTemplate() . '</a></td>
+                                <td>&nbsp;</td>
+                                <td>&nbsp;</td>
+                                <td align="center">' . $rTODres['mappingStatus'] . '</td>
+                                <td align="center">' . $rTODres['usage'] . '</td>
+                            </tr>';
                         $toCount++;
 
                         $newPid = -$toObj->getKey();
@@ -509,13 +509,13 @@ class tx_templavoila_module2 extends \TYPO3\CMS\Backend\Module\BaseScriptClass
                 $rDSDres = $this->renderDataStructureDisplay($dsObj, $scope, $toIdArray);
                 $content .= '<a name="ds-' . md5($dsObj->getKey()) . '"></a>' . $rDSDres['HTML'];
                 $index .= '
-					<tr class="bgColor4-20">
-						<td colspan="2"><a href="#ds-' . md5($dsObj->getKey()) . '">' . htmlspecialchars($dsObj->getLabel()) . '</a></td>
-						<td align="center">' . $rDSDres['languageMode'] . '</td>
-						<td>' . $rDSDres['container'] . '</td>
-						<td>&nbsp;</td>
-						<td>&nbsp;</td>
-					</tr>';
+                    <tr class="bgColor4-20">
+                        <td colspan="2"><a href="#ds-' . md5($dsObj->getKey()) . '">' . htmlspecialchars($dsObj->getLabel()) . '</a></td>
+                        <td align="center">' . $rDSDres['languageMode'] . '</td>
+                        <td>' . $rDSDres['container'] . '</td>
+                        <td>&nbsp;</td>
+                        <td>&nbsp;</td>
+                    </tr>';
                 if ($indexTO) {
                     $index .= $indexTO;
                 }
@@ -530,16 +530,16 @@ class tx_templavoila_module2 extends \TYPO3\CMS\Backend\Module\BaseScriptClass
 
         if ($index) {
             $content = '<h4>' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('overview', true) . '</h4>
-						<table border="0" cellpadding="0" cellspacing="1">
-							<tr class="bgColor5 tableheader">
-								<td colspan="2">' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('dstotitle', true) . '</td>
-								<td>' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('localization', true) . '</td>
-								<td>' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('containerstatus', true) . '</td>
-								<td>' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('mappingstatus', true) . '</td>
-								<td>' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('usagecount', true) . '</td>
-							</tr>
-						' . $index . '
-						</table>' .
+                        <table border="0" cellpadding="0" cellspacing="1">
+                            <tr class="bgColor5 tableheader">
+                                <td colspan="2">' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('dstotitle', true) . '</td>
+                                <td>' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('localization', true) . '</td>
+                                <td>' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('containerstatus', true) . '</td>
+                                <td>' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('mappingstatus', true) . '</td>
+                                <td>' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('usagecount', true) . '</td>
+                            </tr>
+                        ' . $index . '
+                        </table>' .
                 $content;
         }
 
@@ -603,38 +603,38 @@ class tx_templavoila_module2 extends \TYPO3\CMS\Backend\Module\BaseScriptClass
 
         // Compile info table:
         $content = '
-		<table' . $tableAttribs . '>
-			<tr class="bgColor5">
-				<td colspan="3" style="border-top: 1px solid black;">' .
+        <table' . $tableAttribs . '>
+            <tr class="bgColor5">
+                <td colspan="3" style="border-top: 1px solid black;">' .
             $dsIcon .
             $dsTitle .
             $editLink .
             '</td>
-	</tr>
-	<tr class="bgColor4">
-		<td rowspan="' . ($this->MOD_SETTINGS['set_details'] ? 4 : 2) . '" style="width: 100px; text-align: center;">' . $previewIcon . '</td>
-				' .
+    </tr>
+    <tr class="bgColor4">
+        <td rowspan="' . ($this->MOD_SETTINGS['set_details'] ? 4 : 2) . '" style="width: 100px; text-align: center;">' . $previewIcon . '</td>
+                ' .
             ($this->MOD_SETTINGS['set_details'] ? '<td style="width:200px">' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('templatestatus', true) . '</td>
-				<td>' . $this->findDSUsageWithImproperTOs($dsObj, $scope, $toIdArray) . '</td>' : '') .
+                <td>' . $this->findDSUsageWithImproperTOs($dsObj, $scope, $toIdArray) . '</td>' : '') .
             '</tr>
-			<tr class="bgColor4">
-				<td>' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('globalprocessing_xml') . '</td>
-				<td>
-					' . $lpXML . ($dsObj->getDataprotXML() ?
+            <tr class="bgColor4">
+                <td>' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('globalprocessing_xml') . '</td>
+                <td>
+                    ' . $lpXML . ($dsObj->getDataprotXML() ?
                 \TYPO3\CMS\Core\Utility\GeneralUtility::formatSize(strlen($dsObj->getDataprotXML())) . ' bytes' .
                 ($this->MOD_SETTINGS['set_details'] ? '<hr/>' . $XMLinfo['HTML'] : '') : '') . '
-				</td>
-			</tr>' . ($this->MOD_SETTINGS['set_details'] ? '
-			<tr class="bgColor4">
-				<td>' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('created', true) . '</td>
-				<td>' . \TYPO3\CMS\Backend\Utility\BackendUtility::datetime($dsObj->getCrdate()) . ' ' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('byuser', true) . ' [' . $dsObj->getCruser() . ']</td>
-			</tr>
-			<tr class="bgColor4">
-				<td>' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('updated', true) . '</td>
-				<td>' . \TYPO3\CMS\Backend\Utility\BackendUtility::datetime($dsObj->getTstamp()) . '</td>
-			</tr>' : '') . '
-		</table>
-		';
+                </td>
+            </tr>' . ($this->MOD_SETTINGS['set_details'] ? '
+            <tr class="bgColor4">
+                <td>' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('created', true) . '</td>
+                <td>' . \TYPO3\CMS\Backend\Utility\BackendUtility::datetime($dsObj->getCrdate()) . ' ' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('byuser', true) . ' [' . $dsObj->getCruser() . ']</td>
+            </tr>
+            <tr class="bgColor4">
+                <td>' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('updated', true) . '</td>
+                <td>' . \TYPO3\CMS\Backend\Utility\BackendUtility::datetime($dsObj->getTstamp()) . '</td>
+            </tr>' : '') . '
+        </table>
+        ';
 
         // Format XML if requested (renders VERY VERY slow)
         if ($this->MOD_SETTINGS['set_showDSxml']) {
@@ -783,93 +783,93 @@ class tx_templavoila_module2 extends \TYPO3\CMS\Backend\Module\BaseScriptClass
             }
 
             $content = '
-			<table' . $tableAttribs . '>
-				<tr class="bgColor4-20">
-					<td colspan="3">' .
+            <table' . $tableAttribs . '>
+                <tr class="bgColor4-20">
+                    <td colspan="3">' .
                 $recordIcon .
                 $toTitle .
                 $editLink .
                 '</td>
-		</tr>
-		<tr class="bgColor4">
-			<td rowspan="' . ($this->MOD_SETTINGS['set_details'] ? 7 : 4) . '" style="width: 100px; text-align: center;">' . $icon . '</td>
-					<td style="width:200px;">' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('filereference', true) . ':</td>
-					<td>' . $fileRef . $fileMsg . '</td>
-				</tr>
-				<tr class="bgColor4">
-					<td>' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('description', true) . ':</td>
-					<td>' . htmlspecialchars($toObj->getDescription()) . '</td>
-				</tr>
-				<tr class="bgColor4">
-					<td>' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('mappingstatus', true) . ':</td>
-					<td>' . $mappingStatus . '</td>
-				</tr>
-				<tr class="bgColor4">
-					<td>' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('localprocessing_xml') . ':</td>
-					<td>
-						' . $lpXML . ($toObj->getLocalDataprotXML(true) ?
+        </tr>
+        <tr class="bgColor4">
+            <td rowspan="' . ($this->MOD_SETTINGS['set_details'] ? 7 : 4) . '" style="width: 100px; text-align: center;">' . $icon . '</td>
+                    <td style="width:200px;">' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('filereference', true) . ':</td>
+                    <td>' . $fileRef . $fileMsg . '</td>
+                </tr>
+                <tr class="bgColor4">
+                    <td>' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('description', true) . ':</td>
+                    <td>' . htmlspecialchars($toObj->getDescription()) . '</td>
+                </tr>
+                <tr class="bgColor4">
+                    <td>' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('mappingstatus', true) . ':</td>
+                    <td>' . $mappingStatus . '</td>
+                </tr>
+                <tr class="bgColor4">
+                    <td>' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('localprocessing_xml') . ':</td>
+                    <td>
+                        ' . $lpXML . ($toObj->getLocalDataprotXML(true) ?
                     \TYPO3\CMS\Core\Utility\GeneralUtility::formatSize(strlen($toObj->getLocalDataprotXML(true))) . ' bytes' .
                     ($this->MOD_SETTINGS['set_details'] ? '<hr/>' . $XMLinfo['HTML'] : '') : '') . '
-					</td>
-				</tr>' . ($this->MOD_SETTINGS['set_details'] ? '
-				<tr class="bgColor4">
-					<td>' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('usedby', true) . ':</td>
-					<td>' . $fRWTOUres['HTML'] . '</td>
-				</tr>
-				<tr class="bgColor4">
-					<td>' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('created', true) . ':</td>
-					<td>' . \TYPO3\CMS\Backend\Utility\BackendUtility::datetime($toObj->getCrdate()) . ' ' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('byuser', true) . ' [' . $toObj->getCruser() . ']</td>
-				</tr>
-				<tr class="bgColor4">
-					<td>' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('updated', true) . ':</td>
-					<td>' . \TYPO3\CMS\Backend\Utility\BackendUtility::datetime($toObj->getTstamp()) . '</td>
-				</tr>' : '') . '
-			</table>
-			';
+                    </td>
+                </tr>' . ($this->MOD_SETTINGS['set_details'] ? '
+                <tr class="bgColor4">
+                    <td>' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('usedby', true) . ':</td>
+                    <td>' . $fRWTOUres['HTML'] . '</td>
+                </tr>
+                <tr class="bgColor4">
+                    <td>' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('created', true) . ':</td>
+                    <td>' . \TYPO3\CMS\Backend\Utility\BackendUtility::datetime($toObj->getCrdate()) . ' ' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('byuser', true) . ' [' . $toObj->getCruser() . ']</td>
+                </tr>
+                <tr class="bgColor4">
+                    <td>' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('updated', true) . ':</td>
+                    <td>' . \TYPO3\CMS\Backend\Utility\BackendUtility::datetime($toObj->getTstamp()) . '</td>
+                </tr>' : '') . '
+            </table>
+            ';
         } else {
             $content = '
-			<table' . $tableAttribs . '>
-				<tr class="bgColor4-20">
-					<td colspan="3">' .
+            <table' . $tableAttribs . '>
+                <tr class="bgColor4-20">
+                    <td colspan="3">' .
                 $recordIcon .
                 $toTitle .
                 $editLink .
                 '</td>
-		</tr>
-		<tr class="bgColor4">
-			<td style="width:200px;">' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('filereference', true) . ':</td>
-					<td>' . $fileRef . $fileMsg . '</td>
-				</tr>
-				<tr class="bgColor4">
-					<td>' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('mappingstatus', true) . ':</td>
-					<td>' . $mappingStatus . '</td>
-				</tr>
-				<tr class="bgColor4">
-					<td>' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('rendertype', true) . ':</td>
-					<td>' . $this->getProcessedValue('tx_templavoila_tmplobj', 'rendertype', $toObj->getRendertype()) . '</td>
-				</tr>
-				<tr class="bgColor4">
-					<td>' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('language', true) . ':</td>
-					<td>' . $this->getProcessedValue('tx_templavoila_tmplobj', 'sys_language_uid', $toObj->getSyslang()) . '</td>
-				</tr>
-				<tr class="bgColor4">
-					<td>' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('localprocessing_xml') . ':</td>
-					<td>
-						' . $lpXML . ($toObj->getLocalDataprotXML(true) ?
+        </tr>
+        <tr class="bgColor4">
+            <td style="width:200px;">' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('filereference', true) . ':</td>
+                    <td>' . $fileRef . $fileMsg . '</td>
+                </tr>
+                <tr class="bgColor4">
+                    <td>' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('mappingstatus', true) . ':</td>
+                    <td>' . $mappingStatus . '</td>
+                </tr>
+                <tr class="bgColor4">
+                    <td>' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('rendertype', true) . ':</td>
+                    <td>' . $this->getProcessedValue('tx_templavoila_tmplobj', 'rendertype', $toObj->getRendertype()) . '</td>
+                </tr>
+                <tr class="bgColor4">
+                    <td>' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('language', true) . ':</td>
+                    <td>' . $this->getProcessedValue('tx_templavoila_tmplobj', 'sys_language_uid', $toObj->getSyslang()) . '</td>
+                </tr>
+                <tr class="bgColor4">
+                    <td>' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('localprocessing_xml') . ':</td>
+                    <td>
+                        ' . $lpXML . ($toObj->getLocalDataprotXML(true) ?
                     \TYPO3\CMS\Core\Utility\GeneralUtility::formatSize(strlen($toObj->getLocalDataprotXML(true))) . ' bytes' .
                     ($this->MOD_SETTINGS['set_details'] ? '<hr/>' . $XMLinfo['HTML'] : '') : '') . '
-					</td>
-				</tr>' . ($this->MOD_SETTINGS['set_details'] ? '
-				<tr class="bgColor4">
-					<td>' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('created', true) . ':</td>
-					<td>' . \TYPO3\CMS\Backend\Utility\BackendUtility::datetime($toObj->getCrdate()) . ' ' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('byuser', true) . ' [' . $toObj->getCruser() . ']</td>
-				</tr>
-				<tr class="bgColor4">
-					<td>' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('updated', true) . ':</td>
-					<td>' . \TYPO3\CMS\Backend\Utility\BackendUtility::datetime($toObj->getTstamp()) . '</td>
-				</tr>' : '') . '
-			</table>
-			';
+                    </td>
+                </tr>' . ($this->MOD_SETTINGS['set_details'] ? '
+                <tr class="bgColor4">
+                    <td>' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('created', true) . ':</td>
+                    <td>' . \TYPO3\CMS\Backend\Utility\BackendUtility::datetime($toObj->getCrdate()) . ' ' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('byuser', true) . ' [' . $toObj->getCruser() . ']</td>
+                </tr>
+                <tr class="bgColor4">
+                    <td>' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('updated', true) . ':</td>
+                    <td>' . \TYPO3\CMS\Backend\Utility\BackendUtility::datetime($toObj->getTstamp()) . '</td>
+                </tr>' : '') . '
+            </table>
+            ';
         }
 
         // Traverse template objects which are not children of anything:
@@ -905,12 +905,12 @@ class tx_templavoila_module2 extends \TYPO3\CMS\Backend\Module\BaseScriptClass
             case 1: // PAGES:
                 // Header:
                 $output[] = '
-							<tr class="bgColor5 tableheader">
-								<td>' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('toused_pid', true) . ':</td>
-								<td>' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('toused_title', true) . ':</td>
-								<td>' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('toused_path', true) . ':</td>
-								<td>' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('toused_workspace', true) . ':</td>
-							</tr>';
+                            <tr class="bgColor5 tableheader">
+                                <td>' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('toused_pid', true) . ':</td>
+                                <td>' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('toused_title', true) . ':</td>
+                                <td>' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('toused_path', true) . ':</td>
+                                <td>' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('toused_workspace', true) . ':</td>
+                            </tr>';
 
                 // Main templates:
                 $dsKey = $toObj->getDatastructure()->getKey();
@@ -918,9 +918,9 @@ class tx_templavoila_module2 extends \TYPO3\CMS\Backend\Module\BaseScriptClass
                     'uid,title,pid,t3ver_wsid,t3ver_id',
                     'pages',
                     '(
-						(tx_templavoila_to=' . (int)$toObj->getKey() . ' AND tx_templavoila_ds=' . \Extension\Templavoila\Utility\GeneralUtility::getDatabaseConnection()->fullQuoteStr($dsKey, 'pages') . ') OR
-						(tx_templavoila_next_to=' . (int)$toObj->getKey() . ' AND tx_templavoila_next_ds=' . \Extension\Templavoila\Utility\GeneralUtility::getDatabaseConnection()->fullQuoteStr($dsKey, 'pages') . ')
-					)' .
+                        (tx_templavoila_to=' . (int)$toObj->getKey() . ' AND tx_templavoila_ds=' . \Extension\Templavoila\Utility\GeneralUtility::getDatabaseConnection()->fullQuoteStr($dsKey, 'pages') . ') OR
+                        (tx_templavoila_next_to=' . (int)$toObj->getKey() . ' AND tx_templavoila_next_ds=' . \Extension\Templavoila\Utility\GeneralUtility::getDatabaseConnection()->fullQuoteStr($dsKey, 'pages') . ')
+                    )' .
                     \TYPO3\CMS\Backend\Utility\BackendUtility::deleteClause('pages')
                 );
 
@@ -928,32 +928,32 @@ class tx_templavoila_module2 extends \TYPO3\CMS\Backend\Module\BaseScriptClass
                     $path = $this->findRecordsWhereUsed_pid($pRow['uid']);
                     if ($path) {
                         $output[] = '
-							<tr class="bgColor4-20">
-								<td nowrap="nowrap">' .
+                            <tr class="bgColor4-20">
+                                <td nowrap="nowrap">' .
                             '<a href="#" onclick="' . htmlspecialchars(\TYPO3\CMS\Backend\Utility\BackendUtility::editOnClick('&edit[pages][' . $pRow['uid'] . ']=edit', $this->doc->backPath)) . '" title="Edit">' .
                             htmlspecialchars($pRow['uid']) .
                             '</a></td>
-						<td nowrap="nowrap">' .
+                        <td nowrap="nowrap">' .
                             htmlspecialchars($pRow['title']) .
                             '</td>
-						<td nowrap="nowrap">' .
+                        <td nowrap="nowrap">' .
                             '<a href="#" onclick="' . htmlspecialchars(\TYPO3\CMS\Backend\Utility\BackendUtility::viewOnClick($pRow['uid'], $this->doc->backPath) . 'return false;') . '" title="View">' .
                             htmlspecialchars($path) .
                             '</a></td>
-						<td nowrap="nowrap">' .
+                        <td nowrap="nowrap">' .
                             htmlspecialchars($pRow['pid'] == -1 ? 'Offline version 1.' . $pRow['t3ver_id'] . ', WS: ' . $pRow['t3ver_wsid'] : 'LIVE!') .
                             '</td>
-					</tr>';
+                    </tr>';
                     } else {
                         $output[] = '
-							<tr class="bgColor4-20">
-								<td nowrap="nowrap">' .
+                            <tr class="bgColor4-20">
+                                <td nowrap="nowrap">' .
                             htmlspecialchars($pRow['uid']) .
                             '</td>
-						<td><em>' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('noaccess', true) . '</em></td>
-								<td>-</td>
-								<td>-</td>
-							</tr>';
+                        <td><em>' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('noaccess', true) . '</em></td>
+                                <td>-</td>
+                                <td>-</td>
+                            </tr>';
                     }
                 }
                 \Extension\Templavoila\Utility\GeneralUtility::getDatabaseConnection()->sql_free_result($res);
@@ -974,44 +974,44 @@ class tx_templavoila_module2 extends \TYPO3\CMS\Backend\Module\BaseScriptClass
 
                 // Header:
                 $output[] = '
-							<tr class="bgColor5 tableheader">
-								<td>' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('toused_uid', true) . ':</td>
-								<td>' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('toused_header', true) . ':</td>
-								<td>' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('toused_path', true) . ':</td>
-								<td>' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('toused_workspace', true) . ':</td>
-							</tr>';
+                            <tr class="bgColor5 tableheader">
+                                <td>' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('toused_uid', true) . ':</td>
+                                <td>' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('toused_header', true) . ':</td>
+                                <td>' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('toused_path', true) . ':</td>
+                                <td>' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('toused_workspace', true) . ':</td>
+                            </tr>';
 
                 // Elements:
                 while (false !== ($pRow = \Extension\Templavoila\Utility\GeneralUtility::getDatabaseConnection()->sql_fetch_assoc($res))) {
                     $path = $this->findRecordsWhereUsed_pid($pRow['pid']);
                     if ($path) {
                         $output[] = '
-							<tr class="bgColor4-20">
-								<td nowrap="nowrap">' .
+                            <tr class="bgColor4-20">
+                                <td nowrap="nowrap">' .
                             '<a href="#" onclick="' . htmlspecialchars(\TYPO3\CMS\Backend\Utility\BackendUtility::editOnClick('&edit[tt_content][' . $pRow['uid'] . ']=edit', $this->doc->backPath)) . '" title="Edit">' .
                             htmlspecialchars($pRow['uid']) .
                             '</a></td>
-						<td nowrap="nowrap">' .
+                        <td nowrap="nowrap">' .
                             htmlspecialchars($pRow['header']) .
                             '</td>
-						<td nowrap="nowrap">' .
+                        <td nowrap="nowrap">' .
                             '<a href="#" onclick="' . htmlspecialchars(\TYPO3\CMS\Backend\Utility\BackendUtility::viewOnClick($pRow['pid'], $this->doc->backPath) . 'return false;') . '" title="View page">' .
                             htmlspecialchars($path) .
                             '</a></td>
-						<td nowrap="nowrap">' .
+                        <td nowrap="nowrap">' .
                             htmlspecialchars($pRow['pid'] == -1 ? 'Offline version 1.' . $pRow['t3ver_id'] . ', WS: ' . $pRow['t3ver_wsid'] : 'LIVE!') .
                             '</td>
-					</tr>';
+                    </tr>';
                     } else {
                         $output[] = '
-							<tr class="bgColor4-20">
-								<td nowrap="nowrap">' .
+                            <tr class="bgColor4-20">
+                                <td nowrap="nowrap">' .
                             htmlspecialchars($pRow['uid']) .
                             '</td>
-						<td><em>' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('noaccess', true) . '</em></td>
-								<td>-</td>
-								<td>-</td>
-							</tr>';
+                        <td><em>' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('noaccess', true) . '</em></td>
+                                <td>-</td>
+                                <td>-</td>
+                            </tr>';
                     }
                 }
                 \Extension\Templavoila\Utility\GeneralUtility::getDatabaseConnection()->sql_free_result($res);
@@ -1023,9 +1023,9 @@ class tx_templavoila_module2 extends \TYPO3\CMS\Backend\Module\BaseScriptClass
         if (count($output)) {
             if (count($output) > 1) {
                 $outputString = sprintf(\Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('toused_usedin', true), count($output) - 1) . '
-					<table border="0" cellspacing="1" cellpadding="1" class="lrPadding">'
+                    <table border="0" cellspacing="1" cellpadding="1" class="lrPadding">'
                     . implode('', $output) . '
-				</table>';
+                </table>';
             } else {
                 $outputString = \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('status-dialog-warning') . 'No usage!';
                 $this->setErrorLog($scope, 'warning', sprintf(\Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('warning_mappingstatus', true), $outputString, $toObj->getLabel()));
@@ -1052,19 +1052,19 @@ class tx_templavoila_module2 extends \TYPO3\CMS\Backend\Module\BaseScriptClass
             case 1: //
                 // Header:
                 $output[] = '
-							<tr class="bgColor5 tableheader">
-								<td>' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('toused_title', true) . ':</td>
-								<td>' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('toused_path', true) . ':</td>
-							</tr>';
+                            <tr class="bgColor5 tableheader">
+                                <td>' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('toused_title', true) . ':</td>
+                                <td>' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('toused_path', true) . ':</td>
+                            </tr>';
 
                 // Main templates:
                 $res = \Extension\Templavoila\Utility\GeneralUtility::getDatabaseConnection()->exec_SELECTquery(
                     'uid,title,pid',
                     'pages',
                     '(
-						(tx_templavoila_to NOT IN (' . implode(',', $toIdArray) . ') AND tx_templavoila_ds=' . \Extension\Templavoila\Utility\GeneralUtility::getDatabaseConnection()->fullQuoteStr($dsObj->getKey(), 'pages') . ') OR
-						(tx_templavoila_next_to NOT IN (' . implode(',', $toIdArray) . ') AND tx_templavoila_next_ds=' . \Extension\Templavoila\Utility\GeneralUtility::getDatabaseConnection()->fullQuoteStr($dsObj->getKey(), 'pages') . ')
-					)' .
+                        (tx_templavoila_to NOT IN (' . implode(',', $toIdArray) . ') AND tx_templavoila_ds=' . \Extension\Templavoila\Utility\GeneralUtility::getDatabaseConnection()->fullQuoteStr($dsObj->getKey(), 'pages') . ') OR
+                        (tx_templavoila_next_to NOT IN (' . implode(',', $toIdArray) . ') AND tx_templavoila_next_ds=' . \Extension\Templavoila\Utility\GeneralUtility::getDatabaseConnection()->fullQuoteStr($dsObj->getKey(), 'pages') . ')
+                    )' .
                     \TYPO3\CMS\Backend\Utility\BackendUtility::deleteClause('pages')
                 );
 
@@ -1072,22 +1072,22 @@ class tx_templavoila_module2 extends \TYPO3\CMS\Backend\Module\BaseScriptClass
                     $path = $this->findRecordsWhereUsed_pid($pRow['uid']);
                     if ($path) {
                         $output[] = '
-							<tr class="bgColor4-20">
-								<td nowrap="nowrap">' .
+                            <tr class="bgColor4-20">
+                                <td nowrap="nowrap">' .
                             '<a href="#" onclick="' . htmlspecialchars(\TYPO3\CMS\Backend\Utility\BackendUtility::editOnClick('&edit[pages][' . $pRow['uid'] . ']=edit', $this->doc->backPath)) . '">' .
                             htmlspecialchars($pRow['title']) .
                             '</a></td>
-						<td nowrap="nowrap">' .
+                        <td nowrap="nowrap">' .
                             '<a href="#" onclick="' . htmlspecialchars(\TYPO3\CMS\Backend\Utility\BackendUtility::viewOnClick($pRow['uid'], $this->doc->backPath) . 'return false;') . '">' .
                             htmlspecialchars($path) .
                             '</a></td>
-					</tr>';
+                    </tr>';
                     } else {
                         $output[] = '
-							<tr class="bgColor4-20">
-								<td><em>' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('noaccess', true) . '</em></td>
-								<td>-</td>
-							</tr>';
+                            <tr class="bgColor4-20">
+                                <td><em>' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('noaccess', true) . '</em></td>
+                                <td>-</td>
+                            </tr>';
                     }
                 }
                 \Extension\Templavoila\Utility\GeneralUtility::getDatabaseConnection()->sql_free_result($res);
@@ -1108,32 +1108,32 @@ class tx_templavoila_module2 extends \TYPO3\CMS\Backend\Module\BaseScriptClass
 
                 // Header:
                 $output[] = '
-							<tr class="bgColor5 tableheader">
-								<td>' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('toused_header', true) . ':</td>
-								<td>' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('toused_path', true) . ':</td>
-							</tr>';
+                            <tr class="bgColor5 tableheader">
+                                <td>' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('toused_header', true) . ':</td>
+                                <td>' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('toused_path', true) . ':</td>
+                            </tr>';
 
                 // Elements:
                 while (false !== ($pRow = \Extension\Templavoila\Utility\GeneralUtility::getDatabaseConnection()->sql_fetch_assoc($res))) {
                     $path = $this->findRecordsWhereUsed_pid($pRow['pid']);
                     if ($path) {
                         $output[] = '
-							<tr class="bgColor4-20">
-								<td nowrap="nowrap">' .
+                            <tr class="bgColor4-20">
+                                <td nowrap="nowrap">' .
                             '<a href="#" onclick="' . htmlspecialchars(\TYPO3\CMS\Backend\Utility\BackendUtility::editOnClick('&edit[tt_content][' . $pRow['uid'] . ']=edit', $this->doc->backPath)) . '" title="Edit">' .
                             htmlspecialchars($pRow['header']) .
                             '</a></td>
-						<td nowrap="nowrap">' .
+                        <td nowrap="nowrap">' .
                             '<a href="#" onclick="' . htmlspecialchars(\TYPO3\CMS\Backend\Utility\BackendUtility::viewOnClick($pRow['pid'], $this->doc->backPath) . 'return false;') . '" title="View page">' .
                             htmlspecialchars($path) .
                             '</a></td>
-					</tr>';
+                    </tr>';
                     } else {
                         $output[] = '
-							<tr class="bgColor4-20">
-								<td><em>' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('noaccess', true) . '</em></td>
-								<td>-</td>
-							</tr>';
+                            <tr class="bgColor4-20">
+                                <td><em>' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('noaccess', true) . '</em></td>
+                                <td>-</td>
+                            </tr>';
                     }
                 }
                 \Extension\Templavoila\Utility\GeneralUtility::getDatabaseConnection()->sql_free_result($res);
@@ -1192,35 +1192,35 @@ class tx_templavoila_module2 extends \TYPO3\CMS\Backend\Module\BaseScriptClass
             // USED FILES:
             $tRows = [];
             $tRows[] = '
-				<tr class="bgColor5 tableheader">
-					<td>' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('file', true) . '</td>
-					<td align="center">' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('usagecount', true) . '</td>
-					<td>' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('newdsto', true) . '</td>
-				</tr>';
+                <tr class="bgColor5 tableheader">
+                    <td>' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('file', true) . '</td>
+                    <td align="center">' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('usagecount', true) . '</td>
+                    <td>' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('newdsto', true) . '</td>
+                </tr>';
 
             $i = 0;
             foreach ($this->tFileList as $tFile => $count) {
                 $tRows[] = '
-					<tr class="' . ($i++ % 2 == 0 ? 'bgColor4' : 'bgColor6') . '">
-						<td>' .
+                    <tr class="' . ($i++ % 2 == 0 ? 'bgColor4' : 'bgColor6') . '">
+                        <td>' .
                     '<a href="' . htmlspecialchars($this->doc->backPath . '../' . substr($tFile, strlen(PATH_site))) . '" target="_blank">' .
                     \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-document-view') . ' ' . htmlspecialchars(substr($tFile, strlen(PATH_site))) .
                     '</a></td>
-				<td align="center">' . $count . '</td>
-						<td>' .
+                <td align="center">' . $count . '</td>
+                        <td>' .
                     '<a href="' . htmlspecialchars($this->cm1Link . '?id=' . $this->id . '&file=' . rawurlencode($tFile)) . '&mapElPath=%5BROOT%5D">' .
                     \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-document-new') . ' ' . htmlspecialchars('Create...') .
                     '</a></td>
-			</tr>';
+            </tr>';
             }
 
             if (count($tRows) > 1) {
                 $output .= '
-				<h3>' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('usedfiles', true) . ':</h3>
-				<table border="0" cellpadding="1" cellspacing="1" class="typo3-dblist">
-					' . implode('', $tRows) . '
-				</table>
-				';
+                <h3>' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('usedfiles', true) . ':</h3>
+                <table border="0" cellpadding="1" cellspacing="1" class="typo3-dblist">
+                    ' . implode('', $tRows) . '
+                </table>
+                ';
             }
 
             $files = $this->getTemplateFiles();
@@ -1229,35 +1229,35 @@ class tx_templavoila_module2 extends \TYPO3\CMS\Backend\Module\BaseScriptClass
             if (count($files)) {
                 $tRows = [];
                 $tRows[] = '
-					<tr class="bgColor5 tableheader">
-						<td>' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('file', true) . '</td>
-						<td align="center">' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('usagecount', true) . '</td>
-						<td>' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('newdsto', true) . '</td>
-					</tr>';
+                    <tr class="bgColor5 tableheader">
+                        <td>' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('file', true) . '</td>
+                        <td align="center">' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('usagecount', true) . '</td>
+                        <td>' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('newdsto', true) . '</td>
+                    </tr>';
 
                 $i = 0;
                 foreach ($files as $tFile) {
                     $tRows[] = '
-						<tr class="' . ($i++ % 2 == 0 ? 'bgColor4' : 'bgColor6') . '">
-							<td>' .
+                        <tr class="' . ($i++ % 2 == 0 ? 'bgColor4' : 'bgColor6') . '">
+                            <td>' .
                         '<a href="' . htmlspecialchars($this->doc->backPath . '../' . substr($tFile, strlen(PATH_site))) . '" target="_blank">' .
                         \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-document-view') . ' ' . htmlspecialchars(substr($tFile, strlen(PATH_site))) .
                         '</a></td>
-					<td align="center">' . ($this->tFileList[$tFile] ? $this->tFileList[$tFile] : '-') . '</td>
-							<td>' .
+                    <td align="center">' . ($this->tFileList[$tFile] ? $this->tFileList[$tFile] : '-') . '</td>
+                            <td>' .
                         '<a href="' . htmlspecialchars($this->cm1Link . '?id=' . $this->id . '&file=' . rawurlencode($tFile)) . '&mapElPath=%5BROOT%5D">' .
                         \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-document-new') . ' ' . htmlspecialchars('Create...') .
                         '</a></td>
-				</tr>';
+                </tr>';
                 }
 
                 if (count($tRows) > 1) {
                     $output .= '
-					<h3>' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('templatearchive', true) . ':</h3>
-					<table border="0" cellpadding="1" cellspacing="1" class="typo3-dblist">
-						' . implode('', $tRows) . '
-					</table>
-					';
+                    <h3>' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('templatearchive', true) . ':</h3>
+                    <table border="0" cellpadding="1" cellspacing="1" class="typo3-dblist">
+                        ' . implode('', $tRows) . '
+                    </table>
+                    ';
                 }
             }
         }
@@ -1364,9 +1364,9 @@ class tx_templavoila_module2 extends \TYPO3\CMS\Backend\Module\BaseScriptClass
                     /* The basic XML-structure of an meta-entry is:
                      *
                      * <meta>
-                     * 	<langDisable>		-> no localization
-                     * 	<langChildren>		-> no localization for children
-                     * 	<sheetSelector>		-> a php-function for selecting "sDef"
+                     *     <langDisable>        -> no localization
+                     *     <langChildren>        -> no localization for children
+                     *     <sheetSelector>        -> a php-function for selecting "sDef"
                      * </meta>
                      */
 
@@ -1416,29 +1416,29 @@ class tx_templavoila_module2 extends \TYPO3\CMS\Backend\Module\BaseScriptClass
                         /* The basic XML-structure of an entry is:
                          *
                          * <element>
-                         * 	<tx_templavoila>	-> entries with informational character belonging to this entry
-                         * 	<TCEforms>		-> entries being used for TCE-construction
-                         * 	<type + el + section>	-> subsequent hierarchical construction
-                         *	<langOverlayMode>	-> ??? (is it the language-key?)
+                         *     <tx_templavoila>    -> entries with informational character belonging to this entry
+                         *     <TCEforms>        -> entries being used for TCE-construction
+                         *     <type + el + section>    -> subsequent hierarchical construction
+                         *    <langOverlayMode>    -> ??? (is it the language-key?)
                          * </element>
                          */
                         if (($tv = $def['tx_templavoila'])) {
                             /* The basic XML-structure of an tx_templavoila-entry is:
                              *
                              * <tx_templavoila>
-                             * 	<title>			-> Human readable title of the element
-                             * 	<description>		-> A description explaining the elements function
-                             * 	<sample_data>		-> Some sample-data (can't contain HTML)
-                             * 	<eType>			-> The preset-type of the element, used to switch use/content of TCEforms/TypoScriptObjPath
-                             * 	<oldStyleColumnNumber>	-> for distributing the fields across the tt_content column-positions
-                             * 	<proc>			-> define post-processes for this element's value
-                             *		<int>		-> this element's value will be cast to an integer (if exist)
-                             *		<HSC>		-> this element's value will convert special chars to HTML-entities (if exist)
-                             *		<stdWrap>	-> an implicit stdWrap for this element, "stdWrap { ...inside... }"
-                             * 	</proc>
-                             *	<TypoScript_constants>	-> an array of constants that will be substituted in the <TypoScript>-element
-                             * 	<TypoScript>		->
-                             * 	<TypoScriptObjPath>	->
+                             *     <title>            -> Human readable title of the element
+                             *     <description>        -> A description explaining the elements function
+                             *     <sample_data>        -> Some sample-data (can't contain HTML)
+                             *     <eType>            -> The preset-type of the element, used to switch use/content of TCEforms/TypoScriptObjPath
+                             *     <oldStyleColumnNumber>    -> for distributing the fields across the tt_content column-positions
+                             *     <proc>            -> define post-processes for this element's value
+                             *        <int>        -> this element's value will be cast to an integer (if exist)
+                             *        <HSC>        -> this element's value will convert special chars to HTML-entities (if exist)
+                             *        <stdWrap>    -> an implicit stdWrap for this element, "stdWrap { ...inside... }"
+                             *     </proc>
+                             *    <TypoScript_constants>    -> an array of constants that will be substituted in the <TypoScript>-element
+                             *     <TypoScript>        ->
+                             *     <TypoScriptObjPath>    ->
                              * </tx_templavoila>
                              */
 
@@ -1607,8 +1607,8 @@ class tx_templavoila_module2 extends \TYPO3\CMS\Backend\Module\BaseScriptClass
                         /* The basic XML-structure of an TCEforms-entry is:
                          *
                          * <TCEforms>
-                         * 	<label>			-> TCE-label for the BE
-                         * 	<config>		-> TCE-configuration array
+                         *     <label>            -> TCE-label for the BE
+                         *     <config>        -> TCE-configuration array
                          * </TCEforms>
                          */
                         if (!($def['TCEforms'])) {
@@ -1674,7 +1674,7 @@ class tx_templavoila_module2 extends \TYPO3\CMS\Backend\Module\BaseScriptClass
             }
         }
 
-        /*	$DScontent = array('meta' => $DScontent['meta']);	*/
+        /*    $DScontent = array('meta' => $DScontent['meta']);    */
 
         $languageMode = '';
         if (is_array($DScontent['meta'])) {
@@ -1727,9 +1727,9 @@ class tx_templavoila_module2 extends \TYPO3\CMS\Backend\Module\BaseScriptClass
             $missingDir = $this->wizard_checkDirectory();
             if (!$missingExt && !$missingConf) {
                 $outputString .= '
-				<br/>
-				<br/>
-				<input type="submit" value="' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('newsitewizard_startnow', true) . '" onclick="' . htmlspecialchars('document.location=\'index.php?SET[wiz_step]=1\'; return false;') . '" />';
+                <br/>
+                <br/>
+                <input type="submit" value="' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('newsitewizard_startnow', true) . '" onclick="' . htmlspecialchars('document.location=\'index.php?SET[wiz_step]=1\'; return false;') . '" />';
             } else {
                 $outputString .= '<br/><br/>' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('newsitewizard_problem');
             }
@@ -1819,15 +1819,15 @@ class tx_templavoila_module2 extends \TYPO3\CMS\Backend\Module\BaseScriptClass
 
         $tRows = [];
         $tRows[] = '<tr class="tableheader bgColor5">
-			<td>' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('newsitewizard_missingext_extkey', true) . '</td>
-			<td>' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('newsitewizard_missingext_installed', true) . '</td>
-		</tr>';
+            <td>' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('newsitewizard_missingext_extkey', true) . '</td>
+            <td>' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('newsitewizard_missingext_installed', true) . '</td>
+        </tr>';
 
         foreach ($checkExtensions as $extKey) {
             $tRows[] = '<tr class="bgColor4">
-				<td>' . $extKey . '</td>
-				<td align="center">' . (\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded($extKey) ? \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('newsitewizard_missingext_yes', true) : '<span class="typo3-red">' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('newsitewizard_missingext_no', true) . '</span>') . '</td>
-			</tr>';
+                <td>' . $extKey . '</td>
+                <td align="center">' . (\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded($extKey) ? \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('newsitewizard_missingext_yes', true) : '<span class="typo3-red">' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('newsitewizard_missingext_no', true) . '</span>') . '</td>
+            </tr>';
 
             if (!\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded($extKey)) {
                 $missingExtensions = true;
@@ -1887,10 +1887,10 @@ class tx_templavoila_module2 extends \TYPO3\CMS\Backend\Module\BaseScriptClass
             // Prepare header:
             $tRows = [];
             $tRows[] = '<tr class="tableheader bgColor5">
-				<td>' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('toused_path', true) . ':</td>
-				<td>' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('usage', true) . ':</td>
-				<td>' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('action', true) . ':</td>
-			</tr>';
+                <td>' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('toused_path', true) . ':</td>
+                <td>' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('usage', true) . ':</td>
+                <td>' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('action', true) . ':</td>
+            </tr>';
 
             // Traverse available template files:
             foreach ($fileArr as $file) {
@@ -1908,13 +1908,13 @@ class tx_templavoila_module2 extends \TYPO3\CMS\Backend\Module\BaseScriptClass
 
                 // Make row:
                 $tRows[] = '<tr class="bgColor4">
-					<td>' . htmlspecialchars($file) . '</td>
-					<td>' . (count($tosForTemplate) ? sprintf(\Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('newsitewizard_usedtimes', true), count($tosForTemplate)) : \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('newsitewizard_notused', true)) . '</td>
-					<td>' .
+                    <td>' . htmlspecialchars($file) . '</td>
+                    <td>' . (count($tosForTemplate) ? sprintf(\Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('newsitewizard_usedtimes', true), count($tosForTemplate)) : \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('newsitewizard_notused', true)) . '</td>
+                    <td>' .
                     '<a href="#" onclick="' . htmlspecialchars($onClick) . '">' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('newsitewizard_preview', true) . '</a> ' .
                     '<a href="' . htmlspecialchars('index.php?SET[wiz_step]=2&CFG[file]=' . rawurlencode($file)) . '">' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('newsitewizard_choose', true) . '</a> ' .
                     '</td>
-			</tr>';
+            </tr>';
             }
             $outputString .= '<table border="0" cellpadding="1" cellspacing="1" class="lrPadding">' . implode('', $tRows) . '</table>';
 
@@ -1949,28 +1949,28 @@ class tx_templavoila_module2 extends \TYPO3\CMS\Backend\Module\BaseScriptClass
 
             // Enter default data:
             $outputString .= '
-				<br/><br/><br/>
-				' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('newsitewizard_step2next', true) . '
-				<br/>
-	<br/>
-				<b>' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('newsitewizard_step2_name', true) . ':</b><br/>
-				' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('newsitewizard_step2_required', true) . '<br/>
-				' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('newsitewizard_step2_valuename', true) . '<br/>
-				<input type="text" name="CFG[sitetitle]" value="' . htmlspecialchars($this->wizardData['sitetitle']) . '" /><br/>
-	<br/>
-				<b>' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('newsitewizard_step2_url', true) . ':</b><br/>
-				' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('newsitewizard_step2_optional', true) . '<br/>
-				' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('newsitewizard_step2_valueurl', true) . '<br/>
-				<input type="text" name="CFG[siteurl]" value="' . htmlspecialchars($this->wizardData['siteurl']) . '" /><br/>
-	<br/>
-				<b>' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('newsitewizard_step2_editor', true) . ':</b><br/>
-				' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('newsitewizard_step2_required', true) . '<br/>
-				' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('newsitewizard_step2_username', true) . '<br/>
-				<input type="text" name="CFG[username]" value="' . htmlspecialchars($this->wizardData['username']) . '" /><br/>
-	<br/>
-				<input type="hidden" name="SET[wiz_step]" value="3" />
-				<input type="submit" name="_create_site" value="' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('newsitewizard_step2_createnewsite', true) . '" />
-			';
+                <br/><br/><br/>
+                ' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('newsitewizard_step2next', true) . '
+                <br/>
+    <br/>
+                <b>' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('newsitewizard_step2_name', true) . ':</b><br/>
+                ' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('newsitewizard_step2_required', true) . '<br/>
+                ' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('newsitewizard_step2_valuename', true) . '<br/>
+                <input type="text" name="CFG[sitetitle]" value="' . htmlspecialchars($this->wizardData['sitetitle']) . '" /><br/>
+    <br/>
+                <b>' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('newsitewizard_step2_url', true) . ':</b><br/>
+                ' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('newsitewizard_step2_optional', true) . '<br/>
+                ' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('newsitewizard_step2_valueurl', true) . '<br/>
+                <input type="text" name="CFG[siteurl]" value="' . htmlspecialchars($this->wizardData['siteurl']) . '" /><br/>
+    <br/>
+                <b>' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('newsitewizard_step2_editor', true) . ':</b><br/>
+                ' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('newsitewizard_step2_required', true) . '<br/>
+                ' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('newsitewizard_step2_username', true) . '<br/>
+                <input type="text" name="CFG[username]" value="' . htmlspecialchars($this->wizardData['username']) . '" /><br/>
+    <br/>
+                <input type="hidden" name="SET[wiz_step]" value="3" />
+                <input type="submit" name="_create_site" value="' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('newsitewizard_step2_createnewsite', true) . '" />
+            ';
         } else {
             $outputString = \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('newsitewizard_step2_notemplatefound', true);
         }
@@ -2080,12 +2080,12 @@ class tx_templavoila_module2 extends \TYPO3\CMS\Backend\Module\BaseScriptClass
             $url = '../cm1/index.php?table=tx_templavoila_tmplobj&uid=' . $this->wizardData['templateObjectId'] . '&SET[selectHeaderContent]=0&_reload_from=1&id=' . $this->id . '&returnUrl=' . rawurlencode('../mod2/index.php?SET[wiz_step]=4');
 
             $outputString .= \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('newsitewizard_step3ready') . '
-				<br/>
-				<br/>
-				<img src="mapbody_animation.gif" style="border: 2px black solid;" alt=""><br/>
-				<br/>
-				<br/><input type="submit" value="' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('newsitewizard_startmapping', true) . '" onclick="' . htmlspecialchars('document.location=\'' . $url . '\'; return false;') . '" />
-			';
+                <br/>
+                <br/>
+                <img src="mapbody_animation.gif" style="border: 2px black solid;" alt=""><br/>
+                <br/>
+                <br/><input type="submit" value="' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('newsitewizard_startmapping', true) . '" onclick="' . htmlspecialchars('document.location=\'' . $url . '\'; return false;') . '" />
+            ';
         }
 
         // Add output:
@@ -2101,11 +2101,11 @@ class tx_templavoila_module2 extends \TYPO3\CMS\Backend\Module\BaseScriptClass
     {
         $url = '../cm1/index.php?table=tx_templavoila_tmplobj&uid=' . $this->wizardData['templateObjectId'] . '&SET[selectHeaderContent]=1&_reload_from=1&id=' . $this->id . '&returnUrl=' . rawurlencode('../mod2/index.php?SET[wiz_step]=5');
         $outputString = \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('newsitewizard_headerinclude') . '
-			<br/>
-			<img src="maphead_animation.gif" style="border: 2px black solid;" alt=""><br/>
-			<br/>
-			<br/><input type="submit" value="' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('newsitewizard_headerselect') . '" onclick="' . htmlspecialchars('document.location=\'' . $url . '\'; return false;') . '" />
-			';
+            <br/>
+            <img src="maphead_animation.gif" style="border: 2px black solid;" alt=""><br/>
+            <br/>
+            <br/><input type="submit" value="' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('newsitewizard_headerselect') . '" onclick="' . htmlspecialchars('document.location=\'' . $url . '\'; return false;') . '" />
+            ';
 
         // Add output:
         $this->content .= $this->doc->section(\Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('newsitewizard_step4'), $outputString, 0, 1);
@@ -2237,26 +2237,26 @@ lib.' . $menuType . '.1.NO.wrap = ' . $this->makeWrap($menu_normal) .
                     ($menu_normal['I-class'] ? '
 lib.' . $menuType . '.1.NO.imgParams = class="' . htmlspecialchars($menu_normal['I-class']) . '" ' : '') . '
 lib.' . $menuType . '.1.NO {
-	XY = ' . ($menu_normal['I-width'] ? $menu_normal['I-width'] : 150) . ',' . ($menu_normal['I-height'] ? $menu_normal['I-height'] : 25) . '
-	backColor = ' . ($menu_normal['backColorGuess'] ? $menu_normal['backColorGuess'] : '#FFFFFF') . '
-	10 = TEXT
-	10.text.field = title // nav_title
-	10.fontColor = #333333
-	10.fontSize = 12
-	10.offset = 15,15
-	10.fontFace = typo3/sysext/core/Resources/Private/Font/nimbus.ttf
+    XY = ' . ($menu_normal['I-width'] ? $menu_normal['I-width'] : 150) . ',' . ($menu_normal['I-height'] ? $menu_normal['I-height'] : 25) . '
+    backColor = ' . ($menu_normal['backColorGuess'] ? $menu_normal['backColorGuess'] : '#FFFFFF') . '
+    10 = TEXT
+    10.text.field = title // nav_title
+    10.fontColor = #333333
+    10.fontSize = 12
+    10.offset = 15,15
+    10.fontFace = typo3/sysext/core/Resources/Private/Font/nimbus.ttf
 }
-	';
+    ';
 
                 if ($mouseOver) {
                     $typoScript .= '
 lib.' . $menuType . '.1.RO < lib.' . $menuType . '.1.NO
 lib.' . $menuType . '.1.RO = 1
 lib.' . $menuType . '.1.RO {
-	backColor = ' . \TYPO3\CMS\Core\Utility\GeneralUtility::modifyHTMLColorAll(($menu_normal['backColorGuess'] ? $menu_normal['backColorGuess'] : '#FFFFFF'), -20) . '
-	10.fontColor = red
+    backColor = ' . \TYPO3\CMS\Core\Utility\GeneralUtility::modifyHTMLColorAll(($menu_normal['backColorGuess'] ? $menu_normal['backColorGuess'] : '#FFFFFF'), -20) . '
+    10.fontColor = red
 }
-			';
+            ';
                 }
                 if (is_array($menu_active)) {
                     $typoScript .= '
@@ -2266,9 +2266,9 @@ lib.' . $menuType . '.1.ACT.wrap = ' . $this->makeWrap($menu_active) .
                         ($menu_active['I-class'] ? '
 lib.' . $menuType . '.1.ACT.imgParams = class="' . htmlspecialchars($menu_active['I-class']) . '" ' : '') . '
 lib.' . $menuType . '.1.ACT {
-	backColor = ' . ($menu_active['backColorGuess'] ? $menu_active['backColorGuess'] : '#FFFFFF') . '
+    backColor = ' . ($menu_active['backColorGuess'] ? $menu_active['backColorGuess'] : '#FFFFFF') . '
 }
-			';
+            ';
                 }
             } else {
                 $typoScript = '
@@ -2277,21 +2277,21 @@ lib.' . $menuType . '.entryLevel = ' . $menuTypeEntryLevel . '
 ' . (count($totalWrap) ? 'lib.' . $menuType . '.wrap = ' . preg_replace('/[' . chr(10) . chr(13) . ']/', '', implode('|', $totalWrap)) : '') . '
 lib.' . $menuType . '.1 = TMENU
 lib.' . $menuType . '.1.NO {
-	allWrap = ' . $this->makeWrap($menu_normal) .
+    allWrap = ' . $this->makeWrap($menu_normal) .
                     ($menu_normal['A-class'] ? '
-	ATagParams = class="' . htmlspecialchars($menu_normal['A-class']) . '"' : '') . '
+    ATagParams = class="' . htmlspecialchars($menu_normal['A-class']) . '"' : '') . '
 }
-	';
+    ';
 
                 if (is_array($menu_active)) {
                     $typoScript .= '
 lib.' . $menuType . '.1.ACT = 1
 lib.' . $menuType . '.1.ACT {
-	allWrap = ' . $this->makeWrap($menu_active) .
+    allWrap = ' . $this->makeWrap($menu_active) .
                         ($menu_active['A-class'] ? '
-	ATagParams = class="' . htmlspecialchars($menu_active['A-class']) . '"' : '') . '
+    ATagParams = class="' . htmlspecialchars($menu_active['A-class']) . '"' : '') . '
 }
-			';
+            ';
                 }
             }
 
@@ -2299,13 +2299,13 @@ lib.' . $menuType . '.1.ACT {
 
             // HTML defaults:
             $outputString .= '
-			<br/>
-			<br/>
-			' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('newsitewizard_menuhtmlcode', true) . '
-			<hr/>
-			<pre>' . htmlspecialchars($menuPart_HTML) . '</pre>
-			<hr/>
-			<br/>';
+            <br/>
+            <br/>
+            ' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('newsitewizard_menuhtmlcode', true) . '
+            <hr/>
+            <pre>' . htmlspecialchars($menuPart_HTML) . '</pre>
+            <hr/>
+            <br/>';
 
             if (trim($menu_normal['wrap']) != '|') {
                 $outputString .= sprintf(\Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('newsitewizard_menuenc', true), htmlspecialchars(str_replace('|', ' ... ', $menu_normal['wrap'])));
@@ -2327,7 +2327,7 @@ lib.' . $menuType . '.1.ACT {
 
             $outputString .= '<br/><br/>';
             $outputString .= \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('newsitewizard_menuts', true) . '
-			<br/><br/>';
+            <br/><br/>';
             $outputString .= '<hr/>' . $this->syntaxHLTypoScript($typoScript) . '<hr/><br/>';
 
             $outputString .= \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('newsitewizard_menufinetune', true);
@@ -2355,10 +2355,10 @@ lib.' . $menuType . '.1.ACT {
 
         $outputString = \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('newsitewizard_sitecreated') . '
 
-		<br/>
-		<br/>
-		<input type="submit" value="' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('newsitewizard_finish', true) . '" onclick="' . htmlspecialchars(\TYPO3\CMS\Backend\Utility\BackendUtility::viewOnClick($this->wizardData['rootPageId'], $this->doc->backPath) . 'document.location=\'index.php?SET[wiz_step]=0\'; return false;') . '" />
-		';
+        <br/>
+        <br/>
+        <input type="submit" value="' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('newsitewizard_finish', true) . '" onclick="' . htmlspecialchars(\TYPO3\CMS\Backend\Utility\BackendUtility::viewOnClick($this->wizardData['rootPageId'], $this->doc->backPath) . 'document.location=\'index.php?SET[wiz_step]=0\'; return false;') . '" />
+        ';
 
         // Add output:
         $this->content .= $this->doc->section(\Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('newsitewizard_done', true), $outputString, 0, 1);

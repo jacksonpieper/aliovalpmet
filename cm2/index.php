@@ -127,34 +127,34 @@ class tx_templavoila_cm2 extends \TYPO3\CMS\Backend\Module\BaseScriptClass
                 $xmlContentMarkedUp = $flashMessage->render();
 
                 $xmlContentMarkedUp .= '<table border="0">
-					<tr class="bgColor5 tableheader">
-						<td>' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('current', true) . '</td>
-					</tr>
-					<tr>
-						<td>' . $this->markUpXML($currentXML) . '<br/><br/></td>
-					</tr>
-					<tr class="bgColor5 tableheader">
-						<td>' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('clean', true) . '</td>
-					</tr>
-					<tr>
-						<td>' . $this->markUpXML($cleanXML) . '</td>
-					</tr>
-					<tr class="bgColor5 tableheader">
-						<td>' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('diff', true) . '</td>
-					</tr>
-					<tr>
-						<td>' . $diffres . '
-						<br/><br/><br/>
+                    <tr class="bgColor5 tableheader">
+                        <td>' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('current', true) . '</td>
+                    </tr>
+                    <tr>
+                        <td>' . $this->markUpXML($currentXML) . '<br/><br/></td>
+                    </tr>
+                    <tr class="bgColor5 tableheader">
+                        <td>' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('clean', true) . '</td>
+                    </tr>
+                    <tr>
+                        <td>' . $this->markUpXML($cleanXML) . '</td>
+                    </tr>
+                    <tr class="bgColor5 tableheader">
+                        <td>' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('diff', true) . '</td>
+                    </tr>
+                    <tr>
+                        <td>' . $diffres . '
+                        <br/><br/><br/>
 
-						<form action="' . \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('REQUEST_URI') . '" method="post">
-							<input type="submit" value="' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('cleanUp', true) . '" name="_CLEAN_XML" />
-						</form>
+                        <form action="' . \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('REQUEST_URI') . '" method="post">
+                            <input type="submit" value="' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('cleanUp', true) . '" name="_CLEAN_XML" />
+                        </form>
 
-						</td>
-					</tr>
-				</table>
+                        </td>
+                    </tr>
+                </table>
 
-				';
+                ';
             } else {
                 $xmlContentMarkedUp = '';
                 if ($cleanXML) {
@@ -278,9 +278,9 @@ class tx_templavoila_cm2 extends \TYPO3\CMS\Backend\Module\BaseScriptClass
 
         // Output:
         return '
-			<h3>' . htmlspecialchars($title) . '</h3>
-			<pre class="ts-hl">' . $formattedContent . '</pre>
-			';
+            <h3>' . htmlspecialchars($title) . '</h3>
+            <pre class="ts-hl">' . $formattedContent . '</pre>
+            ';
     }
 }
 

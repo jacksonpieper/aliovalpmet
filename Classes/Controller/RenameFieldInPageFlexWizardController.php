@@ -110,10 +110,10 @@ class RenameFieldInPageFlexWizardController extends \TYPO3\CMS\Backend\Module\Ab
                     $escapedSource = \Extension\Templavoila\Utility\GeneralUtility::getDatabaseConnection()->fullQuoteStr(\TYPO3\CMS\Core\Utility\GeneralUtility::_GP('sourceField'), 'pages');
                     $escapedDest = \Extension\Templavoila\Utility\GeneralUtility::getDatabaseConnection()->fullQuoteStr(\TYPO3\CMS\Core\Utility\GeneralUtility::_GP('destinationField'), 'pages');
                     \Extension\Templavoila\Utility\GeneralUtility::getDatabaseConnection()->admin_query('
-						UPDATE pages
-						SET tx_templavoila_flex = REPLACE(tx_templavoila_flex, ' . $escapedSource . ', ' . $escapedDest . ')
-						WHERE ' . $condition . '
-					');
+                        UPDATE pages
+                        SET tx_templavoila_flex = REPLACE(tx_templavoila_flex, ' . $escapedSource . ', ' . $escapedDest . ')
+                        WHERE ' . $condition . '
+                    ');
                     $message = new \TYPO3\CMS\Core\Messaging\FlashMessage('DONE', '', \TYPO3\CMS\Core\Messaging\FlashMessage::OK);
                     $buffer .= $message->render();
                 }

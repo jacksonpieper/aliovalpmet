@@ -170,7 +170,7 @@ page = PAGE
 page.10 = USER
 page.10.userFunc = tx_templavoila_pi1->main_page
 page.10.disableExplosivePreview = 1
-				';
+                ';
                 }
             }
         }

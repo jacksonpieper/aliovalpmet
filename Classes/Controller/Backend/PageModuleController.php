@@ -602,49 +602,49 @@ class PageModuleController extends AbstractModule
 
             // Adding classic jumpToUrl function, needed for the function menu. Also, the id in the parent frameset is configured.
             $this->doc->JScode = $this->doc->wrapScriptTags('
-				if (top.fsMod) top.fsMod.recentIds["web"] = ' . (int)$this->id . ';
-				' . $this->doc->redirectUrls() . '
-				var T3_TV_MOD1_BACKPATH = "' . $BACK_PATH . '";
-				var T3_TV_MOD1_RETURNURL = "' . rawurlencode(\TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('REQUEST_URI')) . '";
-			');
+                if (top.fsMod) top.fsMod.recentIds["web"] = ' . (int)$this->id . ';
+                ' . $this->doc->redirectUrls() . '
+                var T3_TV_MOD1_BACKPATH = "' . $BACK_PATH . '";
+                var T3_TV_MOD1_RETURNURL = "' . rawurlencode(\TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('REQUEST_URI')) . '";
+            ');
 
             $this->doc->getPageRenderer()->loadPrototype();
             $this->doc->getPageRenderer()->loadExtJs();
             $this->doc->JScode .= $this->doc->wrapScriptTags('
-				var typo3pageModule = {
-					/**
-					 * Initialization
-					 */
-					init: function() {
-						typo3pageModule.enableHighlighting();
-					},
+                var typo3pageModule = {
+                    /**
+                     * Initialization
+                     */
+                    init: function() {
+                        typo3pageModule.enableHighlighting();
+                    },
 
-					/**
-					 * This method is used to bind the higlighting function "setActive"
-					 * to the mouseenter event and the "setInactive" to the mouseleave event.
-					 */
-					enableHighlighting: function() {
-						Ext.get(\'typo3-docbody\')
-							.on(\'mouseover\', typo3pageModule.setActive,typo3pageModule);
-					},
+                    /**
+                     * This method is used to bind the higlighting function "setActive"
+                     * to the mouseenter event and the "setInactive" to the mouseleave event.
+                     */
+                    enableHighlighting: function() {
+                        Ext.get(\'typo3-docbody\')
+                            .on(\'mouseover\', typo3pageModule.setActive,typo3pageModule);
+                    },
 
-					/**
-					 * This method is used as an event handler when the
-					 * user hovers the a content element.
-					 */
-					setActive: function(e, t) {
-						Ext.select(\'.active\').removeClass(\'active\').addClass(\'inactive\');
-						var parent = Ext.get(t).findParent(\'.t3-page-ce\', null, true);
-						if (parent) {
-							parent.removeClass(\'inactive\').addClass(\'active\');
-						}
-					}
-				}
+                    /**
+                     * This method is used as an event handler when the
+                     * user hovers the a content element.
+                     */
+                    setActive: function(e, t) {
+                        Ext.select(\'.active\').removeClass(\'active\').addClass(\'inactive\');
+                        var parent = Ext.get(t).findParent(\'.t3-page-ce\', null, true);
+                        if (parent) {
+                            parent.removeClass(\'inactive\').addClass(\'active\');
+                        }
+                    }
+                }
 
-				Ext.onReady(function() {
-					typo3pageModule.init();
-				});
-			');
+                Ext.onReady(function() {
+                    typo3pageModule.init();
+                });
+            ');
 
             // Preparing context menues
             // this also adds prototype to the list of required libraries
@@ -692,8 +692,8 @@ class PageModuleController extends AbstractModule
             if (\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('t3skin')) {
                 // Fix padding for t3skin in disabled tabs
                 $this->doc->inDocStyles .= '
-					table.typo3-dyntabmenu td.disabled, table.typo3-dyntabmenu td.disabled_over, table.typo3-dyntabmenu td.disabled:hover { padding-left: 10px; }
-				';
+                    table.typo3-dyntabmenu td.disabled, table.typo3-dyntabmenu td.disabled_over, table.typo3-dyntabmenu td.disabled:hover { padding-left: 10px; }
+                ';
             }
 
             $this->handleIncomingCommands();
@@ -1065,7 +1065,7 @@ class PageModuleController extends AbstractModule
         }
 
         // show sys_notes
-//		$sys_notes = recordList::showSysNotesForPage();
+//        $sys_notes = recordList::showSysNotesForPage();
         if (false) {
             $sys_notes = '';
             // @todo: Check if and how this is to replace
@@ -1293,7 +1293,7 @@ class PageModuleController extends AbstractModule
         $previewContent = $contentTreeArr['ds_meta']['disableDataPreview'] ? '&nbsp;' : $this->render_previewData($contentTreeArr['previewData'], $contentTreeArr['el'], $contentTreeArr['ds_meta'], $languageKey, $sheet);
 
         // Wrap workspace notification colors:
-        //if ($contentTreeArr['el']['_ORIG_uid'])	{
+        //if ($contentTreeArr['el']['_ORIG_uid'])    {
         $previewContent = '<div class="ver-element">' . ($previewContent ? $previewContent : '<em>[New version]</em>') . '</div>';
         //}
 
@@ -1301,21 +1301,21 @@ class PageModuleController extends AbstractModule
 
         // Finally assemble the table:
         $finalContent = '
-			<div class="' . $elementClass . '">
-				<a name="c' . md5($this->apiObj->flexform_getStringFromPointer($this->currentElementParentPointer) . $contentTreeArr['el']['uid']) . '"></a>
-				<div class="tpm-titlebar t3-page-ce-header ' . $elementTitlebarClass . '">
-					<div class="t3-row-header">
-						<div class="tpm-element-control">
-						' . $titleBarRightButtons . '
-						</div>
-						<div class="tpm-element-title">' .
+            <div class="' . $elementClass . '">
+                <a name="c' . md5($this->apiObj->flexform_getStringFromPointer($this->currentElementParentPointer) . $contentTreeArr['el']['uid']) . '"></a>
+                <div class="tpm-titlebar t3-page-ce-header ' . $elementTitlebarClass . '">
+                    <div class="t3-row-header">
+                        <div class="tpm-element-control">
+                        ' . $titleBarRightButtons . '
+                        </div>
+                        <div class="tpm-element-title">' .
             $languageIcon .
             $titleBarLeftButtons .
             '<div class="nobr sortable_handle">' .
             ($elementBelongsToCurrentPage ? '' : '<em>') . htmlspecialchars($title) . ($elementBelongsToCurrentPage ? '' : '</em>') .
             '</div>
-		</div>
-	</div>
+        </div>
+    </div>
 </div>
 <div class="tpm-sub-elements">' .
             ($warnings ? '<div class="tpm-warnings">' . $warnings . '</div>' : '') .
@@ -1323,8 +1323,8 @@ class PageModuleController extends AbstractModule
             '<div class="tpm-preview">' . $previewContent . '</div>' .
             $this->render_localizationInfoTable($contentTreeArr, $parentPointer, $parentDsMeta) .
             '</div>
-		</div>
-	';
+        </div>
+    ';
 
         return $finalContent;
     }
@@ -1532,13 +1532,13 @@ class PageModuleController extends AbstractModule
                 // Add cell content to registers:
                 if ($flagRenderBeLayout == true) {
                     $beTemplateCell = '<table width="100%" class="beTemplateCell">
-					<tr>
-						<td class="bgColor6 tpm-title-cell">' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->sL($fieldContent['meta']['title'], 1) . '</td>
-					</tr>
-					<tr>
-						<td ' . $cellIdStr . ' class="tpm-content-cell">' . $cellContent . '</td>
-					</tr>
-					</table>';
+                    <tr>
+                        <td class="bgColor6 tpm-title-cell">' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->sL($fieldContent['meta']['title'], 1) . '</td>
+                    </tr>
+                    <tr>
+                        <td ' . $cellIdStr . ' class="tpm-content-cell">' . $cellContent . '</td>
+                    </tr>
+                    </table>';
                     $beTemplate = str_replace('###' . $fieldID . '###', $beTemplateCell, $beTemplate);
                 } else {
                     $width = round(100 / count($elementContentTreeArr['sub'][$sheet][$lKey]));
@@ -1589,11 +1589,11 @@ class PageModuleController extends AbstractModule
                 }
 
                 $output = '
-					<table border="0" cellpadding="2" cellspacing="2" width="100%" class="tpm-subelement-table">
-						<tr>' . (count($headerCells) ? implode('', $headerCells) : '<td>&nbsp;</td>') . '</tr>
-						<tr>' . (count($contentCells) ? implode('', $contentCells) : '<td>&nbsp;</td>') . '</tr>
-					</table>
-				';
+                    <table border="0" cellpadding="2" cellspacing="2" width="100%" class="tpm-subelement-table">
+                        <tr>' . (count($headerCells) ? implode('', $headerCells) : '<td>&nbsp;</td>') . '</tr>
+                        <tr>' . (count($contentCells) ? implode('', $contentCells) : '<td>&nbsp;</td>') . '</tr>
+                    </table>
+                ';
             }
         }
 
@@ -1965,7 +1965,7 @@ class PageModuleController extends AbstractModule
                         case 'localizedFlexform':
                             // Here we want to show the "Localized FlexForm" information (and link to edit record) _only_ if there are other fields than group-fields for content elements: It only makes sense for a translator to deal with the record if that is the case.
                             // Change of strategy (27/11): Because there does not have to be content fields; could be in sections or arrays and if thats the case you still want to localize them! There has to be another way...
-                            // if (count($contentTreeArr['contentFields']['sDEF']))	{
+                            // if (count($contentTreeArr['contentFields']['sDEF']))    {
                             list($flagLink_begin, $flagLink_end) = explode('|*|', $this->link_edit('|*|', 'tt_content', $contentTreeArr['el']['uid'], true));
                             $l10nInfo = $flagLink_begin . '<em>[' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('performTranslation') . ']</em>' . $flagLink_end;
                             $this->global_localization_status[$sys_language_uid][] = [
@@ -1979,22 +1979,22 @@ class PageModuleController extends AbstractModule
 
                     if ($l10nInfo && \Extension\Templavoila\Utility\GeneralUtility::getBackendUser()->checkLanguageAccess($sys_language_uid)) {
                         $tRows[] = '
-							<tr class="bgColor4">
-								<td width="1%">' . $flagLink_begin . \Extension\Templavoila\Utility\IconUtility::getFlagIconForLanguage($sLInfo['flagIcon'], ['title' => $sLInfo['title'], 'alt' => $sLInfo['title']]) . $flagLink_end . '</td>
-								<td width="99%">' . $l10nInfo . '</td>
-							</tr>';
+                            <tr class="bgColor4">
+                                <td width="1%">' . $flagLink_begin . \Extension\Templavoila\Utility\IconUtility::getFlagIconForLanguage($sLInfo['flagIcon'], ['title' => $sLInfo['title'], 'alt' => $sLInfo['title']]) . $flagLink_end . '</td>
+                                <td width="99%">' . $l10nInfo . '</td>
+                            </tr>';
                     }
                 }
             }
 
             $output = count($tRows) ? '
-				<table border="0" cellpadding="0" cellspacing="1" width="100%" class="lrPadding tpm-localisation-info-table">
-					<tr class="bgColor4-20">
-						<td colspan="2">' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('element_localizations', true) . ':</td>
-					</tr>
-					' . implode('', $tRows) . '
-				</table>
-			' : '';
+                <table border="0" cellpadding="0" cellspacing="1" width="100%" class="lrPadding tpm-localisation-info-table">
+                    <tr class="bgColor4-20">
+                        <td colspan="2">' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('element_localizations', true) . ':</td>
+                    </tr>
+                    ' . implode('', $tRows) . '
+                </table>
+            ' : '';
         }
 
         return $output;
@@ -2031,11 +2031,11 @@ class PageModuleController extends AbstractModule
         // Header of table:
         $output = '';
         $output .= '<tr class="bgColor5 tableheader">
-				<td class="nobr">' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('outline_header_title', true) . '</td>
-				<td class="nobr">' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('outline_header_controls', true) . '</td>
-				<td class="nobr">' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('outline_header_status', true) . '</td>
-				<td class="nobr">' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('outline_header_element', true) . '</td>
-			</tr>';
+                <td class="nobr">' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('outline_header_title', true) . '</td>
+                <td class="nobr">' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('outline_header_controls', true) . '</td>
+                <td class="nobr">' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('outline_header_status', true) . '</td>
+                <td class="nobr">' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('outline_header_element', true) . '</td>
+            </tr>';
 
         // Render all entries:
         $xmlCleanCandidates = false;
@@ -2088,20 +2088,20 @@ class PageModuleController extends AbstractModule
             // Compile table row:
             $class = ($entry['isNewVersion'] ? 'bgColor5' : 'bgColor4') . ' ' . $entry['elementTitlebarClass'];
             $output .= '<tr class="' . $class . '">
-					<td class="nobr">' . $indent . $entry['icon'] . $entry['flag'] . $entry['title'] . '</td>
-					<td class="nobr">' . $entry['controls'] . '</td>
-					<td>' . $status . $entry['warnings'] . ($entry['isNewVersion'] ? $this->doc->icons(1) . 'New version!' : '') . '</td>
-					<td class="nobr">' . htmlspecialchars($entry['id'] ? $entry['id'] : $entry['table'] . ':' . $entry['uid']) . '</td>
-				</tr>';
+                    <td class="nobr">' . $indent . $entry['icon'] . $entry['flag'] . $entry['title'] . '</td>
+                    <td class="nobr">' . $entry['controls'] . '</td>
+                    <td>' . $status . $entry['warnings'] . ($entry['isNewVersion'] ? $this->doc->icons(1) . 'New version!' : '') . '</td>
+                    <td class="nobr">' . htmlspecialchars($entry['id'] ? $entry['id'] : $entry['table'] . ':' . $entry['uid']) . '</td>
+                </tr>';
         }
         $output = '<table border="0" cellpadding="1" cellspacing="1" class="tpm-outline-table">' . $output . '</table>';
 
         // Show link for cleaning all XML structures:
         if ($xmlCleanCandidates) {
             $output .= '<br/>
-				' . \TYPO3\CMS\Backend\Utility\BackendUtility::cshItem('_MOD_web_txtemplavoilaM1', 'outline_status_cleanall', $this->doc->backPath) . '
-				<input type="submit" value="' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('outline_status_cleanAll', true) . '" name="_CLEAN_XML_ALL" /><br/><br/>
-			';
+                ' . \TYPO3\CMS\Backend\Utility\BackendUtility::cshItem('_MOD_web_txtemplavoilaM1', 'outline_status_cleanall', $this->doc->backPath) . '
+                <input type="submit" value="' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('outline_status_cleanAll', true) . '" name="_CLEAN_XML_ALL" /><br/><br/>
+            ';
         }
 
         return $output;
@@ -2496,10 +2496,10 @@ class PageModuleController extends AbstractModule
                 $workspaceRec = \TYPO3\CMS\Backend\Utility\BackendUtility::getWorkspaceVersionOfRecord(\Extension\Templavoila\Utility\GeneralUtility::getBackendUser()->workspace, $table, $uid);
                 $workspaceId = ($workspaceRec['uid'] > 0) ? $workspaceRec['uid'] : $uid;
                 if ($table == "pages" && $this->currentLanguageUid) {
-                    //	return '<a href="#" onclick="' . htmlspecialchars('return jumpToUrl(\'' . $GLOBALS['SOBE']->doc->issueCommand($params, -1) . '\');') . '">'.$label.'</a>';
+                    //    return '<a href="#" onclick="' . htmlspecialchars('return jumpToUrl(\'' . $GLOBALS['SOBE']->doc->issueCommand($params, -1) . '\');') . '">'.$label.'</a>';
                 } else {
                     $params = '&data[' . $table . '][' . $workspaceId . '][hidden]=' . (1 - $hidden);
-                    //	return '<a href="#" onclick="' . htmlspecialchars('return jumpToUrl(\'' . $GLOBALS['SOBE']->doc->issueCommand($params, -1) . '\');') . '">'.$label.'</a>';
+                    //    return '<a href="#" onclick="' . htmlspecialchars('return jumpToUrl(\'' . $GLOBALS['SOBE']->doc->issueCommand($params, -1) . '\');') . '">'.$label.'</a>';
 
                     /* the commands are indipendent of the position,
                      * so sortable doesn't need to update these and we

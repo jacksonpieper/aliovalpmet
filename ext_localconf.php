@@ -20,9 +20,9 @@ if (!$_EXTCONF['enable.']['renderFCEHeader']) {
 
 //sectionIndex replacement
 $tvSetup[] = 'tt_content.menu.20.3 = USER
-	tt_content.menu.20.3.userFunc = tx_templavoila_pi1->tvSectionIndex
-	tt_content.menu.20.3.select.where >
-	tt_content.menu.20.3.indexField.data = register:tx_templavoila_pi1.current_field
+    tt_content.menu.20.3.userFunc = tx_templavoila_pi1->tvSectionIndex
+    tt_content.menu.20.3.select.where >
+    tt_content.menu.20.3.indexField.data = register:tx_templavoila_pi1.current_field
 ';
 
 \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addTypoScript(

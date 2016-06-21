@@ -96,8 +96,8 @@ class ReferenceElementWizardController extends \TYPO3\CMS\Backend\Module\Abstrac
 
         // Set CSS styles specific for this document:
         $this->pObj->content = str_replace('/*###POSTCSSMARKER###*/', '
-			TABLE.c-list TR TD { white-space: nowrap; vertical-align: top; }
-		', $this->pObj->content);
+            TABLE.c-list TR TD { white-space: nowrap; vertical-align: top; }
+        ', $this->pObj->content);
 
         // Process commands:
         if (GeneralUtility::_GP('createReferencesForPage')) {
@@ -128,10 +128,10 @@ class ReferenceElementWizardController extends \TYPO3\CMS\Backend\Module\Abstrac
             $tCells[] = '<td nowrap="nowrap">' . $createReferencesLink . '</td>';
 
             $output .= '
-				<tr class="bgColor' . ($counter % 2 ? '-20' : '-10') . '">
-					' . implode('
-					', $tCells) . '
-				</tr>';
+                <tr class="bgColor' . ($counter % 2 ? '-20' : '-10') . '">
+                    ' . implode('
+                    ', $tCells) . '
+                </tr>';
 
             $counter++;
         }
@@ -152,18 +152,18 @@ class ReferenceElementWizardController extends \TYPO3\CMS\Backend\Module\Abstrac
         );
 
         return '
-			<br />
-			' . $depthSelectorBox . '
-			<a href="index.php?id=' . $this->pObj->id . '&createReferencesForTree=1">Reference elements for whole tree</a><br />
-			<br />
-			<table border="0" cellspacing="1" cellpadding="0" class="lrPadding c-list">
-				<tr class="bgColor5 tableheader">
-					' . implode('
-					', $tCells) . '
-				</tr>' .
+            <br />
+            ' . $depthSelectorBox . '
+            <a href="index.php?id=' . $this->pObj->id . '&createReferencesForTree=1">Reference elements for whole tree</a><br />
+            <br />
+            <table border="0" cellspacing="1" cellpadding="0" class="lrPadding c-list">
+                <tr class="bgColor5 tableheader">
+                    ' . implode('
+                    ', $tCells) . '
+                </tr>' .
             $output . '
-			</table>
-		';
+            </table>
+        ';
     }
 
     /**

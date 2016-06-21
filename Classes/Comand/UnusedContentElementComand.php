@@ -175,7 +175,7 @@ Automatic Repair:
                         // Register elements etc:
                         $this->resultArray['all_unused'][$row['uid']] = [$row['header'], count($refrows)];
                         if ($echoLevel > 2) {
-                            echo chr(10) . '			[tx_templavoila_unusedce:] tt_content:' . $row['uid'] . ' was not used on page...';
+                            echo chr(10) . '            [tx_templavoila_unusedce:] tt_content:' . $row['uid'] . ' was not used on page...';
                         }
                         if (!count($refrows)) {
                             if ($isATranslationChild) {
@@ -196,12 +196,12 @@ Automatic Repair:
                     }
                 } else {
                     if ($echoLevel > 2) {
-                        echo chr(10) . '			[tx_templavoila_unusedce:] Did not check page - did not have a Data Structure set.';
+                        echo chr(10) . '            [tx_templavoila_unusedce:] Did not check page - did not have a Data Structure set.';
                     }
                 }
             } else {
                 if ($echoLevel > 2) {
-                    echo chr(10) . '			[tx_templavoila_unusedce:] Did not check page - was on offline page.';
+                    echo chr(10) . '            [tx_templavoila_unusedce:] Did not check page - was on offline page.';
                 }
             }
         }
@@ -231,7 +231,7 @@ Automatic Repair:
 
                 // Return errors if any:
                 if (count($tce->errorLog)) {
-                    echo '	ERROR from "TCEmain":' . chr(10) . 'TCEmain:' . implode(chr(10) . 'TCEmain:', $tce->errorLog);
+                    echo '    ERROR from "TCEmain":' . chr(10) . 'TCEmain:' . implode(chr(10) . 'TCEmain:', $tce->errorLog);
                 } else {
                     echo 'DONE';
                 }

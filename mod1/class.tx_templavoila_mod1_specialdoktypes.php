@@ -167,8 +167,8 @@ class tx_templavoila_mod1_specialdoktypes
         $mountSourceButton = $this->doc->wrapClickMenuOnIcon($mountSourceIcon, 'pages', $mountSourcePageRecord['uid'], 1, '&callingScriptId=' . rawurlencode($this->doc->scriptID), 'new,copy,cut,pasteinto,pasteafter,delete');
 
         $mountSourceLink = '<br /><br />
-			<a href="index.php?id=' . $pageRecord['mount_pid'] . '">' . htmlspecialchars(\Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('jumptomountsourcepage')) . '</a>
-		';
+            <a href="index.php?id=' . $pageRecord['mount_pid'] . '">' . htmlspecialchars(\Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('jumptomountsourcepage')) . '</a>
+        ';
 
         $flashMessage = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(
             \TYPO3\CMS\Core\Messaging\FlashMessage::class,
@@ -196,7 +196,7 @@ class tx_templavoila_mod1_specialdoktypes
             $listModuleLink = '<br /><br />' .
                 \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-system-list-open') .
                 '<strong><a href="#" onClick="' . $onClick . '">' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('editpage_sysfolder_switchtolistview', true) . '</a></strong>
-			';
+            ';
         } else {
             $listModuleLink = \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('editpage_sysfolder_listview_noaccess', true);
         }

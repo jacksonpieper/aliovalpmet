@@ -81,7 +81,7 @@ class tx_templavoila_cm1_eTypes
                     $elArray[$key]['tx_templavoila']['eType']);
 
             unset($elArray[$key]['tx_templavoila']['eType_before']);
-            //	unset($elArray[$key]['tx_templavoila']['proc']);
+            //    unset($elArray[$key]['tx_templavoila']['proc']);
 
             /* ---------------------------------------------------------------------- */
             if (is_array($elArray[$key]['tx_templavoila']['sample_data'])) {
@@ -474,13 +474,13 @@ class tx_templavoila_cm1_eTypes
 XY = MAXW,MAXH
 backColor = #999999
 10 = TEXT
-	10.text.current = 1
-	10.text.case = upper
-	10.fontColor = #FFCC00
-	10.fontFile = typo3/sysext/install/Resources/Private/Font/vera.ttf
-	10.niceText = 0
-	10.offset = 0,14
-	10.fontSize = 14
+    10.text.current = 1
+    10.text.case = upper
+    10.fontColor = #FFCC00
+    10.fontFile = typo3/sysext/install/Resources/Private/Font/vera.ttf
+    10.niceText = 0
+    10.offset = 0,14
+    10.fontSize = 14
 }';
         $eTypes['eType']['image']['maxWdefault'] = 160;
         $eTypes['eType']['image']['maxHdefault'] = 20;

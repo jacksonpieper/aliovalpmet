@@ -148,7 +148,7 @@ class HtmlMarkup
         'header' => ['blocktype' => 'sections'],
         'hgroup' => ['blocktype' => 'sections'],
         'hr' => ['blocktype' => 'grouping', 'single' => 1],
-//		'html' => array('blocktype'=> 'root'),			-- can't be included since this might break mappings during the upgrade
+//        'html' => array('blocktype'=> 'root'),            -- can't be included since this might break mappings during the upgrade
         'i' => ['blocktype' => 'text'],
         'iframe' => ['anchor_outside' => 1, 'blocktype' => 'embedding'],
         'img' => ['blocktype' => 'embedding', 'single' => 1],
@@ -1394,19 +1394,19 @@ class HtmlMarkup
 
         if ($valueStr) {
             return trim($str) ? '
-				<tr class="bgColor4">
-					<td>&nbsp;</td>
-					<td>&nbsp;</td>
-					<td>' . $this->passthroughHTMLcontent(trim($str), '', 'source') . '</td>
-				</tr>' : '';
+                <tr class="bgColor4">
+                    <td>&nbsp;</td>
+                    <td>&nbsp;</td>
+                    <td>' . $this->passthroughHTMLcontent(trim($str), '', 'source') . '</td>
+                </tr>' : '';
         }
 
         return '
-				<tr class="bgColor' . ($rows++ % 2 == 0 ? '4' : '6') . '">
-					<td><input type="checkbox" name="checkboxElement[]" value="' . $path . '"' . (in_array($path, $this->checkboxPathsSet) ? ' checked="checked"' : '') . ' /></td>
-					<td>' . $gnyf . '</td>
-					<td><pre>' . trim(htmlspecialchars($str)) . '</pre></td>
-				</tr>';
+                <tr class="bgColor' . ($rows++ % 2 == 0 ? '4' : '6') . '">
+                    <td><input type="checkbox" name="checkboxElement[]" value="' . $path . '"' . (in_array($path, $this->checkboxPathsSet) ? ' checked="checked"' : '') . ' /></td>
+                    <td>' . $gnyf . '</td>
+                    <td><pre>' . trim(htmlspecialchars($str)) . '</pre></td>
+                </tr>';
     }
 
     /**

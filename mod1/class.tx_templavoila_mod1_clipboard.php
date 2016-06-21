@@ -299,18 +299,18 @@ class tx_templavoila_mod1_clipboard
             }
             if (!$isDeletedInWorkspace) {
                 $elementRows[] = '
-					<tr id="' . $elementPointerString . '" class="tpm-nonused-element">
-						<td class="tpm-nonused-controls">' .
+                    <tr id="' . $elementPointerString . '" class="tpm-nonused-element">
+                        <td class="tpm-nonused-controls">' .
                     $cutButton . $languageIcon .
                     '</td>
-					<td class="tpm-nonused-ref">' .
+                    <td class="tpm-nonused-ref">' .
                     $this->renderReferenceCount($row['uid']) .
                     '</td>
-					<td class="tpm-nonused-preview">' .
+                    <td class="tpm-nonused-preview">' .
                     $recordButton . htmlspecialchars(\TYPO3\CMS\Backend\Utility\BackendUtility::getRecordTitle('tt_content', $row)) .
                     '</td>
-				</tr>
-			';
+                </tr>
+            ';
             }
         }
 
@@ -332,16 +332,16 @@ class tx_templavoila_mod1_clipboard
 
             // Create table and header cell:
             $output = '
-				<table class="tpm-nonused-elements lrPadding" border="0" cellpadding="0" cellspacing="1" width="100%">
-					<tr class="bgColor4-20">
-						<td colspan="3">' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('inititemno_elementsNotBeingUsed', true) . ':</td>
-					</tr>
-					' . implode('', $elementRows) . '
-					<tr class="bgColor4">
-						<td colspan="3" class="tpm-nonused-deleteall">' . $deleteAll . '</td>
-					</tr>
-				</table>
-			';
+                <table class="tpm-nonused-elements lrPadding" border="0" cellpadding="0" cellspacing="1" width="100%">
+                    <tr class="bgColor4-20">
+                        <td colspan="3">' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('inititemno_elementsNotBeingUsed', true) . ':</td>
+                    </tr>
+                    ' . implode('', $elementRows) . '
+                    <tr class="bgColor4">
+                        <td colspan="3" class="tpm-nonused-deleteall">' . $deleteAll . '</td>
+                    </tr>
+                </table>
+            ';
         }
 
         return $output;

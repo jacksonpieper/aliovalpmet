@@ -180,7 +180,7 @@ class tx_templavoila_mod1_records
         $this->dblist->showClipboard = false;
         $this->dblist->disableSingleTableView = true;
         $this->dblist->listOnlyInSingleTableMode = false;
-//		$this->dblist->clickTitleMode = $this->modTSconfig['properties']['clickTitleMode'];
+//        $this->dblist->clickTitleMode = $this->modTSconfig['properties']['clickTitleMode'];
         $this->dblist->alternateBgColors = (isset($this->pObj->MOD_SETTINGS['recordsView_alternateBgColors']) ? (int)$this->pObj->MOD_SETTINGS['recordsView_alternateBgColors'] : false);
         $this->dblist->allowedNewTables = [$table];
         $this->dblist->newWizards = false;

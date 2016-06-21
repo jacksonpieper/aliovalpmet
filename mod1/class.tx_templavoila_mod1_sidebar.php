@@ -190,56 +190,56 @@ class tx_templavoila_mod1_sidebar
                     $minusIcon = \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-view-table-collapse');
                     $plusIcon = \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-view-table-expand');
                     $sideBar = '
-						<!-- TemplaVoila Sidebar (left) begin -->
+                        <!-- TemplaVoila Sidebar (left) begin -->
 
-						<div id="tx_templavoila_mod1_sidebar-bar" style="height: 100%; width: ' . $this->sideBarWidth . 'px; margin: 0 4px 0 0; display:none;" class="bgColor-10">
-							<div style="text-align:right;"><a href="#" onClick="tx_templavoila_mod1_sidebar_toggle();">' . $minusIcon . '</a></div>
-							' . $this->doc->getDynTabMenu($numSortedSideBarItems, 'TEMPLAVOILA:pagemodule:sidebar', 1, true) . '
-						</div>
-						<div id="tx_templavoila_mod1_sidebar-showbutton" style="height: 100%; width: 18px; margin: 0 4px 0 0; display:block; " class="bgColor-10">
-							<a href="#" onClick="tx_templavoila_mod1_sidebar_toggle();">' . $plusIcon . '</a>
-						</div>
+                        <div id="tx_templavoila_mod1_sidebar-bar" style="height: 100%; width: ' . $this->sideBarWidth . 'px; margin: 0 4px 0 0; display:none;" class="bgColor-10">
+                            <div style="text-align:right;"><a href="#" onClick="tx_templavoila_mod1_sidebar_toggle();">' . $minusIcon . '</a></div>
+                            ' . $this->doc->getDynTabMenu($numSortedSideBarItems, 'TEMPLAVOILA:pagemodule:sidebar', 1, true) . '
+                        </div>
+                        <div id="tx_templavoila_mod1_sidebar-showbutton" style="height: 100%; width: 18px; margin: 0 4px 0 0; display:block; " class="bgColor-10">
+                            <a href="#" onClick="tx_templavoila_mod1_sidebar_toggle();">' . $plusIcon . '</a>
+                        </div>
 
-						<script type="text/javascript">
-						/*<![CDATA[*/
+                        <script type="text/javascript">
+                        /*<![CDATA[*/
 
-							tx_templavoila_mod1_sidebar_activate();
+                            tx_templavoila_mod1_sidebar_activate();
 
-						/*]]>*/
-						</script>
+                        /*]]>*/
+                        </script>
 
-						<!-- TemplaVoila Sidebar end -->
-					';
+                        <!-- TemplaVoila Sidebar end -->
+                    ';
                     break;
 
                 case 'toprows':
                     $sideBar = '
-						<!-- TemplaVoila Sidebar (top) begin -->
+                        <!-- TemplaVoila Sidebar (top) begin -->
 
-						<div id="tx_templavoila_mod1_sidebar-bar" style="width:100%; margin-bottom: 10px;" class="bgColor-10">
-							' . $this->doc->getDynTabMenu($numSortedSideBarItems, 'TEMPLAVOILA:pagemodule:sidebar', 1, true) . '
-						</div>
+                        <div id="tx_templavoila_mod1_sidebar-bar" style="width:100%; margin-bottom: 10px;" class="bgColor-10">
+                            ' . $this->doc->getDynTabMenu($numSortedSideBarItems, 'TEMPLAVOILA:pagemodule:sidebar', 1, true) . '
+                        </div>
 
-						<!-- TemplaVoila Sidebar end -->
-					';
+                        <!-- TemplaVoila Sidebar end -->
+                    ';
                     break;
 
                 case 'toptabs':
                     $sideBar = '
-						<!-- TemplaVoila Sidebar (top) begin -->
+                        <!-- TemplaVoila Sidebar (top) begin -->
 
-						<div id="tx_templavoila_mod1_sidebar-bar" style="width:100%;" class="bgColor-10">
-							' . $this->doc->getDynTabMenu($numSortedSideBarItems, 'TEMPLAVOILA:pagemodule:sidebar', 1, false, 100, 0, true) . '
-						</div>
+                        <div id="tx_templavoila_mod1_sidebar-bar" style="width:100%;" class="bgColor-10">
+                            ' . $this->doc->getDynTabMenu($numSortedSideBarItems, 'TEMPLAVOILA:pagemodule:sidebar', 1, false, 100, 0, true) . '
+                        </div>
 
-						<!-- TemplaVoila Sidebar end -->
-					';
+                        <!-- TemplaVoila Sidebar end -->
+                    ';
                     break;
 
                 default:
                     $sideBar = '
-						<!-- TemplaVoila Sidebar ERROR: Invalid position -->
-					';
+                        <!-- TemplaVoila Sidebar ERROR: Invalid position -->
+                    ';
                     break;
             }
 
@@ -303,20 +303,20 @@ class tx_templavoila_mod1_sidebar
                             $linkedValue = '<a style="text-decoration: none;" href="#" onclick="' . htmlspecialchars($onClick) . '">' . htmlspecialchars($headerFieldArr['value']) . '</a>';
                             $linkedLabel = '<a style="text-decoration: none;" href="#" onclick="' . htmlspecialchars($onClick) . '">' . htmlspecialchars($headerFieldArr['label']) . '</a>';
                             $headerFieldRows[] = '
-								<tr>
-									<td class="bgColor4-20" style="width: 10%; vertical-align:top">' . $linkedLabel . '</td><td class="bgColor4" style="vertical-align:top"><em>' . $linkedValue . '</em></td>
-								</tr>
-							';
+                                <tr>
+                                    <td class="bgColor4-20" style="width: 10%; vertical-align:top">' . $linkedLabel . '</td><td class="bgColor4" style="vertical-align:top"><em>' . $linkedValue . '</em></td>
+                                </tr>
+                            ';
                         }
                     }
                     $output = '
-						<table border="0" cellpadding="0" cellspacing="1" width="100%" class="lrPadding">
-							<tr>
-								<td colspan="2" class="bgColor4-20">' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('pagerelatedinformation') . ':</td>
-							</tr>
-							' . implode('', $headerFieldRows) . '
-						</table>
-					';
+                        <table border="0" cellpadding="0" cellspacing="1" width="100%" class="lrPadding">
+                            <tr>
+                                <td colspan="2" class="bgColor4-20">' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('pagerelatedinformation') . ':</td>
+                            </tr>
+                            ' . implode('', $headerFieldRows) . '
+                        </table>
+                    ';
                 }
             }
         }
@@ -340,19 +340,19 @@ class tx_templavoila_mod1_sidebar
                 $versionSelector = '<input type="button" value="' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('sidebar_versionSelector_createVersion', true) . '" onclick="' . htmlspecialchars($onClick) . '" />';
             }
             $tableRows = ['
-				<tr class="bgColor4-20">
-					<th colspan="3">&nbsp;</th>
-				</tr>
-			'];
+                <tr class="bgColor4-20">
+                    <th colspan="3">&nbsp;</th>
+                </tr>
+            '];
 
             $tableRows[] = '
-			<tr class="bgColor4">
-				<td width="20">
-					&nbsp;
-				</td>
-				<td colspan="9">' . $versionSelector . '</td>
-			</tr>
-			';
+            <tr class="bgColor4">
+                <td width="20">
+                    &nbsp;
+                </td>
+                <td colspan="9">' . $versionSelector . '</td>
+            </tr>
+            ';
 
             return '<table border="0" cellpadding="0" cellspacing="1" class="lrPadding" width="100%">' . implode('', $tableRows) . '</table>';
         }
@@ -370,35 +370,35 @@ class tx_templavoila_mod1_sidebar
     public function renderItem_advancedFunctions(&$pObj)
     {
         $tableRows = ['
-			<tr class="bgColor4-20">
-				<th colspan="3">&nbsp;</th>
-			</tr>
-		'];
+            <tr class="bgColor4-20">
+                <th colspan="3">&nbsp;</th>
+            </tr>
+        '];
 
         // Render checkbox for showing hidden elements:
         $tableRows[] = '
-			<tr class="bgColor4">
-				<td width="20">
-					' . \TYPO3\CMS\Backend\Utility\BackendUtility::cshItem('_MOD_web_txtemplavoilaM1', 'advancedfunctions_showhiddenelements', $this->doc->backPath) . '
-				</td><td width="200">
-					' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('sidebar_advancedfunctions_labelshowhidden', true) . ':
-				</td>
-				<td>' . \TYPO3\CMS\Backend\Utility\BackendUtility::getFuncCheck($pObj->id, 'SET[tt_content_showHidden]', $pObj->MOD_SETTINGS['tt_content_showHidden'] !== '0', 'index.php', '') . '</td>
-			</tr>
-		';
+            <tr class="bgColor4">
+                <td width="20">
+                    ' . \TYPO3\CMS\Backend\Utility\BackendUtility::cshItem('_MOD_web_txtemplavoilaM1', 'advancedfunctions_showhiddenelements', $this->doc->backPath) . '
+                </td><td width="200">
+                    ' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('sidebar_advancedfunctions_labelshowhidden', true) . ':
+                </td>
+                <td>' . \TYPO3\CMS\Backend\Utility\BackendUtility::getFuncCheck($pObj->id, 'SET[tt_content_showHidden]', $pObj->MOD_SETTINGS['tt_content_showHidden'] !== '0', 'index.php', '') . '</td>
+            </tr>
+        ';
 
         // Render checkbox for showing outline:
         if (\Extension\Templavoila\Utility\GeneralUtility::getBackendUser()->isAdmin() || $this->pObj->modTSconfig['properties']['enableOutlineForNonAdmin']) {
             $tableRows[] = '
-				<tr class="bgColor4">
-					<td width="20">
-						' . \TYPO3\CMS\Backend\Utility\BackendUtility::cshItem('_MOD_web_txtemplavoilaM1', 'advancedfunctions_showoutline', $this->doc->backPath) . '
-					</td><td width="200">
-						' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('sidebar_advancedfunctions_labelshowoutline', true) . ':
-					</td>
-					<td>' . \TYPO3\CMS\Backend\Utility\BackendUtility::getFuncCheck($pObj->id, 'SET[showOutline]', $pObj->MOD_SETTINGS['showOutline'], 'index.php', '') . '</td>
-				</tr>
-			';
+                <tr class="bgColor4">
+                    <td width="20">
+                        ' . \TYPO3\CMS\Backend\Utility\BackendUtility::cshItem('_MOD_web_txtemplavoilaM1', 'advancedfunctions_showoutline', $this->doc->backPath) . '
+                    </td><td width="200">
+                        ' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('sidebar_advancedfunctions_labelshowoutline', true) . ':
+                    </td>
+                    <td>' . \TYPO3\CMS\Backend\Utility\BackendUtility::getFuncCheck($pObj->id, 'SET[showOutline]', $pObj->MOD_SETTINGS['showOutline'], 'index.php', '') . '</td>
+                </tr>
+            ';
         }
 
         return (count($tableRows)) ? '<table border="0" cellpadding="0" cellspacing="1" class="lrPadding" width="100%">' . implode('', $tableRows) . '</table>' : '';
@@ -419,32 +419,32 @@ class tx_templavoila_mod1_sidebar
     {
         if ($this->position == 'left') {
             return '
-				<script type="text/javascript">
-				/*<![CDATA[*/
+                <script type="text/javascript">
+                /*<![CDATA[*/
 
-					function tx_templavoila_mod1_sidebar_activate ()	{	//
-						if (top.tx_templavoila_mod1_sidebar_visible) {
-							document.getElementById("tx_templavoila_mod1_sidebar-bar").style.display="none";
-							document.getElementById("tx_templavoila_mod1_sidebar-showbutton").style.display="block";
-						} else {
-							document.getElementById("tx_templavoila_mod1_sidebar-bar").style.display="block";
-							document.getElementById("tx_templavoila_mod1_sidebar-showbutton").style.display="none";
-						}
-					}
+                    function tx_templavoila_mod1_sidebar_activate ()    {    //
+                        if (top.tx_templavoila_mod1_sidebar_visible) {
+                            document.getElementById("tx_templavoila_mod1_sidebar-bar").style.display="none";
+                            document.getElementById("tx_templavoila_mod1_sidebar-showbutton").style.display="block";
+                        } else {
+                            document.getElementById("tx_templavoila_mod1_sidebar-bar").style.display="block";
+                            document.getElementById("tx_templavoila_mod1_sidebar-showbutton").style.display="none";
+                        }
+                    }
 
-					function tx_templavoila_mod1_sidebar_toggle ()	{	//
-						if (top.tx_templavoila_mod1_sidebar_visible) {
-							top.tx_templavoila_mod1_sidebar_visible = false;
-							this.tx_templavoila_mod1_sidebar_activate();
-						} else {
-							top.tx_templavoila_mod1_sidebar_visible = true;
-							this.tx_templavoila_mod1_sidebar_activate();
-						}
-					}
+                    function tx_templavoila_mod1_sidebar_toggle ()    {    //
+                        if (top.tx_templavoila_mod1_sidebar_visible) {
+                            top.tx_templavoila_mod1_sidebar_visible = false;
+                            this.tx_templavoila_mod1_sidebar_activate();
+                        } else {
+                            top.tx_templavoila_mod1_sidebar_visible = true;
+                            this.tx_templavoila_mod1_sidebar_activate();
+                        }
+                    }
 
-				/*]]>*/
-				</script>
-			';
+                /*]]>*/
+                </script>
+            ';
         } else {
             return '';
         }
