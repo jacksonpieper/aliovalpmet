@@ -50,7 +50,7 @@ class tx_templavoila_staticds_wizard
 
         switch ($this->step) {
             case 1:
-                $ok = array(true, true);
+                $ok = [true, true];
                 if (\TYPO3\CMS\Core\Utility\GeneralUtility::_GP('dsWizardDoIt')) {
                     if (!isset($conf['staticDS.']['path_fce']) || !strlen($conf['staticDS.']['path_fce'])) {
                         $ok[0] = false;
@@ -75,11 +75,11 @@ class tx_templavoila_staticds_wizard
                             $description .= sprintf('|' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->sL('LLL:EXT:templavoila/Resources/Private/Language/template_conf.xlf:staticDS.wizard.dircheck.notok'), htmlspecialchars($conf['staticDS.']['path_page']));
                         }
                     }
-                    if ($ok == array(true, true)) {
+                    if ($ok == [true, true]) {
                         $controls .= $this->getDsRecords($conf['staticDS.']);
                     }
                 }
-                if ($ok == array(true, true) && $this->step < 3) {
+                if ($ok == [true, true] && $this->step < 3) {
                     $submitText = $conf['staticDS.']['enable']
                         ? \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->sL('LLL:EXT:templavoila/Resources/Private/Language/template_conf.xlf:staticDS.wizard.submit3')
                         : \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->sL('LLL:EXT:templavoila/Resources/Private/Language/template_conf.xlf:staticDS.wizard.submit2');
@@ -137,7 +137,7 @@ class tx_templavoila_staticds_wizard
     protected function getDsRecords($conf)
     {
         $updateMessage = '';
-        $writeDsIds = array();
+        $writeDsIds = [];
         $writeIds = \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('staticDSwizard');
         $options = \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('staticDSwizardoptions');
         $checkAll = \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('sdw-checkall');
@@ -187,36 +187,36 @@ class tx_templavoila_staticds_wizard
                     \Extension\Templavoila\Utility\GeneralUtility::getDatabaseConnection()->exec_UPDATEquery(
                         'tx_templavoila_datastructure',
                         'uid="' . $row['uid'] . '"',
-                        array('deleted' => 1)
+                        ['deleted' => 1]
                     );
                     // update TO records
                     \Extension\Templavoila\Utility\GeneralUtility::getDatabaseConnection()->exec_UPDATEquery(
                         'tx_templavoila_tmplobj',
                         'datastructure="' . $row['uid'] . '"',
-                        array('datastructure' => $outPath)
+                        ['datastructure' => $outPath]
                     );
                     // update page records
                     \Extension\Templavoila\Utility\GeneralUtility::getDatabaseConnection()->exec_UPDATEquery(
                         'pages',
                         'tx_templavoila_ds="' . $row['uid'] . '"',
-                        array('tx_templavoila_ds' => $outPath)
+                        ['tx_templavoila_ds' => $outPath]
                     );
                     \Extension\Templavoila\Utility\GeneralUtility::getDatabaseConnection()->exec_UPDATEquery(
                         'pages',
                         'tx_templavoila_next_ds="' . $row['uid'] . '"',
-                        array('tx_templavoila_next_ds' => $outPath)
+                        ['tx_templavoila_next_ds' => $outPath]
                     );
                     // update tt_content records
                     \Extension\Templavoila\Utility\GeneralUtility::getDatabaseConnection()->exec_UPDATEquery(
                         'tt_content',
                         'tx_templavoila_ds="' . $row['uid'] . '"',
-                        array('tx_templavoila_ds' => $outPath)
+                        ['tx_templavoila_ds' => $outPath]
                     );
                     // delete DS records
                     \Extension\Templavoila\Utility\GeneralUtility::getDatabaseConnection()->exec_UPDATEquery(
                         'tx_templavoila_datastructure',
                         'uid=' . $row['uid'],
-                        array('deleted' => 1)
+                        ['deleted' => 1]
                     );
                     $updateMessage = \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->sL('LLL:EXT:templavoila/Resources/Private/Language/template_conf.xlf:staticDS.wizard.updated');
                     $this->step = 3;

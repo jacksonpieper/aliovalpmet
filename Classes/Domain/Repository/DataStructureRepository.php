@@ -66,7 +66,7 @@ class DataStructureRepository
      */
     public function getDatastructuresByStoragePid($pid)
     {
-        $dscollection = array();
+        $dscollection = [];
         $confArr = self::getStaticDatastructureConfiguration();
         if (count($confArr)) {
             foreach ($confArr as $conf) {
@@ -91,7 +91,7 @@ class DataStructureRepository
                 $dscollection[] = $this->getDatastructureByUidOrFilename($ds['uid']);
             }
         }
-        usort($dscollection, array($this, 'sortDatastructures'));
+        usort($dscollection, [$this, 'sortDatastructures']);
 
         return $dscollection;
     }
@@ -106,7 +106,7 @@ class DataStructureRepository
      */
     public function getDatastructuresByStoragePidAndScope($pid, $scope)
     {
-        $dscollection = array();
+        $dscollection = [];
         $confArr = self::getStaticDatastructureConfiguration();
         if (count($confArr)) {
             foreach ($confArr as $conf) {
@@ -133,7 +133,7 @@ class DataStructureRepository
                 $dscollection[] = $this->getDatastructureByUidOrFilename($ds['uid']);
             }
         }
-        usort($dscollection, array($this, 'sortDatastructures'));
+        usort($dscollection, [$this, 'sortDatastructures']);
 
         return $dscollection;
     }
@@ -147,7 +147,7 @@ class DataStructureRepository
      */
     public function getDatastructuresByScope($scope)
     {
-        $dscollection = array();
+        $dscollection = [];
         $confArr = self::getStaticDatastructureConfiguration();
         if (count($confArr)) {
             foreach ($confArr as $conf) {
@@ -171,7 +171,7 @@ class DataStructureRepository
                 $dscollection[] = $this->getDatastructureByUidOrFilename($ds['uid']);
             }
         }
-        usort($dscollection, array($this, 'sortDatastructures'));
+        usort($dscollection, [$this, 'sortDatastructures']);
 
         return $dscollection;
     }
@@ -183,7 +183,7 @@ class DataStructureRepository
      */
     public function getAll()
     {
-        $dscollection = array();
+        $dscollection = [];
         $confArr = self::getStaticDatastructureConfiguration();
         if (count($confArr)) {
             foreach ($confArr as $conf) {
@@ -205,7 +205,7 @@ class DataStructureRepository
                 $dscollection[] = $this->getDatastructureByUidOrFilename($ds['uid']);
             }
         }
-        usort($dscollection, array($this, 'sortDatastructures'));
+        usort($dscollection, [$this, 'sortDatastructures']);
 
         return $dscollection;
     }
@@ -247,7 +247,7 @@ class DataStructureRepository
      */
     public static function getStaticDatastructureConfiguration()
     {
-        $config = array();
+        $config = [];
         if (!self::$staticDsInitComplete) {
             $extConfig = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['templavoila']);
             if ($extConfig['staticDS.']['enable']) {
@@ -263,7 +263,7 @@ class DataStructureRepository
             $config = array_merge($config, $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['templavoila']['staticDataStructures']);
         }
 
-        $finalConfig = array();
+        $finalConfig = [];
         foreach ($config as $cfg) {
             $key = md5($cfg['path'] . $cfg['title'] . $cfg['scope']);
             $finalConfig[$key] = $cfg;

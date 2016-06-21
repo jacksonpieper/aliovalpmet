@@ -44,7 +44,7 @@ class tx_templavoila_cm2 extends \TYPO3\CMS\Backend\Module\BaseScriptClass
      *
      * @var array
      */
-    public $viewTable = array();
+    public $viewTable = [];
 
     /**
      * (GPvar "returnUrl") Return URL if the script is supplied with that.
@@ -96,13 +96,13 @@ class tx_templavoila_cm2 extends \TYPO3\CMS\Backend\Module\BaseScriptClass
 
                         // If the clean-button was pressed, save right away:
                         if (\TYPO3\CMS\Core\Utility\GeneralUtility::_POST('_CLEAN_XML')) {
-                            $dataArr = array();
+                            $dataArr = [];
                             $dataArr[$this->viewTable['table']][$this->viewTable['uid']]['tx_templavoila_flex'] = $cleanXML;
 
                             // Init TCEmain object and store:
                             $tce = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\DataHandling\DataHandler::class);
                             $tce->stripslashes_values = 0;
-                            $tce->start($dataArr, array());
+                            $tce->start($dataArr, []);
                             $tce->process_datamap();
 
                             // Re-fetch record:
@@ -176,14 +176,14 @@ class tx_templavoila_cm2 extends \TYPO3\CMS\Backend\Module\BaseScriptClass
         $this->content .= $this->doc->spacer(10);
 
         $docHeaderButtons = $this->getDocHeaderButtons();
-        $docContent = array(
+        $docContent = [
             'CSH' => $docHeaderButtons['csh'],
             'CONTENT' => $this->content
-        );
+        ];
 
         $content = $this->doc->startPage(\Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('title'));
         $content .= $this->doc->moduleBody(
-            array(),
+            [],
             $docHeaderButtons,
             $docContent
         );
@@ -210,11 +210,11 @@ class tx_templavoila_cm2 extends \TYPO3\CMS\Backend\Module\BaseScriptClass
      */
     protected function getDocHeaderButtons()
     {
-        $buttons = array(
+        $buttons = [
             'csh' => \TYPO3\CMS\Backend\Utility\BackendUtility::cshItem('_MOD_web_txtemplavoilaCM1', '', $this->backPath),
             'back' => '',
             'shortcut' => $this->getShortcutButton(),
-        );
+        ];
 
         // Back
         if ($this->returnUrl) {

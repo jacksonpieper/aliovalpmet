@@ -55,7 +55,7 @@ class RenameFieldInPageFlexWizardController extends \TYPO3\CMS\Backend\Module\Ab
     protected function getAllSubPages($uid)
     {
         $completeRecords = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecordsByField('pages', 'pid', $uid);
-        $return = array($uid);
+        $return = [$uid];
         if (count($completeRecords) > 0) {
             foreach ($completeRecords as $record) {
                 $return = array_merge($return, $this->getAllSubPages($record['uid']));
@@ -159,7 +159,7 @@ class RenameFieldInPageFlexWizardController extends \TYPO3\CMS\Backend\Module\Ab
      *
      * @return string
      */
-    protected function addFormField($name, $value = '', $type = 'text', $options = array())
+    protected function addFormField($name, $value = '', $type = 'text', $options = [])
     {
         if ($value === null) {
             $value = \TYPO3\CMS\Core\Utility\GeneralUtility::_GP($name);
@@ -243,10 +243,10 @@ class RenameFieldInPageFlexWizardController extends \TYPO3\CMS\Backend\Module\Ab
     protected function getDSFieldOptionCode()
     {
         $dsList = $this->getKnownPageDS();
-        $return = array();
+        $return = [];
         foreach ($dsList as $ds) {
             /** @var $ds \Extension\Templavoila\Domain\Model\AbstractDataStructure */
-            $return[$ds->getLabel()] = array();
+            $return[$ds->getLabel()] = [];
             $t = $ds->getDataprotArray();
             foreach (array_keys($t['ROOT']['el']) as $field) {
                 $return[$ds->getLabel()][] = $field;

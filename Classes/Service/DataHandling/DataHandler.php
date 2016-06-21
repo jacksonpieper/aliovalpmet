@@ -34,7 +34,7 @@ class DataHandler
      *
      * @var array
      */
-    protected $extConf = array();
+    protected $extConf = [];
 
     /**
      * @return \Extension\Templavoila\Service\DataHandling\DataHandler
@@ -65,7 +65,7 @@ class DataHandler
     public function processDatamap_preProcessFieldArray(array &$incomingFieldArray, $table, $id, \TYPO3\CMS\Core\DataHandling\DataHandler &$reference)
     {
         if ($this->debug) {
-            \TYPO3\CMS\Core\Utility\GeneralUtility::devLog('processDatamap_preProcessFieldArray', 'templavoila', 0, array($incomingFieldArray, $table, $id));
+            \TYPO3\CMS\Core\Utility\GeneralUtility::devLog('processDatamap_preProcessFieldArray', 'templavoila', 0, [$incomingFieldArray, $table, $id]);
         }
 
         if ($GLOBALS ['TYPO3_CONF_VARS']['SC_OPTIONS']['tx_templavoila_api']['apiIsRunningTCEmain']) {
@@ -99,7 +99,7 @@ class DataHandler
     public function processDatamap_postProcessFieldArray($status, $table, $id, &$fieldArray, &$reference)
     {
         if ($this->debug) {
-            \TYPO3\CMS\Core\Utility\GeneralUtility::devLog('processDatamap_postProcessFieldArray', 'templavoila', 0, array($status, $table, $id, $fieldArray));
+            \TYPO3\CMS\Core\Utility\GeneralUtility::devLog('processDatamap_postProcessFieldArray', 'templavoila', 0, [$status, $table, $id, $fieldArray]);
         }
 
         // If the references for content element changed at the current page, save that information into the reference table:
@@ -152,10 +152,10 @@ class DataHandler
                 $row = & $fieldArray;
             }
             if ($row['CType'] == 'templavoila_pi1') {
-                $params = array(
+                $params = [
                     'table' => $table,
                     'row' => $row,
-                );
+                ];
                 $ref = null;
                 if (!\TYPO3\CMS\Core\Utility\GeneralUtility::callUserFunction('EXT:templavoila/Classes/Service/UserFunc/Access.php:&Extension\Templavoila\Service\UserFunc\Access->recordEditAccessInternals', $params, $ref)) {
                     $reference->newlog(sprintf(\Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL($status != 'new' ? 'access_noModifyAccess' : 'access_noCrateAccess'), $table, $id), 1);
@@ -191,7 +191,7 @@ page.10.disableExplosivePreview = 1
     public function processDatamap_afterDatabaseOperations($status, $table, $id, $fieldArray, &$reference)
     {
         if ($this->debug) {
-            \TYPO3\CMS\Core\Utility\GeneralUtility::devLog('processDatamap_afterDatabaseOperations ', 'templavoila', 0, array($status, $table, $id, $fieldArray));
+            \TYPO3\CMS\Core\Utility\GeneralUtility::devLog('processDatamap_afterDatabaseOperations ', 'templavoila', 0, [$status, $table, $id, $fieldArray]);
         }
         if ($GLOBALS ['TYPO3_CONF_VARS']['SC_OPTIONS']['tx_templavoila_api']['apiIsRunningTCEmain']) {
             return;
@@ -227,7 +227,7 @@ page.10.disableExplosivePreview = 1
                             $sorting_field = $GLOBALS['TCA'][$table]['ctrl']['sortby'];
                             $sorting = (!$sorting_field ? 0 : ($fieldArray[$sorting_field] ? -$fieldArray[$sorting_field] : 0));
 
-                            $destinationFlexformPointer = array(
+                            $destinationFlexformPointer = [
                                 'table' => 'pages',
                                 'uid' => $fieldArray['pid'],
                                 'sheet' => 'sDEF',
@@ -235,14 +235,14 @@ page.10.disableExplosivePreview = 1
                                 'field' => $mainContentAreaFieldName,
                                 'vLang' => 'vDEF',
                                 'position' => 0
-                            );
+                            ];
 
                             if ($sorting < 0) {
                                 $parentRecord = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecordWSOL($destinationFlexformPointer['table'], $destinationFlexformPointer['uid'], 'uid,pid,tx_templavoila_flex');
                                 $currentReferencesArr = $templaVoilaAPI->flexform_getElementReferencesFromXML($parentRecord['tx_templavoila_flex'], $destinationFlexformPointer);
                                 if (count($currentReferencesArr)) {
                                     $rows = \Extension\Templavoila\Utility\GeneralUtility::getDatabaseConnection()->exec_SELECTgetRows('uid,' . $sorting_field, $table, 'uid IN (' . implode(',', $currentReferencesArr) . ')' . \TYPO3\CMS\Backend\Utility\BackendUtility::deleteClause($table));
-                                    $sort = array($reference->substNEWwithIDs[$id] => -$sorting);
+                                    $sort = [$reference->substNEWwithIDs[$id] => -$sorting];
                                     foreach ($rows as $row) {
                                         $sort[$row['uid']] = $row[$sorting_field];
                                     }
@@ -260,10 +260,10 @@ page.10.disableExplosivePreview = 1
 
         // clearing the cache of all related pages - see #1332
         if (method_exists($reference, 'clear_cacheCmd')) {
-            $element = array(
+            $element = [
                 'table' => $table,
                 'uid' => $id
-            );
+            ];
             $references = \Extension\Templavoila\Utility\GeneralUtility::getElementForeignReferences($element, $fieldArray['pid']);
             if (is_array($references) && is_array($references['pages'])) {
                 foreach ($references['pages'] as $pageUid => $__) {
@@ -290,7 +290,7 @@ page.10.disableExplosivePreview = 1
     public function processCmdmap_preProcess(&$command, $table, $id, $value, &$reference)
     {
         if ($this->debug) {
-            \TYPO3\CMS\Core\Utility\GeneralUtility::devLog('processCmdmap_preProcess', 'templavoila', 0, array($command, $table, $id, $value));
+            \TYPO3\CMS\Core\Utility\GeneralUtility::devLog('processCmdmap_preProcess', 'templavoila', 0, [$command, $table, $id, $value]);
         }
         if ($GLOBALS ['TYPO3_CONF_VARS']['SC_OPTIONS']['tx_templavoila_api']['apiIsRunningTCEmain']) {
             return;
@@ -311,10 +311,10 @@ page.10.disableExplosivePreview = 1
             case 'delete' :
                 $record = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecord('tt_content', $id);
                 // Check for FCE access
-                $params = array(
+                $params = [
                     'table' => $table,
                     'row' => $record,
-                );
+                ];
                 $ref = null;
                 if (!\TYPO3\CMS\Core\Utility\GeneralUtility::callUserFunction('EXT:templavoila/Classes/Service/UserFunc/Access.php:&Extension\Templavoila\Service\UserFunc\Access->recordEditAccessInternals', $params, $ref)) {
                     $reference->newlog(sprintf(\Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('access_noModifyAccess'), $table, $id), 1);
@@ -357,7 +357,7 @@ page.10.disableExplosivePreview = 1
     public function processCmdmap_postProcess($command, $table, $id, $value, &$reference)
     {
         if ($this->debug) {
-            \TYPO3\CMS\Core\Utility\GeneralUtility::devLog('processCmdmap_postProcess', 'templavoila', 0, array($command, $table, $id, $value));
+            \TYPO3\CMS\Core\Utility\GeneralUtility::devLog('processCmdmap_postProcess', 'templavoila', 0, [$command, $table, $id, $value]);
         }
 
         if (isset($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tx_templavoila_tcemain']['doNotInsertElementRefsToPage'])) {
@@ -384,7 +384,7 @@ page.10.disableExplosivePreview = 1
     public function moveRecord_firstElementPostProcess($table, $uid, $destPid, $sourceRecordBeforeMove, $updateFields, &$reference)
     {
         if ($this->debug) {
-            \TYPO3\CMS\Core\Utility\GeneralUtility::devLog('moveRecord_firstElementPostProcess', 'templavoila', 0, array($table, $uid, $destPid, $sourceRecordBeforeMove, $updateFields));
+            \TYPO3\CMS\Core\Utility\GeneralUtility::devLog('moveRecord_firstElementPostProcess', 'templavoila', 0, [$table, $uid, $destPid, $sourceRecordBeforeMove, $updateFields]);
         }
         if ($GLOBALS ['TYPO3_CONF_VARS']['SC_OPTIONS']['tx_templavoila_api']['apiIsRunningTCEmain']) {
             return;
@@ -400,7 +400,7 @@ page.10.disableExplosivePreview = 1
 
         $mainContentAreaFieldName = $templaVoilaAPI->ds_getFieldNameByColumnPosition($destPid, 0);
         if ($mainContentAreaFieldName !== false) {
-            $destinationFlexformPointer = array(
+            $destinationFlexformPointer = [
                 'table' => 'pages',
                 'uid' => $destPid,
                 'sheet' => 'sDEF',
@@ -408,7 +408,7 @@ page.10.disableExplosivePreview = 1
                 'field' => $mainContentAreaFieldName,
                 'vLang' => 'vDEF',
                 'position' => 0
-            );
+            ];
             $templaVoilaAPI->moveElement_setElementReferences($sourceFlexformPointer, $destinationFlexformPointer);
         }
     }
@@ -430,7 +430,7 @@ page.10.disableExplosivePreview = 1
     public function moveRecord_afterAnotherElementPostProcess($table, $uid, $destPid, $origDestPid, $sourceRecordBeforeMove, $updateFields, &$reference)
     {
         if ($this->debug) {
-            \TYPO3\CMS\Core\Utility\GeneralUtility::devLog('moveRecord_afterAnotherElementPostProcess', 'templavoila', 0, array($table, $uid, $destPid, $origDestPid, $sourceRecordBeforeMove, $updateFields));
+            \TYPO3\CMS\Core\Utility\GeneralUtility::devLog('moveRecord_afterAnotherElementPostProcess', 'templavoila', 0, [$table, $uid, $destPid, $origDestPid, $sourceRecordBeforeMove, $updateFields]);
         }
         if ($GLOBALS ['TYPO3_CONF_VARS']['SC_OPTIONS']['tx_templavoila_api']['apiIsRunningTCEmain']) {
             return;
@@ -471,7 +471,7 @@ page.10.disableExplosivePreview = 1
     {
         global $TCA;
 
-        $elementsOnThisPage = array();
+        $elementsOnThisPage = [];
         $templaVoilaAPI = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\Extension\Templavoila\Service\ApiService::class);
         /* @var $templaVoilaAPI \Extension\Templavoila\Service\ApiService */
 
@@ -498,13 +498,13 @@ page.10.disableExplosivePreview = 1
                                         if (is_array($uidsArr)) {
                                             foreach ($uidsArr as $uid) {
                                                 if ((int)$uid) {
-                                                    $elementsOnThisPage[] = array(
+                                                    $elementsOnThisPage[] = [
                                                         'uid' => $uid,
                                                         'skey' => $currentSheet,
                                                         'lkey' => $currentLanguage,
                                                         'vkey' => $currentValueKey,
                                                         'field' => $currentField,
-                                                    );
+                                                    ];
                                                 }
                                             }
                                         }
@@ -523,10 +523,10 @@ page.10.disableExplosivePreview = 1
         if ($sortByField) {
             foreach ($elementsOnThisPage as $elementArr) {
                 $colPos = $templaVoilaAPI->ds_getColumnPositionByFieldName($pid, $elementArr['field']);
-                $updateFields = array(
+                $updateFields = [
                     $sortByField => $sortNumber,
                     'colPos' => $colPos
-                );
+                ];
                 \Extension\Templavoila\Utility\GeneralUtility::getDatabaseConnection()->exec_UPDATEquery(
                     'tt_content',
                     'uid=' . (int)$elementArr['uid'],

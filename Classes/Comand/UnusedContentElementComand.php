@@ -50,7 +50,7 @@ class UnusedContentElementComand extends \TYPO3\CMS\Lowlevel\CleanerCommand
     /**
      * @var array
      */
-    protected $excludePageIdList = array();
+    protected $excludePageIdList = [];
 
     /**
      * @return \Extension\Templavoila\Comand\UnusedContentElementComand
@@ -60,10 +60,10 @@ class UnusedContentElementComand extends \TYPO3\CMS\Lowlevel\CleanerCommand
         parent::__construct();
 
         // Setting up help:
-        $this->cli_options[] = array('--echotree level', 'When "level" is set to 1 or higher you will see the page of the page tree outputted as it is traversed. A value of 2 for "level" will show even more information.');
-        $this->cli_options[] = array('--pid id', 'Setting start page in page tree. Default is the page tree root, 0 (zero)');
-        $this->cli_options[] = array('--depth int', 'Setting traversal depth. 0 (zero) will only analyse start page (see --pid), 1 will traverse one level of subpages etc.');
-        $this->cli_options[] = array('--excludePageIdList commalist', 'Specifies page ids to exclude from the processing.');
+        $this->cli_options[] = ['--echotree level', 'When "level" is set to 1 or higher you will see the page of the page tree outputted as it is traversed. A value of 2 for "level" will show even more information.'];
+        $this->cli_options[] = ['--pid id', 'Setting start page in page tree. Default is the page tree root, 0 (zero)'];
+        $this->cli_options[] = ['--depth int', 'Setting traversal depth. 0 (zero) will only analyse start page (see --pid), 1 will traverse one level of subpages etc.'];
+        $this->cli_options[] = ['--excludePageIdList commalist', 'Specifies page ids to exclude from the processing.'];
 
         $this->cli_help['name'] = 'tx_templavoila_unusedce -- Find unused content elements on pages';
         $this->cli_help['description'] = trim('
@@ -84,19 +84,19 @@ Automatic Repair:
      */
     public function main()
     {
-        $resultArray = array(
+        $resultArray = [
             'message' => $this->cli_help['name'] . chr(10) . chr(10) . $this->cli_help['description'],
-            'headers' => array(
-                'all_unused' => array('List of all unused content elements', 'All elements means elements which are not used on that specific page. However, they could be referenced from another record. That is indicated by index "1" which is the number of references leading to the element.', 1),
-                'deleteMe' => array('List of elements that can be deleted', 'This is all elements which had no references to them and hence should be OK to delete right away.', 2),
-            ),
-            'all_unused' => array(),
-            'deleteMe' => array(),
-        );
+            'headers' => [
+                'all_unused' => ['List of all unused content elements', 'All elements means elements which are not used on that specific page. However, they could be referenced from another record. That is indicated by index "1" which is the number of references leading to the element.', 1],
+                'deleteMe' => ['List of elements that can be deleted', 'This is all elements which had no references to them and hence should be OK to delete right away.', 2],
+            ],
+            'all_unused' => [],
+            'deleteMe' => [],
+        ];
 
         $startingPoint = $this->cli_isArg('--pid') ? \TYPO3\CMS\Core\Utility\MathUtility::forceIntegerInRange($this->cli_argValue('--pid'), 0) : 0;
         $depth = $this->cli_isArg('--depth') ? \TYPO3\CMS\Core\Utility\MathUtility::forceIntegerInRange($this->cli_argValue('--depth'), 0) : 1000;
-        $this->excludePageIdList = $this->cli_isArg('--excludePageIdList') ? GeneralUtility::intExplode(',', $this->cli_argValue('--excludePageIdList')) : array();
+        $this->excludePageIdList = $this->cli_isArg('--excludePageIdList') ? GeneralUtility::intExplode(',', $this->cli_argValue('--excludePageIdList')) : [];
 
         $this->resultArray = & $resultArray;
         $this->genTree($startingPoint, $depth, (int) $this->cli_argValue('--echotree'), 'main_parseTreeCallBack');
@@ -173,7 +173,7 @@ Automatic Repair:
                         }
 
                         // Register elements etc:
-                        $this->resultArray['all_unused'][$row['uid']] = array($row['header'], count($refrows));
+                        $this->resultArray['all_unused'][$row['uid']] = [$row['header'], count($refrows)];
                         if ($echoLevel > 2) {
                             echo chr(10) . '			[tx_templavoila_unusedce:] tt_content:' . $row['uid'] . ' was not used on page...';
                         }
@@ -226,7 +226,7 @@ Automatic Repair:
                 // Execute CMD array:
                 $tce = GeneralUtility::makeInstance(\TYPO3\CMS\Core\DataHandling\DataHandler::class);
                 $tce->stripslashes_values = false;
-                $tce->start(array(), array());
+                $tce->start([], []);
                 $tce->deleteAction('tt_content', $uid);
 
                 // Return errors if any:

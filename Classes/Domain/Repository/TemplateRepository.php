@@ -53,11 +53,11 @@ class TemplateRepository
             . ' AND pid!=-1 '
             . \TYPO3\CMS\Backend\Utility\BackendUtility::versioningPlaceholderClause('tx_templavoila_tmplobj')
         );
-        $toCollection = array();
+        $toCollection = [];
         foreach ($toList as $toRec) {
             $toCollection[] = $this->getTemplateByUid($toRec['uid']);
         }
-        usort($toCollection, array($this, 'sortTemplates'));
+        usort($toCollection, [$this, 'sortTemplates']);
 
         return $toCollection;
     }
@@ -74,11 +74,11 @@ class TemplateRepository
     {
         $dsRepo = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\Extension\Templavoila\Domain\Repository\DataStructureRepository::class);
         $dsList = $dsRepo->getDatastructuresByStoragePidAndScope($storagePid, $scope);
-        $toCollection = array();
+        $toCollection = [];
         foreach ($dsList as $dsObj) {
             $toCollection = array_merge($toCollection, $this->getTemplatesByDatastructure($dsObj, $storagePid));
         }
-        usort($toCollection, array($this, 'sortTemplates'));
+        usort($toCollection, [$this, 'sortTemplates']);
 
         return $toCollection;
     }
@@ -101,11 +101,11 @@ class TemplateRepository
             . \TYPO3\CMS\Backend\Utility\BackendUtility::deleteClause('tx_templavoila_tmplobj')
             . \TYPO3\CMS\Backend\Utility\BackendUtility::versioningPlaceholderClause('tx_templavoila_tmplobj')
         );
-        $toCollection = array();
+        $toCollection = [];
         foreach ($toList as $toRec) {
             $toCollection[] = $this->getTemplateByUid($toRec['uid']);
         }
-        usort($toCollection, array($this, 'sortTemplates'));
+        usort($toCollection, [$this, 'sortTemplates']);
 
         return $toCollection;
     }
@@ -127,11 +127,11 @@ class TemplateRepository
             . \TYPO3\CMS\Backend\Utility\BackendUtility::deleteClause('tx_templavoila_tmplobj')
             . \TYPO3\CMS\Backend\Utility\BackendUtility::versioningPlaceholderClause('tx_templavoila_tmplobj')
         );
-        $toCollection = array();
+        $toCollection = [];
         foreach ($toList as $toRec) {
             $toCollection[] = $this->getTemplateByUid($toRec['uid']);
         }
-        usort($toCollection, array($this, 'sortTemplates'));
+        usort($toCollection, [$this, 'sortTemplates']);
 
         return $toCollection;
     }
@@ -164,7 +164,7 @@ class TemplateRepository
             'pid>=0' . \TYPO3\CMS\Backend\Utility\BackendUtility::deleteClause('tx_templavoila_tmplobj'),
             'pid'
         );
-        $list = array();
+        $list = [];
         while ($res && false !== ($row = \Extension\Templavoila\Utility\GeneralUtility::getDatabaseConnection()->sql_fetch_assoc($res))) {
             $list[] = $row['pid'];
         }

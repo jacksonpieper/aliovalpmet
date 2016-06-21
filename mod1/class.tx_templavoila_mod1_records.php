@@ -116,7 +116,7 @@ class tx_templavoila_mod1_records
             $params = '&edit[' . $table . '][' . $this->pObj->id . ']=new';
             $content .= '&nbsp;&nbsp;';
             $content .= '<a href="#" onclick="' . htmlspecialchars(\TYPO3\CMS\Backend\Utility\BackendUtility::editOnClick($params, $backpath, -1)) . '">';
-            $content .= \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-document-new', array('title' => \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('createnewrecord')));
+            $content .= \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-document-new', ['title' => \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('createnewrecord')]);
             $content .= '</a>';
         }
 
@@ -182,7 +182,7 @@ class tx_templavoila_mod1_records
         $this->dblist->listOnlyInSingleTableMode = false;
 //		$this->dblist->clickTitleMode = $this->modTSconfig['properties']['clickTitleMode'];
         $this->dblist->alternateBgColors = (isset($this->pObj->MOD_SETTINGS['recordsView_alternateBgColors']) ? (int)$this->pObj->MOD_SETTINGS['recordsView_alternateBgColors'] : false);
-        $this->dblist->allowedNewTables = array($table);
+        $this->dblist->allowedNewTables = [$table];
         $this->dblist->newWizards = false;
         $this->dblist->tableList = $table;
         $this->dblist->itemsLimitPerTable = ($GLOBALS['TCA'][$table]['interface']['maxDBListItems'] ?

@@ -26,7 +26,7 @@ final class IconUtility
      *
      * @return string
      */
-    public static function getFlagIconForLanguage($flagName, $options = array())
+    public static function getFlagIconForLanguage($flagName, $options = [])
     {
         $flagName = (strlen($flagName) > 0) ? $flagName : 'unknown';
 

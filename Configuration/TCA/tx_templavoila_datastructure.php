@@ -1,7 +1,7 @@
 <?php
 
-return array(
-    'ctrl' => array(
+return [
+    'ctrl' => [
         'title' => 'LLL:EXT:templavoila/Resources/Private/Language/locallang_db.xlf:tx_templavoila_datastructure',
         'label' => 'title',
         'label_userFunc' => 'EXT:templavoila/Classes/Service/UserFunc/Label.php:&Extension\Templavoila\Service\UserFunc\Label->getLabel',
@@ -17,46 +17,46 @@ return array(
         'versioningWS' => true,
         'origUid' => 't3_origuid',
         'shadowColumnsForNewPlaceholders' => 'scope,title',
-    ),
-    'interface' => array(
+    ],
+    'interface' => [
         'showRecordFieldList' => 'title,dataprot',
         'maxDBListItems' => 60,
-    ),
-    'columns' => array(
-        'title' => array(
+    ],
+    'columns' => [
+        'title' => [
             'label' => 'LLL:EXT:templavoila/Resources/Private/Language/locallang_db.xlf:tx_templavoila_datastructure.title',
-            'config' => array(
+            'config' => [
                 'type' => 'input',
                 'size' => '48',
                 'eval' => 'required,trim',
-            )
-        ),
-        'dataprot' => array(
+            ]
+        ],
+        'dataprot' => [
             'exclude' => 1,
             'label' => 'LLL:EXT:templavoila/Resources/Private/Language/locallang_db.xlf:tx_templavoila_datastructure.dataprot',
-            'config' => array(
+            'config' => [
                 'type' => 'text',
                 'wrap' => 'OFF',
                 'cols' => '48',
                 'rows' => '20',
-            ),
+            ],
             'defaultExtras' => 'fixed-font:enable-tab'
-        ),
-        'scope' => array(
+        ],
+        'scope' => [
             'exclude' => 1,
             'label' => 'LLL:EXT:templavoila/Resources/Private/Language/locallang_db.xlf:tx_templavoila_datastructure.scope',
-            'config' => array(
+            'config' => [
                 'type' => 'select',
-                'items' => array(
-                    array('LLL:EXT:templavoila/Resources/Private/Language/locallang_db.xlf:tx_templavoila_datasource.scope.I.0', 0),
-                    array('LLL:EXT:templavoila/Resources/Private/Language/locallang_db.xlf:tx_templavoila_datastructure.scope.I.1', 1),
-                    array('LLL:EXT:templavoila/Resources/Private/Language/locallang_db.xlf:tx_templavoila_datastructure.scope.I.2', 2),
-                ),
-            )
-        ),
-        'previewicon' => array(
+                'items' => [
+                    ['LLL:EXT:templavoila/Resources/Private/Language/locallang_db.xlf:tx_templavoila_datasource.scope.I.0', 0],
+                    ['LLL:EXT:templavoila/Resources/Private/Language/locallang_db.xlf:tx_templavoila_datastructure.scope.I.1', 1],
+                    ['LLL:EXT:templavoila/Resources/Private/Language/locallang_db.xlf:tx_templavoila_datastructure.scope.I.2', 2],
+                ],
+            ]
+        ],
+        'previewicon' => [
             'label' => 'LLL:EXT:templavoila/Resources/Private/Language/locallang_db.xlf:tx_templavoila_tmplobj.previewicon',
-            'config' => array(
+            'config' => [
                 'type' => 'group',
                 'internal_type' => 'file',
                 'allowed' => 'gif,png',
@@ -66,40 +66,40 @@ return array(
                 'size' => '1',
                 'maxitems' => '1',
                 'minitems' => '0'
-            )
-        ),
-        'belayout' => array(
+            ]
+        ],
+        'belayout' => [
             'exclude' => 1,
             'label' => 'LLL:EXT:templavoila/Resources/Private/Language/locallang_db.xlf:tx_templavoila_tmplobj.belayout',
-            'config' => array(
+            'config' => [
                 'type' => 'input',
                 'size' => '48',
-                'wizards' => array(
+                'wizards' => [
                     '_PADDING' => 2,
-                    'link' => array(
+                    'link' => [
                         'type' => 'popup',
                         'title' => 'Link',
                         'icon' => 'link_popup.gif',
-                        'module' => array(
+                        'module' => [
                             'name' => 'wizard_element_browser',
-                            'urlParameters' => array(
+                            'urlParameters' => [
                                 'mode' => 'wizard',
                                 'act' => 'file',
-                            ),
-                        ),
-                        'params' => array(
+                            ],
+                        ],
+                        'params' => [
                             'blindLinkOptions' => 'page,folder,mail,spec,url',
                             'allowedExtensions' => $GLOBALS['TYPO3_CONF_VARS']['SYS']['textfile_ext'],
-                        ),
+                        ],
                         'JSopenParams' => 'height=300,width=500,status=0,menubar=0,scrollbars=1'
-                    ),
-                ),
+                    ],
+                ],
                 'eval' => 'nospace',
                 'softref' => 'typolink'
-            )
-        ),
-    ),
-    'types' => array(
-        '0' => array('showitem' => 'title;;;;2-2-2, scope, previewicon, belayout, dataprot;;;;3-3-3')
-    )
-);
+            ]
+        ],
+    ],
+    'types' => [
+        '0' => ['showitem' => 'title;;;;2-2-2, scope, previewicon, belayout, dataprot;;;;3-3-3']
+    ]
+];

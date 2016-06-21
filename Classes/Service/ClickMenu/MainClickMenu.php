@@ -38,7 +38,7 @@ class MainClickMenu
      */
     public function main(&$backRef, $menuItems, $table, $uid)
     {
-        $localItems = array();
+        $localItems = [];
         $extensionRelativePath = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath('templavoila');
         if (!$backRef->cmLevel) {
             $LL = GeneralUtility::getLanguageService()->includeLLFile(
@@ -77,7 +77,7 @@ class MainClickMenu
 
             // Adding link for "View: Sub elements":
             if ($table === 'tt_content' && $isTVelement) {
-                $localItems = array();
+                $localItems = [];
 
                 $url = $extensionRelativePath . 'mod1/index.php?id=' . (int)$backRef->rec['pid'] .
                     '&altRoot[table]=' . rawurlencode($table) .
@@ -121,7 +121,7 @@ class MainClickMenu
         } else {
             // @TODO check where this code is used.
             if (\TYPO3\CMS\Core\Utility\GeneralUtility::_GP('subname') === 'tx_templavoila_cm1_pagesusingthiselement') {
-                $menuItems = array();
+                $menuItems = [];
                 $url = $extensionRelativePath . 'mod1/index.php?id=';
 
                 // Generate a list of pages where this element is also being used:

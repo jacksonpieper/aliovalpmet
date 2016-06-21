@@ -151,10 +151,10 @@ class tx_templavoila_mod1_wizards
                     if ($newID) {
                         // If the page was destined to be inserted after another page, move it now:
                         if ($positionPid < 0) {
-                            $cmd = array();
+                            $cmd = [];
                             $cmd['pages'][$newID]['move'] = $positionPid;
                             $tceObject = $import->getNewTCE();
-                            $tceObject->start(array(), $cmd);
+                            $tceObject->start([], $cmd);
                             $tceObject->process_cmdmap();
                         }
 
@@ -180,7 +180,7 @@ class tx_templavoila_mod1_wizards
 
         $this->doc->form = '<form action="' . htmlspecialchars('index.php?id=' . $this->pObj->id) . '" method="post" autocomplete="off" enctype="' . $TYPO3_CONF_VARS['SYS']['form_enctype'] . '" onsubmit="return TBE_EDITOR_checkSubmit(1);">';
         $this->doc->divClass = '';
-        $this->doc->getTabMenu(0, '_', 0, array('' => ''));
+        $this->doc->getTabMenu(0, '_', 0, ['' => '']);
 
         // init tceforms for javascript printing
         $tceforms = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Form\FormEngine::class);
@@ -258,7 +258,7 @@ class tx_templavoila_mod1_wizards
         }
 
         $storageFolderPID = $this->apiObj->getStorageFolderPid($parentPageId);
-        $tmplHTML = array();
+        $tmplHTML = [];
         $defaultIcon = $this->doc->backPath . '../' . \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::siteRelPath($this->extKey) . 'Resources/Public/Image/default_previewicon.gif';
 
         // look for TCEFORM.pages.tx_templavoila_ds.removeItems / TCEFORM.pages.tx_templavoila_to.removeItems
@@ -269,7 +269,7 @@ class tx_templavoila_mod1_wizards
             case 'tmplobj':
                 // Create the "Default template" entry
                 //Fetch Default TO
-                $fakeRow = array('uid' => $parentPageId);
+                $fakeRow = ['uid' => $parentPageId];
                 $defaultTO = $this->pObj->apiObj->getContentTree_fetchPageTemplateObject($fakeRow);
 
                 // Create the "Default template" entry
@@ -366,7 +366,7 @@ class tx_templavoila_mod1_wizards
                                     }
                                 }
 
-                                $aTagB = '<a href="' . htmlspecialchars(\TYPO3\CMS\Core\Utility\GeneralUtility::linkThisScript(array('templateFile' => $absPath))) . '">';
+                                $aTagB = '<a href="' . htmlspecialchars(\TYPO3\CMS\Core\Utility\GeneralUtility::linkThisScript(['templateFile' => $absPath])) . '">';
                                 $aTagE = '</a>';
                                 $tmplHTML [] = '<table style="float:left; width: 100%;" valign="top"><tr><td colspan="2" nowrap="nowrap">
 					<h3 class="bgColor3-20">' . $aTagB . htmlspecialchars($import->dat['header']['meta']['title'] ? $import->dat['header']['meta']['title'] : basename($absPath)) . $aTagE . '</h3></td></tr>
@@ -412,7 +412,7 @@ class tx_templavoila_mod1_wizards
             $positionPid = ($positionPid > 0) ? $positionPageMoveToRow['uid'] : '-' . $positionPageMoveToRow['uid'];
         }
 
-        $dataArr = array();
+        $dataArr = [];
         $dataArr['pages']['NEW'] = $pageArray;
         $dataArr['pages']['NEW']['pid'] = $positionPid;
         if (is_null($dataArr['pages']['NEW']['hidden'])) {
@@ -433,7 +433,7 @@ class tx_templavoila_mod1_wizards
         }
 
         $tce->stripslashes_values = 0;
-        $tce->start($dataArr, array());
+        $tce->start($dataArr, []);
         $tce->process_datamap();
 
         return $tce->substNEWwithIDs['NEW'];
@@ -459,7 +459,7 @@ class tx_templavoila_mod1_wizards
      */
     public function buildRecordWhere($table)
     {
-        $result = array();
+        $result = [];
         if (!\Extension\Templavoila\Utility\GeneralUtility::getBackendUser()->isAdmin()) {
             $prefLen = strlen($table) + 1;
             foreach (\Extension\Templavoila\Utility\GeneralUtility::getBackendUser()->userGroups as $group) {

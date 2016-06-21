@@ -191,7 +191,7 @@ class tx_templavoila_mod1_specialdoktypes
     public function renderDoktype_254($pageRecord)
     {
         if ($this->userHasAccessToListModule()) {
-            $listModuleURL = \TYPO3\CMS\Backend\Utility\BackendUtility::getModuleUrl('web_list', array('id' => (int)$this->pObj->id), '');
+            $listModuleURL = \TYPO3\CMS\Backend\Utility\BackendUtility::getModuleUrl('web_list', ['id' => (int)$this->pObj->id], '');
             $onClick = "top.nextLoadModuleUrl='" . $listModuleURL . "';top.fsMod.recentIds['web']=" . (int)$this->pObj->id . ";top.goToModule('web_list',1);";
             $listModuleLink = '<br /><br />' .
                 \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-system-list-open') .

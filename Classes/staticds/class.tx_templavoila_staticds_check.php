@@ -33,11 +33,11 @@ class tx_templavoila_staticds_check
 
         $link = \TYPO3\CMS\Backend\Utility\BackendUtility::getModuleUrl(
             'tools_ExtensionmanagerExtensionmanager',
-            array(
+            [
                 'tx_extensionmanager_tools_extensionmanagerextensionmanager[extensionKey]' => 'templavoila',
                 'tx_extensionmanager_tools_extensionmanagerextensionmanager[action]' => 'show',
                 'tx_extensionmanager_tools_extensionmanagerextensionmanager[controller]' => 'UpdateScript'
-            )
+            ]
         );
 
         return '

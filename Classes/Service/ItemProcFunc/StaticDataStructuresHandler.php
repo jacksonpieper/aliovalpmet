@@ -53,20 +53,20 @@ class StaticDataStructuresHandler
         $dsRepo = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\Extension\Templavoila\Domain\Repository\DataStructureRepository::class);
         $dsList = $dsRepo->getAll();
 
-        $params['items'] = array(
-            array(
+        $params['items'] = [
+            [
                 '', ''
-            )
-        );
+            ]
+        ];
 
         foreach ($dsList as $dsObj) {
             /** @var \Extension\Templavoila\Domain\Model\AbstractDataStructure $dsObj */
             if ($dsObj->isPermittedForUser($params['row'], $removeDSItems)) {
-                $params['items'][] = array(
+                $params['items'][] = [
                     $dsObj->getLabel(),
                     $dsObj->getKey(),
                     $dsObj->getIcon()
-                );
+                ];
             }
         }
     }
@@ -104,7 +104,7 @@ class StaticDataStructuresHandler
                 } else {
                     $icon = '';
                 }
-                $params['items'][] = array(\Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->sL($row['title']), $row['uid'], $icon);
+                $params['items'][] = [\Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->sL($row['title']), $row['uid'], $icon];
             }
         }
     }
@@ -128,20 +128,20 @@ class StaticDataStructuresHandler
         $dsRepo = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\Extension\Templavoila\Domain\Repository\DataStructureRepository::class);
         $dsList = $dsRepo->getDatastructuresByStoragePidAndScope($storagePid, $scope);
 
-        $params['items'] = array(
-            array(
+        $params['items'] = [
+            [
                 '', ''
-            )
-        );
+            ]
+        ];
 
         foreach ($dsList as $dsObj) {
             /** @var \Extension\Templavoila\Domain\Model\AbstractDataStructure $dsObj */
             if ($dsObj->isPermittedForUser($params['row'], $removeDSItems)) {
-                $params['items'][] = array(
+                $params['items'][] = [
                     $dsObj->getLabel(),
                     $dsObj->getKey(),
                     $dsObj->getIcon()
-                );
+                ];
             }
         }
     }
@@ -189,11 +189,11 @@ class StaticDataStructuresHandler
         $dsRepo = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\Extension\Templavoila\Domain\Repository\DataStructureRepository::class);
         $toRepo = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\Extension\Templavoila\Domain\Repository\TemplateRepository::class);
 
-        $params['items'] = array(
-            array(
+        $params['items'] = [
+            [
                 '', ''
-            )
-        );
+            ]
+        ];
 
         try {
             $ds = $dsRepo->getDatastructureByUidOrFilename($dataSource);
@@ -202,11 +202,11 @@ class StaticDataStructuresHandler
                 foreach ($toList as $toObj) {
                     /** @var \Extension\Templavoila\Domain\Model\Template $toObj */
                     if (!$toObj->hasParent() && $toObj->isPermittedForUser($params['table'], $removeTOItems)) {
-                        $params['items'][] = array(
+                        $params['items'][] = [
                             $toObj->getLabel(),
                             $toObj->getKey(),
                             $toObj->getIcon()
-                        );
+                        ];
                     }
                 }
             }
@@ -236,32 +236,32 @@ class StaticDataStructuresHandler
         $toRepo = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\Extension\Templavoila\Domain\Repository\TemplateRepository::class);
         $dsList = $dsRepo->getDatastructuresByStoragePidAndScope($storagePid, $scope);
 
-        $params['items'] = array(
-            array(
+        $params['items'] = [
+            [
                 '', ''
-            )
-        );
+            ]
+        ];
 
         foreach ($dsList as $dsObj) {
             /** @var \Extension\Templavoila\Domain\Model\AbstractDataStructure $dsObj */
             if (!$dsObj->isPermittedForUser($params['row'], $removeDSItems)) {
                 continue;
             }
-            $curDS = array();
-            $curDS[] = array(
+            $curDS = [];
+            $curDS[] = [
                 $dsObj->getLabel(),
                 '--div--'
-            );
+            ];
 
             $toList = $toRepo->getTemplatesByDatastructure($dsObj, $storagePid);
             foreach ($toList as $toObj) {
                 /** @var \Extension\Templavoila\Domain\Model\Template $toObj */
                 if (!$toObj->hasParent() && $toObj->isPermittedForUser($params['row'], $removeTOItems)) {
-                    $curDS[] = array(
+                    $curDS[] = [
                         $toObj->getLabel(),
                         $toObj->getKey(),
                         $toObj->getIcon()
-                    );
+                    ];
                 }
             }
             if (count($curDS) > 1) {

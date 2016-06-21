@@ -4,7 +4,7 @@
 
 $extensionPath = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('templavoila');
 $extensionClassesPath = $extensionPath . 'Classes/';
-return array(
+return [
     'tx_templavoila_cm1' => $extensionPath . 'cm1/index.php',
     'tx_templavoila_staticds_check' => $extensionClassesPath . 'staticds/class.tx_templavoila_staticds_check.php',
     'tx_templavoila_staticds_wizard' => $extensionClassesPath . 'staticds/class.tx_templavoila_staticds_wizard.php',
@@ -24,4 +24,4 @@ return array(
     'tx_templavoila_module1' => $extensionPath . 'mod1/index.php',
     'tx_templavoila_module2' => $extensionPath . 'mod2/index.php',
     'tx_templavoila_pi1' => $extensionPath . 'pi1/class.tx_templavoila_pi1.php',
-);
+];

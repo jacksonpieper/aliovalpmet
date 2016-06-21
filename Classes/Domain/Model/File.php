@@ -107,7 +107,7 @@ class File
         try {
             $file = self::file($filename);
             if (!$file instanceof \TYPO3\CMS\Core\Resource\FolderInterface) {
-                $isXmlFile = in_array($file->getMimeType(), array('text/html', 'application/xml'));
+                $isXmlFile = in_array($file->getMimeType(), ['text/html', 'application/xml']);
             }
         } catch (\Exception $e) {
         }

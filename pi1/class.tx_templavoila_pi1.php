@@ -131,7 +131,7 @@ class tx_templavoila_pi1 extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
         $dsRepo = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\Extension\Templavoila\Domain\Repository\DataStructureRepository::class);
 
         // prepare fake flexform
-        $values = array();
+        $values = [];
         foreach ($data as $k => $v) {
             // Make correct language identifiers here!
             if ($GLOBALS['TSFE']->sys_language_isocode) {
@@ -238,7 +238,7 @@ class tx_templavoila_pi1 extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
         global $TYPO3_CONF_VARS;
 
         // First prepare user defined objects (if any) for hooks which extend this function:
-        $hookObjectsArr = array();
+        $hookObjectsArr = [];
         if (is_array($TYPO3_CONF_VARS['EXTCONF']['templavoila']['pi1']['renderElementClass'])) {
             foreach ($TYPO3_CONF_VARS['EXTCONF']['templavoila']['pi1']['renderElementClass'] as $classRef) {
                 $hookObjectsArr[] = & \TYPO3\CMS\Core\Utility\GeneralUtility::getUserObj($classRef);
@@ -290,7 +290,7 @@ class tx_templavoila_pi1 extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
                 }
             }
 
-            $dataValues = array();
+            $dataValues = [];
             if (is_array($data) && isset($data['data'][$sheet][$lKey]) && is_array($data['data'][$sheet][$lKey])) {
                 $dataValues = $data['data'][$sheet][$lKey];
             }
@@ -306,10 +306,10 @@ class tx_templavoila_pi1 extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
                 if ($this->conf['childTemplate']) {
                     $renderType = $this->conf['childTemplate'];
                     if (substr($renderType, 0, 9) == 'USERFUNC:') {
-                        $conf = array(
-                            'conf' => is_array($this->conf['childTemplate.']) ? $this->conf['childTemplate.'] : array(),
+                        $conf = [
+                            'conf' => is_array($this->conf['childTemplate.']) ? $this->conf['childTemplate.'] : [],
                             'toRecord' => $row
-                        );
+                        ];
                         $renderType = \TYPO3\CMS\Core\Utility\GeneralUtility::callUserFunction(substr($renderType, 9), $conf, $this);
                     }
                 } else { // Default:
@@ -325,13 +325,13 @@ class tx_templavoila_pi1 extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
                     if (is_array($TO)) {
 
                         // Get local processing:
-                        $TOproc = array();
+                        $TOproc = [];
                         if ($TOrec['localprocessing']) {
                             $TOproc = \TYPO3\CMS\Core\Utility\GeneralUtility::xml2array($TOrec['localprocessing']);
                             if (!is_array($TOproc)) {
                                 // Must be a error!
                                 // TODO log to TT the content of $TOproc (it is a error message now)
-                                $TOproc = array();
+                                $TOproc = [];
                             }
                         }
                         // Processing the data array:
@@ -355,13 +355,13 @@ class tx_templavoila_pi1 extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
                         // Hook: renderElement_postProcessDataValues
                         foreach ($hookObjectsArr as $hookObj) {
                             if (method_exists($hookObj, 'renderElement_postProcessDataValues')) {
-                                $flexformData = array(
+                                $flexformData = [
                                     'table' => $table,
                                     'row' => $row,
                                     'sheet' => $renderSheet,
                                     'sLang' => $lKey,
                                     'vLang' => $vKey
-                                );
+                                ];
                                 $hookObj->renderElement_postProcessDataValues($DS, $dataValues, $originalDataValues, $flexformData);
                             }
                         }
@@ -385,7 +385,7 @@ class tx_templavoila_pi1 extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
                         }
 
                         // Edit icon (frontend editing):
-                        $eIconf = array('styleAttribute' => 'position:absolute;');
+                        $eIconf = ['styleAttribute' => 'position:absolute;'];
                         if ($table == 'pages') {
                             $eIconf['beforeLastTag'] = -1;
                         } // For "pages", set icon in top, not after.
@@ -439,7 +439,7 @@ class tx_templavoila_pi1 extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
         if (is_array($DSelements) && is_array($dataValues)) {
 
             // Create local processing information array:
-            $LP = array();
+            $LP = [];
             foreach ($DSelements as $key => $dsConf) {
                 if ($mappingInfo === true || array_key_exists($key, $mappingInfo)) {
                     if ($DSelements[$key]['type'] != 'array') { // For all non-arrays:
@@ -458,14 +458,14 @@ class tx_templavoila_pi1 extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
             }
 
             // Prepare a fake data record for cObj (important to do now before processing takes place):
-            $dataRecord = array();
+            $dataRecord = [];
             foreach ($dataValues as $key => $values) {
                 $dataRecord[$key] = $this->inheritValue($dataValues[$key], $valueKey, $LP[$key]['langOverlayMode']);
             }
 
             // Check if information about parent record should be set. Note: we do not push/pop registers here because it may break LOAD_REGISTER/RESTORE_REGISTER data transfer between FCEs!
-            $savedParentInfo = array();
-            $registerKeys = array();
+            $savedParentInfo = [];
+            $registerKeys = [];
             if (is_array($this->cObj->data)) {
                 $tArray = $this->cObj->data;
                 ksort($tArray);
@@ -478,7 +478,7 @@ class tx_templavoila_pi1 extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
 
                 if (!$sameParent) {
                     // Step 1: save previous parent records from registers. This happens when pi1 is called for FCEs on a page.
-                    $unsetKeys = array();
+                    $unsetKeys = [];
                     foreach ($GLOBALS['TSFE']->register as $dkey => $dvalue) {
                         if (preg_match('/^tx_templavoila_pi1\.parentRec\./', $dkey)) {
                             $savedParentInfo[$dkey] = $dvalue;
@@ -496,7 +496,7 @@ class tx_templavoila_pi1 extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
                     unset($unsetKeys); // free memory
 
                     // Step 3: set new parent record to register
-                    $registerKeys = array();
+                    $registerKeys = [];
                     foreach ($this->cObj->data as $dkey => $dvalue) {
                         $registerKeys[] = $tkey = 'tx_templavoila_pi1.parentRec.' . $dkey;
                         $GLOBALS['TSFE']->register[$tkey] = $dvalue;
@@ -527,7 +527,7 @@ class tx_templavoila_pi1 extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
                         is_array($TOelements[$key]['el'])*/
                     ) {
                         if (!isset($dataValues[$key]['el'])) {
-                            $dataValues[$key]['el'] = array();
+                            $dataValues[$key]['el'] = [];
                         }
 
                         if ($DSelements[$key]['section'] && is_array($dataValues[$key]['el'])) {
@@ -718,7 +718,7 @@ class tx_templavoila_pi1 extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
                     case 'removeIfBlank':
                         if (!strcmp(trim($languageValue), '')) {
                             // Find a way to avoid returning an array here
-                            return array('ERROR' => '__REMOVE');
+                            return ['ERROR' => '__REMOVE'];
                         }
                         break;
                     default:
@@ -788,7 +788,7 @@ class tx_templavoila_pi1 extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
     {
 
         // Create table rows:
-        $tRows = array();
+        $tRows = [];
 
         switch ($table) {
             case 'pages':
@@ -892,19 +892,19 @@ class tx_templavoila_pi1 extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
         $pids = isset($conf['select.']['pidInList.'])
             ? trim($this->cObj->stdWrap($conf['select.']['pidInList'], $conf['select.']['pidInList.']))
             : trim($conf['select.']['pidInList']);
-        $contentIds = array();
+        $contentIds = [];
         if ($pids) {
             $pageIds = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $pids);
             foreach ($pageIds as $pageId) {
                 $page = $GLOBALS['TSFE']->sys_page->checkRecord('pages', $pageId);
                 if (isset($page) && isset($page['tx_templavoila_flex'])) {
-                    $flex = array();
+                    $flex = [];
                     $this->cObj->readFlexformIntoConf($page['tx_templavoila_flex'], $flex);
                     $contentIds = array_merge($contentIds, \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $flex[$ceField]));
                 }
             }
         } else {
-            $flex = array();
+            $flex = [];
             $this->cObj->readFlexformIntoConf($GLOBALS['TSFE']->page['tx_templavoila_flex'], $flex);
             $contentIds = array_merge($contentIds, \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $flex[$ceField]));
         }
@@ -912,10 +912,10 @@ class tx_templavoila_pi1 extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
         if (count($contentIds) > 0) {
             $conf['source'] = implode(',', $contentIds);
             $conf['tables'] = 'tt_content';
-            $conf['conf.'] = array(
+            $conf['conf.'] = [
                 'tt_content' => $conf['renderObj'],
                 'tt_content.' => $conf['renderObj.'],
-            );
+            ];
             $conf['dontCheckPid'] = 1;
             unset($conf['renderObj']);
             unset($conf['renderObj.']);

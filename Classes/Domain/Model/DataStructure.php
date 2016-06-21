@@ -86,7 +86,7 @@ class DataStructure extends AbstractDataStructure
      *
      * @return boolean
      */
-    public function isPermittedForUser($parentRow = array(), $removeItems = array())
+    public function isPermittedForUser($parentRow = [], $removeItems = [])
     {
         if (\Extension\Templavoila\Utility\GeneralUtility::getBackendUser()->isAdmin()) {
             return true;

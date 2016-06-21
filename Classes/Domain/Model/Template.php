@@ -288,7 +288,7 @@ class Template
      *
      * @return boolean
      */
-    public function isPermittedForUser($parentRow = array(), $removeItems = array())
+    public function isPermittedForUser($parentRow = [], $removeItems = [])
     {
         if (\Extension\Templavoila\Utility\GeneralUtility::getBackendUser()->isAdmin()) {
             return true;
@@ -350,7 +350,7 @@ class Template
      */
     public function getLocalDataprotXML($skipDsDataprot = false)
     {
-        return \TYPO3\CMS\Core\Utility\GeneralUtility::array2xml_cs($this->getLocalDataprotArray($skipDsDataprot), 'T3DataStructure', array('useCDATA' => 1));
+        return \TYPO3\CMS\Core\Utility\GeneralUtility::array2xml_cs($this->getLocalDataprotArray($skipDsDataprot), 'T3DataStructure', ['useCDATA' => 1]);
     }
 
     /**
@@ -363,7 +363,7 @@ class Template
         if (!$skipDsDataprot) {
             $dataprot = $this->getDatastructure()->getDataprotArray();
         } else {
-            $dataprot = array();
+            $dataprot = [];
         }
         $toDataprot = \TYPO3\CMS\Core\Utility\GeneralUtility::xml2array($this->row['localprocessing']);
 

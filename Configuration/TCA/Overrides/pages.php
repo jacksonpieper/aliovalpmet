@@ -1,15 +1,15 @@
 <?php
 defined('TYPO3_MODE') or die();
 
-$tempColumns = array(
-    'tx_templavoila_ds' => array(
+$tempColumns = [
+    'tx_templavoila_ds' => [
         'exclude' => 1,
         'label' => 'LLL:EXT:templavoila/Resources/Private/Language/locallang_db.xlf:pages.tx_templavoila_ds',
-        'config' => array(
+        'config' => [
             'type' => 'select',
-            'items' => array(
-                array('', 0),
-            ),
+            'items' => [
+                ['', 0],
+            ],
             'allowNonIdValues' => 1,
             'itemsProcFunc' => 'Extension\Templavoila\Service\ItemProcFunc\StaticDataStructuresHandler->dataSourceItemsProcFunc',
             'size' => 1,
@@ -17,33 +17,33 @@ $tempColumns = array(
             'maxitems' => 1,
             'suppress_icons' => 'ONLY_SELECTED',
             'selicon_cols' => 10,
-        )
-    ),
-    'tx_templavoila_to' => array(
+        ]
+    ],
+    'tx_templavoila_to' => [
         'exclude' => 1,
         'label' => 'LLL:EXT:templavoila/Resources/Private/Language/locallang_db.xlf:pages.tx_templavoila_to',
         'displayCond' => 'FIELD:tx_templavoila_ds:REQ:true',
-        'config' => array(
+        'config' => [
             'type' => 'select',
-            'items' => array(
-                array('', 0),
-            ),
+            'items' => [
+                ['', 0],
+            ],
             'itemsProcFunc' => 'Extension\Templavoila\Service\ItemProcFunc\StaticDataStructuresHandler->templateObjectItemsProcFunc',
             'size' => 1,
             'minitems' => 0,
             'maxitems' => 1,
             'suppress_icons' => 'ONLY_SELECTED',
             'selicon_cols' => 10,
-        )
-    ),
-    'tx_templavoila_next_ds' => array(
+        ]
+    ],
+    'tx_templavoila_next_ds' => [
         'exclude' => 1,
         'label' => 'LLL:EXT:templavoila/Resources/Private/Language/locallang_db.xlf:pages.tx_templavoila_next_ds',
-        'config' => array(
+        'config' => [
             'type' => 'select',
-            'items' => array(
-                array('', 0),
-            ),
+            'items' => [
+                ['', 0],
+            ],
             'allowNonIdValues' => 1,
             'itemsProcFunc' => 'Extension\Templavoila\Service\ItemProcFunc\StaticDataStructuresHandler->dataSourceItemsProcFunc',
             'size' => 1,
@@ -51,37 +51,37 @@ $tempColumns = array(
             'maxitems' => 1,
             'suppress_icons' => 'ONLY_SELECTED',
             'selicon_cols' => 10,
-        )
-    ),
-    'tx_templavoila_next_to' => array(
+        ]
+    ],
+    'tx_templavoila_next_to' => [
         'exclude' => 1,
         'label' => 'LLL:EXT:templavoila/Resources/Private/Language/locallang_db.xlf:pages.tx_templavoila_next_to',
         'displayCond' => 'FIELD:tx_templavoila_next_ds:REQ:true',
-        'config' => array(
+        'config' => [
             'type' => 'select',
-            'items' => array(
-                array('', 0),
-            ),
+            'items' => [
+                ['', 0],
+            ],
             'itemsProcFunc' => 'Extension\Templavoila\Service\ItemProcFunc\StaticDataStructuresHandler->templateObjectItemsProcFunc',
             'size' => 1,
             'minitems' => 0,
             'maxitems' => 1,
             'suppress_icons' => 'ONLY_SELECTED',
             'selicon_cols' => 10,
-        )
-    ),
-    'tx_templavoila_flex' => array(
+        ]
+    ],
+    'tx_templavoila_flex' => [
         'exclude' => 1,
         'label' => 'LLL:EXT:templavoila/Resources/Private/Language/locallang_db.xlf:pages.tx_templavoila_flex',
-        'config' => array(
+        'config' => [
             'type' => 'flex',
             'ds_pointerField' => 'tx_templavoila_ds',
             'ds_pointerField_searchParent' => 'pid',
             'ds_pointerField_searchParent_subField' => 'tx_templavoila_next_ds',
             'ds_tableField' => 'tx_templavoila_datastructure:dataprot',
-        )
-    ),
-);
+        ]
+    ],
+];
 \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addTCAcolumns('pages', $tempColumns);
 
 $_EXTCONF = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['templavoila']);

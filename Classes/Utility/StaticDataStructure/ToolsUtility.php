@@ -27,7 +27,7 @@ class ToolsUtility
      */
     public static function readStaticDsFilesIntoArray($conf)
     {
-        $paths = array_unique(array('fce' => $conf['staticDS.']['path_fce'], 'page' => $conf['staticDS.']['path_page']));
+        $paths = array_unique(['fce' => $conf['staticDS.']['path_fce'], 'page' => $conf['staticDS.']['path_page']]);
         foreach ($paths as $type => $path) {
             $absolutePath = \TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName($path);
             $files = \TYPO3\CMS\Core\Utility\GeneralUtility::getFilesInDir($absolutePath, 'xml', true);
@@ -36,7 +36,7 @@ class ToolsUtility
                 $type = false;
             }
             foreach ($files as $filePath) {
-                $staticDataStructure = array();
+                $staticDataStructure = [];
                 $pathInfo = pathinfo($filePath);
 
                 $staticDataStructure['title'] = $pathInfo['filename'];

@@ -63,7 +63,7 @@ class tx_templavoila_mod1_sidebar
      *
      * @var array
      */
-    public $sideBarItems = array();
+    public $sideBarItems = [];
 
     /**
      * Initializes the side bar object. The calling class must make sure that the right locallang files are already loaded.
@@ -86,30 +86,30 @@ class tx_templavoila_mod1_sidebar
         if (\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('version') && !\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('workspaces')
             && \Extension\Templavoila\Utility\GeneralUtility::getBackendUser()->check('modules', 'web_txversionM1')
         ) {
-            $this->sideBarItems['versioning'] = array(
+            $this->sideBarItems['versioning'] = [
                 'object' => &$this,
                 'method' => 'renderItem_versioning',
                 'label' => \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('versioning'),
                 'priority' => 60,
                 'hideIfEmpty' => $hideIfEmpty,
-            );
+            ];
         }
 
-        $this->sideBarItems['headerFields'] = array(
+        $this->sideBarItems['headerFields'] = [
             'object' => &$this,
             'method' => 'renderItem_headerFields',
             'label' => \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('pagerelatedinformation'),
             'priority' => 50,
             'hideIfEmpty' => $hideIfEmpty,
-        );
+        ];
 
-        $this->sideBarItems['advancedFunctions'] = array(
+        $this->sideBarItems['advancedFunctions'] = [
             'object' => &$this,
             'method' => 'renderItem_advancedFunctions',
             'label' => \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('advancedfunctions'),
             'priority' => 20,
             'hideIfEmpty' => $hideIfEmpty,
-        );
+        ];
     }
 
     /**
@@ -128,13 +128,13 @@ class tx_templavoila_mod1_sidebar
     public function addItem($itemKey, &$object, $method, $label, $priority = 50, $hideIfEmpty = false)
     {
         $hideIfEmpty = $pObj->modTSconfig['properties']['showTabsIfEmpty'] ? false : $hideIfEmpty;
-        $this->sideBarItems[$itemKey] = array(
+        $this->sideBarItems[$itemKey] = [
             'object' => $object,
             'method' => $method,
             'label' => $label,
             'priority' => $priority,
             'hideIfEmpty' => $hideIfEmpty
-        );
+        ];
     }
 
     /**
@@ -157,13 +157,13 @@ class tx_templavoila_mod1_sidebar
     public function render()
     {
         if (is_array($this->sideBarItems) && count($this->sideBarItems)) {
-            uasort($this->sideBarItems, array($this, 'sortItemsCompare'));
+            uasort($this->sideBarItems, [$this, 'sortItemsCompare']);
 
             // sort and order the visible tabs
             $tablist = $this->pObj->modTSconfig['properties']['tabList'];
             if ($tablist) {
                 $tabs = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $tablist);
-                $finalSideBarItems = array();
+                $finalSideBarItems = [];
                 foreach ($tabs as $itemKey) {
                     if (isset($this->sideBarItems[$itemKey])) {
                         $finalSideBarItems[$itemKey] = $this->sideBarItems[$itemKey];
@@ -174,7 +174,7 @@ class tx_templavoila_mod1_sidebar
 
             // Render content of each sidebar item:
             $index = 0;
-            $numSortedSideBarItems = array();
+            $numSortedSideBarItems = [];
             foreach ($this->sideBarItems as $itemKey => $sideBarItem) {
                 $content = trim($sideBarItem['object']->{$sideBarItem['method']}($this->pObj));
                 if (!$sideBarItem['hideIfEmpty'] || $content != '') {
@@ -282,19 +282,19 @@ class tx_templavoila_mod1_sidebar
         if (is_array($dataStructureArr) && is_array($dataStructureArr['ROOT']['tx_templavoila']['pageModule'])) {
             $headerTablesAndFieldNames = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(chr(10), str_replace(chr(13), '', $dataStructureArr['ROOT']['tx_templavoila']['pageModule']['displayHeaderFields']), 1);
             if (is_array($headerTablesAndFieldNames)) {
-                $fieldNames = array();
-                $headerFieldRows = array();
-                $headerFields = array();
+                $fieldNames = [];
+                $headerFieldRows = [];
+                $headerFields = [];
 
                 foreach ($headerTablesAndFieldNames as $tableAndFieldName) {
                     list($table, $field) = explode('.', $tableAndFieldName);
                     $fieldNames[$table][] = $field;
-                    $headerFields[] = array(
+                    $headerFields[] = [
                         'table' => $table,
                         'field' => $field,
                         'label' => \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->sL(\TYPO3\CMS\Backend\Utility\BackendUtility::getItemLabel('pages', $field)),
                         'value' => \TYPO3\CMS\Backend\Utility\BackendUtility::getProcessedValue('pages', $field, $pObj->rootElementRecord[$field], 200)
-                    );
+                    ];
                 }
                 if (count($headerFields)) {
                     foreach ($headerFields as $headerFieldArr) {
@@ -339,11 +339,11 @@ class tx_templavoila_mod1_sidebar
                 $onClick = 'jumpToUrl(\'' . $GLOBALS['BACK_PATH'] . \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath('version') . 'cm1/index.php?table=pages&uid=' . $pObj->id . '&returnUrl=' . rawurlencode(\TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('REQUEST_URI')) . '\')';
                 $versionSelector = '<input type="button" value="' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('sidebar_versionSelector_createVersion', true) . '" onclick="' . htmlspecialchars($onClick) . '" />';
             }
-            $tableRows = array('
+            $tableRows = ['
 				<tr class="bgColor4-20">
 					<th colspan="3">&nbsp;</th>
 				</tr>
-			');
+			'];
 
             $tableRows[] = '
 			<tr class="bgColor4">
@@ -369,11 +369,11 @@ class tx_templavoila_mod1_sidebar
      */
     public function renderItem_advancedFunctions(&$pObj)
     {
-        $tableRows = array('
+        $tableRows = ['
 			<tr class="bgColor4-20">
 				<th colspan="3">&nbsp;</th>
 			</tr>
-		');
+		'];
 
         // Render checkbox for showing hidden elements:
         $tableRows[] = '

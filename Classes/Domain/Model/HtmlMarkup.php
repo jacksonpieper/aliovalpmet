@@ -81,7 +81,7 @@ class HtmlMarkup
      *
      * @var array
      */
-    public $checkboxPathsSet = array(); //
+    public $checkboxPathsSet = []; //
 
     /**
      * @var boolean
@@ -100,114 +100,114 @@ class HtmlMarkup
      *
      * @var array
      */
-    public static $tagConf = array(
-        'a' => array('anchor_outside' => 1, 'blocktype' => 'text'),
-        'abbr' => array('blocktype' => 'text'),
-        'address' => array('blocktype' => 'sections'),
-        'area' => array('blocktype' => 'embedding', 'single' => 1),
-        'article' => array('blocktype' => 'sections'),
-        'aside' => array('blocktype' => 'sections'),
-        'audio' => array('blocktype' => 'embedding'),
-        'b' => array('blocktype' => 'text'),
-        'base' => array('blocktype' => 'document', 'single' => 1),
-        'bdo' => array('blocktype' => 'text'),
-        'blockquote' => array('blocktype' => 'grouping'),
-        'body' => array('blocktype' => 'sections'),
-        'br' => array('blocktype' => 'grouping', 'single' => 1),
-        'button' => array('blocktype' => 'form'),
-        'canvas' => array('blocktype' => 'embedding'),
-        'caption' => array('blocktype' => 'table'),
-        'cite' => array('blocktype' => 'text'),
-        'code' => array('blocktype' => 'text'),
-        'col' => array('blocktype' => 'table', 'single' => 1),
-        'colgroup' => array('blocktype' => 'table'),
-        'command' => array('blocktype' => 'interactive', 'single' => 1),
-        'datalist' => array('blocktype' => 'form'),
-        'dd' => array('blocktype' => 'grouping'),
-        'del' => array('blocktype' => 'text'),
-        'details' => array('blocktype' => 'interactive'),
-        'device' => array('blocktype' => 'embedding'),
-        'dfn' => array('blocktype' => 'text'),
-        'div' => array('blocktype' => 'grouping'),
-        'dl' => array('anchor_outside' => 1, 'blocktype' => 'grouping'),
-        'dt' => array('blocktype' => 'grouping'),
-        'em' => array('blocktype' => 'text'),
-        'embed' => array('blocktype' => 'embedding', 'single' => 1),
-        'fieldset' => array('anchor_outside' => 1, 'blocktype' => 'form'),
-        'figcaption' => array('blocktype' => 'grouping'),
-        'figure' => array('blocktype' => 'grouping'),
-        'footer' => array('blocktype' => 'sections'),
-        'form' => array('anchor_outside' => 1, 'blocktype' => 'form'),
-        'h1' => array('blocktype' => 'sections'),
-        'h2' => array('blocktype' => 'sections'),
-        'h3' => array('blocktype' => 'sections'),
-        'h4' => array('blocktype' => 'sections'),
-        'h5' => array('blocktype' => 'sections'),
-        'h6' => array('blocktype' => 'sections'),
-        'head' => array('blocktype' => 'document'),
-        'header' => array('blocktype' => 'sections'),
-        'hgroup' => array('blocktype' => 'sections'),
-        'hr' => array('blocktype' => 'grouping', 'single' => 1),
+    public static $tagConf = [
+        'a' => ['anchor_outside' => 1, 'blocktype' => 'text'],
+        'abbr' => ['blocktype' => 'text'],
+        'address' => ['blocktype' => 'sections'],
+        'area' => ['blocktype' => 'embedding', 'single' => 1],
+        'article' => ['blocktype' => 'sections'],
+        'aside' => ['blocktype' => 'sections'],
+        'audio' => ['blocktype' => 'embedding'],
+        'b' => ['blocktype' => 'text'],
+        'base' => ['blocktype' => 'document', 'single' => 1],
+        'bdo' => ['blocktype' => 'text'],
+        'blockquote' => ['blocktype' => 'grouping'],
+        'body' => ['blocktype' => 'sections'],
+        'br' => ['blocktype' => 'grouping', 'single' => 1],
+        'button' => ['blocktype' => 'form'],
+        'canvas' => ['blocktype' => 'embedding'],
+        'caption' => ['blocktype' => 'table'],
+        'cite' => ['blocktype' => 'text'],
+        'code' => ['blocktype' => 'text'],
+        'col' => ['blocktype' => 'table', 'single' => 1],
+        'colgroup' => ['blocktype' => 'table'],
+        'command' => ['blocktype' => 'interactive', 'single' => 1],
+        'datalist' => ['blocktype' => 'form'],
+        'dd' => ['blocktype' => 'grouping'],
+        'del' => ['blocktype' => 'text'],
+        'details' => ['blocktype' => 'interactive'],
+        'device' => ['blocktype' => 'embedding'],
+        'dfn' => ['blocktype' => 'text'],
+        'div' => ['blocktype' => 'grouping'],
+        'dl' => ['anchor_outside' => 1, 'blocktype' => 'grouping'],
+        'dt' => ['blocktype' => 'grouping'],
+        'em' => ['blocktype' => 'text'],
+        'embed' => ['blocktype' => 'embedding', 'single' => 1],
+        'fieldset' => ['anchor_outside' => 1, 'blocktype' => 'form'],
+        'figcaption' => ['blocktype' => 'grouping'],
+        'figure' => ['blocktype' => 'grouping'],
+        'footer' => ['blocktype' => 'sections'],
+        'form' => ['anchor_outside' => 1, 'blocktype' => 'form'],
+        'h1' => ['blocktype' => 'sections'],
+        'h2' => ['blocktype' => 'sections'],
+        'h3' => ['blocktype' => 'sections'],
+        'h4' => ['blocktype' => 'sections'],
+        'h5' => ['blocktype' => 'sections'],
+        'h6' => ['blocktype' => 'sections'],
+        'head' => ['blocktype' => 'document'],
+        'header' => ['blocktype' => 'sections'],
+        'hgroup' => ['blocktype' => 'sections'],
+        'hr' => ['blocktype' => 'grouping', 'single' => 1],
 //		'html' => array('blocktype'=> 'root'),			-- can't be included since this might break mappings during the upgrade
-        'i' => array('blocktype' => 'text'),
-        'iframe' => array('anchor_outside' => 1, 'blocktype' => 'embedding'),
-        'img' => array('blocktype' => 'embedding', 'single' => 1),
-        'input' => array('blocktype' => 'form', 'single' => 1),
-        'ins' => array('blocktype' => 'text'),
-        'kbd' => array('blocktype' => 'text'),
-        'keygen' => array('blocktype' => 'form'),
-        'label' => array('blocktype' => 'form'),
-        'legend' => array('blocktype' => 'form'),
-        'li' => array('blocktype' => 'grouping'),
-        'link' => array('blocktype' => 'document', 'single' => 1),
-        'map' => array('anchor_outside' => 1, 'blocktype' => 'embedding'),
-        'mark' => array('blocktype' => 'text'),
-        'menu' => array('blocktype' => 'interactive'),
-        'meta' => array('blocktype' => 'document', 'single' => 1),
-        'meter' => array('blocktype' => 'form'),
-        'nav' => array('blocktype' => 'sections'),
-        'noscript' => array('blocktype' => 'document'),
-        'object' => array('anchor_outside' => 1, 'blocktype' => 'embedding'),
-        'ol' => array('anchor_outside' => 1, 'blocktype' => 'grouping'),
-        'optgroup' => array('blocktype' => 'form'),
-        'option' => array('anchor_outside' => 1, 'wrap' => array('</select>', '<select>'), 'blocktype' => 'form'),
-        'output' => array('blocktype' => 'form'),
-        'p' => array('blocktype' => 'grouping'),
-        'param' => array('blocktype' => 'embedding', 'single' => 1),
-        'pre' => array('blocktype' => 'grouping'),
-        'progress' => array('blocktype' => 'form'),
-        'q' => array('blocktype' => 'text'),
-        'rp' => array('blocktype' => 'text'),
-        'rt' => array('blocktype' => 'text'),
-        'ruby' => array('blocktype' => 'text'),
-        'samp' => array('blocktype' => 'text'),
-        'script' => array('blocktype' => 'document'),
-        'section' => array('blocktype' => 'sections'),
-        'select' => array('anchor_outside' => 1, 'blocktype' => 'form'),
-        'small' => array('blocktype' => 'text'),
-        'source' => array('blocktype' => 'embedding', 'single' => 1),
-        'span' => array('blocktype' => 'text'),
-        'strong' => array('blocktype' => 'text'),
-        'style' => array('blocktype' => 'document'),
-        'sub' => array('blocktype' => 'text'),
-        'summary' => array('blocktype' => 'interactive'),
-        'sup' => array('blocktype' => 'text'),
-        'table' => array('anchor_outside' => 1, 'blocktype' => 'table'),
-        'tbody' => array('anchor_outside' => 1, 'blocktype' => 'table'),
-        'td' => array('blocktype' => 'table'),
-        'textarea' => array('anchor_outside' => 1, 'blocktype' => 'form'),
-        'tfoot' => array('anchor_outside' => 1, 'blocktype' => 'table'),
-        'th' => array('blocktype' => 'table'),
-        'thead' => array('anchor_outside' => 1, 'blocktype' => 'table'),
-        'time' => array('blocktype' => 'text'),
-        'title' => array('blocktype' => 'document'),
-        'tr' => array('blocktype' => 'table', 'wrap' => array('<td>', '</td>')),
-        'track' => array('blocktype' => 'embedding'),
-        'ul' => array('anchor_outside' => 1, 'blocktype' => 'grouping'),
-        'var' => array('blocktype' => 'text'),
-        'video' => array('blocktype' => 'embedding'),
-        'wbr' => array('blocktype' => 'text'),
-    );
+        'i' => ['blocktype' => 'text'],
+        'iframe' => ['anchor_outside' => 1, 'blocktype' => 'embedding'],
+        'img' => ['blocktype' => 'embedding', 'single' => 1],
+        'input' => ['blocktype' => 'form', 'single' => 1],
+        'ins' => ['blocktype' => 'text'],
+        'kbd' => ['blocktype' => 'text'],
+        'keygen' => ['blocktype' => 'form'],
+        'label' => ['blocktype' => 'form'],
+        'legend' => ['blocktype' => 'form'],
+        'li' => ['blocktype' => 'grouping'],
+        'link' => ['blocktype' => 'document', 'single' => 1],
+        'map' => ['anchor_outside' => 1, 'blocktype' => 'embedding'],
+        'mark' => ['blocktype' => 'text'],
+        'menu' => ['blocktype' => 'interactive'],
+        'meta' => ['blocktype' => 'document', 'single' => 1],
+        'meter' => ['blocktype' => 'form'],
+        'nav' => ['blocktype' => 'sections'],
+        'noscript' => ['blocktype' => 'document'],
+        'object' => ['anchor_outside' => 1, 'blocktype' => 'embedding'],
+        'ol' => ['anchor_outside' => 1, 'blocktype' => 'grouping'],
+        'optgroup' => ['blocktype' => 'form'],
+        'option' => ['anchor_outside' => 1, 'wrap' => ['</select>', '<select>'], 'blocktype' => 'form'],
+        'output' => ['blocktype' => 'form'],
+        'p' => ['blocktype' => 'grouping'],
+        'param' => ['blocktype' => 'embedding', 'single' => 1],
+        'pre' => ['blocktype' => 'grouping'],
+        'progress' => ['blocktype' => 'form'],
+        'q' => ['blocktype' => 'text'],
+        'rp' => ['blocktype' => 'text'],
+        'rt' => ['blocktype' => 'text'],
+        'ruby' => ['blocktype' => 'text'],
+        'samp' => ['blocktype' => 'text'],
+        'script' => ['blocktype' => 'document'],
+        'section' => ['blocktype' => 'sections'],
+        'select' => ['anchor_outside' => 1, 'blocktype' => 'form'],
+        'small' => ['blocktype' => 'text'],
+        'source' => ['blocktype' => 'embedding', 'single' => 1],
+        'span' => ['blocktype' => 'text'],
+        'strong' => ['blocktype' => 'text'],
+        'style' => ['blocktype' => 'document'],
+        'sub' => ['blocktype' => 'text'],
+        'summary' => ['blocktype' => 'interactive'],
+        'sup' => ['blocktype' => 'text'],
+        'table' => ['anchor_outside' => 1, 'blocktype' => 'table'],
+        'tbody' => ['anchor_outside' => 1, 'blocktype' => 'table'],
+        'td' => ['blocktype' => 'table'],
+        'textarea' => ['anchor_outside' => 1, 'blocktype' => 'form'],
+        'tfoot' => ['anchor_outside' => 1, 'blocktype' => 'table'],
+        'th' => ['blocktype' => 'table'],
+        'thead' => ['anchor_outside' => 1, 'blocktype' => 'table'],
+        'time' => ['blocktype' => 'text'],
+        'title' => ['blocktype' => 'document'],
+        'tr' => ['blocktype' => 'table', 'wrap' => ['<td>', '</td>']],
+        'track' => ['blocktype' => 'embedding'],
+        'ul' => ['anchor_outside' => 1, 'blocktype' => 'grouping'],
+        'var' => ['blocktype' => 'text'],
+        'video' => ['blocktype' => 'embedding'],
+        'wbr' => ['blocktype' => 'text'],
+    ];
 
     /**
      * @var array
@@ -259,21 +259,21 @@ class HtmlMarkup
      *
      * @var array
      */
-    public $elCountArray = array();
+    public $elCountArray = [];
 
     /**
      * Used to register the all elements on the same level
      *
      * @var array
      */
-    public $elParentLevel = array();
+    public $elParentLevel = [];
 
     /**
      * Used to contain the paths to search for when searching for a paths. (see getContentBasedOnPath())
      *
      * @var array
      */
-    public $searchPaths = array();
+    public $searchPaths = [];
 
     /**
      * @return HtmlMarkup
@@ -363,7 +363,7 @@ class HtmlMarkup
     public function getContentBasedOnPath($content, $pathStrArr)
     {
         $this->init();
-        $this->searchPaths = array();
+        $this->searchPaths = [];
 
         foreach ($pathStrArr as $pathStr) {
             list($pathInfo) = $this->splitPath($pathStr);
@@ -381,11 +381,11 @@ class HtmlMarkup
 
         $newBase = $this->recursiveBlockSplitting($content, $tagsBlock, $tagsSolo, 'search');
 
-        return array(
+        return [
             'searchparts' => $this->searchPaths,
             'content' => $newBase,
-            'md5_hashes' => array(md5($newBase), md5($content), md5($this->mergeSearchpartsIntoContent($newBase, $this->searchPaths))),
-        );
+            'md5_hashes' => [md5($newBase), md5($content), md5($this->mergeSearchpartsIntoContent($newBase, $this->searchPaths))],
+        ];
     }
 
     /**
@@ -396,11 +396,11 @@ class HtmlMarkup
      */
     public function splitByPath($content, $pathString)
     {
-        $outArray = array('', $content, '');
+        $outArray = ['', $content, ''];
         if ($pathString) {
             $pathInfo = $this->splitPath($pathString);
             foreach ($pathInfo as $v) {
-                $contentP = $this->getContentBasedOnPath($outArray[1], array($v['fullpath']));
+                $contentP = $this->getContentBasedOnPath($outArray[1], [$v['fullpath']]);
                 $pathExtract = $contentP['searchparts'][$v['path']];
                 if (isset($pathExtract['placeholder'])) {
                     $cSplit = explode($pathExtract['placeholder'], $contentP['content'], 2);
@@ -439,9 +439,9 @@ class HtmlMarkup
         // Exploding the new content by the new token; result is an array where all odd key values contain the key name to insert.
         $cP = explode($token, $divContent['content']);
 
-        $newArray = array();
-        $newArray['cArray'] = array();
-        $newArray['sub'] = array();
+        $newArray = [];
+        $newArray['cArray'] = [];
+        $newArray['sub'] = [];
         foreach ($cP as $k => $v) {
             if ($k % 2) {
                 // Based on the path, find the element in 'searchparts':
@@ -466,7 +466,7 @@ class HtmlMarkup
                     $elements = $currentMappingInfo[$theKeyFound]['el'];
                     if (!is_array($elements)) {
                         // FCE without any child elements
-                        $elements = array();
+                        $elements = [];
                     }
                     $newArray['sub'][$theKeyFound] = $this->splitContentToMappingInfo($lC, $elements);
                 } else {
@@ -487,8 +487,8 @@ class HtmlMarkup
      */
     public function mappingInfoToSearchPath($currentMappingInfo)
     {
-        $paths = array();
-        $pathsArrays = array();
+        $paths = [];
+        $pathsArrays = [];
 
         // Post processing, putting together all duplicate data in arrays which are easy to traverse in the next run.
         foreach ($currentMappingInfo as $val) {
@@ -655,7 +655,7 @@ class HtmlMarkup
         $subPaths = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode('|', $pathStr, 1);
 
         foreach ($subPaths as $index => $path) {
-            $subPaths[$index] = array();
+            $subPaths[$index] = [];
             $subPaths[$index]['fullpath'] = $path;
 
             // Get base parts of the page: the PATH and the COMMAND
@@ -679,7 +679,7 @@ class HtmlMarkup
             }
 
             // Tag list
-            $tagIndex = array();
+            $tagIndex = [];
             $tagSplitParts = $splitParts;
             if ($subPaths[$index]['modifier'] == 'RANGE' && $subPaths[$index]['modifier_value']) {
                 $tagSplitParts[] = $subPaths[$index]['modifier_value'];
@@ -863,14 +863,14 @@ class HtmlMarkup
         $htmlParse = ($this->htmlParse ? $this->htmlParse : \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\Html\HtmlParser::class));
         /* @var $htmlParse \TYPO3\CMS\Core\Html\HtmlParser */
 
-        $types = array(
+        $types = [
             'LINK' => 'text/css',
             'STYLE' => 'text/css',
             'SCRIPT' => 'text/javascript'
-        );
+        ];
         // Traversing mapped header parts:
         if (is_array($MappingInfo_head['headElementPaths'])) {
-            $extraHeaderData = array();
+            $extraHeaderData = [];
             foreach (array_keys($MappingInfo_head['headElementPaths']) as $kk) {
                 if (isset($MappingData_head_cached['cArray']['el_' . $kk])) {
                     $tag = strtoupper($htmlParse->getFirstTagName($MappingData_head_cached['cArray']['el_' . $kk]));
@@ -955,8 +955,8 @@ class HtmlMarkup
         /* @var $this ->htmlParse \TYPO3\CMS\Core\Html\HtmlParser */
 
         // Resetting element count array
-        $this->elCountArray = array();
-        $this->elParentLevel = array();
+        $this->elCountArray = [];
+        $this->elParentLevel = [];
 
         // Setting gnyf style
         $style = '';
@@ -975,8 +975,8 @@ class HtmlMarkup
     public function setTagsFromXML($content)
     {
         $parser = xml_parser_create();
-        $vals = array();
-        $index = array();
+        $vals = [];
+        $index = [];
 
         xml_parser_set_option($parser, XML_OPTION_CASE_FOLDING, 0);
         xml_parser_set_option($parser, XML_OPTION_SKIP_WHITE, 0);
@@ -989,7 +989,7 @@ class HtmlMarkup
 
         $this->tags = $index;
         foreach ($index as $idx => $value) {
-            $this->tags[$idx] = array();
+            $this->tags[$idx] = [];
         }
 
         $this->textGnyf = true;
@@ -1009,8 +1009,8 @@ class HtmlMarkup
     {
         $showTagsArr = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', strtolower($showTags), 1);
         $showTagsArr = array_flip($showTagsArr);
-        $tagList_elements = array();
-        $tagList_single = array();
+        $tagList_elements = [];
+        $tagList_single = [];
 
         foreach ($this->tags as $tagname => $tagconfig) {
             if (isset($showTagsArr[$tagname])) {
@@ -1022,7 +1022,7 @@ class HtmlMarkup
             }
         }
 
-        return array(implode(',', $tagList_elements), implode(',', $tagList_single));
+        return [implode(',', $tagList_elements), implode(',', $tagList_single)];
     }
 
     /**

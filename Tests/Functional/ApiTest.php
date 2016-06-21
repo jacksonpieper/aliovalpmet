@@ -29,12 +29,12 @@ class ApiTest extends \TYPO3\CMS\Core\Tests\FunctionalTestCase
     /**
      * @var array
      */
-    protected $testExtensionsToLoad = array(
+    protected $testExtensionsToLoad = [
         'typo3/sysext/version',
         'typo3/sysext/workspaces',
         'typo3conf/ext/static_info_tables',
         'typo3conf/ext/templavoila'
-    );
+    ];
 
     /**
      * @var \Extension\Templavoila\Service\ApiService
@@ -59,9 +59,9 @@ class ApiTest extends \TYPO3\CMS\Core\Tests\FunctionalTestCase
         parent::setUp();
         $this->api = new \Extension\Templavoila\Service\ApiService();
 
-        $this->dataHandler = $this->getMock('TYPO3\CMS\Core\DataHandling\DataHandler', array('dummy'));
+        $this->dataHandler = $this->getMock('TYPO3\CMS\Core\DataHandling\DataHandler', ['dummy']);
 
-        $fixtureTables = array(
+        $fixtureTables = [
             'sys_language',
             'pages',
             'pages_language_overlay',
@@ -70,7 +70,7 @@ class ApiTest extends \TYPO3\CMS\Core\Tests\FunctionalTestCase
             'tx_templavoila_datastructure',
             'tx_templavoila_tmplobj',
             'static_languages',
-        );
+        ];
 
         $fixtureRootPath = ORIGINAL_ROOT . 'typo3conf/ext/templavoila/Tests/Functional/Fixtures/';
 
@@ -96,7 +96,7 @@ class ApiTest extends \TYPO3\CMS\Core\Tests\FunctionalTestCase
 
         $row['pid'] = $pageUid;
 
-        $destinationPointer = array(
+        $destinationPointer = [
             'table' => 'pages',
             'uid' => $pageUid,
             'sheet' => 'sDEF',
@@ -104,7 +104,7 @@ class ApiTest extends \TYPO3\CMS\Core\Tests\FunctionalTestCase
             'field' => 'field_content',
             'vLang' => 'vDEF',
             'position' => '0'
-        );
+        ];
 
         // run insertElement():
         $elementUid = $this->api->insertElement($destinationPointer, $row);
@@ -129,7 +129,7 @@ class ApiTest extends \TYPO3\CMS\Core\Tests\FunctionalTestCase
         $row['pid'] = $pageUid;
         $row['bodytext'] = 'SECOND content element';
 
-        $destinationPointer = array(
+        $destinationPointer = [
             'table' => 'pages',
             'uid' => $pageUid,
             'sheet' => 'sDEF',
@@ -137,7 +137,7 @@ class ApiTest extends \TYPO3\CMS\Core\Tests\FunctionalTestCase
             'field' => 'field_content',
             'vLang' => 'vDEF',
             'position' => '0' // Before first element
-        );
+        ];
 
         // run insertElement():
         $secondElementUid = $this->api->insertElement($destinationPointer, $row);
@@ -162,7 +162,7 @@ class ApiTest extends \TYPO3\CMS\Core\Tests\FunctionalTestCase
         $row['pid'] = 1;
         $row['bodytext'] = 'THIRD content element';
 
-        $destinationPointer = array(
+        $destinationPointer = [
             'table' => 'pages',
             'uid' => $pageUid,
             'sheet' => 'sDEF',
@@ -171,7 +171,7 @@ class ApiTest extends \TYPO3\CMS\Core\Tests\FunctionalTestCase
             'vLang' => 'vDEF',
             'position' => '1', // After first element
             'targetCheckUid' => $secondElementUid
-        );
+        ];
 
         // run insertElement():
         $thirdElementUid = $this->api->insertElement($destinationPointer, $row);
@@ -204,7 +204,7 @@ class ApiTest extends \TYPO3\CMS\Core\Tests\FunctionalTestCase
         $row = $this->fixture_getContentElementRow_TEXT();
         $row['pid'] = $pageUid;
 
-        $destinationPointer = array(
+        $destinationPointer = [
             'table' => 'pages',
             'uid' => $pageUid,
             'sheet' => 'sDEF',
@@ -212,7 +212,7 @@ class ApiTest extends \TYPO3\CMS\Core\Tests\FunctionalTestCase
             'field' => 'field_content',
             'vLang' => 'vDEF',
             'position' => '0'
-        );
+        ];
 
         // run insertElement():
         $elementUid = $this->api->insertElement($destinationPointer, $row);
@@ -241,7 +241,7 @@ class ApiTest extends \TYPO3\CMS\Core\Tests\FunctionalTestCase
         $row['pid'] = $pageUid;
         $row['bodytext'] = 'SECOND content element';
 
-        $destinationPointer = array(
+        $destinationPointer = [
             'table' => 'pages',
             'uid' => $pageUid,
             'sheet' => 'sDEF',
@@ -249,7 +249,7 @@ class ApiTest extends \TYPO3\CMS\Core\Tests\FunctionalTestCase
             'field' => 'field_content',
             'vLang' => 'vDEF',
             'position' => '0' // Before first element
-        );
+        ];
 
         // run insertElement():
         $secondElementUid = $this->api->insertElement($destinationPointer, $row);
@@ -277,7 +277,7 @@ class ApiTest extends \TYPO3\CMS\Core\Tests\FunctionalTestCase
         $row['pid'] = $pageUid;
         $row['bodytext'] = 'THIRD content element';
 
-        $destinationPointer = array(
+        $destinationPointer = [
             'table' => 'pages',
             'uid' => $pageUid,
             'sheet' => 'sDEF',
@@ -286,7 +286,7 @@ class ApiTest extends \TYPO3\CMS\Core\Tests\FunctionalTestCase
             'vLang' => 'vDEF',
             'position' => '1', // After first element
             'targetCheckUid' => $secondElementUid
-        );
+        ];
 
         // run insertElement():
         $thirdElementUid = $this->api->insertElement($destinationPointer, $row);
@@ -321,7 +321,7 @@ class ApiTest extends \TYPO3\CMS\Core\Tests\FunctionalTestCase
         $row = $this->fixture_getContentElementRow_TEXT();
         $row['pid'] = $pageUid;
 
-        $destinationPointer = array(
+        $destinationPointer = [
             'table' => 'be_users',
             'uid' => 1,
             'sheet' => 'sDEF',
@@ -329,7 +329,7 @@ class ApiTest extends \TYPO3\CMS\Core\Tests\FunctionalTestCase
             'field' => 'field_content',
             'vLang' => 'vDEF',
             'position' => '1'
-        );
+        ];
 
         // Try to insert the element with invalid parent table:
         $elementUid = $this->api->insertElement($destinationPointer, $row);
@@ -345,11 +345,11 @@ class ApiTest extends \TYPO3\CMS\Core\Tests\FunctionalTestCase
         $this->dataHandler->stripslashes_values = 0;
 
         // Create 3 new content elements:
-        $elementUids = array();
+        $elementUids = [];
         for ($i = 0; $i < 3; $i++) {
             $row = $this->fixture_getContentElementRow_TEXT();
             $row['bodytext'] = 'insert test element #' . ($i + 1);
-            $destinationPointer = array(
+            $destinationPointer = [
                 'table' => 'pages',
                 'uid' => $pageUid,
                 'sheet' => 'sDEF',
@@ -357,12 +357,12 @@ class ApiTest extends \TYPO3\CMS\Core\Tests\FunctionalTestCase
                 'field' => 'field_content',
                 'vLang' => 'vDEF',
                 'position' => $i
-            );
+            ];
             $elementUids[($i + 1)] = $this->api->insertElement($destinationPointer, $row);
         }
 
         // Check if the sorting field has been set correctly:
-        $elementRecords = array();
+        $elementRecords = [];
         $elementRecords[1] = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecordRaw('tt_content', 'uid=' . $elementUids[1], 'uid,sorting');
         $elementRecords[2] = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecordRaw('tt_content', 'uid=' . $elementUids[2], 'uid,sorting');
         $elementRecords[3] = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecordRaw('tt_content', 'uid=' . $elementUids[3], 'uid,sorting');
@@ -373,7 +373,7 @@ class ApiTest extends \TYPO3\CMS\Core\Tests\FunctionalTestCase
         // Insert yet another element after the first:
         $row = $this->fixture_getContentElementRow_TEXT();
         $row['bodytext'] = 'insert test element #4';
-        $destinationPointer = array(
+        $destinationPointer = [
             'table' => 'pages',
             'uid' => $pageUid,
             'sheet' => 'sDEF',
@@ -381,12 +381,12 @@ class ApiTest extends \TYPO3\CMS\Core\Tests\FunctionalTestCase
             'field' => 'field_content',
             'vLang' => 'vDEF',
             'position' => 1
-        );
+        ];
 
         $elementUids[4] = $this->api->insertElement($destinationPointer, $row);
 
         // Check if the sorting field has been set correctly:
-        $elementRecords = array();
+        $elementRecords = [];
         $elementRecords[1] = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecordRaw('tt_content', 'uid=' . $elementUids[1], 'uid,sorting');
         $elementRecords[2] = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecordRaw('tt_content', 'uid=' . $elementUids[2], 'uid,sorting');
         $elementRecords[3] = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecordRaw('tt_content', 'uid=' . $elementUids[3], 'uid,sorting');
@@ -408,11 +408,11 @@ class ApiTest extends \TYPO3\CMS\Core\Tests\FunctionalTestCase
         $this->dataHandler->stripslashes_values = 0;
 
         // Create 2 new content elements, one in the main area and one in the right bar:
-        $elementUids = array();
+        $elementUids = [];
 
         $row = $this->fixture_getContentElementRow_TEXT();
         $row['bodytext'] = 'oldStyleColumnNumber test #1';
-        $destinationPointer = array(
+        $destinationPointer = [
             'table' => 'pages',
             'uid' => $pageUid,
             'sheet' => 'sDEF',
@@ -420,12 +420,12 @@ class ApiTest extends \TYPO3\CMS\Core\Tests\FunctionalTestCase
             'field' => 'field_content',
             'vLang' => 'vDEF',
             'position' => 0
-        );
+        ];
         $elementUids[1] = $this->api->insertElement($destinationPointer, $row);
 
         $row = $this->fixture_getContentElementRow_TEXT();
         $row['bodytext'] = 'oldStyleColumnNumber test #2';
-        $destinationPointer = array(
+        $destinationPointer = [
             'table' => 'pages',
             'uid' => $pageUid,
             'sheet' => 'sDEF',
@@ -433,10 +433,10 @@ class ApiTest extends \TYPO3\CMS\Core\Tests\FunctionalTestCase
             'field' => 'field_rightbar',
             'vLang' => 'vDEF',
             'position' => 0
-        );
+        ];
         $elementUids[2] = $this->api->insertElement($destinationPointer, $row);
 
-        $elementRecords = array();
+        $elementRecords = [];
         $elementRecords[1] = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecordRaw('tt_content', 'uid=' . $elementUids[1], 'uid,sorting,colpos');
         $elementRecords[2] = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecordRaw('tt_content', 'uid=' . $elementUids[2], 'uid,sorting,colpos');
 
@@ -456,11 +456,11 @@ class ApiTest extends \TYPO3\CMS\Core\Tests\FunctionalTestCase
         $this->backendUser->setWorkspace(-1);
 
         // Create 3 new content elements:
-        $elementUids = array();
+        $elementUids = [];
         for ($i = 0; $i < 3; $i++) {
             $row = $this->fixture_getContentElementRow_TEXT();
             $row['bodytext'] = 'insert test element #' . ($i + 1);
-            $destinationPointer = array(
+            $destinationPointer = [
                 'table' => 'pages',
                 'uid' => $pageUid,
                 'sheet' => 'sDEF',
@@ -468,7 +468,7 @@ class ApiTest extends \TYPO3\CMS\Core\Tests\FunctionalTestCase
                 'field' => 'field_content',
                 'vLang' => 'vDEF',
                 'position' => $i
-            );
+            ];
 
             $elementUids[($i + 1)] = $this->api->insertElement($destinationPointer, $row);
         }
@@ -479,20 +479,20 @@ class ApiTest extends \TYPO3\CMS\Core\Tests\FunctionalTestCase
 
         $this->dataHandler->stripslashes_values = 0;
 
-        $cmdMap = array(
-            'tt_content' => array(
-                \TYPO3\CMS\Backend\Utility\BackendUtility::wsMapId('tt_content', $elementUids[2]) => array(
+        $cmdMap = [
+            'tt_content' => [
+                \TYPO3\CMS\Backend\Utility\BackendUtility::wsMapId('tt_content', $elementUids[2]) => [
                     'delete' => 1
-                )
-            )
-        );
-        $this->dataHandler->start(array(), $cmdMap);
+                ]
+            ]
+        ];
+        $this->dataHandler->start([], $cmdMap);
         $this->dataHandler->process_cmdmap();
 
         // Now insert an element after the second:
         $row = $this->fixture_getContentElementRow_TEXT();
         $row['bodytext'] = 'insert test element #4';
-        $destinationPointer = array(
+        $destinationPointer = [
             'table' => 'pages',
             'uid' => $pageUid,
             'sheet' => 'sDEF',
@@ -500,7 +500,7 @@ class ApiTest extends \TYPO3\CMS\Core\Tests\FunctionalTestCase
             'field' => 'field_content',
             'vLang' => 'vDEF',
             'position' => 2
-        );
+        ];
 
         $elementUids[4] = $this->api->insertElement($destinationPointer, $row);
         self::assertTrue($elementUids[4] !== false, 'Bug 3042 part one - Inserting a new element was not successful, insertElement() returned FALSE');
@@ -525,11 +525,11 @@ class ApiTest extends \TYPO3\CMS\Core\Tests\FunctionalTestCase
         $this->backendUser->setWorkspace(-1);
 
         // Create 3 new content elements:
-        $elementUids = array();
+        $elementUids = [];
         for ($i = 0; $i < 3; $i++) {
             $row = $this->fixture_getContentElementRow_TEXT();
             $row['bodytext'] = 'insert test element #' . ($i + 1);
-            $destinationPointer = array(
+            $destinationPointer = [
                 'table' => 'pages',
                 'uid' => $pageUid,
                 'sheet' => 'sDEF',
@@ -537,7 +537,7 @@ class ApiTest extends \TYPO3\CMS\Core\Tests\FunctionalTestCase
                 'field' => 'field_content',
                 'vLang' => 'vDEF',
                 'position' => $i
-            );
+            ];
 
             $elementUids[($i + 1)] = $this->api->insertElement($destinationPointer, $row);
         }
@@ -548,13 +548,13 @@ class ApiTest extends \TYPO3\CMS\Core\Tests\FunctionalTestCase
         $this->getDatabaseConnection()->exec_UPDATEquery(
             'tt_content',
             'uid=' . (int)$elementUids[2],
-            array('deleted' => 1)
+            ['deleted' => 1]
         );
 
         // Now insert an element after the second:
         $row = $this->fixture_getContentElementRow_TEXT();
         $row['bodytext'] = 'insert test element #4';
-        $destinationPointer = array(
+        $destinationPointer = [
             'table' => 'pages',
             'uid' => $pageUid,
             'sheet' => 'sDEF',
@@ -562,7 +562,7 @@ class ApiTest extends \TYPO3\CMS\Core\Tests\FunctionalTestCase
             'field' => 'field_content',
             'vLang' => 'vDEF',
             'position' => 2
-        );
+        ];
         $elementUids[4] = $this->api->insertElement($destinationPointer, $row);
         self::assertTrue($elementUids[4] !== false, 'Bug 3042 Part two - Inserting a new element was not successful, insertElement() returned FALSE');
 
@@ -583,11 +583,11 @@ class ApiTest extends \TYPO3\CMS\Core\Tests\FunctionalTestCase
         $this->backendUser->setWorkspace(-1);
 
         // Create 3 new content elements:
-        $elementUids = array();
+        $elementUids = [];
         for ($i = 0; $i < 3; $i++) {
             $row = $this->fixture_getContentElementRow_TEXT();
             $row['bodytext'] = 'move test element #' . $i;
-            $destinationPointer = array(
+            $destinationPointer = [
                 'table' => 'pages',
                 'uid' => $pageUid,
                 'sheet' => 'sDEF',
@@ -595,12 +595,12 @@ class ApiTest extends \TYPO3\CMS\Core\Tests\FunctionalTestCase
                 'field' => 'field_content',
                 'vLang' => 'vDEF',
                 'position' => $i
-            );
+            ];
             $elementUids[($i + 1)] = $this->api->insertElement($destinationPointer, $row);
         }
 
         // Cut first element and paste it after the third:
-        $sourcePointer = array(
+        $sourcePointer = [
             'table' => 'pages',
             'uid' => $pageUid,
             'sheet' => 'sDEF',
@@ -608,9 +608,9 @@ class ApiTest extends \TYPO3\CMS\Core\Tests\FunctionalTestCase
             'field' => 'field_content',
             'vLang' => 'vDEF',
             'position' => 1
-        );
+        ];
 
-        $destinationPointer = array(
+        $destinationPointer = [
             'table' => 'pages',
             'uid' => $pageUid,
             'sheet' => 'sDEF',
@@ -618,7 +618,7 @@ class ApiTest extends \TYPO3\CMS\Core\Tests\FunctionalTestCase
             'field' => 'field_content',
             'vLang' => 'vDEF',
             'position' => 3
-        );
+        ];
 
         // Move the element within the same page with valid source and destination pointer:
         $result = $this->api->moveElement($sourcePointer, $destinationPointer);
@@ -631,7 +631,7 @@ class ApiTest extends \TYPO3\CMS\Core\Tests\FunctionalTestCase
         self::assertEquals((string) $xpathResArr[0], $elementUids[2] . ',' . $elementUids[3] . ',' . $elementUids[1], 'The reference list is not as expected after moving the first element after the third with moveElement()!');
 
         // Cut third element and paste it after the first:
-        $sourcePointer = array(
+        $sourcePointer = [
             'table' => 'pages',
             'uid' => $pageUid,
             'sheet' => 'sDEF',
@@ -639,9 +639,9 @@ class ApiTest extends \TYPO3\CMS\Core\Tests\FunctionalTestCase
             'field' => 'field_content',
             'vLang' => 'vDEF',
             'position' => 3
-        );
+        ];
 
-        $destinationPointer = array(
+        $destinationPointer = [
             'table' => 'pages',
             'uid' => $pageUid,
             'sheet' => 'sDEF',
@@ -649,7 +649,7 @@ class ApiTest extends \TYPO3\CMS\Core\Tests\FunctionalTestCase
             'field' => 'field_content',
             'vLang' => 'vDEF',
             'position' => 1
-        );
+        ];
 
         // Move the element within the same page with valid source and destination pointer:
         $result = $this->api->moveElement($sourcePointer, $destinationPointer);
@@ -677,7 +677,7 @@ class ApiTest extends \TYPO3\CMS\Core\Tests\FunctionalTestCase
 
         // Create a 2-column FCE:
         $row = $this->fixture_getContentElementRow_FCE(3, 3);
-        $destinationPointer = array(
+        $destinationPointer = [
             'table' => 'pages',
             'uid' => $pageUid,
             'sheet' => 'sDEF',
@@ -685,16 +685,16 @@ class ApiTest extends \TYPO3\CMS\Core\Tests\FunctionalTestCase
             'field' => 'field_content',
             'vLang' => 'vDEF',
             'position' => 0
-        );
+        ];
         $FCEUid = $this->api->insertElement($destinationPointer, $row);
 
         // Create 3+3 new content elements within the two columns of the FCE:
-        $elementUidsLeft = array();
-        $elementUidsRight = array();
+        $elementUidsLeft = [];
+        $elementUidsRight = [];
         for ($i = 0; $i < 3; $i++) {
             $row = $this->fixture_getContentElementRow_TEXT();
             $row['bodytext'] = 'move test element left #' . $i;
-            $destinationPointer = array(
+            $destinationPointer = [
                 'table' => 'tt_content',
                 'uid' => $FCEUid,
                 'sheet' => 'sDEF',
@@ -702,11 +702,11 @@ class ApiTest extends \TYPO3\CMS\Core\Tests\FunctionalTestCase
                 'field' => 'field_leftcolumn',
                 'vLang' => 'vDEF',
                 'position' => $i
-            );
+            ];
             $elementUidsLeft[($i + 1)] = $this->api->insertElement($destinationPointer, $row);
 
             $row['bodytext'] = 'move test element right #' . $i;
-            $destinationPointer = array(
+            $destinationPointer = [
                 'table' => 'tt_content',
                 'uid' => $FCEUid,
                 'sheet' => 'sDEF',
@@ -714,12 +714,12 @@ class ApiTest extends \TYPO3\CMS\Core\Tests\FunctionalTestCase
                 'field' => 'field_rightcolumn',
                 'vLang' => 'vDEF',
                 'position' => $i
-            );
+            ];
             $elementUidsRight[($i + 1)] = $this->api->insertElement($destinationPointer, $row);
         }
 
         // Right column: cut first element and paste it after the third:
-        $sourcePointer = array(
+        $sourcePointer = [
             'table' => 'tt_content',
             'uid' => $FCEUid,
             'sheet' => 'sDEF',
@@ -727,9 +727,9 @@ class ApiTest extends \TYPO3\CMS\Core\Tests\FunctionalTestCase
             'field' => 'field_rightcolumn',
             'vLang' => 'vDEF',
             'position' => 1
-        );
+        ];
 
-        $destinationPointer = array(
+        $destinationPointer = [
             'table' => 'tt_content',
             'uid' => $FCEUid,
             'sheet' => 'sDEF',
@@ -737,7 +737,7 @@ class ApiTest extends \TYPO3\CMS\Core\Tests\FunctionalTestCase
             'field' => 'field_rightcolumn',
             'vLang' => 'vDEF',
             'position' => 3
-        );
+        ];
 
         // Move the element within the same FCE with valid source and destination pointer:
         $result = $this->api->moveElement($sourcePointer, $destinationPointer);
@@ -750,7 +750,7 @@ class ApiTest extends \TYPO3\CMS\Core\Tests\FunctionalTestCase
         self::assertEquals((string) $xpathResArr[0], $elementUidsRight[2] . ',' . $elementUidsRight[3] . ',' . $elementUidsRight[1], 'The reference list is not as expected after moving the first element after the third with moveElement()!');
 
         // Cut third element of the right column and paste it after the first in the left column:
-        $sourcePointer = array(
+        $sourcePointer = [
             'table' => 'tt_content',
             'uid' => $FCEUid,
             'sheet' => 'sDEF',
@@ -758,9 +758,9 @@ class ApiTest extends \TYPO3\CMS\Core\Tests\FunctionalTestCase
             'field' => 'field_rightcolumn',
             'vLang' => 'vDEF',
             'position' => 3
-        );
+        ];
 
-        $destinationPointer = array(
+        $destinationPointer = [
             'table' => 'tt_content',
             'uid' => $FCEUid,
             'sheet' => 'sDEF',
@@ -768,7 +768,7 @@ class ApiTest extends \TYPO3\CMS\Core\Tests\FunctionalTestCase
             'field' => 'field_leftcolumn',
             'vLang' => 'vDEF',
             'position' => 1
-        );
+        ];
 
         // Move the element within the same FCE with valid source and destination pointer from one column to another:
         $result = $this->api->moveElement($sourcePointer, $destinationPointer);
@@ -794,11 +794,11 @@ class ApiTest extends \TYPO3\CMS\Core\Tests\FunctionalTestCase
         $this->backendUser->setWorkspace(-1);
 
         // Create 3 new content elements:
-        $elementUids = array();
+        $elementUids = [];
         for ($i = 0; $i < 3; $i++) {
             $row = $this->fixture_getContentElementRow_TEXT();
             $row['bodytext'] = 'move test element #' . $i;
-            $destinationPointer = array(
+            $destinationPointer = [
                 'table' => 'pages',
                 'uid' => $pageUid,
                 'sheet' => 'sDEF',
@@ -806,12 +806,12 @@ class ApiTest extends \TYPO3\CMS\Core\Tests\FunctionalTestCase
                 'field' => 'field_content',
                 'vLang' => 'vDEF',
                 'position' => $i
-            );
+            ];
             $elementUids[($i + 1)] = $this->api->insertElement($destinationPointer, $row);
         }
 
         // Cut first element and paste it after the third:
-        $sourcePointer = array(
+        $sourcePointer = [
             'table' => 'pages',
             'uid' => $pageUid,
             'sheet' => 'sDEF',
@@ -819,9 +819,9 @@ class ApiTest extends \TYPO3\CMS\Core\Tests\FunctionalTestCase
             'field' => 'field_content',
             'vLang' => 'vDEF',
             'position' => 1
-        );
+        ];
 
-        $destinationPointer = array(
+        $destinationPointer = [
             'table' => 'pages',
             'uid' => $pageUid,
             'sheet' => 'sDEF',
@@ -829,7 +829,7 @@ class ApiTest extends \TYPO3\CMS\Core\Tests\FunctionalTestCase
             'field' => 'field_content',
             'vLang' => 'vDEF',
             'position' => 3
-        );
+        ];
 
         // Move the element within the same page with valid source and destination pointer:
         $result = $this->api->moveElement($sourcePointer, $destinationPointer);
@@ -842,7 +842,7 @@ class ApiTest extends \TYPO3\CMS\Core\Tests\FunctionalTestCase
         self::assertEquals((string) $xpathResArr[0], $elementUids[2] . ',' . $elementUids[3] . ',' . $elementUids[1], 'The reference list is not as expected after moving the first element after the third with moveElement()!');
 
         // Cut third element and paste it after the first:
-        $sourcePointer = array(
+        $sourcePointer = [
             'table' => 'pages',
             'uid' => $pageUid,
             'sheet' => 'sDEF',
@@ -850,9 +850,9 @@ class ApiTest extends \TYPO3\CMS\Core\Tests\FunctionalTestCase
             'field' => 'field_content',
             'vLang' => 'vDEF',
             'position' => 3
-        );
+        ];
 
-        $destinationPointer = array(
+        $destinationPointer = [
             'table' => 'pages',
             'uid' => $pageUid,
             'sheet' => 'sDEF',
@@ -860,7 +860,7 @@ class ApiTest extends \TYPO3\CMS\Core\Tests\FunctionalTestCase
             'field' => 'field_content',
             'vLang' => 'vDEF',
             'position' => 1
-        );
+        ];
 
         // Move the element within the same page with valid source and destination pointer:
         $result = $this->api->moveElement($sourcePointer, $destinationPointer);
@@ -887,12 +887,12 @@ class ApiTest extends \TYPO3\CMS\Core\Tests\FunctionalTestCase
         $targetPageUid = 2;
 
         // Create 3 new content elements on test page and on target page:
-        $sourcePageElementUids = array();
-        $targetPageElementUids = array();
+        $sourcePageElementUids = [];
+        $targetPageElementUids = [];
         for ($i = 0; $i < 3; $i++) {
             $row = $this->fixture_getContentElementRow_TEXT();
             $row['bodytext'] = 'move test element #' . ($i + 1);
-            $destinationPointer = array(
+            $destinationPointer = [
                 'table' => 'pages',
                 'uid' => $pageUid,
                 'sheet' => 'sDEF',
@@ -900,11 +900,11 @@ class ApiTest extends \TYPO3\CMS\Core\Tests\FunctionalTestCase
                 'field' => 'field_content',
                 'vLang' => 'vDEF',
                 'position' => $i
-            );
+            ];
             $sourcePageElementUids[($i + 1)] = $this->api->insertElement($destinationPointer, $row);
 
             $row['bodytext'] = 'move test element (destination page) #' . ($i + 1);
-            $destinationPointer = array(
+            $destinationPointer = [
                 'table' => 'pages',
                 'uid' => $targetPageUid,
                 'sheet' => 'sDEF',
@@ -912,12 +912,12 @@ class ApiTest extends \TYPO3\CMS\Core\Tests\FunctionalTestCase
                 'field' => 'field_content',
                 'vLang' => 'vDEF',
                 'position' => $i
-            );
+            ];
             $targetPageElementUids[($i + 1)] = $this->api->insertElement($destinationPointer, $row);
         }
 
         // Cut second element from source test page and paste it after the first of the target page:
-        $sourcePointer = array(
+        $sourcePointer = [
             'table' => 'pages',
             'uid' => $pageUid,
             'sheet' => 'sDEF',
@@ -925,9 +925,9 @@ class ApiTest extends \TYPO3\CMS\Core\Tests\FunctionalTestCase
             'field' => 'field_content',
             'vLang' => 'vDEF',
             'position' => 2
-        );
+        ];
 
-        $destinationPointer = array(
+        $destinationPointer = [
             'table' => 'pages',
             'uid' => $targetPageUid,
             'sheet' => 'sDEF',
@@ -936,7 +936,7 @@ class ApiTest extends \TYPO3\CMS\Core\Tests\FunctionalTestCase
             'vLang' => 'vDEF',
             'position' => 1,
             'targetCheckUid' => $targetPageElementUids[1]
-        );
+        ];
 
         // Move the element:
         $result = $this->api->moveElement($sourcePointer, $destinationPointer);
@@ -964,12 +964,12 @@ class ApiTest extends \TYPO3\CMS\Core\Tests\FunctionalTestCase
         $this->backendUser->setWorkspace(-1);
 
         // Create 3 new content elements on test page and on target page:
-        $sourcePageElementUids = array();
-        $targetPageElementUids = array();
+        $sourcePageElementUids = [];
+        $targetPageElementUids = [];
         for ($i = 0; $i < 3; $i++) {
             $row = $this->fixture_getContentElementRow_TEXT();
             $row['bodytext'] = 'move test element #' . ($i + 1);
-            $destinationPointer = array(
+            $destinationPointer = [
                 'table' => 'pages',
                 'uid' => $pageUid,
                 'sheet' => 'sDEF',
@@ -977,11 +977,11 @@ class ApiTest extends \TYPO3\CMS\Core\Tests\FunctionalTestCase
                 'field' => 'field_content',
                 'vLang' => 'vDEF',
                 'position' => $i
-            );
+            ];
             $sourcePageElementUids[($i + 1)] = $this->api->insertElement($destinationPointer, $row);
 
             $row['bodytext'] = 'move test element (destination page) #' . ($i + 1);
-            $destinationPointer = array(
+            $destinationPointer = [
                 'table' => 'pages',
                 'uid' => $targetPageUid,
                 'sheet' => 'sDEF',
@@ -989,12 +989,12 @@ class ApiTest extends \TYPO3\CMS\Core\Tests\FunctionalTestCase
                 'field' => 'field_content',
                 'vLang' => 'vDEF',
                 'position' => $i
-            );
+            ];
             $targetPageElementUids[($i + 1)] = $this->api->insertElement($destinationPointer, $row);
         }
 
         // Cut second element from source test page and paste it after the first of the target page:
-        $sourcePointer = array(
+        $sourcePointer = [
             'table' => 'pages',
             'uid' => $pageUid,
             'sheet' => 'sDEF',
@@ -1002,9 +1002,9 @@ class ApiTest extends \TYPO3\CMS\Core\Tests\FunctionalTestCase
             'field' => 'field_content',
             'vLang' => 'vDEF',
             'position' => 2
-        );
+        ];
 
-        $destinationPointer = array(
+        $destinationPointer = [
             'table' => 'pages',
             'uid' => $targetPageUid,
             'sheet' => 'sDEF',
@@ -1013,7 +1013,7 @@ class ApiTest extends \TYPO3\CMS\Core\Tests\FunctionalTestCase
             'vLang' => 'vDEF',
             'position' => 1,
             'targetCheckUid' => $targetPageElementUids[1]
-        );
+        ];
 
         // Move the element:
         $result = $this->api->moveElement($sourcePointer, $destinationPointer);
@@ -1039,11 +1039,11 @@ class ApiTest extends \TYPO3\CMS\Core\Tests\FunctionalTestCase
         $pageUid = 1;
 
         // Create new content elements:
-        $elementUids = array();
+        $elementUids = [];
         for ($i = 0; $i < 3; $i++) {
             $row = $this->fixture_getContentElementRow_TEXT();
             $row['bodytext'] = 'copytest element #' . $i;
-            $destinationPointer = array(
+            $destinationPointer = [
                 'table' => 'pages',
                 'uid' => $pageUid,
                 'sheet' => 'sDEF',
@@ -1051,12 +1051,12 @@ class ApiTest extends \TYPO3\CMS\Core\Tests\FunctionalTestCase
                 'field' => 'field_content',
                 'vLang' => 'vDEF',
                 'position' => $i
-            );
+            ];
             $elementUids[($i + 1)] = $this->api->insertElement($destinationPointer, $row);
         }
 
         // Copy second element and paste it after the third:
-        $sourcePointer = array(
+        $sourcePointer = [
             'table' => 'pages',
             'uid' => $pageUid,
             'sheet' => 'sDEF',
@@ -1064,9 +1064,9 @@ class ApiTest extends \TYPO3\CMS\Core\Tests\FunctionalTestCase
             'field' => 'field_content',
             'vLang' => 'vDEF',
             'position' => 2
-        );
+        ];
 
-        $destinationPointer = array(
+        $destinationPointer = [
             'table' => 'pages',
             'uid' => $pageUid,
             'sheet' => 'sDEF',
@@ -1074,7 +1074,7 @@ class ApiTest extends \TYPO3\CMS\Core\Tests\FunctionalTestCase
             'field' => 'field_content',
             'vLang' => 'vDEF',
             'position' => 3
-        );
+        ];
 
         // Copy the element within the same page with valid source and destination pointer:
         $result = $this->api->copyElement($sourcePointer, $destinationPointer);
@@ -1097,12 +1097,12 @@ class ApiTest extends \TYPO3\CMS\Core\Tests\FunctionalTestCase
         $targetPageUid = 2;
 
         // Create 3 new content elements on test page and on target page:
-        $sourcePageElementUids = array();
-        $targetPageElementUids = array();
+        $sourcePageElementUids = [];
+        $targetPageElementUids = [];
         for ($i = 0; $i < 3; $i++) {
             $row = $this->fixture_getContentElementRow_TEXT();
             $row['bodytext'] = 'copy test element #' . $i;
-            $destinationPointer = array(
+            $destinationPointer = [
                 'table' => 'pages',
                 'uid' => $pageUid,
                 'sheet' => 'sDEF',
@@ -1110,11 +1110,11 @@ class ApiTest extends \TYPO3\CMS\Core\Tests\FunctionalTestCase
                 'field' => 'field_content',
                 'vLang' => 'vDEF',
                 'position' => $i
-            );
+            ];
             $sourcePageElementUids[($i + 1)] = $this->api->insertElement($destinationPointer, $row);
 
             $row['bodytext'] = 'copy test element (destination page) #' . $i;
-            $destinationPointer = array(
+            $destinationPointer = [
                 'table' => 'pages',
                 'uid' => $targetPageUid,
                 'sheet' => 'sDEF',
@@ -1122,12 +1122,12 @@ class ApiTest extends \TYPO3\CMS\Core\Tests\FunctionalTestCase
                 'field' => 'field_content',
                 'vLang' => 'vDEF',
                 'position' => $i
-            );
+            ];
             $targetPageElementUids[($i + 1)] = $this->api->insertElement($destinationPointer, $row);
         }
 
         // Copy first element and from one page and paste it after the second of the other page:
-        $sourcePointer = array(
+        $sourcePointer = [
             'table' => 'pages',
             'uid' => $pageUid,
             'sheet' => 'sDEF',
@@ -1135,9 +1135,9 @@ class ApiTest extends \TYPO3\CMS\Core\Tests\FunctionalTestCase
             'field' => 'field_content',
             'vLang' => 'vDEF',
             'position' => 1
-        );
+        ];
 
-        $destinationPointer = array(
+        $destinationPointer = [
             'table' => 'pages',
             'uid' => $targetPageUid,
             'sheet' => 'sDEF',
@@ -1145,7 +1145,7 @@ class ApiTest extends \TYPO3\CMS\Core\Tests\FunctionalTestCase
             'field' => 'field_content',
             'vLang' => 'vDEF',
             'position' => 2
-        );
+        ];
 
         // Copy the element:
         $result = $this->api->copyElement($sourcePointer, $destinationPointer);
@@ -1168,11 +1168,11 @@ class ApiTest extends \TYPO3\CMS\Core\Tests\FunctionalTestCase
         $pageUid = 1;
 
         // Create new content elements:
-        $elementUids = array();
+        $elementUids = [];
         for ($i = 0; $i < 3; $i++) {
             $row = $this->fixture_getContentElementRow_TEXT();
             $row['bodytext'] = 'copytest element #' . $i;
-            $destinationPointer = array(
+            $destinationPointer = [
                 'table' => 'pages',
                 'uid' => $pageUid,
                 'sheet' => 'sDEF',
@@ -1180,12 +1180,12 @@ class ApiTest extends \TYPO3\CMS\Core\Tests\FunctionalTestCase
                 'field' => 'field_content',
                 'vLang' => 'vDEF',
                 'position' => $i
-            );
+            ];
             $elementUids[($i + 1)] = $this->api->insertElement($destinationPointer, $row);
         }
 
         // Take second element and reference it after the third:
-        $sourcePointer = array(
+        $sourcePointer = [
             'table' => 'pages',
             'uid' => $pageUid,
             'sheet' => 'sDEF',
@@ -1193,9 +1193,9 @@ class ApiTest extends \TYPO3\CMS\Core\Tests\FunctionalTestCase
             'field' => 'field_content',
             'vLang' => 'vDEF',
             'position' => 2
-        );
+        ];
 
-        $destinationPointer = array(
+        $destinationPointer = [
             'table' => 'pages',
             'uid' => $pageUid,
             'sheet' => 'sDEF',
@@ -1203,7 +1203,7 @@ class ApiTest extends \TYPO3\CMS\Core\Tests\FunctionalTestCase
             'field' => 'field_content',
             'vLang' => 'vDEF',
             'position' => 3
-        );
+        ];
 
         // Reference the element within the same page with valid source and destination pointer:
         $result = $this->api->referenceElement($sourcePointer, $destinationPointer);
@@ -1225,11 +1225,11 @@ class ApiTest extends \TYPO3\CMS\Core\Tests\FunctionalTestCase
         $this->backendUser->setWorkspace(-1);
 
         // Create new content elements:
-        $elementUids = array();
+        $elementUids = [];
         for ($i = 0; $i < 3; $i++) {
             $row = $this->fixture_getContentElementRow_TEXT();
             $row['bodytext'] = 'copytest element #' . $i;
-            $destinationPointer = array(
+            $destinationPointer = [
                 'table' => 'pages',
                 'uid' => $pageUid,
                 'sheet' => 'sDEF',
@@ -1237,12 +1237,12 @@ class ApiTest extends \TYPO3\CMS\Core\Tests\FunctionalTestCase
                 'field' => 'field_content',
                 'vLang' => 'vDEF',
                 'position' => $i
-            );
+            ];
             $elementUids[($i + 1)] = $this->api->insertElement($destinationPointer, $row);
         }
 
         // Take second element and reference it after the third:
-        $sourcePointer = array(
+        $sourcePointer = [
             'table' => 'pages',
             'uid' => $pageUid,
             'sheet' => 'sDEF',
@@ -1250,9 +1250,9 @@ class ApiTest extends \TYPO3\CMS\Core\Tests\FunctionalTestCase
             'field' => 'field_content',
             'vLang' => 'vDEF',
             'position' => 2
-        );
+        ];
 
-        $destinationPointer = array(
+        $destinationPointer = [
             'table' => 'pages',
             'uid' => $pageUid,
             'sheet' => 'sDEF',
@@ -1260,7 +1260,7 @@ class ApiTest extends \TYPO3\CMS\Core\Tests\FunctionalTestCase
             'field' => 'field_content',
             'vLang' => 'vDEF',
             'position' => 3
-        );
+        ];
 
         // Reference the element within the same page with valid source and destination pointer:
         $result = $this->api->referenceElement($sourcePointer, $destinationPointer);
@@ -1281,11 +1281,11 @@ class ApiTest extends \TYPO3\CMS\Core\Tests\FunctionalTestCase
         $pageUid = 1;
 
         // Create new content elements:
-        $elementUids = array();
+        $elementUids = [];
         for ($i = 0; $i < 3; $i++) {
             $row = $this->fixture_getContentElementRow_TEXT();
             $row['bodytext'] = 'copytest element #' . $i;
-            $destinationPointer = array(
+            $destinationPointer = [
                 'table' => 'pages',
                 'uid' => $pageUid,
                 'sheet' => 'sDEF',
@@ -1293,11 +1293,11 @@ class ApiTest extends \TYPO3\CMS\Core\Tests\FunctionalTestCase
                 'field' => 'field_content',
                 'vLang' => 'vDEF',
                 'position' => $i
-            );
+            ];
             $elementUids[($i + 1)] = $this->api->insertElement($destinationPointer, $row);
         }
 
-        $destinationPointer = array(
+        $destinationPointer = [
             'table' => 'pages',
             'uid' => $pageUid,
             'sheet' => 'sDEF',
@@ -1305,7 +1305,7 @@ class ApiTest extends \TYPO3\CMS\Core\Tests\FunctionalTestCase
             'field' => 'field_content',
             'vLang' => 'vDEF',
             'position' => 3
-        );
+        ];
 
         // Reference the element within the same page with valid source and destination pointer:
         $result = $this->api->referenceElementByUid($elementUids[2], $destinationPointer);
@@ -1326,11 +1326,11 @@ class ApiTest extends \TYPO3\CMS\Core\Tests\FunctionalTestCase
         $pageUid = 1;
 
         // Create new content elements:
-        $elementUids = array();
+        $elementUids = [];
         for ($i = 0; $i < 3; $i++) {
             $row = $this->fixture_getContentElementRow_TEXT();
             $row['bodytext'] = 'copytest element #' . $i;
-            $destinationPointer = array(
+            $destinationPointer = [
                 'table' => 'pages',
                 'uid' => $pageUid,
                 'sheet' => 'sDEF',
@@ -1338,12 +1338,12 @@ class ApiTest extends \TYPO3\CMS\Core\Tests\FunctionalTestCase
                 'field' => 'field_content',
                 'vLang' => 'vDEF',
                 'position' => $i
-            );
+            ];
             $elementUids[($i + 1)] = $this->api->insertElement($destinationPointer, $row);
         }
 
         // Unlink the second element:
-        $sourcePointer = array(
+        $sourcePointer = [
             'table' => 'pages',
             'uid' => $pageUid,
             'sheet' => 'sDEF',
@@ -1351,7 +1351,7 @@ class ApiTest extends \TYPO3\CMS\Core\Tests\FunctionalTestCase
             'field' => 'field_content',
             'vLang' => 'vDEF',
             'position' => 2
-        );
+        ];
 
         $result = $this->api->unlinkElement($sourcePointer);
         self::assertTrue($result !== false, 'unlinkElement() returned FALSE!');
@@ -1371,11 +1371,11 @@ class ApiTest extends \TYPO3\CMS\Core\Tests\FunctionalTestCase
         $pageUid = 1;
 
         // Create new content elements:
-        $elementUids = array();
+        $elementUids = [];
         for ($i = 0; $i < 3; $i++) {
             $row = $this->fixture_getContentElementRow_TEXT();
             $row['bodytext'] = 'copytest element #' . $i;
-            $destinationPointer = array(
+            $destinationPointer = [
                 'table' => 'pages',
                 'uid' => $pageUid,
                 'sheet' => 'sDEF',
@@ -1383,12 +1383,12 @@ class ApiTest extends \TYPO3\CMS\Core\Tests\FunctionalTestCase
                 'field' => 'field_content',
                 'vLang' => 'vDEF',
                 'position' => $i
-            );
+            ];
             $elementUids[($i + 1)] = $this->api->insertElement($destinationPointer, $row);
         }
 
         // Unlink the second element:
-        $sourcePointer = array(
+        $sourcePointer = [
             'table' => 'pages',
             'uid' => $pageUid,
             'sheet' => 'sDEF',
@@ -1396,7 +1396,7 @@ class ApiTest extends \TYPO3\CMS\Core\Tests\FunctionalTestCase
             'field' => 'field_content',
             'vLang' => 'vDEF',
             'position' => 2
-        );
+        ];
 
         $result = $this->api->deleteElement($sourcePointer);
         self::assertTrue($result !== false, 'deleteElement() returned FALSE!');
@@ -1420,11 +1420,11 @@ class ApiTest extends \TYPO3\CMS\Core\Tests\FunctionalTestCase
         $pageUid = 1;
 
         // Create new content elements:
-        $elementUids = array();
+        $elementUids = [];
         for ($i = 0; $i < 3; $i++) {
             $row = $this->fixture_getContentElementRow_TEXT();
             $row['bodytext'] = 'copytest element #' . $i;
-            $destinationPointer = array(
+            $destinationPointer = [
                 'table' => 'pages',
                 'uid' => $pageUid,
                 'sheet' => 'sDEF',
@@ -1432,12 +1432,12 @@ class ApiTest extends \TYPO3\CMS\Core\Tests\FunctionalTestCase
                 'field' => 'field_content',
                 'vLang' => 'vDEF',
                 'position' => $i
-            );
+            ];
             $elementUids[($i + 1)] = $this->api->insertElement($destinationPointer, $row);
         }
 
         // Unlink the second element:
-        $sourcePointer = array(
+        $sourcePointer = [
             'table' => 'pages',
             'uid' => $pageUid,
             'sheet' => 'sDEF',
@@ -1445,7 +1445,7 @@ class ApiTest extends \TYPO3\CMS\Core\Tests\FunctionalTestCase
             'field' => 'field_content',
             'vLang' => 'vDEF',
             'position' => 2
-        );
+        ];
 
         $this->backendUser->setWorkspace(1);
 
@@ -1471,11 +1471,11 @@ class ApiTest extends \TYPO3\CMS\Core\Tests\FunctionalTestCase
         $pageUid = 1;
 
         // Create new content elements:
-        $elementUids = array();
+        $elementUids = [];
         for ($i = 0; $i < 3; $i++) {
             $row = $this->fixture_getContentElementRow_TEXT();
             $row['bodytext'] = 'getRecordByPointer test element #' . ($i + 1);
-            $destinationPointer = array(
+            $destinationPointer = [
                 'table' => 'pages',
                 'uid' => $pageUid,
                 'sheet' => 'sDEF',
@@ -1483,12 +1483,12 @@ class ApiTest extends \TYPO3\CMS\Core\Tests\FunctionalTestCase
                 'field' => 'field_content',
                 'vLang' => 'vDEF',
                 'position' => $i
-            );
+            ];
             $elementUids[($i + 1)] = $this->api->insertElement($destinationPointer, $row);
         }
 
         $row['bodytext'] = 'getRecordByPointer test element #2';
-        $flexformPointer = array(
+        $flexformPointer = [
             'table' => 'pages',
             'uid' => $pageUid,
             'sheet' => 'sDEF',
@@ -1496,7 +1496,7 @@ class ApiTest extends \TYPO3\CMS\Core\Tests\FunctionalTestCase
             'field' => 'field_content',
             'vLang' => 'vDEF',
             'position' => 2
-        );
+        ];
 
         // Fetch the record:
         $fetchedRow = $this->api->flexform_getRecordByPointer($flexformPointer);
@@ -1515,11 +1515,11 @@ class ApiTest extends \TYPO3\CMS\Core\Tests\FunctionalTestCase
         $this->backendUser->setWorkspace(1);
 
         // Create new content elements:
-        $elementUids = array();
+        $elementUids = [];
         for ($i = 0; $i < 3; $i++) {
             $row = $this->fixture_getContentElementRow_TEXT();
             $row['bodytext'] = 'getRecordByPointer test element #' . ($i + 1);
-            $destinationPointer = array(
+            $destinationPointer = [
                 'table' => 'pages',
                 'uid' => $pageUid,
                 'sheet' => 'sDEF',
@@ -1527,12 +1527,12 @@ class ApiTest extends \TYPO3\CMS\Core\Tests\FunctionalTestCase
                 'field' => 'field_content',
                 'vLang' => 'vDEF',
                 'position' => $i
-            );
+            ];
             $elementUids[($i + 1)] = $this->api->insertElement($destinationPointer, $row);
         }
 
         $row['bodytext'] = 'getRecordByPointer test element #2';
-        $flexformPointer = array(
+        $flexformPointer = [
             'table' => 'pages',
             'uid' => $pageUid,
             'sheet' => 'sDEF',
@@ -1540,7 +1540,7 @@ class ApiTest extends \TYPO3\CMS\Core\Tests\FunctionalTestCase
             'field' => 'field_content',
             'vLang' => 'vDEF',
             'position' => 2
-        );
+        ];
 
         // Fetch the record:
         $fetchedRow = $this->api->flexform_getRecordByPointer($flexformPointer);
@@ -1569,11 +1569,11 @@ class ApiTest extends \TYPO3\CMS\Core\Tests\FunctionalTestCase
         $pageUid = 1;
 
         // Create new content elements:
-        $elementUids = array();
+        $elementUids = [];
         for ($i = 0; $i < 3; $i++) {
             $row = $this->fixture_getContentElementRow_TEXT();
             $row['bodytext'] = 'localize test element #' . $i;
-            $destinationPointer = array(
+            $destinationPointer = [
                 'table' => 'pages',
                 'uid' => $pageUid,
                 'sheet' => 'sDEF',
@@ -1581,12 +1581,12 @@ class ApiTest extends \TYPO3\CMS\Core\Tests\FunctionalTestCase
                 'field' => 'field_content',
                 'vLang' => 'vDEF',
                 'position' => $i
-            );
+            ];
             $elementUids[($i + 1)] = $this->api->insertElement($destinationPointer, $row);
         }
 
         // Copy second element and paste it after the third:
-        $sourcePointer = array(
+        $sourcePointer = [
             'table' => 'pages',
             'uid' => $pageUid,
             'sheet' => 'sDEF',
@@ -1594,7 +1594,7 @@ class ApiTest extends \TYPO3\CMS\Core\Tests\FunctionalTestCase
             'field' => 'field_content',
             'vLang' => 'vDEF',
             'position' => 2
-        );
+        ];
 
         $result = $this->api->localizeElement($sourcePointer, 'DE');
         self::assertTrue($result !== false, 'localizeElement()returned FALSE!');
@@ -1626,11 +1626,11 @@ class ApiTest extends \TYPO3\CMS\Core\Tests\FunctionalTestCase
         $this->backendUser->setWorkspace(1);
 
         // Create new content elements:
-        $elementUids = array();
+        $elementUids = [];
         for ($i = 0; $i < 3; $i++) {
             $row = $this->fixture_getContentElementRow_TEXT();
             $row['bodytext'] = 'localize test element #' . $i;
-            $destinationPointer = array(
+            $destinationPointer = [
                 'table' => 'pages',
                 'uid' => $pageUid,
                 'sheet' => 'sDEF',
@@ -1638,12 +1638,12 @@ class ApiTest extends \TYPO3\CMS\Core\Tests\FunctionalTestCase
                 'field' => 'field_content',
                 'vLang' => 'vDEF',
                 'position' => $i
-            );
+            ];
             $elementUids[($i + 1)] = $this->api->insertElement($destinationPointer, $row);
         }
 
         // Copy second element and paste it after the third:
-        $sourcePointer = array(
+        $sourcePointer = [
             'table' => 'pages',
             'uid' => $pageUid,
             'sheet' => 'sDEF',
@@ -1651,7 +1651,7 @@ class ApiTest extends \TYPO3\CMS\Core\Tests\FunctionalTestCase
             'field' => 'field_content',
             'vLang' => 'vDEF',
             'position' => 2
-        );
+        ];
 
         $result = $this->api->localizeElement($sourcePointer, 'DE');
         self::assertTrue($result !== false, 'localizeElement()returned FALSE!');
@@ -1683,11 +1683,11 @@ class ApiTest extends \TYPO3\CMS\Core\Tests\FunctionalTestCase
         $this->dataHandler->stripslashes_values = 0;
 
         // Create 3 new content elements:
-        $elementUids = array();
+        $elementUids = [];
         for ($i = 0; $i < 3; $i++) {
             $row = $this->fixture_getContentElementRow_TEXT();
             $row['bodytext'] = 'move test element #' . ($i + 1);
-            $destinationPointer = array(
+            $destinationPointer = [
                 'table' => 'pages',
                 'uid' => $pageUid,
                 'sheet' => 'sDEF',
@@ -1695,19 +1695,19 @@ class ApiTest extends \TYPO3\CMS\Core\Tests\FunctionalTestCase
                 'field' => 'field_content',
                 'vLang' => 'vDEF',
                 'position' => $i
-            );
+            ];
             $elementUids[($i + 1)] = $this->api->insertElement($destinationPointer, $row);
         }
 
         // Move the third element to after the first element via TCEmain:
-        $cmdMap = array(
-            'tt_content' => array(
-                $elementUids[3] => array(
+        $cmdMap = [
+            'tt_content' => [
+                $elementUids[3] => [
                     'move' => '-' . $elementUids[1]
-                )
-            )
-        );
-        $this->dataHandler->start(array(), $cmdMap);
+                ]
+            ]
+        ];
+        $this->dataHandler->start([], $cmdMap);
         $this->dataHandler->process_cmdmap();
 
         // Check if the third element has been moved correctly behind the first:
@@ -1726,11 +1726,11 @@ class ApiTest extends \TYPO3\CMS\Core\Tests\FunctionalTestCase
         $this->dataHandler->stripslashes_values = 0;
 
         // Create 3 new content elements in the main area and 3 in the right bar:
-        $elementUids = array();
+        $elementUids = [];
         for ($i = 0; $i < 3; $i++) {
             $row = $this->fixture_getContentElementRow_TEXT();
             $row['bodytext'] = 'move test element #' . ($i + 1);
-            $destinationPointer = array(
+            $destinationPointer = [
                 'table' => 'pages',
                 'uid' => $pageUid,
                 'sheet' => 'sDEF',
@@ -1738,14 +1738,14 @@ class ApiTest extends \TYPO3\CMS\Core\Tests\FunctionalTestCase
                 'field' => 'field_content',
                 'vLang' => 'vDEF',
                 'position' => $i
-            );
+            ];
             $elementUids[($i + 1)] = $this->api->insertElement($destinationPointer, $row);
         }
 
         for ($i = 3; $i < 6; $i++) {
             $row = $this->fixture_getContentElementRow_TEXT();
             $row['bodytext'] = 'move test element (right bar) #' . ($i + 1);
-            $destinationPointer = array(
+            $destinationPointer = [
                 'table' => 'pages',
                 'uid' => $pageUid,
                 'sheet' => 'sDEF',
@@ -1753,30 +1753,30 @@ class ApiTest extends \TYPO3\CMS\Core\Tests\FunctionalTestCase
                 'field' => 'field_rightbar',
                 'vLang' => 'vDEF',
                 'position' => $i - 3
-            );
+            ];
             $elementUids[($i + 1)] = $this->api->insertElement($destinationPointer, $row);
         }
 
         // Main area: move the third element to after the first element via TCEmain:
-        $cmdMap = array(
-            'tt_content' => array(
-                $elementUids[3] => array(
+        $cmdMap = [
+            'tt_content' => [
+                $elementUids[3] => [
                     'move' => '-' . $elementUids[1]
-                )
-            )
-        );
-        $this->dataHandler->start(array(), $cmdMap);
+                ]
+            ]
+        ];
+        $this->dataHandler->start([], $cmdMap);
         $this->dataHandler->process_cmdmap();
 
         // ... and then move it one more up (exposes the bug 2154):
-        $cmdMap = array(
-            'tt_content' => array(
-                $elementUids[3] => array(
+        $cmdMap = [
+            'tt_content' => [
+                $elementUids[3] => [
                     'move' => '-' . $elementUids[1]
-                )
-            )
-        );
-        $this->dataHandler->start(array(), $cmdMap);
+                ]
+            ]
+        ];
+        $this->dataHandler->start([], $cmdMap);
         $this->dataHandler->process_cmdmap();
 
         // Check if the elements are in the right columns in the right order:
@@ -1807,14 +1807,14 @@ class ApiTest extends \TYPO3\CMS\Core\Tests\FunctionalTestCase
             }
         }
 
-        $cmdMap = array(
-            'tt_content' => array(
-                $elementUids[1] => array(
+        $cmdMap = [
+            'tt_content' => [
+                $elementUids[1] => [
                     'move' => '-' . $elementsBySortingFieldArr[$positionOfElement1 - 1]['uid']
-                )
-            )
-        );
-        $this->dataHandler->start(array(), $cmdMap);
+                ]
+            ]
+        ];
+        $this->dataHandler->start([], $cmdMap);
         $this->dataHandler->process_cmdmap();
 
         // Check again if the elements are in the right columns in the right order:
@@ -1836,11 +1836,11 @@ class ApiTest extends \TYPO3\CMS\Core\Tests\FunctionalTestCase
      */
     protected function fixture_getContentElementRow_TEXT()
     {
-        return array(
+        return [
             'CType' => 'text',
             'header' => static::CONTENT_ELEMENT_HEADER,
             'bodytext' => 'T3Unit - If you see this message it appears that T3Unit succeeded in creating a content element at the test page. But usually you will never see this message. If everything runs fine.',
-        );
+        ];
     }
 
     /**
@@ -1851,11 +1851,11 @@ class ApiTest extends \TYPO3\CMS\Core\Tests\FunctionalTestCase
      */
     protected function fixture_getContentElementRow_FCE($dataStructureUid, $templateObjectUid)
     {
-        return array(
+        return [
             'CType' => 'templavoila_pi1',
             'header' => static::CONTENT_ELEMENT_HEADER,
             'tx_templavoila_ds' => $dataStructureUid,
             'tx_templavoila_to' => $templateObjectUid,
-        );
+        ];
     }
 }

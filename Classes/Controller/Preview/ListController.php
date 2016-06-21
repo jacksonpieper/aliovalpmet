@@ -52,12 +52,12 @@ class ListController extends TextController
         } elseif (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['cms/layout/class.tx_cms_layout.php']['list_type_Info']['_DEFAULT'])) {
             $hookArr = $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['cms/layout/class.tx_cms_layout.php']['list_type_Info']['_DEFAULT'];
         } else {
-            $hookArr = array();
+            $hookArr = [];
         }
 
         $extraInfo = '';
         if (count($hookArr) > 0) {
-            $_params = array('pObj' => &$this, 'row' => $row, 'infoArr' => array());
+            $_params = ['pObj' => &$this, 'row' => $row, 'infoArr' => []];
             foreach ($hookArr as $_funcRef) {
                 $extraInfo .= \TYPO3\CMS\Core\Utility\GeneralUtility::callUserFunction($_funcRef, $_params, $this);
             }

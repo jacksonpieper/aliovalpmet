@@ -122,21 +122,21 @@ class PageModuleController extends AbstractModule
      *
      * @var array
      */
-    public $global_tt_content_elementRegister = array();
+    public $global_tt_content_elementRegister = [];
 
     /**
      * Contains structure telling the localization status of each element
      *
      * @var array
      */
-    public $global_localization_status = array();
+    public $global_localization_status = [];
 
     /**
      * Keys: "table", "uid" - thats all to define another "rootTable" than "pages" (using default field "tx_templavoila_flex" for flex form content)
      *
      * @var array
      */
-    public $altRoot = array();
+    public $altRoot = [];
 
     /**
      * Versioning: The current version id
@@ -165,21 +165,21 @@ class PageModuleController extends AbstractModule
      *
      * @var array
      */
-    public $allAvailableLanguages = array();
+    public $allAvailableLanguages = [];
 
     /**
      * Select language for which there is a page translation
      *
      * @var array
      */
-    public $translatedLanguagesArr = array();
+    public $translatedLanguagesArr = [];
 
     /**
      * ISO codes (for l/v pairs) of translated languages.
      *
      * @var array
      */
-    public $translatedLanguagesArr_isoCodes = array();
+    public $translatedLanguagesArr_isoCodes = [];
 
     /**
      * If this is set, the whole page module scales down functionality so that a translator only needs
@@ -244,21 +244,21 @@ class PageModuleController extends AbstractModule
      *
      * @var array
      */
-    public $sortableContainers = array();
+    public $sortableContainers = [];
 
     /**
      * Registry for all id => flexPointer-Pairs
      *
      * @var array
      */
-    public $allItems = array(); //
+    public $allItems = []; //
 
     /**
      * Registry for sortable id => flexPointer-Pairs
      *
      * @var array
      */
-    public $sortableItems = array();
+    public $sortableItems = [];
 
     /**
      * holds the extconf configuration
@@ -272,7 +272,7 @@ class PageModuleController extends AbstractModule
      *
      * @var array
      */
-    public $blindIcons = array();
+    public $blindIcons = [];
 
     /**
      * Classes for preview render
@@ -296,7 +296,7 @@ class PageModuleController extends AbstractModule
     /**
      * @var array
      */
-    protected $visibleContentHookObjects = array();
+    protected $visibleContentHookObjects = [];
 
     /**
      * @var boolean
@@ -311,7 +311,7 @@ class PageModuleController extends AbstractModule
     /**
      * @var array
      */
-    protected static $calcPermCache = array();
+    protected static $calcPermCache = [];
 
     /**
      * Setting which new content wizard to use
@@ -396,7 +396,7 @@ class PageModuleController extends AbstractModule
         if ($this->modTSconfig['properties']['debug']) {
             $this->debug = true;
         }
-        $this->blindIcons = isset($this->modTSconfig['properties']['blindIcons']) ? \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $this->modTSconfig['properties']['blindIcons'], true) : array();
+        $this->blindIcons = isset($this->modTSconfig['properties']['blindIcons']) ? \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $this->modTSconfig['properties']['blindIcons'], true) : [];
 
         $this->addToRecentElements();
 
@@ -456,12 +456,12 @@ class PageModuleController extends AbstractModule
 
         // Prepare array of sys_language uids for available translations:
         $this->translatedLanguagesArr = $this->getAvailableLanguages($this->id);
-        $translatedLanguagesUids = array();
+        $translatedLanguagesUids = [];
         foreach ($this->translatedLanguagesArr as $languageRecord) {
             $translatedLanguagesUids[$languageRecord['uid']] = $languageRecord['title'];
         }
 
-        $this->MOD_MENU = array(
+        $this->MOD_MENU = [
             'tt_content_showHidden' => 1,
             'showOutline' => 1,
             'language' => $translatedLanguagesUids,
@@ -471,7 +471,7 @@ class PageModuleController extends AbstractModule
             'recordsView_table' => '',
             'recordsView_start' => '',
             'disablePageStructureInheritance' => ''
-        );
+        ];
 
         // Hook: menuConfig_preProcessModMenu
         $menuHooks = $this->hooks_prepareObjectsArray('menuConfigClass');
@@ -724,7 +724,7 @@ class PageModuleController extends AbstractModule
                         $this->content .= $result;
                         if (\Extension\Templavoila\Utility\GeneralUtility::getBackendUser()->isPSet($this->calcPerms, 'pages', 'edit')) {
                             // Edit icon only if page can be modified by user
-                            $iconEdit = \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-document-open', array('title' => \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->sL('LLL:EXT:lang/locallang_mod_web_list.xlf:editPage')));
+                            $iconEdit = \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-document-open', ['title' => \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->sL('LLL:EXT:lang/locallang_mod_web_list.xlf:editPage')]);
                             $this->content .= '<br/><br/><strong>' . $this->link_edit($iconEdit . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->sL('LLL:EXT:lang/locallang_mod_web_list.xlf:editPage'), 'pages', $this->id) . '</strong>';
                         }
                         $render_editPageScreen = false; // Do not output editing code for special doctypes!
@@ -821,7 +821,7 @@ class PageModuleController extends AbstractModule
         // Place content inside template
         $content = $this->doc->startPage(\Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('title'));
         $content .= $this->doc->moduleBody(
-            array(),
+            [],
             $this->getDocHeaderButtons(!isset($pageInfoArr['uid'])),
             $this->getBodyMarkers()
         );
@@ -854,9 +854,9 @@ class PageModuleController extends AbstractModule
      */
     protected function getBodyMarkers()
     {
-        $bodyMarkers = array(
+        $bodyMarkers = [
             'TITLE' => \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('title'),
-        );
+        ];
 
         if ($this->modTSconfig['properties']['sideBarEnable'] && $this->sideBarObj->position == 'left') {
             $sidebarMode = 'SIDEBAR_LEFT';
@@ -868,10 +868,10 @@ class PageModuleController extends AbstractModule
 
         $editareaTpl = \TYPO3\CMS\Core\Html\HtmlParser::getSubpart($this->doc->moduleTemplate, $sidebarMode);
         if ($editareaTpl) {
-            $editareaMarkers = array(
+            $editareaMarkers = [
                 'TABROW' => $this->render_sidebar(),
                 'CONTENT' => $this->content
-            );
+            ];
             $editareaMarkers['FLASHMESSAGES'] = $this->flashMessageService->getMessageQueueByIdentifier('ext.templavoila')->renderFlashMessages();
 
             $editareaContent = \TYPO3\CMS\Core\Html\HtmlParser::substituteMarkerArray($editareaTpl, $editareaMarkers, '###|###', true);
@@ -895,7 +895,7 @@ class PageModuleController extends AbstractModule
     {
         global $BACK_PATH;
 
-        $buttons = array(
+        $buttons = [
             'csh' => '',
             'view' => '',
             'history_page' => '',
@@ -906,7 +906,7 @@ class PageModuleController extends AbstractModule
             'record_list' => '',
             'shortcut' => '',
             'cache' => ''
-        );
+        ];
 
         if ($noButtons) {
             return $buttons;
@@ -915,7 +915,7 @@ class PageModuleController extends AbstractModule
         // View page
         $viewAddGetVars = $this->currentLanguageUid ? '&L=' . $this->currentLanguageUid : '';
         $buttons['view'] = '<a href="#" onclick="' . htmlspecialchars(\TYPO3\CMS\Backend\Utility\BackendUtility::viewOnClick($this->id, $BACK_PATH, \TYPO3\CMS\Backend\Utility\BackendUtility::BEgetRootLine($this->id), '', '', $viewAddGetVars)) . '">' .
-            \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-document-view', array('title' => \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->sL('LLL:EXT:lang/locallang_core.php:labels.showPage', 1))) .
+            \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-document-view', ['title' => \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->sL('LLL:EXT:lang/locallang_core.php:labels.showPage', 1)]) .
             '</a>';
 
         // Shortcut
@@ -925,9 +925,9 @@ class PageModuleController extends AbstractModule
 
         // If access to Web>List for user, then link to that module.
         if (\Extension\Templavoila\Utility\GeneralUtility::getBackendUser()->check('modules', 'web_list')) {
-            $href = \TYPO3\CMS\Backend\Utility\BackendUtility::getModuleUrl('web_list', array('id' => $this->id, 'returnUrl' => \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('REQUEST_URI')));
+            $href = \TYPO3\CMS\Backend\Utility\BackendUtility::getModuleUrl('web_list', ['id' => $this->id, 'returnUrl' => \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('REQUEST_URI')]);
             $buttons['record_list'] = '<a href="' . htmlspecialchars($href) . '">' .
-                \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-system-list-open', array('title' => \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->sL('LLL:EXT:lang/locallang_core.php:labels.showList', 1))) .
+                \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-system-list-open', ['title' => \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->sL('LLL:EXT:lang/locallang_core.php:labels.showList', 1)]) .
                 '</a>';
         }
 
@@ -935,13 +935,13 @@ class PageModuleController extends AbstractModule
 
             // Page history
             $buttons['history_page'] = '<a href="#" onclick="' . htmlspecialchars('jumpToUrl(\'' . $BACK_PATH . 'show_rechis.php?element=' . rawurlencode('pages:' . $this->id) . '&returnUrl=' . rawurlencode(\TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('REQUEST_URI')) . '#latest\');return false;') . '">' .
-                \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-document-history-open', array('title' => \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->sL('LLL:EXT:cms/layout/locallang.xlf:recordHistory', 1))) .
+                \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-document-history-open', ['title' => \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->sL('LLL:EXT:cms/layout/locallang.xlf:recordHistory', 1)]) .
                 '</a>';
 
             if (!$this->translatorMode && \Extension\Templavoila\Utility\GeneralUtility::getBackendUser()->isPSet($this->calcPerms, 'pages', 'new')) {
                 // Create new page (wizard)
                 $buttons['new_page'] = '<a href="#" onclick="' . htmlspecialchars('jumpToUrl(\'' . $BACK_PATH . 'db_new.php?id=' . $this->id . '&pagesOnly=1&returnUrl=' . rawurlencode(\TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('REQUEST_URI') . '&updatePageTree=true') . '\');return false;') . '">' .
-                    \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-page-new', array('title' => \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->sL('LLL:EXT:cms/layout/locallang.xlf:newPage', 1))) .
+                    \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-page-new', ['title' => \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->sL('LLL:EXT:cms/layout/locallang.xlf:newPage', 1)]) .
                     '</a>';
             }
 
@@ -949,11 +949,11 @@ class PageModuleController extends AbstractModule
                 // Edit page properties
                 $params = '&edit[pages][' . $this->id . ']=edit';
                 $buttons['edit_page'] = '<a href="#" onclick="' . htmlspecialchars(\TYPO3\CMS\Backend\Utility\BackendUtility::editOnClick($params, $BACK_PATH)) . '">' .
-                    \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-document-open', array('title' => \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->sL('LLL:EXT:cms/layout/locallang.xlf:editPageProperties', 1))) .
+                    \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-document-open', ['title' => \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->sL('LLL:EXT:cms/layout/locallang.xlf:editPageProperties', 1)]) .
                     '</a>';
                 // Move page
                 $buttons['move_page'] = '<a href="' . htmlspecialchars($BACK_PATH . 'move_el.php?table=pages&uid=' . $this->id . '&returnUrl=' . rawurlencode(\TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('REQUEST_URI'))) . '">' .
-                    \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-page-move', array('title' => \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->sL('LLL:EXT:cms/layout/locallang.xlf:move_page', 1))) .
+                    \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-page-move', ['title' => \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->sL('LLL:EXT:cms/layout/locallang.xlf:move_page', 1)]) .
                     '</a>';
             }
 
@@ -1020,14 +1020,14 @@ class PageModuleController extends AbstractModule
         // Create a back button if neccessary:
         if (is_array($this->altRoot)) {
             $output .= '<div style="text-align:right; width:100%; margin-bottom:5px;"><a href="index.php?id=' . $this->id . '">' .
-                \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-view-go-back', array('title' => htmlspecialchars(\Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('goback')))) .
+                \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-view-go-back', ['title' => htmlspecialchars(\Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('goback'))]) .
                 '</a></div>';
         }
 
         // Hook for content at the very top (fx. a toolbar):
         if (is_array($TYPO3_CONF_VARS['EXTCONF']['templavoila']['mod1']['renderTopToolbar'])) {
             foreach ($TYPO3_CONF_VARS['EXTCONF']['templavoila']['mod1']['renderTopToolbar'] as $_funcRef) {
-                $_params = array();
+                $_params = [];
                 $output .= \TYPO3\CMS\Core\Utility\GeneralUtility::callUserFunction($_funcRef, $_params, $this);
             }
         }
@@ -1093,23 +1093,23 @@ class PageModuleController extends AbstractModule
      * @access protected
      * @see render_framework_singleSheet()
      */
-    public function render_framework_allSheets($contentTreeArr, $languageKey = 'DEF', $parentPointer = array(), $parentDsMeta = array())
+    public function render_framework_allSheets($contentTreeArr, $languageKey = 'DEF', $parentPointer = [], $parentDsMeta = [])
     {
 
         // If more than one sheet is available, render a dynamic sheet tab menu, otherwise just render the single sheet framework
         if (is_array($contentTreeArr['sub']) && (count($contentTreeArr['sub']) > 1 || !isset($contentTreeArr['sub']['sDEF']))) {
-            $parts = array();
+            $parts = [];
             foreach (array_keys($contentTreeArr['sub']) as $sheetKey) {
                 $this->containedElementsPointer++;
                 $this->containedElements[$this->containedElementsPointer] = 0;
                 $frContent = $this->render_framework_singleSheet($contentTreeArr, $languageKey, $sheetKey, $parentPointer, $parentDsMeta);
 
-                $parts[] = array(
+                $parts[] = [
                     'label' => ($contentTreeArr['meta'][$sheetKey]['title'] ? $contentTreeArr['meta'][$sheetKey]['title'] : $sheetKey), #.' ['.$this->containedElements[$this->containedElementsPointer].']',
                     'description' => $contentTreeArr['meta'][$sheetKey]['description'],
                     'linkTitle' => $contentTreeArr['meta'][$sheetKey]['short'],
                     'content' => $frContent,
-                );
+                ];
 
                 $this->containedElementsPointer--;
             }
@@ -1133,7 +1133,7 @@ class PageModuleController extends AbstractModule
      * @access protected
      * @see render_framework_singleSheet()
      */
-    public function render_framework_singleSheet($contentTreeArr, $languageKey, $sheet, $parentPointer = array(), $parentDsMeta = array())
+    public function render_framework_singleSheet($contentTreeArr, $languageKey, $sheet, $parentPointer = [], $parentDsMeta = [])
     {
         $elementBelongsToCurrentPage = false;
         $pid = $contentTreeArr['el']['table'] == 'pages' ? $contentTreeArr['el']['uid'] : $contentTreeArr['el']['pid'];
@@ -1163,7 +1163,7 @@ class PageModuleController extends AbstractModule
         } else {
             $recordIcon = '<img' . \TYPO3\CMS\Backend\Utility\IconUtility::skinImg($this->doc->backPath, $contentTreeArr['el']['icon'], '') . ' border="0" title="' . htmlspecialchars('[' . $contentTreeArr['el']['table'] . ':' . $contentTreeArr['el']['uid'] . ']') . '" alt="" />';
         }
-        $menuCommands = array();
+        $menuCommands = [];
         if (\Extension\Templavoila\Utility\GeneralUtility::getBackendUser()->isPSet($calcPerms, 'pages', 'new')) {
             $menuCommands[] = 'new';
         }
@@ -1209,14 +1209,14 @@ class PageModuleController extends AbstractModule
 
                 if (!$this->translatorMode) {
                     if ($canEditContent) {
-                        $iconMakeLocal = \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('extensions-templavoila-makelocalcopy', array('title' => \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('makeLocal')));
+                        $iconMakeLocal = \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('extensions-templavoila-makelocalcopy', ['title' => \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('makeLocal')]);
                         $linkMakeLocal = !$elementBelongsToCurrentPage && !in_array('makeLocal', $this->blindIcons) ? $this->link_makeLocal($iconMakeLocal, $parentPointer) : '';
                         $linkCut = $this->clipboardObj->element_getSelectButtons($parentPointer, 'cut');
                         if ($this->modTSconfig['properties']['enableDeleteIconForLocalElements'] < 2 ||
                             !$elementBelongsToCurrentPage ||
                             $this->global_tt_content_elementRegister[$contentTreeArr['el']['uid']] > 1
                         ) {
-                            $iconUnlink = \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('extensions-templavoila-unlink', array('title' => \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('unlinkRecord')));
+                            $iconUnlink = \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('extensions-templavoila-unlink', ['title' => \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('unlinkRecord')]);
                             $linkUnlink = !in_array('unlink', $this->blindIcons) ? $this->link_unlink($iconUnlink, $parentPointer, false, false, $elementPointer) : '';
                         } else {
                             $linkUnlink = '';
@@ -1227,7 +1227,7 @@ class PageModuleController extends AbstractModule
 
                     if ($canEditElement && \Extension\Templavoila\Utility\GeneralUtility::getBackendUser()->recordEditAccessInternals('tt_content', $contentTreeArr['previewData']['fullRow'])) {
                         if (($elementBelongsToCurrentPage || $this->modTSconfig['properties']['enableEditIconForRefElements']) && !in_array('edit', $this->blindIcons)) {
-                            $iconEdit = \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-document-open', array('title' => \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('editrecord')));
+                            $iconEdit = \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-document-open', ['title' => \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('editrecord')]);
                             $linkEdit = $this->link_edit($iconEdit, $contentTreeArr['el']['table'], $contentTreeArr['el']['uid'], false, $contentTreeArr['el']['pid']);
                         } else {
                             $linkEdit = '';
@@ -1236,7 +1236,7 @@ class PageModuleController extends AbstractModule
 
                         if ($canEditContent && $this->modTSconfig['properties']['enableDeleteIconForLocalElements'] && $elementBelongsToCurrentPage) {
                             $hasForeignReferences = \Extension\Templavoila\Utility\GeneralUtility::hasElementForeignReferences($contentTreeArr['el'], $contentTreeArr['el']['pid']);
-                            $iconDelete = \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-edit-delete', array('title' => \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('deleteRecord')));
+                            $iconDelete = \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-edit-delete', ['title' => \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('deleteRecord')]);
                             $linkDelete = !in_array('delete', $this->blindIcons) ? $this->link_unlink($iconDelete, $parentPointer, true, $hasForeignReferences, $elementPointer) : '';
                         } else {
                             $linkDelete = '';
@@ -1254,7 +1254,7 @@ class PageModuleController extends AbstractModule
         // Prepare the language icon:
         $languageLabel = htmlspecialchars($this->allAvailableLanguages[$contentTreeArr['el']['sys_language_uid']]['title']);
         if ($this->allAvailableLanguages[$languageUid]['flagIcon']) {
-            $languageIcon = \Extension\Templavoila\Utility\IconUtility::getFlagIconForLanguage($this->allAvailableLanguages[$languageUid]['flagIcon'], array('title' => $languageLabel, 'alt' => $languageLabel));
+            $languageIcon = \Extension\Templavoila\Utility\IconUtility::getFlagIconForLanguage($this->allAvailableLanguages[$languageUid]['flagIcon'], ['title' => $languageLabel, 'alt' => $languageLabel]);
         } else {
             $languageIcon = ($languageLabel && $languageUid ? '[' . $languageLabel . ']' : '');
         }
@@ -1383,7 +1383,7 @@ class PageModuleController extends AbstractModule
         }
 
         $output = '';
-        $cells = array();
+        $cells = [];
 
         // get used TO
         if (isset($elementContentTreeArr['el']['TO']) && (int)$elementContentTreeArr['el']['TO']) {
@@ -1433,7 +1433,7 @@ class PageModuleController extends AbstractModule
                 $cellContent = '';
 
                 // Create flexform pointer pointing to "before the first sub element":
-                $subElementPointer = array(
+                $subElementPointer = [
                     'table' => $elementContentTreeArr['el']['table'],
                     'uid' => $elementContentTreeArr['el']['uid'],
                     'sheet' => $sheet,
@@ -1441,7 +1441,7 @@ class PageModuleController extends AbstractModule
                     'field' => $fieldID,
                     'vLang' => $vKey,
                     'position' => 0
-                );
+                ];
 
                 $maxItemsReached = false;
                 if (isset($elementContentTreeArr['previewData']['sheets'][$sheet][$fieldID]['TCEforms']['config']['maxitems'])) {
@@ -1542,13 +1542,13 @@ class PageModuleController extends AbstractModule
                     $beTemplate = str_replace('###' . $fieldID . '###', $beTemplateCell, $beTemplate);
                 } else {
                     $width = round(100 / count($elementContentTreeArr['sub'][$sheet][$lKey]));
-                    $cells[] = array(
+                    $cells[] = [
                         'id' => $cellId,
                         'idStr' => $cellIdStr,
                         'title' => \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->sL($fieldContent['meta']['title'], 1),
                         'width' => $width,
                         'content' => $cellContent
-                    );
+                    ];
                 }
             }
         }
@@ -1582,7 +1582,7 @@ class PageModuleController extends AbstractModule
             }
 
             if (!$alreadyRendered) {
-                $headerCells = $contentCells = array();
+                $headerCells = $contentCells = [];
                 foreach ($cells as $cell) {
                     $headerCells[] = vsprintf('<td width="%4$d%%" class="bgColor6 tpm-title-cell">%3$s</td>', $cell);
                     $contentCells[] = vsprintf('<td %2$s width="%4$d%%" class="tpm-content-cell">%5$s</td>', $cell);
@@ -1718,7 +1718,7 @@ class PageModuleController extends AbstractModule
                     if ($TCEformsConfiguration['type'] == 'group') {
                         if ($TCEformsConfiguration['internal_type'] == 'file') {
                             // Render preview for images:
-                            $thumbnail = \TYPO3\CMS\Backend\Utility\BackendUtility::thumbCode(array('dummyFieldName' => $fieldValue), '', 'dummyFieldName', $this->doc->backPath, '', $TCEformsConfiguration['uploadfolder']);
+                            $thumbnail = \TYPO3\CMS\Backend\Utility\BackendUtility::thumbCode(['dummyFieldName' => $fieldValue], '', 'dummyFieldName', $this->doc->backPath, '', $TCEformsConfiguration['uploadfolder']);
                             $previewContent .= '<strong>' . $TCEformsLabel . '</strong> ' . $thumbnail . '<br />';
                         } elseif ($TCEformsConfiguration['internal_type'] === 'db') {
                             if (!$this->renderPreviewDataObjects) {
@@ -1789,7 +1789,7 @@ class PageModuleController extends AbstractModule
                 if (isset($fieldValue['config']['TCEforms']['config']['type']) && $fieldValue['config']['TCEforms']['config']['type'] == 'group') {
                     if ($fieldValue['config']['TCEforms']['config']['internal_type'] == 'file') {
                         // Render preview for images:
-                        $thumbnail = \TYPO3\CMS\Backend\Utility\BackendUtility::thumbCode(array('dummyFieldName' => $fieldValue['data'][$vKey]), '', 'dummyFieldName', $this->doc->backPath, '', $fieldValue['config']['TCEforms']['config']['uploadfolder']);
+                        $thumbnail = \TYPO3\CMS\Backend\Utility\BackendUtility::thumbCode(['dummyFieldName' => $fieldValue['data'][$vKey]], '', 'dummyFieldName', $this->doc->backPath, '', $fieldValue['config']['TCEforms']['config']['uploadfolder']);
                         if (isset($fieldValue['config']['TCEforms']['label'])) {
                             $label = $this->localizedFFLabel($fieldValue['config']['TCEforms']['label'], 1);
                         }
@@ -1866,14 +1866,14 @@ class PageModuleController extends AbstractModule
      * @access protected
      * @see render_framework_singleSheet()
      */
-    public function render_localizationInfoTable($contentTreeArr, $parentPointer, $parentDsMeta = array())
+    public function render_localizationInfoTable($contentTreeArr, $parentPointer, $parentDsMeta = [])
     {
         // LOCALIZATION information for content elements (non Flexible Content Elements)
         $output = '';
         if ($contentTreeArr['el']['table'] == 'tt_content' && $contentTreeArr['el']['sys_language_uid'] <= 0) {
 
             // Traverse the available languages of the page (not default and [All])
-            $tRows = array();
+            $tRows = [];
             foreach ($this->translatedLanguagesArr as $sys_language_uid => $sLInfo) {
                 if ($this->MOD_SETTINGS['langDisplayMode'] && ($this->currentLanguageUid != $sys_language_uid)) {
                     continue;
@@ -1886,11 +1886,11 @@ class PageModuleController extends AbstractModule
                         case 'exists':
                             $olrow = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecordWSOL('tt_content', $contentTreeArr['localizationInfo'][$sys_language_uid]['localization_uid']);
 
-                            $localizedRecordInfo = array(
+                            $localizedRecordInfo = [
                                 'uid' => $olrow['uid'],
                                 'row' => $olrow,
                                 'content' => $this->render_previewContent($olrow)
-                            );
+                            ];
 
                             // Put together the records icon including content sensitive menu link wrapped around it:
                             $recordIcon_l10n = \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIconForRecord('tt_content', $localizedRecordInfo['row']);
@@ -1916,12 +1916,12 @@ class PageModuleController extends AbstractModule
                                 $l10nInfo = '<div class="ver-element">' . $l10nInfo . '</div>';
                             }
 
-                            $this->global_localization_status[$sys_language_uid][] = array(
+                            $this->global_localization_status[$sys_language_uid][] = [
                                 'status' => 'exist',
                                 'parent_uid' => $contentTreeArr['el']['uid'],
                                 'localized_uid' => $localizedRecordInfo['row']['uid'],
                                 'sys_language' => $contentTreeArr['el']['sys_language_uid']
-                            );
+                            ];
                             break;
                         case 'localize':
 
@@ -1948,18 +1948,18 @@ class PageModuleController extends AbstractModule
                                 }
 
                                 $linkLabel = \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('createcopyfortranslation', true) . ' (' . htmlspecialchars($sLInfo['title']) . ')';
-                                $localizeIcon = \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-edit-copy', array('title' => $linkLabel));
+                                $localizeIcon = \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-edit-copy', ['title' => $linkLabel]);
 
                                 $l10nInfo = '<a class="tpm-clipCopyTranslation" href="#" onclick="' . htmlspecialchars($onClick) . '">' . $localizeIcon . '</a>';
                                 $l10nInfo .= ' <em><a href="#" onclick="' . htmlspecialchars($onClick) . '">' . $linkLabel . '</a></em>';
                                 $flagLink_begin = '<a href="#" onclick="' . htmlspecialchars($onClick) . '">';
                                 $flagLink_end = '</a>';
 
-                                $this->global_localization_status[$sys_language_uid][] = array(
+                                $this->global_localization_status[$sys_language_uid][] = [
                                     'status' => 'localize',
                                     'parent_uid' => $contentTreeArr['el']['uid'],
                                     'sys_language' => $contentTreeArr['el']['sys_language_uid']
-                                );
+                                ];
                             }
                             break;
                         case 'localizedFlexform':
@@ -1968,11 +1968,11 @@ class PageModuleController extends AbstractModule
                             // if (count($contentTreeArr['contentFields']['sDEF']))	{
                             list($flagLink_begin, $flagLink_end) = explode('|*|', $this->link_edit('|*|', 'tt_content', $contentTreeArr['el']['uid'], true));
                             $l10nInfo = $flagLink_begin . '<em>[' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('performTranslation') . ']</em>' . $flagLink_end;
-                            $this->global_localization_status[$sys_language_uid][] = array(
+                            $this->global_localization_status[$sys_language_uid][] = [
                                 'status' => 'flex',
                                 'parent_uid' => $contentTreeArr['el']['uid'],
                                 'sys_language' => $contentTreeArr['el']['sys_language_uid']
-                            );
+                            ];
                             // }
                             break;
                     }
@@ -1980,7 +1980,7 @@ class PageModuleController extends AbstractModule
                     if ($l10nInfo && \Extension\Templavoila\Utility\GeneralUtility::getBackendUser()->checkLanguageAccess($sys_language_uid)) {
                         $tRows[] = '
 							<tr class="bgColor4">
-								<td width="1%">' . $flagLink_begin . \Extension\Templavoila\Utility\IconUtility::getFlagIconForLanguage($sLInfo['flagIcon'], array('title' => $sLInfo['title'], 'alt' => $sLInfo['title'])) . $flagLink_end . '</td>
+								<td width="1%">' . $flagLink_begin . \Extension\Templavoila\Utility\IconUtility::getFlagIconForLanguage($sLInfo['flagIcon'], ['title' => $sLInfo['title'], 'alt' => $sLInfo['title']]) . $flagLink_end . '</td>
 								<td width="99%">' . $l10nInfo . '</td>
 							</tr>';
                     }
@@ -2016,7 +2016,7 @@ class PageModuleController extends AbstractModule
     public function render_outline($contentTreeArr)
     {
         // Load possible website languages:
-        $this->translatedLanguagesArr_isoCodes = array();
+        $this->translatedLanguagesArr_isoCodes = [];
         foreach ($this->translatedLanguagesArr as $langInfo) {
             if ($langInfo['ISOcode']) {
                 $this->translatedLanguagesArr_isoCodes['all_lKeys'][] = 'l' . $langInfo['ISOcode'];
@@ -2025,7 +2025,7 @@ class PageModuleController extends AbstractModule
         }
 
         // Rendering the entries:
-        $entries = array();
+        $entries = [];
         $this->render_outline_element($contentTreeArr, $entries);
 
         // Header of table:
@@ -2061,13 +2061,13 @@ class PageModuleController extends AbstractModule
 
                     // If the clean-all command is sent AND there is a difference in current/clean XML, save the clean:
                     if (\TYPO3\CMS\Core\Utility\GeneralUtility::_POST('_CLEAN_XML_ALL') && md5($recRow['tx_templavoila_flex']) != md5($newXML)) {
-                        $dataArr = array();
+                        $dataArr = [];
                         $dataArr[$entry['table']][$entry['uid']]['tx_templavoila_flex'] = $newXML;
 
                         // Init TCEmain object and store:
                         $tce = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\DataHandling\DataHandler::class);
                         $tce->stripslashes_values = 0;
-                        $tce->start($dataArr, array());
+                        $tce->start($dataArr, []);
                         $tce->process_datamap();
 
                         // Re-fetch record:
@@ -2120,7 +2120,7 @@ class PageModuleController extends AbstractModule
      * @access protected
      * @see render_outline_allSheets()
      */
-    public function render_outline_element($contentTreeArr, &$entries, $indentLevel = 0, $parentPointer = array(), $controls = '')
+    public function render_outline_element($contentTreeArr, &$entries, $indentLevel = 0, $parentPointer = [], $controls = '')
     {
         // Get record of element:
         $elementBelongsToCurrentPage = $contentTreeArr['el']['table'] == 'pages' || $contentTreeArr['el']['pid'] == $this->rootElementUid_pidForContent;
@@ -2140,13 +2140,13 @@ class PageModuleController extends AbstractModule
         // Prepare table specific settings:
         switch ($contentTreeArr['el']['table']) {
             case 'pages' :
-                $iconEdit = \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-document-open', array('title' => \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->sL('LLL:EXT:lang/locallang_mod_web_list.xlf:editPage')));
+                $iconEdit = \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-document-open', ['title' => \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->sL('LLL:EXT:lang/locallang_mod_web_list.xlf:editPage')]);
                 $titleBarLeftButtons .= $this->translatorMode ? '' : $this->link_edit($iconEdit, $contentTreeArr['el']['table'], $contentTreeArr['el']['uid']);
                 $titleBarRightButtons = '';
 
                 $addGetVars = ($this->currentLanguageUid ? '&L=' . $this->currentLanguageUid : '');
                 $viewPageOnClick = 'onclick= "' . htmlspecialchars(\TYPO3\CMS\Backend\Utility\BackendUtility::viewOnClick($contentTreeArr['el']['uid'], $this->doc->backPath, \TYPO3\CMS\Backend\Utility\BackendUtility::BEgetRootLine($contentTreeArr['el']['uid']), '', '', $addGetVars)) . '"';
-                $viewPageIcon = \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-document-view', array('title' => \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:labels.showPage', 1)));
+                $viewPageIcon = \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-document-view', ['title' => \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:labels.showPage', 1)]);
                 $titleBarLeftButtons .= '<a href="#" ' . $viewPageOnClick . '>' . $viewPageIcon . '</a>';
                 break;
             case 'tt_content' :
@@ -2154,25 +2154,25 @@ class PageModuleController extends AbstractModule
 
                 if (!$this->translatorMode) {
                     // Create CE specific buttons:
-                    $iconMakeLocal = \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('extensions-templavoila-makelocalcopy', array('title' => \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('makeLocal')));
+                    $iconMakeLocal = \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('extensions-templavoila-makelocalcopy', ['title' => \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('makeLocal')]);
                     $linkMakeLocal = !$elementBelongsToCurrentPage ? $this->link_makeLocal($iconMakeLocal, $parentPointer) : '';
                     if ($this->modTSconfig['properties']['enableDeleteIconForLocalElements'] < 2 ||
                         !$elementBelongsToCurrentPage ||
                         $this->global_tt_content_elementRegister[$contentTreeArr['el']['uid']] > 1
                     ) {
-                        $iconUnlink = \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('extensions-templavoila-unlink', array('title' => \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('unlinkRecord')));
+                        $iconUnlink = \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('extensions-templavoila-unlink', ['title' => \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('unlinkRecord')]);
                         $linkUnlink = $this->link_unlink($iconUnlink, $parentPointer, false);
                     } else {
                         $linkUnlink = '';
                     }
                     if ($this->modTSconfig['properties']['enableDeleteIconForLocalElements'] && $elementBelongsToCurrentPage) {
                         $hasForeignReferences = \Extension\Templavoila\Utility\GeneralUtility::hasElementForeignReferences($contentTreeArr['el'], $contentTreeArr['el']['pid']);
-                        $iconDelete = \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-edit-delete', array('title' => \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('deleteRecord')));
+                        $iconDelete = \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-edit-delete', ['title' => \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('deleteRecord')]);
                         $linkDelete = $this->link_unlink($iconDelete, $parentPointer, true, $hasForeignReferences);
                     } else {
                         $linkDelete = '';
                     }
-                    $iconEdit = \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-document-open', array('title' => \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('editrecord')));
+                    $iconEdit = \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-document-open', ['title' => \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('editrecord')]);
                     $linkEdit = ($elementBelongsToCurrentPage ? $this->link_edit($iconEdit, $contentTreeArr['el']['table'], $contentTreeArr['el']['uid']) : '');
 
                     $titleBarRightButtons = $linkEdit . $this->clipboardObj->element_getSelectButtons($parentPointer) . $linkMakeLocal . $linkUnlink . $linkDelete;
@@ -2185,7 +2185,7 @@ class PageModuleController extends AbstractModule
         if ($languageUid > 0) {
             $languageLabel = htmlspecialchars($this->pObj->allAvailableLanguages[$languageUid]['title']);
             if ($this->pObj->allAvailableLanguages[$languageUid]['flagIcon']) {
-                $languageIcon = \Extension\Templavoila\Utility\IconUtility::getFlagIconForLanguage($this->pObj->allAvailableLanguages[$languageUid]['flagIcon'], array('title' => $languageLabel, 'alt' => $languageLabel));
+                $languageIcon = \Extension\Templavoila\Utility\IconUtility::getFlagIconForLanguage($this->pObj->allAvailableLanguages[$languageUid]['flagIcon'], ['title' => $languageLabel, 'alt' => $languageLabel]);
             } else {
                 $languageIcon = '[' . $languageLabel . ']';
             }
@@ -2217,7 +2217,7 @@ class PageModuleController extends AbstractModule
         }
 
         // Create entry for this element:
-        $entries[] = array(
+        $entries[] = [
             'indentLevel' => $indentLevel,
             'icon' => $titleBarLeftButtons,
             'title' => ($elementBelongsToCurrentPage ? '' : '<em>') . htmlspecialchars($contentTreeArr['el']['title']) . ($elementBelongsToCurrentPage ? '' : '</em>'),
@@ -2228,7 +2228,7 @@ class PageModuleController extends AbstractModule
             'flag' => $languageIcon,
             'isNewVersion' => $contentTreeArr['el']['_ORIG_uid'] ? true : false,
             'elementTitlebarClass' => (!$elementBelongsToCurrentPage ? 'tpm-elementRef' : 'tpm-element') . ' tpm-outline-level' . $indentLevel
-        );
+        ];
 
         // Create entry for localizaitons...
         $this->render_outline_localizations($contentTreeArr, $entries, $indentLevel + 1);
@@ -2259,8 +2259,8 @@ class PageModuleController extends AbstractModule
         // Define l/v keys for current language:
         $langChildren = (int)$contentTreeArr['ds_meta']['langChildren'];
         $langDisable = (int)$contentTreeArr['ds_meta']['langDisable'];
-        $lKeys = $langDisable ? array('lDEF') : ($langChildren ? array('lDEF') : $this->translatedLanguagesArr_isoCodes['all_lKeys']);
-        $vKeys = $langDisable ? array('vDEF') : ($langChildren ? $this->translatedLanguagesArr_isoCodes['all_vKeys'] : array('vDEF'));
+        $lKeys = $langDisable ? ['lDEF'] : ($langChildren ? ['lDEF'] : $this->translatedLanguagesArr_isoCodes['all_lKeys']);
+        $vKeys = $langDisable ? ['vDEF'] : ($langChildren ? $this->translatedLanguagesArr_isoCodes['all_vKeys'] : ['vDEF']);
 
         // Traverse container fields:
         foreach ($lKeys as $lKey) {
@@ -2273,7 +2273,7 @@ class PageModuleController extends AbstractModule
                             $fieldContent = $fieldValuesContent[$vKey];
 
                             // Create flexform pointer pointing to "before the first sub element":
-                            $subElementPointer = array(
+                            $subElementPointer = [
                                 'table' => $contentTreeArr['el']['table'],
                                 'uid' => $contentTreeArr['el']['uid'],
                                 'sheet' => $sheet,
@@ -2281,11 +2281,11 @@ class PageModuleController extends AbstractModule
                                 'field' => $fieldID,
                                 'vLang' => $vKey,
                                 'position' => 0
-                            );
+                            ];
 
                             if (!$this->translatorMode) {
                                 // "New" and "Paste" icon:
-                                $newIcon = \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-document-new', array('title' => \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('createnewrecord')));
+                                $newIcon = \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-document-new', ['title' => \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('createnewrecord')]);
                                 $controls = $this->link_new($newIcon, $subElementPointer);
                                 $controls .= $this->clipboardObj->element_getPasteButtons($subElementPointer);
                             } else {
@@ -2294,14 +2294,14 @@ class PageModuleController extends AbstractModule
 
                             // Add entry for lKey level:
                             $specialPath = ($sheet != 'sDEF' ? '<' . $sheet . '>' : '') . ($lKey != 'lDEF' ? '<' . $lKey . '>' : '') . ($vKey != 'vDEF' ? '<' . $vKey . '>' : '');
-                            $entries[] = array(
+                            $entries[] = [
                                 'indentLevel' => $indentLevel,
                                 'icon' => '',
                                 'title' => '<b>' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->sL($fieldContent['meta']['title'], 1) . '</b>' . ($specialPath ? ' <em>' . htmlspecialchars($specialPath) . '</em>' : ''),
                                 'id' => '<' . $sheet . '><' . $lKey . '><' . $fieldID . '><' . $vKey . '>',
                                 'controls' => $controls,
                                 'elementTitlebarClass' => 'tpm-container tpm-outline-level' . $indentLevel,
-                            );
+                            ];
 
                             // Render the list of elements (and possibly call itself recursively if needed):
                             if (is_array($fieldContent['el_list'])) {
@@ -2314,7 +2314,7 @@ class PageModuleController extends AbstractModule
 
                                         if (!$this->translatorMode) {
                                             // "New" and "Paste" icon:
-                                            $newIcon = \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-document-new', array('title' => \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('createnewrecord')));
+                                            $newIcon = \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-document-new', ['title' => \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('createnewrecord')]);
                                             $controls = $this->link_new($newIcon, $subElementPointer);
                                             $controls .= $this->clipboardObj->element_getPasteButtons($subElementPointer);
                                         }
@@ -2364,15 +2364,15 @@ class PageModuleController extends AbstractModule
                             list($flagLink_begin, $flagLink_end) = explode('|*|', $this->link_edit('|*|', 'tt_content', $olrow['uid'], true));
 
                             // Create entry for this element:
-                            $entries[] = array(
+                            $entries[] = [
                                 'indentLevel' => $indentLevel,
                                 'icon' => $recordIcon_l10n,
                                 'title' => \TYPO3\CMS\Backend\Utility\BackendUtility::getRecordTitle('tt_content', $olrow),
                                 'table' => 'tt_content',
                                 'uid' => $olrow['uid'],
-                                'flag' => $flagLink_begin . \Extension\Templavoila\Utility\IconUtility::getFlagIconForLanguage($sLInfo['flagIcon'], array('title' => $sLInfo['title'], 'alt' => $sLInfo['title'])) . $flagLink_end,
+                                'flag' => $flagLink_begin . \Extension\Templavoila\Utility\IconUtility::getFlagIconForLanguage($sLInfo['flagIcon'], ['title' => $sLInfo['title'], 'alt' => $sLInfo['title']]) . $flagLink_end,
                                 'isNewVersion' => $olrow['_ORIG_uid'] ? true : false,
-                            );
+                            ];
                             break;
                     }
                 }
@@ -2454,14 +2454,14 @@ class PageModuleController extends AbstractModule
      */
     public function icon_hide($el)
     {
-        $iconOptions = array(
+        $iconOptions = [
             'title' => ($el['table'] == 'pages' ? \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->sL('LLL:EXT:lang/locallang_mod_web_list.xlf:hidePage') : \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->sL('LLL:EXT:lang/locallang_mod_web_list.xml:hide'))
-        );
+        ];
         $hideIcon = \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-edit-hide', $iconOptions);
 
-        $iconOptions = array(
+        $iconOptions = [
             'title' => ($el['table'] == 'pages' ? \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->sL('LLL:EXT:lang/locallang_mod_web_list.xlf:unHidePage') : \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->sL('LLL:EXT:lang/locallang_mod_web_list.xml:unHide'))
-        );
+        ];
         $unhideIcon = \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-edit-unhide', $iconOptions);
 
         if ($el['isHidden']) {
@@ -2635,19 +2635,19 @@ class PageModuleController extends AbstractModule
 
         // "New" icon:
         if ($canCreateNew && !in_array('new', $this->blindIcons)) {
-            $iconOptions = array(
+            $iconOptions = [
                 'title' => \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('createnewrecord')
-            );
+            ];
             $newIcon = \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-document-new', $iconOptions);
             $output .= $this->link_new($newIcon, $elementPointer);
         }
 
         // "Browse Record" icon
         if ($canCreateNew && !in_array('browse', $this->blindIcons)) {
-            $iconOptions = array(
+            $iconOptions = [
                 'title' => \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:labels.browse_db'),
                 'class' => 'browse'
-            );
+            ];
             $newIcon = \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-insert-record', $iconOptions);
             $output .= $this->link_browse($newIcon, $elementPointer);
         }
@@ -2682,7 +2682,7 @@ class PageModuleController extends AbstractModule
      */
     public function handleIncomingCommands()
     {
-        $possibleCommands = array('createNewRecord', 'unlinkRecord', 'deleteRecord', 'pasteRecord', 'makeLocalRecord', 'localizeElement', 'createNewPageTranslation', 'editPageLanguageOverlay');
+        $possibleCommands = ['createNewRecord', 'unlinkRecord', 'deleteRecord', 'pasteRecord', 'makeLocalRecord', 'localizeElement', 'createNewPageTranslation', 'editPageLanguageOverlay'];
 
         $hooks = $this->hooks_prepareObjectsArray('handleIncomingCommands');
 
@@ -2706,7 +2706,7 @@ class PageModuleController extends AbstractModule
                     case 'createNewRecord':
                         // Historically "defVals" has been used for submitting the preset row data for the new element, so we still support it here:
                         $defVals = \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('defVals');
-                        $newRow = is_array($defVals['tt_content']) ? $defVals['tt_content'] : array();
+                        $newRow = is_array($defVals['tt_content']) ? $defVals['tt_content'] : [];
 
                         // Create new record and open it for editing
                         $destinationPointer = $this->apiObj->flexform_getPointerFromString($commandParameters);
@@ -2828,7 +2828,7 @@ class PageModuleController extends AbstractModule
      */
     public function getAvailableLanguages($id = 0, $onlyIsoCoded = true, $setDefault = true, $setMulti = false)
     {
-        $output = array();
+        $output = [];
         $excludeHidden = \Extension\Templavoila\Utility\GeneralUtility::getBackendUser()->isAdmin() ? '1=1' : 'sys_language.hidden=0';
 
         if ($id) {
@@ -2851,21 +2851,21 @@ class PageModuleController extends AbstractModule
         }
 
         if ($setDefault) {
-            $output[0] = array(
+            $output[0] = [
                 'uid' => 0,
                 'title' => strlen($this->modSharedTSconfig['properties']['defaultLanguageLabel']) ? $this->modSharedTSconfig['properties']['defaultLanguageLabel'] : \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('defaultLanguage'),
                 'ISOcode' => 'DEF',
                 'flagIcon' => strlen($this->modSharedTSconfig['properties']['defaultLanguageFlag']) ? $this->modSharedTSconfig['properties']['defaultLanguageFlag'] : null
-            );
+            ];
         }
 
         if ($setMulti) {
-            $output[-1] = array(
+            $output[-1] = [
                 'uid' => -1,
                 'title' => \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('multipleLanguages'),
                 'ISOcode' => 'DEF',
                 'flagIcon' => 'multiple',
-            );
+            ];
         }
 
         while (true == ($row = \Extension\Templavoila\Utility\GeneralUtility::getDatabaseConnection()->sql_fetch_assoc($res))) {
@@ -2934,7 +2934,7 @@ class PageModuleController extends AbstractModule
     {
         global $TYPO3_CONF_VARS;
 
-        $hookObjectsArr = array();
+        $hookObjectsArr = [];
         if (is_array($TYPO3_CONF_VARS['EXTCONF']['templavoila']['mod1'][$hookName])) {
             foreach ($TYPO3_CONF_VARS['EXTCONF']['templavoila']['mod1'][$hookName] as $key => $classRef) {
                 $hookObjectsArr[$key] = & \TYPO3\CMS\Core\Utility\GeneralUtility::getUserObj($classRef);
@@ -3014,7 +3014,7 @@ class PageModuleController extends AbstractModule
         // Call stats information hook
         if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['GLOBAL']['recStatInfoHooks'])) {
             $stat = '';
-            $_params = array($table, $id);
+            $_params = [$table, $id];
             foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['GLOBAL']['recStatInfoHooks'] as $_funcRef) {
                 $stat .= \TYPO3\CMS\Core\Utility\GeneralUtility::callUserFunction($_funcRef, $_params, $this);
             }

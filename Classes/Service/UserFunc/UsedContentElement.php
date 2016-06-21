@@ -26,7 +26,7 @@ class UsedContentElement
     /**
      * @var array
      */
-    public $usedUids = array();
+    public $usedUids = [];
 
     /**
      * Initialize object with page id.

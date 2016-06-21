@@ -148,7 +148,7 @@ abstract class AbstractDataStructure
      */
     public function getDataprotArray()
     {
-        $arr = array();
+        $arr = [];
         $ds = $this->getDataprotXML();
         if (strlen($ds) > 1) {
             $arr = \TYPO3\CMS\Core\Utility\GeneralUtility::xml2array($ds);
@@ -166,7 +166,7 @@ abstract class AbstractDataStructure
      *
      * @return boolean
      */
-    abstract public function isPermittedForUser($parentRow = array(), $removeItems = array());
+    abstract public function isPermittedForUser($parentRow = [], $removeItems = []);
 
     /**
      * Enables to determine whether this element is based on a record or on a file

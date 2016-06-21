@@ -144,7 +144,7 @@ class tx_templavoila_dbnewcontentel
      *
      * @var array
      */
-    public $include_once = array();
+    public $include_once = [];
 
     /**
      * Used to accumulate the content of the module.
@@ -248,10 +248,10 @@ class tx_templavoila_dbnewcontentel
             $wizardItems = $this->getWizardItems();
 
             // Wrapper for wizards
-            $this->elementWrapper['sectionHeader'] = array('<h3 class="bgColor5">', '</h3>');
-            $this->elementWrapper['section'] = array('<table border="0" cellpadding="1" cellspacing="2">', '</table>');
-            $this->elementWrapper['wizard'] = array('<tr>', '</tr>');
-            $this->elementWrapper['wizardPart'] = array('<td>', '</td>');
+            $this->elementWrapper['sectionHeader'] = ['<h3 class="bgColor5">', '</h3>'];
+            $this->elementWrapper['section'] = ['<table border="0" cellpadding="1" cellspacing="2">', '</table>'];
+            $this->elementWrapper['wizard'] = ['<tr>', '</tr>'];
+            $this->elementWrapper['wizardPart'] = ['<td>', '</td>'];
             // copy wrapper for tabs
             $this->elementWrapperForTabs = $this->elementWrapper;
 
@@ -294,13 +294,13 @@ class tx_templavoila_dbnewcontentel
 
             // Traverse items for the wizard.
             // An item is either a header or an item rendered with a title/description and icon:
-            $menuItems = array();
+            $menuItems = [];
             foreach ($wizardItems as $k => $wInfo) {
                 /**
                  * @todo: Find out what exactly happens here. The whole loop feels strange
                  */
                 if ($wInfo['header']) {
-                    $menuItems[] = array('label' => htmlspecialchars($wInfo['header']), 'content' => $this->elementWrapper['section'][0]);
+                    $menuItems[] = ['label' => htmlspecialchars($wInfo['header']), 'content' => $this->elementWrapper['section'][0]];
                     $key = count($menuItems) - 1;
                 } else {
                     $content = '';
@@ -344,10 +344,10 @@ class tx_templavoila_dbnewcontentel
 
         $this->pageinfo = \TYPO3\CMS\Backend\Utility\BackendUtility::readPageAccess($this->id, $this->perms_clause);
         $docHeaderButtons = $this->getDocHeaderButtons();
-        $docContent = array(
+        $docContent = [
             'CSH' => $docHeaderButtons['csh'],
             'CONTENT' => $this->content
-        );
+        ];
 
         $content = $this->doc->startPage(\Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('newContentElement'));
         $content .= $this->doc->moduleBody(
@@ -368,11 +368,11 @@ class tx_templavoila_dbnewcontentel
      */
     protected function getDocHeaderButtons()
     {
-        $buttons = array(
+        $buttons = [
             'csh' => \TYPO3\CMS\Backend\Utility\BackendUtility::cshItem('_MOD_web_txtemplavoilaCM1', '', $this->backPath),
             'back' => '',
             'shortcut' => $this->getShortcutButton(),
-        );
+        ];
 
         // Back
         if ($this->returnUrl) {
@@ -393,7 +393,7 @@ class tx_templavoila_dbnewcontentel
     protected function getShortcutButton()
     {
         $result = '';
-        $menu = is_array($this->MOD_MENU) ? $this->MOD_MENU : array();
+        $menu = is_array($this->MOD_MENU) ? $this->MOD_MENU : [];
         if (\Extension\Templavoila\Utility\GeneralUtility::getBackendUser()->mayMakeShortcut()) {
             $result = $this->doc->makeShortcutIcon('id', implode(',', array_keys($menu)), $this->MCONF['name']);
         }
@@ -446,7 +446,7 @@ class tx_templavoila_dbnewcontentel
      */
     public function wizardArray()
     {
-        $wizards = array();
+        $wizards = [];
         if (is_array($this->config)) {
             $wizards = $this->config['wizardItems.'];
         }
@@ -454,14 +454,14 @@ class tx_templavoila_dbnewcontentel
         $fceWizards = $this->wizard_renderFCEs($wizards['elements.']);
         $appendWizards = array_merge((array) $fceWizards, (array) $pluginWizards);
 
-        $wizardItems = array();
+        $wizardItems = [];
 
         if (is_array($wizards)) {
             foreach ($wizards as $groupKey => $wizardGroup) {
                 $groupKey = preg_replace('/\.$/', '', $groupKey);
                 $showItems = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $wizardGroup['show'], true);
                 $showAll = (strcmp($wizardGroup['show'], '*') ? false : true);
-                $groupItems = array();
+                $groupItems = [];
 
                 if (is_array($appendWizards[$groupKey . '.']['elements.'])) {
                     $wizardElements = (array)$wizardGroup['elements.'];
@@ -504,7 +504,7 @@ class tx_templavoila_dbnewcontentel
     public function wizard_appendWizards($wizardElements)
     {
         if (!is_array($wizardElements)) {
-            $wizardElements = array();
+            $wizardElements = [];
         }
         // plugins
         if (is_array($GLOBALS['TBE_MODULES_EXT']['xMOD_db_new_content_el']['addElClasses'])) {
@@ -513,7 +513,7 @@ class tx_templavoila_dbnewcontentel
                 $wizardElements = $modObj->proc($wizardElements);
             }
         }
-        $returnElements = array();
+        $returnElements = [];
         foreach ($wizardElements as $key => $wizardItem) {
             preg_match('/^[a-zA-Z0-9]+_/', $key, $group);
             $wizardGroup = $group[0] ? substr($group[0], 0, -1) . '.' : $key;
@@ -530,9 +530,9 @@ class tx_templavoila_dbnewcontentel
      *
      * @return array $returnElements
      */
-    public function wizard_renderFCEs($wizardElements = array())
+    public function wizard_renderFCEs($wizardElements = [])
     {
-        $returnElements = array();
+        $returnElements = [];
 
         // Flexible content elements:
         $positionPid = $this->id;
@@ -544,12 +544,12 @@ class tx_templavoila_dbnewcontentel
             /** @var \Extension\Templavoila\Domain\Model\Template $toObj */
             if ($toObj->isPermittedForUser()) {
                 $tmpFilename = $toObj->getIcon();
-                $returnElements['fce.']['elements.']['fce_' . $toObj->getKey() . '.'] = array(
+                $returnElements['fce.']['elements.']['fce_' . $toObj->getKey() . '.'] = [
                     'icon' => (@is_file(\TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName(substr($tmpFilename, 3)))) ? $tmpFilename : ('../' . \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::siteRelPath('templavoila') . 'Resources/Public/Image/default_previewicon.gif'),
                     'description' => $toObj->getDescription() ? htmlspecialchars($toObj->getDescription()) : \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('template_nodescriptionavailable'),
                     'title' => $toObj->getLabel(),
                     'params' => $this->getDsDefaultValues($toObj)
-                );
+                ];
             }
         }
 
@@ -581,7 +581,7 @@ class tx_templavoila_dbnewcontentel
      */
     public function wizard_getGroupHeader($groupKey, $wizardGroup)
     {
-        return array('header' => \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->sL($wizardGroup['header']));
+        return ['header' => \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->sL($wizardGroup['header'])];
     }
 
     /**
@@ -597,10 +597,10 @@ class tx_templavoila_dbnewcontentel
         global $TCA;
 
         // Get TCEFORM from TSconfig of current page
-        $TCEFORM_TSconfig = \TYPO3\CMS\Backend\Utility\BackendUtility::getTCEFORM_TSconfig('tt_content', array('pid' => $this->id));
+        $TCEFORM_TSconfig = \TYPO3\CMS\Backend\Utility\BackendUtility::getTCEFORM_TSconfig('tt_content', ['pid' => $this->id]);
         $removeItems = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $TCEFORM_TSconfig['CType']['removeItems'], 1);
 
-        $headersUsed = array();
+        $headersUsed = [];
         // Traverse wizard items:
         foreach ($wizardItems as $key => $cfg) {
 
@@ -610,7 +610,7 @@ class tx_templavoila_dbnewcontentel
                 $tempGetVars = \TYPO3\CMS\Core\Utility\GeneralUtility::explodeUrl2Array($wizardItems[$key]['params'], true);
                 // If tt_content values are set, merge them into the tt_content_defValues array, unset them from $tempGetVars and re-implode $tempGetVars into the param string (in case remaining parameters are around).
                 if (is_array($tempGetVars['defVals']['tt_content'])) {
-                    $wizardItems[$key]['tt_content_defValues'] = array_merge(is_array($wizardItems[$key]['tt_content_defValues']) ? $wizardItems[$key]['tt_content_defValues'] : array(), $tempGetVars['defVals']['tt_content']);
+                    $wizardItems[$key]['tt_content_defValues'] = array_merge(is_array($wizardItems[$key]['tt_content_defValues']) ? $wizardItems[$key]['tt_content_defValues'] : [], $tempGetVars['defVals']['tt_content']);
                     unset($tempGetVars['defVals']['tt_content']);
                     $wizardItems[$key]['params'] = \TYPO3\CMS\Core\Utility\GeneralUtility::implodeArrayForUrl('', $tempGetVars);
                 }
@@ -659,7 +659,7 @@ class tx_templavoila_dbnewcontentel
      */
     public function buildRecordWhere($table)
     {
-        $result = array();
+        $result = [];
         if (!\Extension\Templavoila\Utility\GeneralUtility::getBackendUser()->isAdmin()) {
             $prefLen = strlen($table) + 1;
             foreach (\Extension\Templavoila\Utility\GeneralUtility::getBackendUser()->userGroups as $group) {

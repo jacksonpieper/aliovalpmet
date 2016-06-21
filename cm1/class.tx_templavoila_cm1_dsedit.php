@@ -78,7 +78,7 @@ class tx_templavoila_cm1_dsEdit
                     $level = $level + 1;
 
                     $formFieldName = 'autoDS' . $formPrefix . '[' . $key . '][el][' . $autokey . ']';
-                    $insertDataArray = array();
+                    $insertDataArray = [];
                 } else {
                     $placeBefore = 1;
 
@@ -93,7 +93,7 @@ class tx_templavoila_cm1_dsEdit
                     $this->pObj->unflattenarray($insertDataArray['TCEforms']['config']);
 
                 /* do the preset-completition */
-                $real = array($key => &$insertDataArray);
+                $real = [$key => &$insertDataArray];
                 $this->pObj->eTypes->substEtypeWithRealStuff($real);
 
                 /* ... */
@@ -194,7 +194,7 @@ class tx_templavoila_cm1_dsEdit
                      */
 
                     if (isset($insertDataArray['tx_templavoila']['TypoScriptObjPath'])) {
-                        $curValue = array('objPath' => $insertDataArray['tx_templavoila']['TypoScriptObjPath']);
+                        $curValue = ['objPath' => $insertDataArray['tx_templavoila']['TypoScriptObjPath']];
                     } elseif (isset($insertDataArray['tx_templavoila']['eType_EXTRA'])) {
                         $curValue = $insertDataArray['tx_templavoila']['eType_EXTRA'];
                     } else {
@@ -421,7 +421,7 @@ class tx_templavoila_cm1_dsEdit
                 $addEditRows = '<tr class="bgColor4">
 					<td colspan="7"><img src="clear.gif" width="' . (($level + 1) * 16) . '" height="1" alt="" />' .
                     '<input type="text" name="' . md5($formPrefix . '[' . $key . ']') . '" value="[' . htmlspecialchars(\Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('mapEnterNewFieldname')) . ']" onfocus="if (this.value==\'[' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('mapEnterNewFieldname') . ']\'){this.value=\'field_\';}" />' .
-                    '<input type="submit" name="_" value="Add" onclick="document.location=\'' . $this->pObj->linkThisScript(array('DS_element' => $formPrefix . '[' . $key . ']', 'DS_cmd' => 'add')) . '&amp;fieldName=\'+document.pageform[\'' . md5($formPrefix . '[' . $key . ']') . '\'].value; return false;" />' .
+                    '<input type="submit" name="_" value="Add" onclick="document.location=\'' . $this->pObj->linkThisScript(['DS_element' => $formPrefix . '[' . $key . ']', 'DS_cmd' => 'add']) . '&amp;fieldName=\'+document.pageform[\'' . md5($formPrefix . '[' . $key . ']') . '\'].value; return false;" />' .
                     $this->pObj->cshItem('xMOD_tx_templavoila', 'mapping_addfield', $this->pObj->doc->backPath, '', false, 'margin-bottom: 0px;') .
                     '</td>
 				</tr>';
@@ -429,7 +429,7 @@ class tx_templavoila_cm1_dsEdit
         }
 
         // Return edit row:
-        return array($addEditRows, $placeBefore);
+        return [$addEditRows, $placeBefore];
     }
 
     /**
@@ -449,11 +449,11 @@ class tx_templavoila_cm1_dsEdit
         $curValue = (array)$curValue;
         // If a user function was registered, use that instead of our own handlers:
         if (isset($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['templavoila']['cm1']['eTypesExtraFormFields'][$type])) {
-            $_params = array(
+            $_params = [
                 'type' => $type,
                 'formFieldName' => $formFieldName . '[tx_templavoila][eType_EXTRA]',
                 'curValue' => $curValue,
-            );
+            ];
             $output = \TYPO3\CMS\Core\Utility\GeneralUtility::callUserFunction($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['templavoila']['cm1']['eTypesExtraFormFields'][$type], $_params, $this);
         } else {
             switch ($type) {

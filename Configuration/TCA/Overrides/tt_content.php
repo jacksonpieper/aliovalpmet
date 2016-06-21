@@ -2,66 +2,66 @@
 defined('TYPO3_MODE') or die();
 
 // Adding the new content element, "Flexible Content":
-$tempColumns = array(
-    'tx_templavoila_ds' => array(
+$tempColumns = [
+    'tx_templavoila_ds' => [
         'exclude' => 1,
         'label' => 'LLL:EXT:templavoila/Resources/Private/Language/locallang_db.xlf:tt_content.tx_templavoila_ds',
-        'config' => array(
+        'config' => [
             'type' => 'select',
-            'items' => array(
-                array('', 0),
-            ),
+            'items' => [
+                ['', 0],
+            ],
             'allowNonIdValues' => 1,
             'itemsProcFunc' => 'Extension\Templavoila\Service\ItemProcFunc\StaticDataStructuresHandler->dataSourceItemsProcFunc',
             'size' => 1,
             'minitems' => 0,
             'maxitems' => 1,
             'selicon_cols' => 10,
-        )
-    ),
-    'tx_templavoila_to' => array(
+        ]
+    ],
+    'tx_templavoila_to' => [
         'exclude' => 1,
         'label' => 'LLL:EXT:templavoila/Resources/Private/Language/locallang_db.xlf:tt_content.tx_templavoila_to',
         'displayCond' => 'FIELD:CType:=:templavoila_pi1',
-        'config' => array(
+        'config' => [
             'type' => 'select',
-            'items' => array(
-                array('', 0),
-            ),
+            'items' => [
+                ['', 0],
+            ],
             'itemsProcFunc' => 'Extension\Templavoila\Service\ItemProcFunc\StaticDataStructuresHandler->templateObjectItemsProcFunc',
             'size' => 1,
             'minitems' => 0,
             'maxitems' => 1,
             'selicon_cols' => 10,
-        )
-    ),
-    'tx_templavoila_flex' => array(
+        ]
+    ],
+    'tx_templavoila_flex' => [
         'l10n_cat' => 'text',
         'exclude' => 1,
         'label' => 'LLL:EXT:templavoila/Resources/Private/Language/locallang_db.xlf:tt_content.tx_templavoila_flex',
         'displayCond' => 'FIELD:tx_templavoila_ds:REQ:true',
-        'config' => array(
+        'config' => [
             'type' => 'flex',
             'ds_pointerField' => 'tx_templavoila_ds',
             'ds_tableField' => 'tx_templavoila_datastructure:dataprot',
-        )
-    ),
-    'tx_templavoila_pito' => array(
+        ]
+    ],
+    'tx_templavoila_pito' => [
         'exclude' => 1,
         'label' => 'LLL:EXT:templavoila/Resources/Private/Language/locallang_db.xlf:tt_content.tx_templavoila_pito',
-        'config' => array(
+        'config' => [
             'type' => 'select',
-            'items' => array(
-                array('', 0),
-            ),
+            'items' => [
+                ['', 0],
+            ],
             'itemsProcFunc' => 'Extension\Templavoila\Service\ItemProcFunc\StaticDataStructuresHandler->pi_templates',
             'size' => 1,
             'minitems' => 0,
             'maxitems' => 1,
             'selicon_cols' => 10,
-        )
-    ),
-);
+        ]
+    ],
+];
 \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addTCAcolumns('tt_content', $tempColumns);
 
 $GLOBALS['TCA']['tt_content']['ctrl']['typeicons']['templavoila_pi1'] = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath('templavoila') . '/Resources/Public/Icon/icon_fce_ce.png';

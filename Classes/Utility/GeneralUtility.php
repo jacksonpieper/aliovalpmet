@@ -51,7 +51,7 @@ final class GeneralUtility
      */
     public static function getDenyListForUser()
     {
-        $denyItems = array();
+        $denyItems = [];
         foreach (static::getBackendUser()->userGroups as $group) {
             $groupDenyItems = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $group['tx_templavoila_access'], true);
             $denyItems = array_merge($denyItems, $groupDenyItems);
@@ -76,7 +76,7 @@ final class GeneralUtility
             return false;
         }
         if (!is_array($references)) {
-            $references = array();
+            $references = [];
         }
         $refrows = static::getDatabaseConnection()->exec_SELECTgetRows(
             '*',
@@ -94,7 +94,7 @@ final class GeneralUtility
                     if (!isset($references[$ref['tablename']][$ref['recuid']])) {
                         // initialize with false to avoid recursion without affecting inner OR combinations
                         $references[$ref['tablename']][$ref['recuid']] = false;
-                        $references[$ref['tablename']][$ref['recuid']] = self::hasElementForeignReferences(array('table' => $ref['tablename'], 'uid' => $ref['recuid']), $pid, $recursion - 1, $references);
+                        $references[$ref['tablename']][$ref['recuid']] = self::hasElementForeignReferences(['table' => $ref['tablename'], 'uid' => $ref['recuid']], $pid, $recursion - 1, $references);
                     }
                 }
             }

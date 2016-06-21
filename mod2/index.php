@@ -48,7 +48,7 @@ class tx_templavoila_module2 extends \TYPO3\CMS\Backend\Module\BaseScriptClass
      *
      * @var array
      */
-    public $wizardData = array();
+    public $wizardData = [];
 
     /**
      * @var array
@@ -70,12 +70,12 @@ class tx_templavoila_module2 extends \TYPO3\CMS\Backend\Module\BaseScriptClass
     /**
      * @var array
      */
-    public $tFileList = array();
+    public $tFileList = [];
 
     /**
      * @var array
      */
-    public $errorsWarnings = array();
+    public $errorsWarnings = [];
 
     /**
      * holds the extconf configuration
@@ -106,11 +106,11 @@ class tx_templavoila_module2 extends \TYPO3\CMS\Backend\Module\BaseScriptClass
      */
     public function menuConfig()
     {
-        $this->MOD_MENU = array(
+        $this->MOD_MENU = [
             'set_details' => '',
             'set_unusedDs' => '',
             'wiz_step' => ''
-        );
+        ];
 
         // page/be_user TSconfig settings and blinding of menu-items
         $this->modTSconfig = \TYPO3\CMS\Backend\Utility\BackendUtility::getModTSconfig($this->id, 'mod.' . $this->MCONF['name']);
@@ -189,7 +189,7 @@ class tx_templavoila_module2 extends \TYPO3\CMS\Backend\Module\BaseScriptClass
         $content .= $this->doc->moduleBody(
             $this->pageinfo,
             $this->getDocHeaderButtons(),
-            array('CONTENT' => $this->content)
+            ['CONTENT' => $this->content]
         );
         $content .= $this->doc->endPage();
 
@@ -214,10 +214,10 @@ class tx_templavoila_module2 extends \TYPO3\CMS\Backend\Module\BaseScriptClass
      */
     protected function getDocHeaderButtons()
     {
-        $buttons = array(
+        $buttons = [
             'csh' => \TYPO3\CMS\Backend\Utility\BackendUtility::cshItem('_MOD_web_txtemplavoilaM2', '', $this->backPath),
             'shortcut' => $this->getShortcutButton(),
-        );
+        ];
 
         return $buttons;
     }
@@ -294,7 +294,7 @@ class tx_templavoila_module2 extends \TYPO3\CMS\Backend\Module\BaseScriptClass
         $list = $toRepo->getTemplateStoragePids();
 
         // Traverse the pages found and list in a table:
-        $tRows = array();
+        $tRows = [];
         $tRows[] = '
 			<tr class="bgColor5 tableheader">
 				<td>' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('storagefolders', true) . '</td>
@@ -335,13 +335,13 @@ class tx_templavoila_module2 extends \TYPO3\CMS\Backend\Module\BaseScriptClass
     {
         // Traverse scopes of data structures display template records belonging to them:
         // Each scope is places in its own tab in the tab menu:
-        $dsScopes = array(
+        $dsScopes = [
             \Extension\Templavoila\Domain\Model\AbstractDataStructure::SCOPE_PAGE,
             \Extension\Templavoila\Domain\Model\AbstractDataStructure::SCOPE_FCE,
             \Extension\Templavoila\Domain\Model\AbstractDataStructure::SCOPE_UNKNOWN
-        );
+        ];
 
-        $toIdArray = $parts = array();
+        $toIdArray = $parts = [];
         foreach ($dsScopes as $scopePointer) {
 
             // Create listing for a DS:
@@ -353,11 +353,11 @@ class tx_templavoila_module2 extends \TYPO3\CMS\Backend\Module\BaseScriptClass
             switch ((string) $scopePointer) {
                 case \Extension\Templavoila\Domain\Model\AbstractDataStructure::SCOPE_PAGE:
                     $label = \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('pagetemplates');
-                    $scopeIcon = \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIconForRecord('pages', array());
+                    $scopeIcon = \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIconForRecord('pages', []);
                     break;
                 case \Extension\Templavoila\Domain\Model\AbstractDataStructure::SCOPE_FCE:
                     $label = \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('fces');
-                    $scopeIcon = \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIconForRecord('tt_content', array());
+                    $scopeIcon = \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIconForRecord('tt_content', []);
                     break;
                 case \Extension\Templavoila\Domain\Model\AbstractDataStructure::SCOPE_UNKNOWN:
                     $label = \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('other');
@@ -371,13 +371,13 @@ class tx_templavoila_module2 extends \TYPO3\CMS\Backend\Module\BaseScriptClass
             $errStat = $this->getErrorLog($scopePointer);
 
             // Add parts for Tab menu:
-            $parts[] = array(
+            $parts[] = [
                 'label' => $label,
                 'icon' => $scopeIcon,
                 'content' => $content,
                 'linkTitle' => 'DS/TO = ' . $dsCount . '/' . $toCount,
                 'stateIcon' => $errStat['iconCode']
-            );
+            ];
         }
 
         // Find lost Template Objects and add them to a TAB if any are found:
@@ -396,25 +396,25 @@ class tx_templavoila_module2 extends \TYPO3\CMS\Backend\Module\BaseScriptClass
         }
         if ($lostTOs) {
             // Add parts for Tab menu:
-            $parts[] = array(
+            $parts[] = [
                 'label' => sprintf(\Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('losttos', true), $lostTOCount),
                 'content' => $lostTOs
-            );
+            ];
         }
 
         // Complete Template File List
-        $parts[] = array(
+        $parts[] = [
             'label' => \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('templatefiles', true),
             'content' => $this->completeTemplateFileList()
-        );
+        ];
 
         // Errors:
         if (false !== ($errStat = $this->getErrorLog('_ALL'))) {
-            $parts[] = array(
+            $parts[] = [
                 'label' => 'Errors (' . $errStat['count'] . ')',
                 'content' => $errStat['content'],
                 'stateIcon' => $errStat['iconCode']
-            );
+            ];
         }
 
         $showDetails = sprintf(' <label for="set_details">%s</label> &nbsp;&nbsp;&nbsp;', \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('showdetails', true));
@@ -457,7 +457,7 @@ class tx_templavoila_module2 extends \TYPO3\CMS\Backend\Module\BaseScriptClass
         $toCount = 0;
         $content = '';
         $index = '';
-        $toIdArray = array(-1);
+        $toIdArray = [-1];
 
         // Traverse data structures to list:
         if (count($dsList)) {
@@ -543,7 +543,7 @@ class tx_templavoila_module2 extends \TYPO3\CMS\Backend\Module\BaseScriptClass
                 $content;
         }
 
-        return array($content, $dsCount, $toCount, $toIdArray);
+        return [$content, $dsCount, $toCount, $toIdArray];
     }
 
     /**
@@ -559,7 +559,7 @@ class tx_templavoila_module2 extends \TYPO3\CMS\Backend\Module\BaseScriptClass
     {
         $tableAttribs = ' border="0" cellpadding="1" cellspacing="1" width="98%" style="margin-top: 10px;" class="lrPadding"';
 
-        $XMLinfo = array();
+        $XMLinfo = [];
         if ($this->MOD_SETTINGS['set_details']) {
             $XMLinfo = $this->DSdetails($dsObj->getDataprotXML());
         }
@@ -568,7 +568,7 @@ class tx_templavoila_module2 extends \TYPO3\CMS\Backend\Module\BaseScriptClass
             $onClick = 'document.location=\'' . $this->doc->backPath . 'file_edit.php?target=' . rawurlencode(\TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName($dsObj->getKey())) . '&returnUrl=' . rawurlencode(\TYPO3\CMS\Core\Utility\GeneralUtility::sanitizeLocalUrl(\TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('REQUEST_URI'))) . '\';';
             $dsIcon = '<a href="#" onclick="' . htmlspecialchars($onClick) . '"><img' . \TYPO3\CMS\Backend\Utility\IconUtility::skinImg($this->doc->backPath, 'gfx/fileicons/xml.gif', 'width="18" height="16"') . ' alt="" title="' . $dsObj->getKey() . '" class="absmiddle" /></a>';
         } else {
-            $dsIcon = \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIconForRecord('tx_templavoila_datastructure', array(), array('title' => $dsObj->getKey()));
+            $dsIcon = \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIconForRecord('tx_templavoila_datastructure', [], ['title' => $dsObj->getKey()]);
             $dsIcon = $this->doc->wrapClickMenuOnIcon($dsIcon, 'tx_templavoila_datastructure', $dsObj->getKey(), 1, '&callingScriptId=' . rawurlencode($this->doc->scriptID));
         }
 
@@ -666,11 +666,11 @@ class tx_templavoila_module2 extends \TYPO3\CMS\Backend\Module\BaseScriptClass
         }
 
         // Return content
-        return array(
+        return [
             'HTML' => $content,
             'languageMode' => $XMLinfo['languageMode'],
             'container' => $containerMode
-        );
+        ];
     }
 
     /**
@@ -686,7 +686,7 @@ class tx_templavoila_module2 extends \TYPO3\CMS\Backend\Module\BaseScriptClass
     {
 
         // Put together the records icon including content sensitive menu link wrapped around it:
-        $recordIcon = \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIconForRecord('tx_templavoila_tmplobj', array(), array('title' => $toObj->getKey()));
+        $recordIcon = \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIconForRecord('tx_templavoila_tmplobj', [], ['title' => $toObj->getKey()]);
         $recordIcon = $this->doc->wrapClickMenuOnIcon($recordIcon, 'tx_templavoila_tmplobj', $toObj->getKey(), 1, '&callingScriptId=' . rawurlencode($this->doc->scriptID));
 
         // Preview icon:
@@ -755,7 +755,7 @@ class tx_templavoila_module2 extends \TYPO3\CMS\Backend\Module\BaseScriptClass
         if ($this->MOD_SETTINGS['set_details']) {
             $XMLinfo = $this->DSdetails($toObj->getLocalDataprotXML(true));
         } else {
-            $XMLinfo = array('HTML' => '');
+            $XMLinfo = ['HTML' => ''];
         }
 
         // Format XML if requested
@@ -775,7 +775,7 @@ class tx_templavoila_module2 extends \TYPO3\CMS\Backend\Module\BaseScriptClass
         $toTitle = '<a href="' . htmlspecialchars($linkUrl) . '">' . htmlspecialchars(\Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->sL($toObj->getLabel())) . '</a>';
         $editLink = '<a href="#" onclick="' . htmlspecialchars(\TYPO3\CMS\Backend\Utility\BackendUtility::editOnClick('&edit[tx_templavoila_tmplobj][' . $toObj->getKey() . ']=edit', $this->doc->backPath)) . '">' . \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-document-open') . '</a>';
 
-        $fRWTOUres = array();
+        $fRWTOUres = [];
 
         if (!$children) {
             if ($this->MOD_SETTINGS['set_details']) {
@@ -886,7 +886,7 @@ class tx_templavoila_module2 extends \TYPO3\CMS\Backend\Module\BaseScriptClass
         }
 
         // Return content
-        return array('HTML' => $content, 'mappingStatus' => $mappingStatus_index, 'usage' => $fRWTOUres['usage']);
+        return ['HTML' => $content, 'mappingStatus' => $mappingStatus_index, 'usage' => $fRWTOUres['usage']];
     }
 
     /**
@@ -899,7 +899,7 @@ class tx_templavoila_module2 extends \TYPO3\CMS\Backend\Module\BaseScriptClass
      */
     public function findRecordsWhereTOUsed($toObj, $scope)
     {
-        $output = array();
+        $output = [];
 
         switch ($scope) {
             case 1: // PAGES:
@@ -1032,7 +1032,7 @@ class tx_templavoila_module2 extends \TYPO3\CMS\Backend\Module\BaseScriptClass
             }
         }
 
-        return array('HTML' => $outputString, 'usage' => count($output) - 1);
+        return ['HTML' => $outputString, 'usage' => count($output) - 1];
     }
 
     /**
@@ -1046,7 +1046,7 @@ class tx_templavoila_module2 extends \TYPO3\CMS\Backend\Module\BaseScriptClass
      */
     public function findDSUsageWithImproperTOs($dsObj, $scope, $toIdArray)
     {
-        $output = array();
+        $output = [];
 
         switch ($scope) {
             case 1: //
@@ -1169,7 +1169,7 @@ class tx_templavoila_module2 extends \TYPO3\CMS\Backend\Module\BaseScriptClass
     public function findRecordsWhereUsed_pid($pid)
     {
         if (!isset($this->pidCache[$pid])) {
-            $this->pidCache[$pid] = array();
+            $this->pidCache[$pid] = [];
 
             $pageinfo = \TYPO3\CMS\Backend\Utility\BackendUtility::readPageAccess($pid, $this->perms_clause);
             $this->pidCache[$pid]['path'] = $pageinfo['_thePath'];
@@ -1190,7 +1190,7 @@ class tx_templavoila_module2 extends \TYPO3\CMS\Backend\Module\BaseScriptClass
             $output = '';
 
             // USED FILES:
-            $tRows = array();
+            $tRows = [];
             $tRows[] = '
 				<tr class="bgColor5 tableheader">
 					<td>' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('file', true) . '</td>
@@ -1227,7 +1227,7 @@ class tx_templavoila_module2 extends \TYPO3\CMS\Backend\Module\BaseScriptClass
 
             // TEMPLATE ARCHIVE:
             if (count($files)) {
-                $tRows = array();
+                $tRows = [];
                 $tRows[] = '
 					<tr class="bgColor5 tableheader">
 						<td>' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('file', true) . '</td>
@@ -1315,7 +1315,7 @@ class tx_templavoila_module2 extends \TYPO3\CMS\Backend\Module\BaseScriptClass
     {
         $errStat = false;
         if (is_array($this->errorsWarnings[$scope])) {
-            $errStat = array();
+            $errStat = [];
 
             if (is_array($this->errorsWarnings[$scope]['warning'])) {
                 $errStat['count'] = count($this->errorsWarnings[$scope]['warning']);
@@ -1687,7 +1687,7 @@ class tx_templavoila_module2 extends \TYPO3\CMS\Backend\Module\BaseScriptClass
             }
         }
 
-        return array(
+        return [
             'HTML' => /*\TYPO3\CMS\Core\Utility\GeneralUtility::view_array($DScontent).'Language Mode => "'.$languageMode.'"<hr/>
                         Root Elements = '.$rootelements.', hereof ref/input fields = '.($referenceFields.'/'.$inputFields).'<hr/>
                         '.$rootElementsHTML*/
@@ -1696,7 +1696,7 @@ class tx_templavoila_module2 extends \TYPO3\CMS\Backend\Module\BaseScriptClass
             'rootelements' => $rootelements,
             'inputFields' => $inputFields,
             'referenceFields' => $referenceFields
-        );
+        ];
     }
 
     /******************************
@@ -1817,7 +1817,7 @@ class tx_templavoila_module2 extends \TYPO3\CMS\Backend\Module\BaseScriptClass
         $checkExtensions = explode(',', 'css_styled_content,impexp');
         $missingExtensions = false;
 
-        $tRows = array();
+        $tRows = [];
         $tRows[] = '<tr class="tableheader bgColor5">
 			<td>' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('newsitewizard_missingext_extkey', true) . '</td>
 			<td>' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('newsitewizard_missingext_installed', true) . '</td>
@@ -1877,7 +1877,7 @@ class tx_templavoila_module2 extends \TYPO3\CMS\Backend\Module\BaseScriptClass
         $paths = $this->getTemplatePaths();
         $files = $this->getTemplateFiles();
         if (!empty($paths) && !empty($files)) {
-            $this->wizardData = array();
+            $this->wizardData = [];
             $pathArr = \TYPO3\CMS\Core\Utility\GeneralUtility::removePrefixPathFromList($paths, PATH_site);
             $outputString = sprintf(\Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('newsitewizard_firststep'), implode('", "', $pathArr)) . '<br/>';
 
@@ -1885,7 +1885,7 @@ class tx_templavoila_module2 extends \TYPO3\CMS\Backend\Module\BaseScriptClass
             $fileArr = \TYPO3\CMS\Core\Utility\GeneralUtility::removePrefixPathFromList($files, PATH_site);
 
             // Prepare header:
-            $tRows = array();
+            $tRows = [];
             $tRows[] = '<tr class="tableheader bgColor5">
 				<td>' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('toused_path', true) . ':</td>
 				<td>' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('usage', true) . ':</td>
@@ -2017,23 +2017,23 @@ class tx_templavoila_module2 extends \TYPO3\CMS\Backend\Module\BaseScriptClass
                     $import->importData($this->importPageUid);
 
                     // Update various fields (the index values, eg. the "1" in "$import->import_mapId['pages'][1]]..." are the UIDs of the original records from the import file!)
-                    $data = array();
+                    $data = [];
                     $data['pages'][\TYPO3\CMS\Backend\Utility\BackendUtility::wsMapId('pages', $import->import_mapId['pages'][1])]['title'] = $this->wizardData['sitetitle'];
                     $data['sys_template'][\TYPO3\CMS\Backend\Utility\BackendUtility::wsMapId('sys_template', $import->import_mapId['sys_template'][1])]['title'] = \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('newsitewizard_maintemplate', true) . ' ' . $this->wizardData['sitetitle'];
                     $data['sys_template'][\TYPO3\CMS\Backend\Utility\BackendUtility::wsMapId('sys_template', $import->import_mapId['sys_template'][1])]['sitetitle'] = $this->wizardData['sitetitle'];
                     $data['tx_templavoila_tmplobj'][\TYPO3\CMS\Backend\Utility\BackendUtility::wsMapId('tx_templavoila_tmplobj', $import->import_mapId['tx_templavoila_tmplobj'][1])]['fileref'] = $this->wizardData['file'];
                     $data['tx_templavoila_tmplobj'][\TYPO3\CMS\Backend\Utility\BackendUtility::wsMapId('tx_templavoila_tmplobj', $import->import_mapId['tx_templavoila_tmplobj'][1])]['templatemapping'] = serialize(
-                        array(
-                            'MappingInfo' => array(
-                                'ROOT' => array(
+                        [
+                            'MappingInfo' => [
+                                'ROOT' => [
                                     'MAP_EL' => 'body[1]/INNER'
-                                )
-                            ),
-                            'MappingInfo_head' => array(
-                                'headElementPaths' => array('link[1]', 'link[2]', 'link[3]', 'style[1]', 'style[2]', 'style[3]'),
+                                ]
+                            ],
+                            'MappingInfo_head' => [
+                                'headElementPaths' => ['link[1]', 'link[2]', 'link[3]', 'style[1]', 'style[2]', 'style[3]'],
                                 'addBodyTag' => 1
-                            )
-                        )
+                            ]
+                        ]
                     );
 
                     // Update user settings
@@ -2058,7 +2058,7 @@ class tx_templavoila_module2 extends \TYPO3\CMS\Backend\Module\BaseScriptClass
                     $tce = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\DataHandling\DataHandler::class);
                     $tce->stripslashes_values = 0;
                     $tce->dontProcessTransformations = 1;
-                    $tce->start($data, array());
+                    $tce->start($data, []);
                     $tce->process_datamap();
 
                     // Setting environment:
@@ -2142,19 +2142,19 @@ class tx_templavoila_module2 extends \TYPO3\CMS\Backend\Module\BaseScriptClass
 
             // If it turns out to be only a single large block we expect it to be a container for the menu item. Therefore we will parse the next level and expect that to be menu items:
             if (count($parts) == 3) {
-                $totalWrap = array();
+                $totalWrap = [];
                 $totalWrap['before'] = $parts[0] . $htmlParser->getFirstTag($parts[1]);
                 $totalWrap['after'] = '</' . strtolower($htmlParser->getFirstTagName($parts[1])) . '>' . $parts[2];
 
                 $parts = $htmlParser->splitIntoBlock('td,tr,table,a,div,span,ol,ul,li,p,h1,h2,h3,h4,h5', $htmlParser->removeFirstAndLastTag($parts[1]), 1);
             } else {
-                $totalWrap = array();
+                $totalWrap = [];
             }
 
             $menuPart_HTML = trim($totalWrap['before']) . chr(10) . implode(chr(10), $parts) . chr(10) . trim($totalWrap['after']);
 
             // Traverse expected menu items:
-            $menuWraps = array();
+            $menuWraps = [];
             $GMENU = false;
             $mouseOver = false;
             $key = '';
@@ -2164,7 +2164,7 @@ class tx_templavoila_module2 extends \TYPO3\CMS\Backend\Module\BaseScriptClass
 
                     $linkTag = $htmlParser->splitIntoBlock('a', $value, 1);
                     if ($linkTag[1]) {
-                        $newValue = array();
+                        $newValue = [];
                         $attribs = $htmlParser->get_tag_attributes($htmlParser->getFirstTag($linkTag[1]), 1);
                         $newValue['A-class'] = $attribs[0]['class'];
                         if ($attribs[0]['onmouseover'] && $attribs[0]['onmouseout']) {
@@ -2444,7 +2444,7 @@ lib.' . $menuType . '.1.ACT {
             // Get template record:
             $TSrecord = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecord('sys_template', $this->wizardData['typoScriptTemplateID']);
             if (is_array($TSrecord)) {
-                $data = array();
+                $data = [];
                 $data['sys_template'][$TSrecord['uid']]['config'] = '
 
 ## Menu [Begin]
@@ -2459,7 +2459,7 @@ lib.' . $menuType . '.1.ACT {
                 $tce = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\DataHandling\DataHandler::class);
                 $tce->stripslashes_values = 0;
                 $tce->dontProcessTransformations = 1;
-                $tce->start($data, array());
+                $tce->start($data, []);
                 $tce->process_datamap();
             }
         }
@@ -2504,11 +2504,11 @@ lib.' . $menuType . '.1.ACT {
      */
     protected function getTemplatePaths($relative = false, $check = true)
     {
-        $templatePaths = array();
+        $templatePaths = [];
         if (strlen($this->modTSconfig['properties']['templatePath'])) {
             $paths = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $this->modTSconfig['properties']['templatePath'], true);
         } else {
-            $paths = array('templates');
+            $paths = ['templates'];
         }
 
         $prefix = \TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName($GLOBALS['TYPO3_CONF_VARS']['BE']['fileadminDir']);
@@ -2539,9 +2539,9 @@ lib.' . $menuType . '.1.ACT {
     protected function getTemplateFiles()
     {
         $paths = $this->getTemplatePaths();
-        $files = array();
+        $files = [];
         foreach ($paths as $path) {
-            $files = array_merge(\TYPO3\CMS\Core\Utility\GeneralUtility::getAllFilesAndFoldersInPath(array(), $path . ((substr($path, -1) != '/') ? '/' : ''), 'html,htm,tmpl', 0), $files);
+            $files = array_merge(\TYPO3\CMS\Core\Utility\GeneralUtility::getAllFilesAndFoldersInPath([], $path . ((substr($path, -1) != '/') ? '/' : ''), 'html,htm,tmpl', 0), $files);
         }
 
         return $files;

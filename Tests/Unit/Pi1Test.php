@@ -26,7 +26,7 @@ class Pi1Test extends \TYPO3\CMS\Core\Tests\UnitTestCase
     public function inheritValueLogsErrorIfFirstParamNotAnArray()
     {
         /** @var $mockObject \tx_templavoila_pi1 | \PHPUnit_Framework_MockObject_MockObject  */
-        $mockObject = $this->getMock('tx_templavoila_pi1', array('log'));
+        $mockObject = $this->getMock('tx_templavoila_pi1', ['log']);
         $mockObject->expects($this->once())->method('log');
         $mockObject->inheritValue(null, null);
     }
@@ -37,9 +37,9 @@ class Pi1Test extends \TYPO3\CMS\Core\Tests\UnitTestCase
     public function inheritValueLogsErrorIfvDefIsNotAKeyOfFirstParam()
     {
         /** @var $mockObject \tx_templavoila_pi1 | \PHPUnit_Framework_MockObject_MockObject  */
-        $mockObject = $this->getMock('tx_templavoila_pi1', array('log'));
+        $mockObject = $this->getMock('tx_templavoila_pi1', ['log']);
         $mockObject->expects($this->once())->method('log')->with('Key "vDEF" of array "$dV" doesn\'t exist');
-        $mockObject->inheritValue(array(), 'vDEF');
+        $mockObject->inheritValue([], 'vDEF');
     }
 
     /**
@@ -49,10 +49,10 @@ class Pi1Test extends \TYPO3\CMS\Core\Tests\UnitTestCase
     public function inheritValueResultsWithParamMatrix($data, $expected)
     {
         /** @var $mockObject \tx_templavoila_pi1 | \PHPUnit_Framework_MockObject_MockObject  */
-        $mockObject = $this->getMock('tx_templavoila_pi1', array('log'));
+        $mockObject = $this->getMock('tx_templavoila_pi1', ['log']);
         $mockObject->inheritValueFromDefault = true;
 
-        $this->assertSame($expected, call_user_func_array(array($mockObject, 'inheritValue'), $data));
+        $this->assertSame($expected, call_user_func_array([$mockObject, 'inheritValue'], $data));
     }
 
     /**
@@ -60,154 +60,154 @@ class Pi1Test extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function inheritValueDataProvider()
     {
-        return array(
-            array(
-                array(
-                    array('vDEF' => 'en', 'foo' => 'bar'),
+        return [
+            [
+                [
+                    ['vDEF' => 'en', 'foo' => 'bar'],
                     'foo',
-                ),
+                ],
                 'bar',
-            ),
-            array(
-                array(
-                    array('vDEF' => 'en', 'foo' => 'bar'),
+            ],
+            [
+                [
+                    ['vDEF' => 'en', 'foo' => 'bar'],
                     'vDEF',
-                ),
+                ],
                 'en',
-            ),
-            array(
-                array(
-                    array('vDEF' => '1', 'vFR' => '2'),
+            ],
+            [
+                [
+                    ['vDEF' => '1', 'vFR' => '2'],
                     'vFR',
-                ),
+                ],
                 '2',
-            ),
-            array(
-                array(
-                    array('vDEF' => '1'),
+            ],
+            [
+                [
+                    ['vDEF' => '1'],
                     'vFR',
-                ),
+                ],
                 '1',
-            ),
-            array(
-                array(
-                    array(),
+            ],
+            [
+                [
+                    [],
                     'vFR',
-                ),
+                ],
                 '',
-            ),
-            array(
-                array(
-                    array('vDEF' => 'en', 'foo' => ''),
+            ],
+            [
+                [
+                    ['vDEF' => 'en', 'foo' => ''],
                     'foo',
                     'ifFalse'
-                ),
+                ],
                 'en',
-            ),
-            array(
-                array(
-                    array('vDEF' => 'en', 'foo' => '0'),
+            ],
+            [
+                [
+                    ['vDEF' => 'en', 'foo' => '0'],
                     'foo',
                     'ifFalse'
-                ),
+                ],
                 'en',
-            ),
-            array(
-                array(
-                    array('vDEF' => 'en', 'foo' => 0),
+            ],
+            [
+                [
+                    ['vDEF' => 'en', 'foo' => 0],
                     'foo',
                     'ifFalse'
-                ),
+                ],
                 'en',
-            ),
-            array(
-                array(
-                    array('vDEF' => 'en', 'foo' => false),
+            ],
+            [
+                [
+                    ['vDEF' => 'en', 'foo' => false],
                     'foo',
                     'ifFalse'
-                ),
+                ],
                 'en',
-            ),
-            array(
-                array(
-                    array('vDEF' => 'en', 'foo' => 'bar'),
+            ],
+            [
+                [
+                    ['vDEF' => 'en', 'foo' => 'bar'],
                     'foo',
                     'ifFalse'
-                ),
+                ],
                 'bar',
-            ),
-            array(
-                array(
-                    array('vDEF' => 'en', 'foo' => ''),
+            ],
+            [
+                [
+                    ['vDEF' => 'en', 'foo' => ''],
                     'foo',
                     'ifBlank'
-                ),
+                ],
                 'en',
-            ),
-            array(
-                array(
-                    array('vDEF' => 'en', 'foo' => false),
+            ],
+            [
+                [
+                    ['vDEF' => 'en', 'foo' => false],
                     'foo',
                     'ifBlank'
-                ),
+                ],
                 'en',
-            ),
-            array(
-                array(
-                    array('vDEF' => 'en', 'foo' => '0'),
+            ],
+            [
+                [
+                    ['vDEF' => 'en', 'foo' => '0'],
                     'foo',
                     'ifBlank'
-                ),
+                ],
                 '0',
-            ),
-            array(
-                array(
-                    array('vDEF' => 'en', 'foo' => 0),
+            ],
+            [
+                [
+                    ['vDEF' => 'en', 'foo' => 0],
                     'foo',
                     'ifBlank'
-                ),
+                ],
                 '0',
-            ),
-            array(
-                array(
-                    array('vDEF' => 'en', 'foo' => 'bar'),
+            ],
+            [
+                [
+                    ['vDEF' => 'en', 'foo' => 'bar'],
                     'foo',
                     'never'
-                ),
+                ],
                 'bar',
-            ),
-            array(
-                array(
-                    array('vDEF' => 'en', 'foo' => 'bar'),
+            ],
+            [
+                [
+                    ['vDEF' => 'en', 'foo' => 'bar'],
                     'foo',
                     'removeIfBlank'
-                ),
+                ],
                 '',
-            ),
-            array(
-                array(
-                    array('vDEF' => 'en', 'foo' => ''),
+            ],
+            [
+                [
+                    ['vDEF' => 'en', 'foo' => ''],
                     'foo',
                     'removeIfBlank'
-                ),
-                array('ERROR' => '__REMOVE'),
-            ),
-            array(
-                array(
-                    array('vDEF' => 'en', 'foo' => 'bar'),
+                ],
+                ['ERROR' => '__REMOVE'],
+            ],
+            [
+                [
+                    ['vDEF' => 'en', 'foo' => 'bar'],
                     'foo',
                     ''
-                ),
+                ],
                 'bar'
-            ),
-            array(
-                array(
-                    array('vDEF' => 'en', 'foo' => ''),
+            ],
+            [
+                [
+                    ['vDEF' => 'en', 'foo' => ''],
                     'foo',
                     ''
-                ),
+                ],
                 'en'
-            ),
-        );
+            ],
+        ];
     }
 }

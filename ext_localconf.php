@@ -13,7 +13,7 @@ $_EXTCONF = unserialize($_EXTCONF);
     1
 );
 
-$tvSetup = array('plugin.tx_templavoila_pi1.disableExplosivePreview = 1');
+$tvSetup = ['plugin.tx_templavoila_pi1.disableExplosivePreview = 1'];
 if (!$_EXTCONF['enable.']['renderFCEHeader']) {
     $tvSetup[] = 'tt_content.templavoila_pi1.10 >';
 }
@@ -49,8 +49,8 @@ $GLOBALS ['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['pro
 $GLOBALS ['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['moveRecordClass']['templavoila'] = 'EXT:templavoila/Classes/Service/DataHandling/DataHandler.php:Extension\Templavoila\Service\DataHandling\DataHandler';
 $GLOBALS ['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_userauthgroup.php']['recordEditAccessInternals']['templavoila'] = 'EXT:templavoila/Classes/Service/UserFunc/Access.php:&Extension\Templavoila\Service\UserFunc\Access->recordEditAccessInternals';
 
-$GLOBALS ['TYPO3_CONF_VARS']['EXTCONF']['lowlevel']['cleanerModules']['tx_templavoila_unusedce'] = array('EXT:templavoila/Classes/Comand/UnusedContentElementComand.php:Extension\Templavoila\Comand\UnusedContentElementComand');
-$GLOBALS ['TYPO3_CONF_VARS']['EXTCONF']['l10nmgr']['indexFilter']['tx_templavoila_usedCE'] = array('EXT:templavoila/Classes/Service/UserFunc/UsedContentElement.php:Extension\Templavoila\Service\UserFunc\UsedContentElement');
+$GLOBALS ['TYPO3_CONF_VARS']['EXTCONF']['lowlevel']['cleanerModules']['tx_templavoila_unusedce'] = ['EXT:templavoila/Classes/Comand/UnusedContentElementComand.php:Extension\Templavoila\Comand\UnusedContentElementComand'];
+$GLOBALS ['TYPO3_CONF_VARS']['EXTCONF']['l10nmgr']['indexFilter']['tx_templavoila_usedCE'] = ['EXT:templavoila/Classes/Service/UserFunc/UsedContentElement.php:Extension\Templavoila\Service\UserFunc\UsedContentElement'];
 
 // Register Preview Classes for Page Module
 $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['templavoila']['mod1']['renderPreviewContent']['default'] = 'EXT:templavoila/Classes/Controller/Preview/DefaultController.php:&Extension\Templavoila\Controller\Preview\DefaultController';

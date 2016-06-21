@@ -56,7 +56,7 @@ class StaticDataStructure extends AbstractDataStructure
      */
     public function getStoragePids()
     {
-        $pids = array();
+        $pids = [];
         $toList = \Extension\Templavoila\Utility\GeneralUtility::getDatabaseConnection()->exec_SELECTgetRows(
             'tx_templavoila_tmplobj.uid,tx_templavoila_tmplobj.pid',
             'tx_templavoila_tmplobj',
@@ -105,7 +105,7 @@ class StaticDataStructure extends AbstractDataStructure
      *
      * @return boolean
      */
-    public function isPermittedForUser($parentRow = array(), $removeItems = array())
+    public function isPermittedForUser($parentRow = [], $removeItems = [])
     {
         return true;
     }

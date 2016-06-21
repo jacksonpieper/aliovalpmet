@@ -114,7 +114,7 @@ class tx_templavoila_mod1_localization
             return false;
         }
 
-        $optionsArr = array();
+        $optionsArr = [];
         foreach ($availableLanguagesArr as $languageArr) {
             unset($newLanguagesArr[$languageArr['uid']]); // Remove this language from possible new translation languages array (PNTLA ;-)
 
@@ -129,7 +129,7 @@ class tx_templavoila_mod1_localization
                 $availableTranslationsFlags .= '<a href="index.php?' .
                     htmlspecialchars($this->pObj->link_getParameters() . '&editPageLanguageOverlay=' . $languageArr['uid']) . '">' .
                     '<span ' . $grayedOut . '>' .
-                    \Extension\Templavoila\Utility\IconUtility::getFlagIconForLanguage($languageArr['flagIcon'], array('title' => $languageArr['title'], 'alt' => $languageArr['title'])) .
+                    \Extension\Templavoila\Utility\IconUtility::getFlagIconForLanguage($languageArr['flagIcon'], ['title' => $languageArr['title'], 'alt' => $languageArr['title']]) .
                     '</span></a>';
             }
         }
@@ -148,7 +148,7 @@ class tx_templavoila_mod1_localization
 		';
 
         if ($this->pObj->currentLanguageUid >= 0 && (($this->pObj->rootElementLangMode === 'disable') || ($this->pObj->rootElementLangParadigm === 'bound'))) {
-            $options = array();
+            $options = [];
             $options[] = \TYPO3\CMS\Core\Utility\GeneralUtility::inList($this->pObj->modTSconfig['properties']['disableDisplayMode'], 'default') ? '' : '<option value=""' . ($this->pObj->MOD_SETTINGS['langDisplayMode'] === '' ? ' selected="selected"' : '') . '>' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->sL('LLL:EXT:lang/locallang_general.xlf:LGL.default_value') . '</option>';
             $options[] = \TYPO3\CMS\Core\Utility\GeneralUtility::inList($this->pObj->modTSconfig['properties']['disableDisplayMode'], 'selectedLanguage') ? '' : '<option value="selectedLanguage"' . ($this->pObj->MOD_SETTINGS['langDisplayMode'] === 'selectedLanguage' ? ' selected="selected"' : '') . '>' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('pageLocalizationDisplayMode_selectedLanguage') . '</option>';
             $options[] = \TYPO3\CMS\Core\Utility\GeneralUtility::inList($this->pObj->modTSconfig['properties']['disableDisplayMode'], 'onlyLocalized') ? '' : '<option value="onlyLocalized"' . ($this->pObj->MOD_SETTINGS['langDisplayMode'] === 'onlyLocalized' ? ' selected="selected"' : '') . '>' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('pageLocalizationDisplayMode_onlyLocalized') . '</option>';
@@ -237,7 +237,7 @@ class tx_templavoila_mod1_localization
         }
 
         $translatedLanguagesArr = $this->pObj->getAvailableLanguages($this->pObj->id);
-        $optionsArr = array('<option value=""></option>');
+        $optionsArr = ['<option value=""></option>'];
         foreach ($newLanguagesArr as $language) {
             if (\Extension\Templavoila\Utility\GeneralUtility::getBackendUser()->checkLanguageAccess($language['uid']) && !isset($translatedLanguagesArr[$language['uid']])) {
                 $flag = \Extension\Templavoila\Utility\IconUtility::getFlagIconFileForLanguage($language['flagIcon']);
