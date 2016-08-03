@@ -288,7 +288,7 @@ class MainController extends AbstractModuleController
             // Draw the header.
 
             // Add custom styles
-            $this->doc->styleSheetFile2 = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath($this->extKey) . "mod2/styles.css";
+            $this->doc->styleSheetFile2 = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath($this->extKey) . 'mod2/styles.css';
 
             // Adding classic jumpToUrl function, needed for the function menu.
             // Also, the id in the parent frameset is configured.
@@ -1527,12 +1527,12 @@ class MainController extends AbstractModuleController
                 }
 
                 $HTML .= '<dt>';
-                $HTML .= ($elm == "meta" ? static::getLanguageService()->getLL('configuration', true) : $def['tx_templavoila']['title'] . ' (' . $elm . ')');
+                $HTML .= ($elm == 'meta' ? static::getLanguageService()->getLL('configuration', true) : $def['tx_templavoila']['title'] . ' (' . $elm . ')');
                 $HTML .= '</dt>';
                 $HTML .= '<dd>';
 
                 /* this is the configuration-entry ------------------------------ */
-                if ($elm == "meta") {
+                if ($elm == 'meta') {
                     /* The basic XML-structure of an meta-entry is:
                      *
                      * <meta>
@@ -1580,7 +1580,7 @@ class MainController extends AbstractModuleController
                     $HTML .= '<p>[..., ..., ...]</p>';
                 } /* this a container for cellections of elements ----------------- */
                 else {
-                    if (isset($def['type']) && ($def['type'] == "array")) {
+                    if (isset($def['type']) && ($def['type'] == 'array')) {
                         $HTML .= '<p>[...]</p>';
                     } /* this a regular entry ----------------------------------------- */
                     else {
@@ -1653,56 +1653,56 @@ class MainController extends AbstractModuleController
                             }
                             //TODO: get the registered eTypes and use the labels
                             switch ($tv['eType']) {
-                                case "input":
+                                case 'input':
                                     $preset = 'Plain input field';
                                     $tco = false;
                                     break;
-                                case "input_h":
+                                case 'input_h':
                                     $preset = 'Header field';
                                     $tco = false;
                                     break;
-                                case "input_g":
+                                case 'input_g':
                                     $preset = 'Header field, Graphical';
                                     $tco = false;
                                     break;
-                                case "text":
+                                case 'text':
                                     $preset = 'Text area for bodytext';
                                     $tco = false;
                                     break;
-                                case "rte":
+                                case 'rte':
                                     $preset = 'Rich text editor for bodytext';
                                     $tco = false;
                                     break;
-                                case "link":
+                                case 'link':
                                     $preset = 'Link field';
                                     $tco = false;
                                     break;
-                                case "int":
+                                case 'int':
                                     $preset = 'Integer value';
                                     $tco = false;
                                     break;
-                                case "image":
+                                case 'image':
                                     $preset = 'Image field';
                                     $tco = false;
                                     break;
-                                case "imagefixed":
+                                case 'imagefixed':
                                     $preset = 'Image field, fixed W+H';
                                     $tco = false;
                                     break;
-                                case "select":
+                                case 'select':
                                     $preset = 'Selector box';
                                     $tco = false;
                                     break;
-                                case "ce":
+                                case 'ce':
                                     $preset = 'Content Elements';
                                     $tco = true;
                                     break;
-                                case "TypoScriptObject":
+                                case 'TypoScriptObject':
                                     $preset = 'TypoScript Object Path';
                                     $tco = true;
                                     break;
 
-                                case "none":
+                                case 'none':
                                     $preset = 'None';
                                     $tco = true;
                                     break;
@@ -1731,13 +1731,13 @@ class MainController extends AbstractModuleController
                             }
 
                             $notes = '';
-                            if (($tv['eType'] != "TypoScriptObject") && isset($tv['TypoScriptObjPath'])) {
+                            if (($tv['eType'] != 'TypoScriptObject') && isset($tv['TypoScriptObjPath'])) {
                                 $notes .= '<li>' . static::getLanguageService()->getLL('redundant', true) . ' &lt;TypoScriptObjPath&gt;-entry</li>';
                             }
-                            if (($tv['eType'] == "TypoScriptObject") && isset($tv['TypoScript'])) {
+                            if (($tv['eType'] == 'TypoScriptObject') && isset($tv['TypoScript'])) {
                                 $notes .= '<li>' . static::getLanguageService()->getLL('redundant', true) . ' &lt;TypoScript&gt;-entry</li>';
                             }
-                            if ((($tv['eType'] == "TypoScriptObject") || !isset($tv['TypoScript'])) && isset($tv['TypoScript_constants'])) {
+                            if ((($tv['eType'] == 'TypoScriptObject') || !isset($tv['TypoScript'])) && isset($tv['TypoScript_constants'])) {
                                 $notes .= '<li>' . static::getLanguageService()->getLL('redundant', true) . ' &lt;TypoScript_constants&gt;-' . static::getLanguageService()->getLL('entry', true) . '</li>';
                             }
                             if (isset($tv['proc']) && isset($tv['proc']['int']) && ($tv['proc']['int'] == 1) && isset($tv['proc']['HSC'])) {
@@ -1752,7 +1752,7 @@ class MainController extends AbstractModuleController
                                 $tsstats .= '<li>' . sprintf(static::getLanguageService()->getLL('dsdetails_tsconstants', true), count($tv['TypoScript_constants'])) . '</li>';
                             }
                             if (isset($tv['TypoScript'])) {
-                                $tsstats .= '<li>' . sprintf(static::getLanguageService()->getLL('dsdetails_tslines', true), (1 + strlen($tv['TypoScript']) - strlen(str_replace("\n", "", $tv['TypoScript'])))) . '</li>';
+                                $tsstats .= '<li>' . sprintf(static::getLanguageService()->getLL('dsdetails_tslines', true), (1 + strlen($tv['TypoScript']) - strlen(str_replace("\n", '', $tv['TypoScript'])))) . '</li>';
                             }
                             if (isset($tv['TypoScriptObjPath'])) {
                                 $tsstats .= '<li>' . sprintf(static::getLanguageService()->getLL('dsdetails_tsutilize', true), '<em>' . $tv['TypoScriptObjPath'] . '</em>') . '</li>';
@@ -1792,7 +1792,7 @@ class MainController extends AbstractModuleController
                 }
 
                 /* there are some childs to process ----------------------------- */
-                if (isset($def['type']) && ($def['type'] == "array")) {
+                if (isset($def['type']) && ($def['type'] == 'array')) {
                     if (isset($def['section']))
                         ;
                     if (isset($def['el'])) {

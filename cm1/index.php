@@ -416,7 +416,7 @@ class tx_templavoila_cm1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass
             }
         }
 
-        return str_replace("<>\n", '', str_replace("</>", '', \TYPO3\CMS\Core\Utility\GeneralUtility::array2xml($array, '', -1, '', 0, ['useCDATA' => 1])));
+        return str_replace("<>\n", '', str_replace('</>', '', \TYPO3\CMS\Core\Utility\GeneralUtility::array2xml($array, '', -1, '', 0, ['useCDATA' => 1])));
     }
 
     /**
@@ -520,7 +520,7 @@ class tx_templavoila_cm1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass
         $this->doc->inDocStylesArray[] = self::$gnyfStyleBlock;
 
         // Add custom styles
-        $this->doc->styleSheetFile2 = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath($this->extKey) . "cm1/styles.css";
+        $this->doc->styleSheetFile2 = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath($this->extKey) . 'cm1/styles.css';
 
         // General GPvars for module mode:
         $this->displayFile = \Extension\Templavoila\Domain\Model\File::filename(\TYPO3\CMS\Core\Utility\GeneralUtility::_GP('file'));

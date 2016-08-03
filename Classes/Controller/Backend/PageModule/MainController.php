@@ -1610,7 +1610,7 @@ class MainController extends AbstractModuleController implements Configurable
             );
 
             // removes not used markers
-            $beTemplate = preg_replace("/###field_.*?###/", '', $beTemplate);
+            $beTemplate = preg_replace('/###field_.*?###/', '', $beTemplate);
 
             return $beTemplate;
         }

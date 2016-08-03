@@ -530,10 +530,10 @@ class tx_templavoila_pi1 extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
                         if ($DSelements[$key]['section'] && is_array($dataValues[$key]['el'])) {
                             $registerCounter = 1;
                             foreach ($dataValues[$key]['el'] as $ik => $el) {
-                                $GLOBALS['TSFE']->register["tx_templavoila_pi1.sectionPos"] = $registerCounter;
-                                $GLOBALS['TSFE']->register["tx_templavoila_pi1.sectionCount"] = count($dataValues[$key]['el']);
-                                $GLOBALS['TSFE']->register["tx_templavoila_pi1.sectionIsFirstItem"] = ($registerCounter == 1);
-                                $GLOBALS['TSFE']->register["tx_templavoila_pi1.sectionIsLastItem"] = count($dataValues[$key]['el']) == $registerCounter;
+                                $GLOBALS['TSFE']->register['tx_templavoila_pi1.sectionPos'] = $registerCounter;
+                                $GLOBALS['TSFE']->register['tx_templavoila_pi1.sectionCount'] = count($dataValues[$key]['el']);
+                                $GLOBALS['TSFE']->register['tx_templavoila_pi1.sectionIsFirstItem'] = ($registerCounter == 1);
+                                $GLOBALS['TSFE']->register['tx_templavoila_pi1.sectionIsLastItem'] = count($dataValues[$key]['el']) == $registerCounter;
                                 $registerCounter++;
                                 if (is_array($el)) {
                                     $theKey = key($el);

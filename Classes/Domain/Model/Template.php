@@ -418,7 +418,7 @@ class Template
         if ($this->sortbyField == 'title') {
             $fieldVal = $this->getLabel(); // required to resolve LLL texts
         } elseif ($this->sortbyField == 'sorting') {
-            $fieldVal = str_pad($this->row[$this->sortbyField], 15, "0", STR_PAD_LEFT);
+            $fieldVal = str_pad($this->row[$this->sortbyField], 15, '0', STR_PAD_LEFT);
         } else {
             $fieldVal = $this->row[$this->sortbyField];
         }
