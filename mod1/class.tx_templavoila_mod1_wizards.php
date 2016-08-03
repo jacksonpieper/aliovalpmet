@@ -11,14 +11,12 @@
  *
  * The TYPO3 project - inspiring people to share!
  */
+use Extension\Templavoila\Controller\Backend\PageModule\MainController;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Impexp\ImportExport;
 
 /**
- * Submodule 'Wizards' for the templavoila page module
- *
- * Note: This class is closely bound to the page module class and uses many variables and functions directly. After major modifications of
- *       the page module all functions of this wizard class should be checked to make sure that they still work.
- *
- * @author Robert Lemke <robert@typo3.org>
+ * Class tx_templavoila_mod1_wizards
  */
 class tx_templavoila_mod1_wizards
 {
@@ -31,7 +29,7 @@ class tx_templavoila_mod1_wizards
     /**
      * @var \tx_templavoila_module1
      */
-    public $pObj; // A pointer to the parent object, that is the templavoila page module script. Set by calling the method init() of this class.
+    public $controller; // A pointer to the parent object, that is the templavoila page module script. Set by calling the method init() of this class.
 
     /**
      * A reference to the doc object of the parent object.
@@ -55,20 +53,15 @@ class tx_templavoila_mod1_wizards
     public $TCAdefaultOverride;
 
     /**
-     * Initializes the wizards object. The calling class must make sure that the right locallang files are already loaded.
-     * This method is usually called by the templavoila page module.
-     *
-     * @param \tx_templavoila_module1 $pObj Reference to the parent object ($this)
-     *
-     * @return void
+     * @param MainController $controller
      */
-    public function init(&$pObj)
+    public function init(MainController $controller)
     {
         // Make local reference to some important variables:
-        $this->pObj =& $pObj;
-        $this->doc =& $this->pObj->doc;
-        $this->extKey =& $this->pObj->extKey;
-        $this->apiObj =& $this->pObj->apiObj;
+        $this->controller = $controller;
+        $this->doc = $this->controller->doc;
+        $this->extKey = $this->controller->extKey;
+        $this->apiObj = $this->controller->apiObj;
     }
 
     /********************************************
@@ -96,15 +89,15 @@ class tx_templavoila_mod1_wizards
         }
 
         // The user already submitted the create page form:
-        if (\TYPO3\CMS\Core\Utility\GeneralUtility::_GP('doCreate') || isset($this->TCAdefaultOverride['pages.']['tx_templavoila_to'])) {
+        if (GeneralUtility::_GP('doCreate') || isset($this->TCAdefaultOverride['pages.']['tx_templavoila_to'])) {
 
             // Check if the HTTP_REFERER is valid
-            $refInfo = parse_url(\TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('HTTP_REFERER'));
-            $httpHost = \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('TYPO3_HOST_ONLY');
-            if ($httpHost == $refInfo['host'] || \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('vC') == \Extension\Templavoila\Utility\GeneralUtility::getBackendUser()->veriCode() || $GLOBALS['TYPO3_CONF_VARS']['SYS']['doNotCheckReferer']) {
+            $refInfo = parse_url(GeneralUtility::getIndpEnv('HTTP_REFERER'));
+            $httpHost = GeneralUtility::getIndpEnv('TYPO3_HOST_ONLY');
+            if ($httpHost == $refInfo['host'] || GeneralUtility::_GP('vC') == \Extension\Templavoila\Utility\GeneralUtility::getBackendUser()->veriCode() || $GLOBALS['TYPO3_CONF_VARS']['SYS']['doNotCheckReferer']) {
 
                 // Create new page
-                $newID = $this->createPage(\TYPO3\CMS\Core\Utility\GeneralUtility::_GP('data'), $positionPid);
+                $newID = $this->createPage(GeneralUtility::_GP('data'), $positionPid);
                 if ($newID > 0) {
 
                     // Get TSconfig for a different selection of fields in the editing form
@@ -117,9 +110,9 @@ class tx_templavoila_mod1_wizards
 
                     // Create parameters and finally run the classic page module's edit form for the new page:
                     $params = '&edit[pages][' . $newID . ']=edit' . $columnsOnly;
-                    $returnUrl = rawurlencode(\TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('SCRIPT_NAME') . '?id=' . $newID . '&updatePageTree=1');
+                    $returnUrl = rawurlencode(GeneralUtility::getIndpEnv('SCRIPT_NAME') . '?id=' . $newID . '&updatePageTree=1');
 
-                    header('Location: ' . \TYPO3\CMS\Core\Utility\GeneralUtility::locationHeaderUrl($this->doc->backPath . 'alt_doc.php?returnUrl=' . $returnUrl . $params));
+                    header('Location: ' . GeneralUtility::locationHeaderUrl($this->doc->backPath . 'alt_doc.php?returnUrl=' . $returnUrl . $params));
                     exit();
                 } else {
                     debug('Error: Could not create page!');
@@ -130,8 +123,8 @@ class tx_templavoila_mod1_wizards
         }
 
         // Based on t3d/xml templates:
-        if (false != ($templateFile = \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('templateFile'))) {
-            if (\TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName($templateFile) && @is_file($templateFile)) {
+        if (false != ($templateFile = GeneralUtility::_GP('templateFile'))) {
+            if (GeneralUtility::getFileAbsFileName($templateFile) && @is_file($templateFile)) {
 
                 // First, find positive PID for import of the page:
                 $importPID = \TYPO3\CMS\Backend\Utility\BackendUtility::getTSconfig_pidValue('pages', '', $positionPid);
@@ -165,9 +158,9 @@ class tx_templavoila_mod1_wizards
 
                         // Create parameters and finally run the classic page module's edit form for the new page:
                         $params = '&edit[pages][' . $newID . ']=edit&columnsOnly=' . rawurlencode($fieldNames);
-                        $returnUrl = rawurlencode(\TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('SCRIPT_NAME') . '?id=' . $newID . '&updatePageTree=1');
+                        $returnUrl = rawurlencode(GeneralUtility::getIndpEnv('SCRIPT_NAME') . '?id=' . $newID . '&updatePageTree=1');
 
-                        header('Location: ' . \TYPO3\CMS\Core\Utility\GeneralUtility::locationHeaderUrl($this->doc->backPath . 'alt_doc.php?returnUrl=' . $returnUrl . $params));
+                        header('Location: ' . GeneralUtility::locationHeaderUrl($this->doc->backPath . 'alt_doc.php?returnUrl=' . $returnUrl . $params));
                         exit();
                         // PLAIN COPY FROM ABOVE - END
                     } else {
@@ -178,12 +171,12 @@ class tx_templavoila_mod1_wizards
         }
         // Start assembling the HTML output
 
-        $this->doc->form = '<form action="' . htmlspecialchars('index.php?id=' . $this->pObj->id) . '" method="post" autocomplete="off" enctype="' . $TYPO3_CONF_VARS['SYS']['form_enctype'] . '" onsubmit="return TBE_EDITOR_checkSubmit(1);">';
+        $this->doc->form = '<form action="' . htmlspecialchars('index.php?id=' . $this->controller->id) . '" method="post" autocomplete="off" enctype="' . $TYPO3_CONF_VARS['SYS']['form_enctype'] . '" onsubmit="return TBE_EDITOR_checkSubmit(1);">';
         $this->doc->divClass = '';
         $this->doc->getTabMenu(0, '_', 0, ['' => '']);
 
         // init tceforms for javascript printing
-        $tceforms = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Form\FormEngine::class);
+        $tceforms = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Form\FormEngine::class);
         $tceforms->initDefaultBEMode();
         $tceforms->backPath = $GLOBALS['BACK_PATH'];
         $tceforms->doSaveFieldName = 'doSave';
@@ -270,11 +263,11 @@ class tx_templavoila_mod1_wizards
                 // Create the "Default template" entry
                 //Fetch Default TO
                 $fakeRow = ['uid' => $parentPageId];
-                $defaultTO = $this->pObj->apiObj->getContentTree_fetchPageTemplateObject($fakeRow);
+                $defaultTO = $this->controller->apiObj->getContentTree_fetchPageTemplateObject($fakeRow);
 
                 // Create the "Default template" entry
                 if ($defaultTO['previewicon']) {
-                    $previewIconFilename = (@is_file(\TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName('uploads/tx_templavoila/' . $defaultTO['previewicon']))) ? ($GLOBALS['BACK_PATH'] . '../' . 'uploads/tx_templavoila/' . $defaultTO['previewicon']) : $defaultIcon;
+                    $previewIconFilename = (@is_file(GeneralUtility::getFileAbsFileName('uploads/tx_templavoila/' . $defaultTO['previewicon']))) ? ($GLOBALS['BACK_PATH'] . '../' . 'uploads/tx_templavoila/' . $defaultTO['previewicon']) : $defaultIcon;
                 } else {
                     $previewIconFilename = $defaultIcon;
                 }
@@ -294,12 +287,12 @@ class tx_templavoila_mod1_wizards
                 </tr>
                 </table>';
 
-                $dsRepo = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\Extension\Templavoila\Domain\Repository\DataStructureRepository::class);
-                $toRepo = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\Extension\Templavoila\Domain\Repository\TemplateRepository::class);
+                $dsRepo = GeneralUtility::makeInstance(\Extension\Templavoila\Domain\Repository\DataStructureRepository::class);
+                $toRepo = GeneralUtility::makeInstance(\Extension\Templavoila\Domain\Repository\TemplateRepository::class);
                 $dsList = $dsRepo->getDatastructuresByStoragePidAndScope($storageFolderPID, \Extension\Templavoila\Domain\Model\AbstractDataStructure::SCOPE_PAGE);
                 foreach ($dsList as $dsObj) {
                     /** @var \Extension\Templavoila\Domain\Model\AbstractDataStructure $dsObj */
-                    if (\TYPO3\CMS\Core\Utility\GeneralUtility::inList($disallowedPageTemplateItems, $dsObj->getKey()) ||
+                    if (GeneralUtility::inList($disallowedPageTemplateItems, $dsObj->getKey()) ||
                         !$dsObj->isPermittedForUser()
                     ) {
                         continue;
@@ -310,13 +303,13 @@ class tx_templavoila_mod1_wizards
                         /** @var \Extension\Templavoila\Domain\Model\Template $toObj */
                         if ($toObj->getKey() === $defaultTO['uid'] ||
                             !$toObj->isPermittedForUser() ||
-                            \TYPO3\CMS\Core\Utility\GeneralUtility::inList($disallowedDesignTemplateItems, $toObj->getKey())
+                            GeneralUtility::inList($disallowedDesignTemplateItems, $toObj->getKey())
                         ) {
                             continue;
                         }
 
                         $tmpFilename = $toObj->getIcon();
-                        $previewIconFilename = (@is_file(\TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName(PATH_site . substr($tmpFilename, 3)))) ? ($GLOBALS['BACK_PATH'] . $tmpFilename) : $defaultIcon;
+                        $previewIconFilename = (@is_file(GeneralUtility::getFileAbsFileName(PATH_site . substr($tmpFilename, 3)))) ? ($GLOBALS['BACK_PATH'] . $tmpFilename) : $defaultIcon;
                         // Note: we cannot use value of image input element because MSIE replaces this value with mouse coordinates! Thus on click we set value to a hidden field. See http://bugs.typo3.org/view.php?id=3376
                         $previewIcon = '<input type="image" class="c-inputButton" name="i' . $row['uid'] . '" onclick="document.getElementById(\'data_tx_templavoila_to\').value=' . $toObj->getKey() . '" src="' . $previewIconFilename . '" title="" />';
                         $description = $toObj->getDescription() ? htmlspecialchars($toObj->getDescription()) : \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('template_nodescriptionavailable');
@@ -331,8 +324,8 @@ class tx_templavoila_mod1_wizards
                 if (\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('impexp')) {
 
                     // Read template files from a certain folder. I suggest this is configurable in some way. But here it is hardcoded for initial tests.
-                    $templateFolder = \TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName($GLOBALS['TYPO3_CONF_VARS']['BE']['fileadminDir'] . '/export/templates/');
-                    $files = \TYPO3\CMS\Core\Utility\GeneralUtility::getFilesInDir($templateFolder, 't3d,xml', 1, 1);
+                    $templateFolder = GeneralUtility::getFileAbsFileName($GLOBALS['TYPO3_CONF_VARS']['BE']['fileadminDir'] . '/export/templates/');
+                    $files = GeneralUtility::getFilesInDir($templateFolder, 't3d,xml', 1, 1);
 
                     // Traverse the files found:
                     foreach ($files as $absPath) {
@@ -349,24 +342,24 @@ class tx_templavoila_mod1_wizards
                                 $iconTag = '';
                                 if (is_array($import->dat['header']['thumbnail'])) {
                                     $pI = pathinfo($import->dat['header']['thumbnail']['filename']);
-                                    if (\TYPO3\CMS\Core\Utility\GeneralUtility::inList('gif,jpg,png,jpeg', strtolower($pI['extension']))) {
+                                    if (GeneralUtility::inList('gif,jpg,png,jpeg', strtolower($pI['extension']))) {
 
                                         // Construct filename and write it:
-                                        $fileName = \TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName(
-                                            'typo3temp/importthumb_' . \TYPO3\CMS\Core\Utility\GeneralUtility::shortMD5($absPath) . '.' . $pI['extension']);
-                                        \TYPO3\CMS\Core\Utility\GeneralUtility::writeFile($fileName, $import->dat['header']['thumbnail']['content']);
+                                        $fileName = GeneralUtility::getFileAbsFileName(
+                                            'typo3temp/importthumb_' . GeneralUtility::shortMD5($absPath) . '.' . $pI['extension']);
+                                        GeneralUtility::writeFile($fileName, $import->dat['header']['thumbnail']['content']);
 
                                         // Check that the image really is an image and not a malicious PHP script...
                                         if (getimagesize($fileName)) {
                                             // Create icon tag:
                                             $iconTag = '<img src="' . $this->doc->backPath . '../' . substr($fileName, strlen(PATH_site)) . '" ' . $import->dat['header']['thumbnail']['imgInfo'][3] . ' vspace="5" style="border: solid black 1px;" alt="" />';
                                         } else {
-                                            \TYPO3\CMS\Core\Utility\GeneralUtility::unlink_tempfile($fileName);
+                                            GeneralUtility::unlink_tempfile($fileName);
                                         }
                                     }
                                 }
 
-                                $aTagB = '<a href="' . htmlspecialchars(\TYPO3\CMS\Core\Utility\GeneralUtility::linkThisScript(['templateFile' => $absPath])) . '">';
+                                $aTagB = '<a href="' . htmlspecialchars(GeneralUtility::linkThisScript(['templateFile' => $absPath])) . '">';
                                 $aTagE = '</a>';
                                 $tmplHTML [] = '<table style="float:left; width: 100%;" valign="top"><tr><td colspan="2" nowrap="nowrap">
                     <h3 class="bgColor3-20">' . $aTagB . htmlspecialchars($import->dat['header']['meta']['title'] ? $import->dat['header']['meta']['title'] : basename($absPath)) . $aTagE . '</h3></td></tr>
@@ -426,7 +419,7 @@ class tx_templavoila_mod1_wizards
             $dataArr['pages']['NEW']['tx_templavoila_ds'] = $templateObjectRow['datastructure'];
         }
 
-        $tce = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\DataHandling\DataHandler::class);
+        $tce = GeneralUtility::makeInstance(\TYPO3\CMS\Core\DataHandling\DataHandler::class);
 
         if (is_array($this->TCAdefaultOverride)) {
             $tce->setDefaultsFromUserTS($this->TCAdefaultOverride);
@@ -440,11 +433,11 @@ class tx_templavoila_mod1_wizards
     }
 
     /**
-     * @return \TYPO3\CMS\Impexp\ImportExport
+     * @return ImportExport
      */
     public function getImportObject()
     {
-        $import = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\tx_impexp::class);
+        $import = GeneralUtility::makeInstance(ImportExport::class);
         $import->init();
 
         return $import;
@@ -463,7 +456,7 @@ class tx_templavoila_mod1_wizards
         if (!\Extension\Templavoila\Utility\GeneralUtility::getBackendUser()->isAdmin()) {
             $prefLen = strlen($table) + 1;
             foreach (\Extension\Templavoila\Utility\GeneralUtility::getBackendUser()->userGroups as $group) {
-                $items = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $group['tx_templavoila_access'], 1);
+                $items = GeneralUtility::trimExplode(',', $group['tx_templavoila_access'], 1);
                 foreach ($items as $ref) {
                     if (strstr($ref, $table)) {
                         $result[] = (int)substr($ref, $prefLen);
@@ -504,8 +497,9 @@ class tx_templavoila_mod1_wizards
             $disallowedPageTemplateList = '';
         }
 
-        $tmp_disallowedPageTemplateItems = array_unique(\TYPO3\CMS\Core\Utility\GeneralUtility::intExplode(',', \TYPO3\CMS\Core\Utility\GeneralUtility::expandList($disallowedPageTemplateList), true));
+        $tmp_disallowedPageTemplateItems = array_unique(GeneralUtility::intExplode(',', GeneralUtility::expandList($disallowedPageTemplateList), true));
 
         return (count($tmp_disallowedPageTemplateItems)) ? implode(',', $tmp_disallowedPageTemplateItems) : '0';
     }
+
 }

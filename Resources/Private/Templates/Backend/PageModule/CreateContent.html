@@ -1,0 +1,26 @@
+<h1>{title}</h1>
+
+<f:for each="{groupedWizardItems}" as="groupedWizardItem">
+<div class="panel panel-default">
+    <div class="panel-heading">
+        <h3 class="panel-title">{groupedWizardItem.header}</h3>
+    </div>
+    <div class="panel-body">
+        <f:for each="{groupedWizardItem.items}" as="item">
+            <div class="row">
+                <div class="col-sm-12">
+                    <a href="{item.url}">
+                        <div class="pull-left" style="margin-right:1em;">{item.icon}</div>
+                        <div>
+                            <strong>{item.title}</strong>
+                            <p>
+                                {item.description}
+                            </p>
+                        </div>
+                    </a>
+                </div>
+            </div>
+        </f:for>
+    </div>
+</div>
+</f:for>

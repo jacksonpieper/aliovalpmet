@@ -12,8 +12,16 @@ mod.web_txtemplavoilaM1.adminOnlyPageStructureInheritance = fallback
 templavoila.wizards.newContentElement.wizardItems {
 	common.header = LLL:EXT:cms/layout/locallang_db_new_content_el.xlf:common
 	common.elements {
+		header {
+			icon = content-header
+			title = LLL:EXT:cms/layout/locallang_db_new_content_el.xlf:common_header_title
+			description = LLL:EXT:cms/layout/locallang_db_new_content_el.xlf:common_header_description
+			tt_content_defValues {
+				CType = header
+			}
+		}
 		text {
-			icon = gfx/c_wiz/regular_text.gif
+			icon = content-text
 			title = LLL:EXT:cms/layout/locallang_db_new_content_el.xlf:common_regularText_title
 			description = LLL:EXT:cms/layout/locallang_db_new_content_el.xlf:common_regularText_description
 			tt_content_defValues {
@@ -21,7 +29,7 @@ templavoila.wizards.newContentElement.wizardItems {
 			}
 		}
 		textpic {
-			icon = gfx/c_wiz/text_image_right.gif
+			icon = content-textpic
 			title = LLL:EXT:cms/layout/locallang_db_new_content_el.xlf:common_textImage_title
 			description = LLL:EXT:cms/layout/locallang_db_new_content_el.xlf:common_textImage_description
 			tt_content_defValues {
@@ -30,7 +38,7 @@ templavoila.wizards.newContentElement.wizardItems {
 			}
 		}
 		image {
-			icon = gfx/c_wiz/images_only.gif
+			icon = content-image
 			title = LLL:EXT:cms/layout/locallang_db_new_content_el.xlf:common_imagesOnly_title
 			description = LLL:EXT:cms/layout/locallang_db_new_content_el.xlf:common_imagesOnly_description
 			tt_content_defValues {
@@ -39,7 +47,7 @@ templavoila.wizards.newContentElement.wizardItems {
 			}
 		}
 		bullets {
-			icon = gfx/c_wiz/bullet_list.gif
+			icon = content-bullets
 			title = LLL:EXT:cms/layout/locallang_db_new_content_el.xlf:common_bulletList_title
 			description = LLL:EXT:cms/layout/locallang_db_new_content_el.xlf:common_bulletList_description
 			tt_content_defValues {
@@ -47,7 +55,7 @@ templavoila.wizards.newContentElement.wizardItems {
 			}
 		}
 		table {
-			icon = gfx/c_wiz/table.gif
+			icon = content-table
 			title = LLL:EXT:cms/layout/locallang_db_new_content_el.xlf:common_table_title
 			description = LLL:EXT:cms/layout/locallang_db_new_content_el.xlf:common_table_description
 			tt_content_defValues {
@@ -56,12 +64,12 @@ templavoila.wizards.newContentElement.wizardItems {
 		}
 
 	}
-	common.show := addToList(text,textpic,image,bullets,table)
+	common.show := addToList(header,text,textpic,image,bullets,table)
 
 	special.header = LLL:EXT:cms/layout/locallang_db_new_content_el.xlf:special
 	special.elements {
 		uploads {
-			icon = gfx/c_wiz/filelinks.gif
+			icon = content-special-uploads
 			title = LLL:EXT:cms/layout/locallang_db_new_content_el.xlf:special_filelinks_title
 			description = LLL:EXT:cms/layout/locallang_db_new_content_el.xlf:special_filelinks_description
 			tt_content_defValues {
@@ -77,7 +85,7 @@ templavoila.wizards.newContentElement.wizardItems {
 			}
 		}
 		menu {
-			icon = gfx/c_wiz/sitemap2.gif
+			icon = content-special-menu
 			title = LLL:EXT:cms/layout/locallang_db_new_content_el.xlf:special_sitemap_title
 			description = LLL:EXT:cms/layout/locallang_db_new_content_el.xlf:special_sitemap_description
 			tt_content_defValues {
@@ -86,7 +94,7 @@ templavoila.wizards.newContentElement.wizardItems {
 			}
 		}
 		html {
-			icon = gfx/c_wiz/html.gif
+			icon = content-special-html
 			title = LLL:EXT:cms/layout/locallang_db_new_content_el.xlf:special_plainHTML_title
 			description = LLL:EXT:cms/layout/locallang_db_new_content_el.xlf:special_plainHTML_description
 			tt_content_defValues {
@@ -94,7 +102,7 @@ templavoila.wizards.newContentElement.wizardItems {
 			}
 		}
 		div {
-		 	icon = gfx/c_wiz/div.gif
+		 	icon = content-special-div
 			title = LLL:EXT:cms/layout/locallang_db_new_content_el.xlf:special_divider_title
 			description = LLL:EXT:cms/layout/locallang_db_new_content_el.xlf:special_divider_description
 			tt_content_defValues {
@@ -108,7 +116,7 @@ templavoila.wizards.newContentElement.wizardItems {
 	forms.header = LLL:EXT:cms/layout/locallang_db_new_content_el.xlf:forms
 	forms.elements {
 		mailform {
-			icon = gfx/c_wiz/mailform.gif
+			icon = content-elements-mailform
 			title = LLL:EXT:cms/layout/locallang_db_new_content_el.xlf:forms_mail_title
 			description = LLL:EXT:cms/layout/locallang_db_new_content_el.xlf:forms_mail_description
 			tt_content_defValues {
@@ -127,7 +135,7 @@ Contact me: | tv=check | 1
 			}
 		}
 		search {
-			icon = gfx/c_wiz/searchform.gif
+			icon = content-elements-search
 			title = LLL:EXT:cms/layout/locallang_db_new_content_el.xlf:forms_search_title
 			description = LLL:EXT:cms/layout/locallang_db_new_content_el.xlf:forms_search_description
 			tt_content_defValues {
@@ -135,7 +143,7 @@ Contact me: | tv=check | 1
 			}
 		}
 		login {
-			icon = gfx/c_wiz/login_form.gif
+			icon = content-elements-login
 			title = LLL:EXT:cms/layout/locallang_db_new_content_el.xlf:forms_login_title
 			description = LLL:EXT:cms/layout/locallang_db_new_content_el.xlf:forms_login_description
 			tt_content_defValues {
@@ -155,7 +163,7 @@ Contact me: | tv=check | 1
 	plugins.header = LLL:EXT:cms/layout/locallang_db_new_content_el.xlf:plugins
 	plugins.elements {
 		general {
-			icon = gfx/c_wiz/user_defined.gif
+			icon = content-plugin
 			title = LLL:EXT:cms/layout/locallang_db_new_content_el.xlf:plugins_general_title
 			description = LLL:EXT:cms/layout/locallang_db_new_content_el.xlf:plugins_general_description
 			tt_content_defValues.CType = list
