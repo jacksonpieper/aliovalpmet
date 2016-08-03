@@ -11,6 +11,7 @@
  *
  * The TYPO3 project - inspiring people to share!
  */
+
 namespace Extension\Templavoila\Controller\Backend\PageModule;
 
 use Extension\Templavoila\Controller\Backend\AbstractModuleController;

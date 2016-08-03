@@ -12,6 +12,7 @@
  *
  * The TYPO3 project - inspiring people to share!
  */
+
 namespace Extension\Templavoila\Domain\Repository;
 
 use Extension\Templavoila\Traits\BackendUser;
