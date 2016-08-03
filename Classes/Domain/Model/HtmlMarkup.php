@@ -937,9 +937,7 @@ class HtmlMarkup
     }
 
     /**
-     *
      * Various sub processing
-     *
      */
 
     /**
@@ -1025,9 +1023,7 @@ class HtmlMarkup
     }
 
     /**
-     *
      * SPLITTING functions
-     *
      */
 
     /**

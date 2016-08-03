@@ -95,7 +95,6 @@ class Template
     }
 
     /**
-     *
      * @param string $str
      *
      * @return void
@@ -161,7 +160,6 @@ class Template
     }
 
     /**
-     *
      * @param string $str
      *
      * @return void
