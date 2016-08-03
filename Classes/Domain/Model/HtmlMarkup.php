@@ -854,8 +854,6 @@ class HtmlMarkup
      * @param array $MappingData_head_cached ...
      * @param string $BodyTag_cached ...
      * @param bool $pageRenderer try to use the pageRenderer for script and style inclusion
-     *
-     * @return void
      */
     public function setHeaderBodyParts($MappingInfo_head, $MappingData_head_cached, $BodyTag_cached = '', $pageRenderer = false)
     {
@@ -942,8 +940,6 @@ class HtmlMarkup
 
     /**
      * Init function, should be called by the processing functions above before doing any recursive parsing of the HTML code.
-     *
-     * @return void
      */
     public function init()
     {

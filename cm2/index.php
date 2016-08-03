@@ -55,8 +55,6 @@ class tx_templavoila_cm2 extends \TYPO3\CMS\Backend\Module\BaseScriptClass
 
     /**
      * Main function, drawing marked up XML.
-     *
-     * @return void
      */
     public function main()
     {
@@ -195,8 +193,6 @@ class tx_templavoila_cm2 extends \TYPO3\CMS\Backend\Module\BaseScriptClass
 
     /**
      * Prints module content.
-     *
-     * @return void
      */
     public function printContent()
     {

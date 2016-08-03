@@ -29,8 +29,6 @@ class Label
      *
      * @param array $params Current record array
      * @param object
-     *
-     * @return void
      */
     public function getLabel(&$params, &$pObj)
     {

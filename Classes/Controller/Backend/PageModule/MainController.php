@@ -445,7 +445,6 @@ class MainController extends AbstractModuleController implements Configurable
     /**
      * Initialisation of this backend module
      *
-     * @return void
      * @throws \InvalidArgumentException
      */
     public function init()
@@ -521,8 +520,6 @@ class MainController extends AbstractModuleController implements Configurable
 
     /**
      * Preparing menu content and initializing clipboard and module TSconfig
-     *
-     * @return void
      */
     public function menuConfig()
     {
@@ -561,7 +558,6 @@ class MainController extends AbstractModuleController implements Configurable
      *
      * @throws RuntimeException
      *
-     * @return void
      * @throws \TYPO3\CMS\Core\Exception
      * @throws \BadFunctionCallException
      * @throws \InvalidArgumentException
@@ -2177,7 +2173,6 @@ class MainController extends AbstractModuleController implements Configurable
      * @param array $parentPointer Element position in structure
      * @param string $controls HTML for controls to add for this element
      *
-     * @return void
      * @see render_outline_allSheets()
      */
     public function render_outline_element($contentTreeArr, &$entries, $indentLevel = 0, $parentPointer = [], $controls = '')
@@ -2310,8 +2305,6 @@ class MainController extends AbstractModuleController implements Configurable
      * @param string $sheet Which sheet to display
      * @param array $entries Entries accumulated in this array (passed by reference)
      * @param int $indentLevel Indentation level
-     *
-     * @return void
      */
     public function render_outline_subElements($contentTreeArr, $sheet, &$entries, $indentLevel)
     {
@@ -2781,8 +2774,6 @@ class MainController extends AbstractModuleController implements Configurable
      *
      * Currently supported commands: 'createNewRecord', 'unlinkRecord', 'deleteRecord','pasteRecord',
      * 'makeLocalRecord', 'localizeElement', 'createNewPageTranslation' and 'editPageLanguageOverlay'
-     *
-     * @return void
      */
     public function handleIncomingCommands()
     {
@@ -3156,8 +3147,6 @@ class MainController extends AbstractModuleController implements Configurable
      * Adds element to the list of recet elements
      *
      * @throws RuntimeException
-     *
-     * @return void
      */
     protected function addToRecentElements()
     {

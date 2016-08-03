@@ -43,8 +43,6 @@ class StaticDataStructuresHandler
      *
      * @param array &$params Array of items passed by reference.
      * @param object &$pObj The parent object (\TYPO3\CMS\Backend\Form\FormEngine / \TYPO3\CMS\Backend\Form\DataPreprocessor depending on context)
-     *
-     * @return void
      */
     public function main(&$params, &$pObj)
     {
@@ -76,8 +74,6 @@ class StaticDataStructuresHandler
      *
      * @param array &$params Array of items passed by reference.
      * @param \TYPO3\CMS\Backend\Form\FormEngine|\TYPO3\CMS\Backend\Form\DataPreprocessor $pObj The parent object (\TYPO3\CMS\Backend\Form\FormEngine / \TYPO3\CMS\Backend\Form\DataPreprocessor depending on context)
-     *
-     * @return void
      */
     public function pi_templates(&$params, $pObj)
     {
@@ -115,8 +111,6 @@ class StaticDataStructuresHandler
      *
      * @param array $params Parameters to the itemsProcFunc
      * @param \TYPO3\CMS\Backend\Form\FormEngine $pObj Calling object
-     *
-     * @return void
      */
     public function dataSourceItemsProcFunc(array &$params, \TYPO3\CMS\Backend\Form\FormEngine& $pObj)
     {
@@ -152,8 +146,6 @@ class StaticDataStructuresHandler
      *
      * @param array $params Parameters for itemProcFunc
      * @param \TYPO3\CMS\Backend\Form\FormEngine $pObj Calling class
-     *
-     * @return void
      */
     public function templateObjectItemsProcFunc(array &$params, \TYPO3\CMS\Backend\Form\FormEngine &$pObj)
     {
@@ -172,8 +164,6 @@ class StaticDataStructuresHandler
      *
      * @param array $params Parameters for itemProcFunc
      * @param \TYPO3\CMS\Backend\Form\FormEngine $pObj Calling class
-     *
-     * @return void
      */
     protected function templateObjectItemsProcFuncForCurrentDS(array &$params, \TYPO3\CMS\Backend\Form\FormEngine &$pObj)
     {
@@ -221,8 +211,6 @@ class StaticDataStructuresHandler
      *
      * @param array $params Parameters for itemProcFunc
      * @param \TYPO3\CMS\Backend\Form\FormEngine $pObj Calling class
-     *
-     * @return void
      */
     protected function templateObjectItemsProcFuncForAllDSes(array &$params, \TYPO3\CMS\Backend\Form\FormEngine &$pObj)
     {

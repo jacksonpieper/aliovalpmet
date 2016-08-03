@@ -96,8 +96,6 @@ class Template
 
     /**
      * @param string $str
-     *
-     * @return void
      */
     protected function setLabel($str)
     {
@@ -116,8 +114,6 @@ class Template
 
     /**
      * @param string $str
-     *
-     * @return void
      */
     protected function setDescription($str)
     {
@@ -141,8 +137,6 @@ class Template
 
     /**
      * @param string $filename
-     *
-     * @return void
      */
     protected function setIcon($filename)
     {
@@ -161,8 +155,6 @@ class Template
 
     /**
      * @param string $str
-     *
-     * @return void
      */
     protected function setFileref($str)
     {
@@ -181,8 +173,6 @@ class Template
 
     /**
      * @param int $str
-     *
-     * @return void
      */
     protected function setFilerefMtime($str)
     {
@@ -201,8 +191,6 @@ class Template
 
     /**
      * @param string $str
-     *
-     * @return void
      */
     protected function setFilerefMD5($str)
     {
@@ -412,8 +400,6 @@ class Template
 
     /**
      * @param string $fieldname
-     *
-     * @return void
      */
     protected function setSortbyField($fieldname)
     {
@@ -442,8 +428,6 @@ class Template
 
     /**
      * @param int $parent
-     *
-     * @return void
      */
     public function setParent($parent)
     {

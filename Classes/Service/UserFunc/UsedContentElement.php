@@ -32,8 +32,6 @@ class UsedContentElement
      * Initialize object with page id.
      *
      * @param int $page_uid UID of page in processing
-     *
-     * @return void
      */
     public function init($page_uid)
     {

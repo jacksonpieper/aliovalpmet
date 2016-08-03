@@ -119,7 +119,6 @@ class MainController extends AbstractModuleController
     }
 
     /**
-     * @return void
      */
     public function init()
     {
@@ -265,8 +264,6 @@ class MainController extends AbstractModuleController
 
     /**
      * Main function of the module.
-     *
-     * @return void
      */
     public function main()
     {
@@ -343,8 +340,6 @@ class MainController extends AbstractModuleController
 
     /**
      * Prints out the module HTML
-     *
-     * @return void
      */
     public function printContent()
     {
@@ -389,8 +384,6 @@ class MainController extends AbstractModuleController
 
     /**
      * Renders module content:
-     *
-     * @return void
      */
     public function renderModuleContent()
     {
@@ -478,8 +471,6 @@ class MainController extends AbstractModuleController
 
     /**
      * Renders module content main view:
-     *
-     * @return void
      */
     public function renderModuleContent_mainView()
     {
@@ -1473,7 +1464,6 @@ class MainController extends AbstractModuleController
      * @param string $type "fatal" or "warning"
      * @param string $HTML HTML content for the error.
      *
-     * @return void
      * @see getErrorLog()
      */
     public function setErrorLog($scope, $type, $HTML)
@@ -1935,8 +1925,6 @@ class MainController extends AbstractModuleController
     /**
      * Running the wizard. Basically branching out to sub functions.
      * Also gets and saves session data in $this->wizardData
-     *
-     * @return void
      */
     public function renderNewSiteWizard_run()
     {
@@ -2045,8 +2033,6 @@ class MainController extends AbstractModuleController
 
     /**
      * Wizard Step 1: Selecting template file.
-     *
-     * @return void
      */
     public function wizard_step1()
     {
@@ -2106,8 +2092,6 @@ class MainController extends AbstractModuleController
 
     /**
      * Step 2: Enter default values:
-     *
-     * @return void
      */
     public function wizard_step2()
     {
@@ -2157,8 +2141,6 @@ class MainController extends AbstractModuleController
 
     /**
      * Step 3: Begin template mapping
-     *
-     * @return void
      */
     public function wizard_step3()
     {
@@ -2270,8 +2252,6 @@ class MainController extends AbstractModuleController
 
     /**
      * Step 4: Select HTML header parts.
-     *
-     * @return void
      */
     public function wizard_step4()
     {
@@ -2291,8 +2271,6 @@ class MainController extends AbstractModuleController
      * Step 5: Create dynamic menu
      *
      * @param string $menuField Type of menu (main or sub), values: "field_menu" or "field_submenu"
-     *
-     * @return void
      */
     public function wizard_step5($menuField)
     {
@@ -2522,8 +2500,6 @@ lib.' . $menuType . '.1.ACT {
 
     /**
      * Step 6: Done.
-     *
-     * @return void
      */
     public function wizard_step6()
     {
@@ -2607,8 +2583,6 @@ lib.' . $menuType . '.1.ACT {
 
     /**
      * Saves the menu TypoScript code
-     *
-     * @return void
      */
     public function saveMenuCode()
     {

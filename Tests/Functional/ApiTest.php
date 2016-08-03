@@ -52,7 +52,6 @@ class ApiTest extends \TYPO3\CMS\Core\Tests\FunctionalTestCase
     protected $backendUser;
 
     /**
-     * @return void
      */
     public function setUp()
     {

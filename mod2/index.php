@@ -90,7 +90,6 @@ class tx_templavoila_module2 extends \TYPO3\CMS\Backend\Module\BaseScriptClass
     public $cm1Link = '../cm1/index.php';
 
     /**
-     * @return void
      */
     public function init()
     {
@@ -101,8 +100,6 @@ class tx_templavoila_module2 extends \TYPO3\CMS\Backend\Module\BaseScriptClass
 
     /**
      * Preparing menu content
-     *
-     * @return void
      */
     public function menuConfig()
     {
@@ -121,8 +118,6 @@ class tx_templavoila_module2 extends \TYPO3\CMS\Backend\Module\BaseScriptClass
 
     /**
      * Main function of the module.
-     *
-     * @return void
      */
     public function main()
     {
@@ -199,8 +194,6 @@ class tx_templavoila_module2 extends \TYPO3\CMS\Backend\Module\BaseScriptClass
 
     /**
      * Prints out the module HTML
-     *
-     * @return void
      */
     public function printContent()
     {
@@ -245,8 +238,6 @@ class tx_templavoila_module2 extends \TYPO3\CMS\Backend\Module\BaseScriptClass
 
     /**
      * Renders module content:
-     *
-     * @return void
      */
     public function renderModuleContent()
     {
@@ -284,8 +275,6 @@ class tx_templavoila_module2 extends \TYPO3\CMS\Backend\Module\BaseScriptClass
 
     /**
      * Renders module content, overview of pages with DS/TO on.
-     *
-     * @return void
      */
     public function renderModuleContent_searchForTODS()
     {
@@ -328,8 +317,6 @@ class tx_templavoila_module2 extends \TYPO3\CMS\Backend\Module\BaseScriptClass
 
     /**
      * Renders module content main view:
-     *
-     * @return void
      */
     public function renderModuleContent_mainView()
     {
@@ -1295,7 +1282,6 @@ class tx_templavoila_module2 extends \TYPO3\CMS\Backend\Module\BaseScriptClass
      * @param string $type "fatal" or "warning"
      * @param string $HTML HTML content for the error.
      *
-     * @return void
      * @see getErrorLog()
      */
     public function setErrorLog($scope, $type, $HTML)
@@ -1707,8 +1693,6 @@ class tx_templavoila_module2 extends \TYPO3\CMS\Backend\Module\BaseScriptClass
 
     /**
      * Wizard overview page - before the wizard is started.
-     *
-     * @return void
      */
     public function renderNewSiteWizard_overview()
     {
@@ -1759,8 +1743,6 @@ class tx_templavoila_module2 extends \TYPO3\CMS\Backend\Module\BaseScriptClass
     /**
      * Running the wizard. Basically branching out to sub functions.
      * Also gets and saves session data in $this->wizardData
-     *
-     * @return void
      */
     public function renderNewSiteWizard_run()
     {
@@ -1869,8 +1851,6 @@ class tx_templavoila_module2 extends \TYPO3\CMS\Backend\Module\BaseScriptClass
 
     /**
      * Wizard Step 1: Selecting template file.
-     *
-     * @return void
      */
     public function wizard_step1()
     {
@@ -1930,8 +1910,6 @@ class tx_templavoila_module2 extends \TYPO3\CMS\Backend\Module\BaseScriptClass
 
     /**
      * Step 2: Enter default values:
-     *
-     * @return void
      */
     public function wizard_step2()
     {
@@ -1981,8 +1959,6 @@ class tx_templavoila_module2 extends \TYPO3\CMS\Backend\Module\BaseScriptClass
 
     /**
      * Step 3: Begin template mapping
-     *
-     * @return void
      */
     public function wizard_step3()
     {
@@ -2094,8 +2070,6 @@ class tx_templavoila_module2 extends \TYPO3\CMS\Backend\Module\BaseScriptClass
 
     /**
      * Step 4: Select HTML header parts.
-     *
-     * @return void
      */
     public function wizard_step4()
     {
@@ -2115,8 +2089,6 @@ class tx_templavoila_module2 extends \TYPO3\CMS\Backend\Module\BaseScriptClass
      * Step 5: Create dynamic menu
      *
      * @param string $menuField Type of menu (main or sub), values: "field_menu" or "field_submenu"
-     *
-     * @return void
      */
     public function wizard_step5($menuField)
     {
@@ -2346,8 +2318,6 @@ lib.' . $menuType . '.1.ACT {
 
     /**
      * Step 6: Done.
-     *
-     * @return void
      */
     public function wizard_step6()
     {
@@ -2431,8 +2401,6 @@ lib.' . $menuType . '.1.ACT {
 
     /**
      * Saves the menu TypoScript code
-     *
-     * @return void
      */
     public function saveMenuCode()
     {

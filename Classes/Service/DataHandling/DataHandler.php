@@ -59,8 +59,6 @@ class DataHandler
      * @param string $table The table TCEmain is currently processing
      * @param string $id The records id (if any)
      * @param \TYPO3\CMS\Core\DataHandling\DataHandler $reference Reference to the parent object (TCEmain)
-     *
-     * @return void
      */
     public function processDatamap_preProcessFieldArray(array &$incomingFieldArray, $table, $id, \TYPO3\CMS\Core\DataHandling\DataHandler &$reference)
     {
@@ -93,8 +91,6 @@ class DataHandler
      * @param string $id The records id (if any)
      * @param array $fieldArray The field names and their values to be processed
      * @param object $reference Reference to the parent object (TCEmain)
-     *
-     * @return void
      */
     public function processDatamap_postProcessFieldArray($status, $table, $id, &$fieldArray, &$reference)
     {
@@ -185,8 +181,6 @@ page.10.disableExplosivePreview = 1
      * @param mixed $id Either the record UID or a string if a new record has been created
      * @param array $fieldArray The record row how it has been inserted into the database
      * @param object $reference A reference to the TCEmain instance
-     *
-     * @return void
      */
     public function processDatamap_afterDatabaseOperations($status, $table, $id, $fieldArray, &$reference)
     {
@@ -284,7 +278,6 @@ page.10.disableExplosivePreview = 1
      * @param array $value The field names and their values to be processed
      * @param object $reference Reference to the parent object (TCEmain)
      *
-     * @return void
      * @todo "delete" should search for all references to the element.
      */
     public function processCmdmap_preProcess(&$command, $table, $id, $value, &$reference)
@@ -351,8 +344,6 @@ page.10.disableExplosivePreview = 1
      * @param string $id The records id (if any)
      * @param array $value The field names and their values to be processed
      * @param object &$reference Reference to the parent object (TCEmain)
-     *
-     * @return void
      */
     public function processCmdmap_postProcess($command, $table, $id, $value, &$reference)
     {
@@ -378,8 +369,6 @@ page.10.disableExplosivePreview = 1
      * @param array $sourceRecordBeforeMove (A part of) the record before it has been moved (and thus the PID has possibly been changed)
      * @param array $updateFields The updated fields of the record row in question (we don't use that)
      * @param object $reference A reference to the TCEmain instance
-     *
-     * @return void
      */
     public function moveRecord_firstElementPostProcess($table, $uid, $destPid, $sourceRecordBeforeMove, $updateFields, &$reference)
     {
@@ -424,8 +413,6 @@ page.10.disableExplosivePreview = 1
      * @param array $sourceRecordBeforeMove (A part of) the record before it has been moved (and thus the PID has possibly been changed)
      * @param array $updateFields The updated fields of the record row in question (we don't use that)
      * @param object $reference A reference to the TCEmain instance
-     *
-     * @return void
      */
     public function moveRecord_afterAnotherElementPostProcess($table, $uid, $destPid, $origDestPid, $sourceRecordBeforeMove, $updateFields, &$reference)
     {
@@ -463,8 +450,6 @@ page.10.disableExplosivePreview = 1
      *
      * @param string $flexformXML The flexform XML data of the page
      * @param int $pid Current page id
-     *
-     * @return void
      */
     public function correctSortingAndColposFieldsForPage($flexformXML, $pid)
     {
@@ -543,8 +528,6 @@ page.10.disableExplosivePreview = 1
      * @param string $table Table name
      * @param array &$incomingFieldArray Array with fields
      * @param \TYPO3\CMS\Core\Authentication\BackendUserAuthentication &$beUser Current backend user for this operation
-     *
-     * @return void
      */
     protected function updateDataSourceFromTemplateObject($table, array &$incomingFieldArray, \TYPO3\CMS\Core\Authentication\BackendUserAuthentication &$beUser)
     {
@@ -566,8 +549,6 @@ page.10.disableExplosivePreview = 1
      * @param string $dsField Data source field name in the $incomingFieldArray
      * @param string $toField Template object field name in the $incomingFieldArray
      * @param \TYPO3\CMS\Core\Authentication\BackendUserAuthentication $beUser Current backend user for this operation
-     *
-     * @return void
      */
     protected function updateDataSourceFieldFromTemplateObjectField(array &$incomingFieldArray, $dsField, $toField, \TYPO3\CMS\Core\Authentication\BackendUserAuthentication &$beUser)
     {

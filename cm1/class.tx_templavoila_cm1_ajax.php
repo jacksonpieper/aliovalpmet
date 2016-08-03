@@ -23,8 +23,6 @@ class tx_templavoila_cm1_ajax
      *
      * @param array $params
      * @param object $ajaxObj
-     *
-     * @return void
      */
     public function getDisplayFileContent($params, &$ajaxObj)
     {

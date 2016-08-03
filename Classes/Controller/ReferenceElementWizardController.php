@@ -170,8 +170,6 @@ class ReferenceElementWizardController extends \TYPO3\CMS\Backend\Module\Abstrac
      * References all unreferenced elements in the given page tree
      *
      * @param \TYPO3\CMS\Backend\Tree\View\PageTreeView $tree Page tree array
-     *
-     * @return void
      */
     protected function createReferencesForTree($tree)
     {
@@ -185,8 +183,6 @@ class ReferenceElementWizardController extends \TYPO3\CMS\Backend\Module\Abstrac
      * parent id (page uid)
      *
      * @param int $pageUid Parent id of the elements to reference
-     *
-     * @return void
      */
     protected function createReferencesForPage($pageUid)
     {

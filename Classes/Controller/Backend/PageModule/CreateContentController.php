@@ -100,7 +100,6 @@ class CreateContentController extends AbstractModuleController
     }
 
     /**
-     * @return void
      * @throws \InvalidArgumentException
      */
     public function init(array $params = [])
@@ -339,8 +338,6 @@ class CreateContentController extends AbstractModuleController
      * Looks for the "tt_content_defValues" key in each element and if found it will traverse that array as fieldname / value pairs and check. The values will be added to the "params" key of the array (which should probably be unset or empty by default).
      *
      * @param array &$wizardItems Wizard items, passed by reference
-     *
-     * @return void
      */
     private function removeInvalidElements(&$wizardItems)
     {

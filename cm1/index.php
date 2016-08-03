@@ -310,8 +310,6 @@ class tx_templavoila_cm1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass
 
     /**
      * Adds items to the ->MOD_MENU array. Used for the function menu selector.
-     *
-     * @return void
      */
     public function menuConfig()
     {
@@ -361,8 +359,6 @@ class tx_templavoila_cm1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass
     /**
      * Main function, distributes the load between the module and display modes.
      * "Display" mode is when the exploded template file is shown in an IFRAME
-     *
-     * @return void
      */
     public function main()
     {
@@ -395,8 +391,6 @@ class tx_templavoila_cm1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass
     /**
      * Prints module content.
      * Is only used in case of &mode = "mod" since both "display" mode and frameset is outputted + exiting before this is called.
-     *
-     * @return void
      */
     public function printContent()
     {
@@ -502,8 +496,6 @@ class tx_templavoila_cm1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass
      * - Based on a file reference, creating/modifying a DS/TO
      * - Based on a Template Object uid, remapping
      * - Based on a Data Structure uid, selecting a Template Object to map.
-     *
-     * @return void
      */
     public function main_mode()
     {
@@ -686,8 +678,6 @@ class tx_templavoila_cm1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass
 
     /**
      * Renders the display of DS/TO creation directly from a file
-     *
-     * @return void
      */
     public function renderFile()
     {
@@ -1294,8 +1284,6 @@ class tx_templavoila_cm1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass
 
     /**
      * Renders the display of Data Structure Objects.
-     *
-     * @return void
      */
     public function renderDSO()
     {
@@ -1427,8 +1415,6 @@ class tx_templavoila_cm1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass
 
     /**
      * Renders the display of Template Objects.
-     *
-     * @return void
      */
     public function renderTO()
     {
@@ -2580,8 +2566,6 @@ class tx_templavoila_cm1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass
      *
      * @param array &$dataStruct Array from which to remove elements (passed by reference!)
      * @param array $ref An array where the values in the specified order points to the position in the array to unset.
-     *
-     * @return void
      */
     public function unsetArrayPath(&$dataStruct, $ref)
     {
@@ -2599,8 +2583,6 @@ class tx_templavoila_cm1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass
      *
      * @param array &$currentMappingInfo Current Mapping info (passed by reference)
      * @param array $dataStruct Data Structure
-     *
-     * @return void
      */
     public function cleanUpMappingInfoAccordingToDS(&$currentMappingInfo, $dataStruct)
     {
@@ -2619,8 +2601,6 @@ class tx_templavoila_cm1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass
 
     /**
      * Generates $this->storageFolders with available sysFolders linked to as storageFolders for the user
-     *
-     * @return void Modification in $this->storageFolders array
      */
     public function findingStorageFolderIds()
     {
@@ -2677,7 +2657,6 @@ class tx_templavoila_cm1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass
     /**
      * Outputs the display of a marked-up HTML file in the IFRAME
      *
-     * @return void Exits before return
      * @see makeIframeForVisual()
      */
     public function main_display()
@@ -2817,8 +2796,6 @@ class tx_templavoila_cm1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass
      * Outputs a simple HTML page with an error message
      *
      * @param string Error message for output in <h2> tags
-     *
-     * @return void Echos out an HTML page.
      */
     public function displayFrameError($error)
     {

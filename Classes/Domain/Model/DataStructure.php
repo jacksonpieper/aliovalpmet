@@ -163,8 +163,6 @@ class DataStructure extends AbstractDataStructure
 
     /**
      * @param string $fieldname
-     *
-     * @return void
      */
     protected function setSortbyField($fieldname)
     {

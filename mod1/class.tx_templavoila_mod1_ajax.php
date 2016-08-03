@@ -38,8 +38,6 @@ class tx_templavoila_mod1_ajax
      *
      * @param array $params
      * @param object $ajaxObj
-     *
-     * @return void
      */
     public function moveRecord($params, &$ajaxObj)
     {

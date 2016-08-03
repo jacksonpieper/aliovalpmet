@@ -51,7 +51,6 @@ class tx_templavoila_cm1_eTypes
      * @param array $v_sub Actual template content splitted by Data Structure
      * @param int $scope Scope as defined in tx_templavoila_datastructure.scope
      *
-     * @return void Note: The result is directly written in $elArray
      * @see renderFile()
      */
     public function substEtypeWithRealStuff(&$elArray, $v_sub = [], $scope = 0)

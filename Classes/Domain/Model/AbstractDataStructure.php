@@ -64,8 +64,6 @@ abstract class AbstractDataStructure
 
     /**
      * @param string $str
-     *
-     * @return void
      */
     protected function setLabel($str)
     {
@@ -84,8 +82,6 @@ abstract class AbstractDataStructure
 
     /**
      * @param int $scope
-     *
-     * @return void
      */
     protected function setScope($scope)
     {
@@ -118,8 +114,6 @@ abstract class AbstractDataStructure
 
     /**
      * @param string $filename
-     *
-     * @return void
      */
     protected function setIcon($filename)
     {

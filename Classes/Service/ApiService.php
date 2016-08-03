@@ -1199,8 +1199,6 @@ class ApiService
      *
      * @param array $referencesArr The array of tt_content uids (references list) to store in the record
      * @param array $destinationPointer Flexform pointer to the location where the references list should be stored.
-     *
-     * @return void
      */
     public function flexform_storeElementReferencesListInRecord($referencesArr, $destinationPointer)
     {
@@ -1809,8 +1807,6 @@ class ApiService
      * avoid infinite loops and other bad effects.
      *
      * @param bool $flag If TRUE, our user functions will be omitted
-     *
-     * @return void
      */
     public function setTCEmainRunningFlag($flag)
     {
@@ -1860,8 +1856,6 @@ class ApiService
 
     /**
      * Reading all languages in sys_language and setting ->allSystemWebsiteLanguages with this information (with a little more as well)
-     *
-     * @return void
      */
     public function loadWebsiteLanguages()
     {
@@ -1895,8 +1889,6 @@ class ApiService
 
     /**
      * @param bool $enable
-     *
-     * @return void
      */
     public function modifyReferencesInLiveWS($enable = true)
     {

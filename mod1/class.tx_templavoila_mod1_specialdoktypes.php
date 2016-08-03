@@ -56,8 +56,6 @@ class tx_templavoila_mod1_specialdoktypes
      * Does some basic initialization
      *
      * @param \tx_templavoila_module1 $pObj Reference to the parent object ($this)
-     *
-     * @return void
      */
     public function init(&$pObj)
     {

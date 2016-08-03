@@ -115,8 +115,6 @@ Automatic Repair:
      * @param int $echoLevel Echo level  (see calling function
      * @param string $versionSwapmode Version swap mode on that level (see calling function
      * @param int $rootIsVersion Is root version (see calling function
-     *
-     * @return void
      */
     public function main_parseTreeCallBack($tableName, $uid, $echoLevel, $versionSwapmode, $rootIsVersion)
     {
@@ -212,8 +210,6 @@ Automatic Repair:
      * Will run auto-fix on the result array. Echos status during processing.
      *
      * @param array $resultArray Result array from main() function
-     *
-     * @return void
      */
     public function main_autoFix($resultArray)
     {

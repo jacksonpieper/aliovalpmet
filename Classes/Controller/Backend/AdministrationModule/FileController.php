@@ -223,8 +223,6 @@ class FileController extends AbstractModuleController implements Configurable
      * Outputs a simple HTML page with an error message
      *
      * @param string Error message for output in <h2> tags
-     *
-     * @return void Echos out an HTML page.
      */
     public function displayFrameError($error)
     {

@@ -211,8 +211,6 @@ class tx_templavoila_pi1 extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
      * Will set up various stuff in the class based on input TypoScript
      *
      * @param array $conf TypoScript options
-     *
-     * @return void
      */
     public function initVars($conf)
     {
@@ -431,8 +429,6 @@ class tx_templavoila_pi1 extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
      * @param array $TOelements The local XML processing information found in associated Template Objects (TO)
      * @param string $valueKey Value key
      * @param mixed $mappingInfo Mapping information
-     *
-     * @return void
      */
     public function processDataValues(&$dataValues, $DSelements, $TOelements, $valueKey = 'vDEF', $mappingInfo = true)
     {
@@ -938,8 +934,6 @@ class tx_templavoila_pi1 extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
     /**
      * @param string $message
      * @param int $severity \TYPO3\CMS\Core\Utility\GeneralUtility::SYSLOG_SEVERITY_* constant
-     *
-     * @return void
      */
     public function log($message, $severity)
     {
