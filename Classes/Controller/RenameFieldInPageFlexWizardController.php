@@ -15,13 +15,19 @@ namespace Extension\Templavoila\Controller;
  * The TYPO3 project - inspiring people to share!
  */
 
+use Extension\Templavoila\Domain\Repository\DataStructureRepository;
+use Extension\Templavoila\Utility\GeneralUtility;
+use TYPO3\CMS\Backend\Module\AbstractFunctionModule;
+use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Core\Messaging\FlashMessage;
+
 /**
  * This wizard renames a field in pages.tx_templavoila_flex, to avoid
  * a remapping
  *
  * @author Kay Strobach <typo3@kay-strobach.de>
  */
-class RenameFieldInPageFlexWizardController extends \TYPO3\CMS\Backend\Module\AbstractFunctionModule
+class RenameFieldInPageFlexWizardController extends AbstractFunctionModule
 {
 
     /**
@@ -29,7 +35,7 @@ class RenameFieldInPageFlexWizardController extends \TYPO3\CMS\Backend\Module\Ab
      */
     public function main()
     {
-        if (\Extension\Templavoila\Utility\GeneralUtility::getBackendUser()->isAdmin()) {
+        if (GeneralUtility::getBackendUser()->isAdmin()) {
             if ((int)$this->pObj->id > 0) {
                 return $this->showForm() . $this->executeCommand();
             } else {
@@ -38,10 +44,10 @@ class RenameFieldInPageFlexWizardController extends \TYPO3\CMS\Backend\Module\Ab
                 return 'Please select a page from the tree';
             }
         } else {
-            $message = new \TYPO3\CMS\Core\Messaging\FlashMessage(
+            $message = new FlashMessage(
                 'Module only available for admins.',
                 '',
-                \TYPO3\CMS\Core\Messaging\FlashMessage::ERROR
+                FlashMessage::ERROR
             );
 
             return $message->render();
@@ -55,7 +61,7 @@ class RenameFieldInPageFlexWizardController extends \TYPO3\CMS\Backend\Module\Ab
      */
     protected function getAllSubPages($uid)
     {
-        $completeRecords = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecordsByField('pages', 'pid', $uid);
+        $completeRecords = BackendUtility::getRecordsByField('pages', 'pid', $uid);
         $return = [$uid];
         if (count($completeRecords) > 0) {
             foreach ($completeRecords as $record) {
@@ -75,23 +81,23 @@ class RenameFieldInPageFlexWizardController extends \TYPO3\CMS\Backend\Module\Ab
 
         if (\TYPO3\CMS\Core\Utility\GeneralUtility::_GP('executeRename') == 1) {
             if (\TYPO3\CMS\Core\Utility\GeneralUtility::_GP('sourceField') === \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('destinationField')) {
-                $message = new \TYPO3\CMS\Core\Messaging\FlashMessage(
+                $message = new FlashMessage(
                     'Renaming a field to itself is senseless, execution aborted.',
                     '',
-                    \TYPO3\CMS\Core\Messaging\FlashMessage::ERROR
+                    FlashMessage::ERROR
                 );
 
                 return $message->render();
             }
-            $escapedSource = \Extension\Templavoila\Utility\GeneralUtility::getDatabaseConnection()->fullQuoteStr('%' . \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('sourceField') . '%', 'pages');
-            $escapedDest = \Extension\Templavoila\Utility\GeneralUtility::getDatabaseConnection()->fullQuoteStr('%' . \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('destinationField') . '%', 'pages');
+            $escapedSource = GeneralUtility::getDatabaseConnection()->fullQuoteStr('%' . \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('sourceField') . '%', 'pages');
+            $escapedDest = GeneralUtility::getDatabaseConnection()->fullQuoteStr('%' . \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('destinationField') . '%', 'pages');
 
             $condition = 'tx_templavoila_flex LIKE ' . $escapedSource
                 . ' AND NOT tx_templavoila_flex LIKE ' . $escapedDest . ' '
                 . ' AND uid IN ('
                 . implode(',', $this->getAllSubPages($this->pObj->id)) . ')';
 
-            $rows = \Extension\Templavoila\Utility\GeneralUtility::getDatabaseConnection()->exec_SELECTgetRows(
+            $rows = GeneralUtility::getDatabaseConnection()->exec_SELECTgetRows(
                 'uid, title',
                 'pages',
                 $condition
@@ -103,23 +109,23 @@ class RenameFieldInPageFlexWizardController extends \TYPO3\CMS\Backend\Module\Ab
                     $mbuffer .= '<li>' . htmlspecialchars($row['title']) . ' (uid: ' . (int)$row['uid'] . ')</li>';
                 }
                 $mbuffer .= '</ul>';
-                $message = new \TYPO3\CMS\Core\Messaging\FlashMessage($mbuffer, '', \TYPO3\CMS\Core\Messaging\FlashMessage::INFO);
+                $message = new FlashMessage($mbuffer, '', FlashMessage::INFO);
                 $buffer .= $message->render();
                 unset($mbuffer);
                 //really do it
                 if (!\TYPO3\CMS\Core\Utility\GeneralUtility::_GP('simulateField')) {
-                    $escapedSource = \Extension\Templavoila\Utility\GeneralUtility::getDatabaseConnection()->fullQuoteStr(\TYPO3\CMS\Core\Utility\GeneralUtility::_GP('sourceField'), 'pages');
-                    $escapedDest = \Extension\Templavoila\Utility\GeneralUtility::getDatabaseConnection()->fullQuoteStr(\TYPO3\CMS\Core\Utility\GeneralUtility::_GP('destinationField'), 'pages');
-                    \Extension\Templavoila\Utility\GeneralUtility::getDatabaseConnection()->admin_query('
+                    $escapedSource = GeneralUtility::getDatabaseConnection()->fullQuoteStr(\TYPO3\CMS\Core\Utility\GeneralUtility::_GP('sourceField'), 'pages');
+                    $escapedDest = GeneralUtility::getDatabaseConnection()->fullQuoteStr(\TYPO3\CMS\Core\Utility\GeneralUtility::_GP('destinationField'), 'pages');
+                    GeneralUtility::getDatabaseConnection()->admin_query('
                         UPDATE pages
                         SET tx_templavoila_flex = REPLACE(tx_templavoila_flex, ' . $escapedSource . ', ' . $escapedDest . ')
                         WHERE ' . $condition . '
                     ');
-                    $message = new \TYPO3\CMS\Core\Messaging\FlashMessage('DONE', '', \TYPO3\CMS\Core\Messaging\FlashMessage::OK);
+                    $message = new FlashMessage('DONE', '', FlashMessage::OK);
                     $buffer .= $message->render();
                 }
             } else {
-                $message = new \TYPO3\CMS\Core\Messaging\FlashMessage('Nothing to do, can´t find something to replace.', '', \TYPO3\CMS\Core\Messaging\FlashMessage::ERROR);
+                $message = new FlashMessage('Nothing to do, can´t find something to replace.', '', FlashMessage::ERROR);
                 $buffer .= $message->render();
             }
         }
@@ -132,10 +138,10 @@ class RenameFieldInPageFlexWizardController extends \TYPO3\CMS\Backend\Module\Ab
      */
     protected function showForm()
     {
-        $message = new \TYPO3\CMS\Core\Messaging\FlashMessage(
+        $message = new FlashMessage(
             'This action can affect ' . count($this->getAllSubPages($this->pObj->id)) . ' pages, please ensure, you know what you do!, Please backup your TYPO3 Installation before running that wizard.',
             '',
-            \TYPO3\CMS\Core\Messaging\FlashMessage::WARNING
+            FlashMessage::WARNING
         );
         $buffer = $message->render();
         unset($message);
@@ -174,13 +180,13 @@ class RenameFieldInPageFlexWizardController extends \TYPO3\CMS\Backend\Module\Ab
                 }
 
                 return '<div id="form-line-0">'
-                . '<label for="' . $name . '" style="width:200px;display:block;float:left;">' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->sL('LLL:EXT:templavoila/Resources/Private/Language/locallang.xlf:field_' . $name) . '</label>'
+                . '<label for="' . $name . '" style="width:200px;display:block;float:left;">' . GeneralUtility::getLanguageService()->sL('LLL:EXT:templavoila/Resources/Private/Language/locallang.xlf:field_' . $name) . '</label>'
                 . '<input type="checkbox" id="' . $name . '" name="' . $name . '" ' . $checked . ' value="1">'
                 . '</div>';
                 break;
             case 'submit':
                 return '<div id="form-line-0">'
-                . '<input type="submit" id="' . $name . '" name="' . $name . '" value="' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->sL('LLL:EXT:templavoila/Resources/Private/Language/locallang.xlf:field_' . $name) . '">'
+                . '<input type="submit" id="' . $name . '" name="' . $name . '" value="' . GeneralUtility::getLanguageService()->sL('LLL:EXT:templavoila/Resources/Private/Language/locallang.xlf:field_' . $name) . '">'
                 . '</div>';
                 break;
             case 'hidden':
@@ -201,14 +207,14 @@ class RenameFieldInPageFlexWizardController extends \TYPO3\CMS\Backend\Module\Ab
                 }
 
                 return '<div id="form-line-0">'
-                . '<label style="width:200px;display:block;float:left;" for="' . $name . '">' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->sL('LLL:EXT:templavoila/Resources/Private/Language/locallang.xlf:field_' . $name) . '</label>'
+                . '<label style="width:200px;display:block;float:left;" for="' . $name . '">' . GeneralUtility::getLanguageService()->sL('LLL:EXT:templavoila/Resources/Private/Language/locallang.xlf:field_' . $name) . '</label>'
                 . '<select id="' . $name . '" name="' . $name . '">' . $buffer . '</select>'
                 . '</div>';
                 break;
             case 'text':
             default:
                 return '<div id="form-line-0">'
-                . '<label for="' . $name . '">' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->sL('LLL:EXT:templavoila/Resources/Private/Language/locallang.xlf:field_' . $name) . '</label>'
+                . '<label for="' . $name . '">' . GeneralUtility::getLanguageService()->sL('LLL:EXT:templavoila/Resources/Private/Language/locallang.xlf:field_' . $name) . '</label>'
                 . '<input type="text" id="' . $name . '" name="' . $name . '" value="' . htmlspecialchars($value) . '">'
                 . '</div>';
         }
@@ -233,7 +239,7 @@ class RenameFieldInPageFlexWizardController extends \TYPO3\CMS\Backend\Module\Ab
      */
     protected function getKnownPageDS()
     {
-        $dsRepo = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\Extension\Templavoila\Domain\Repository\DataStructureRepository::class);
+        $dsRepo = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(DataStructureRepository::class);
 
         return $dsRepo->getDatastructuresByScope(1);
     }

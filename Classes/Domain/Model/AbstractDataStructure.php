@@ -15,6 +15,9 @@ namespace Extension\Templavoila\Domain\Model;
  * The TYPO3 project - inspiring people to share!
  */
 
+use Extension\Templavoila\Traits\LanguageService;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+
 /**
  * Class to provide unique access to datastructure
  *
@@ -22,6 +25,8 @@ namespace Extension\Templavoila\Domain\Model;
  */
 abstract class AbstractDataStructure
 {
+
+    use LanguageService;
 
     /**
      * @var int
@@ -60,7 +65,7 @@ abstract class AbstractDataStructure
      */
     public function getLabel()
     {
-        return \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->sL($this->label);
+        return static::getLanguageService()->sL($this->label);
     }
 
     /**
@@ -146,7 +151,7 @@ abstract class AbstractDataStructure
         $arr = [];
         $ds = $this->getDataprotXML();
         if (strlen($ds) > 1) {
-            $arr = \TYPO3\CMS\Core\Utility\GeneralUtility::xml2array($ds);
+            $arr = GeneralUtility::xml2array($ds);
         }
 
         return $arr;

@@ -17,17 +17,23 @@ namespace Extension\Templavoila\Controller\Backend\PageModule;
 use Extension\Templavoila\Controller\Backend\AbstractModuleController;
 use Extension\Templavoila\Controller\Backend\Configurable;
 use Extension\Templavoila\Controller\Backend\PageModule\Renderer\SidebarRenderer;
+use Extension\Templavoila\Domain\Model\Template;
 use Extension\Templavoila\Domain\Repository\SysLanguageRepository;
+use Extension\Templavoila\Domain\Repository\TemplateRepository;
 use Extension\Templavoila\Service\ApiService;
 use Psr\Http\Message\ResponseInterface;
 use TYPO3\CMS\Backend\Template\Components\ButtonBar;
 use TYPO3\CMS\Backend\Template\DocumentTemplate;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Backend\Utility\IconUtility;
+use TYPO3\CMS\Core\Configuration\FlexForm\FlexFormTools;
+use TYPO3\CMS\Core\DataHandling\DataHandler;
+use TYPO3\CMS\Core\Html\HtmlParser;
 use TYPO3\CMS\Core\Http\Response;
 use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
+use TYPO3\CMS\Core\Messaging\FlashMessageService;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Fluid\View\StandaloneView;
@@ -300,7 +306,7 @@ class MainController extends AbstractModuleController implements Configurable
     public $newContentWizScriptPath = 'db_new_content_el.php';
 
     /**
-     * @var \TYPO3\CMS\Core\Messaging\FlashMessageService
+     * @var FlashMessageService
      */
     public $flashMessageService;
 
@@ -518,7 +524,7 @@ class MainController extends AbstractModuleController implements Configurable
         $this->clipboardObj =& GeneralUtility::getUserObj('&tx_templavoila_mod1_clipboard', '');
         $this->clipboardObj->init($this);
 
-        $this->flashMessageService = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Messaging\FlashMessageService::class);
+        $this->flashMessageService = GeneralUtility::makeInstance(FlashMessageService::class);
     }
 
     /**
@@ -907,7 +913,7 @@ class MainController extends AbstractModuleController implements Configurable
             $sidebarMode = 'SIDEBAR_TOP';
         }
 
-        $editareaTpl = \TYPO3\CMS\Core\Html\HtmlParser::getSubpart($this->doc->moduleTemplate, $sidebarMode);
+        $editareaTpl = HtmlParser::getSubpart($this->doc->moduleTemplate, $sidebarMode);
         if ($editareaTpl) {
             $editareaMarkers = [
                 'TABROW' => $this->render_sidebar(),
@@ -916,7 +922,7 @@ class MainController extends AbstractModuleController implements Configurable
 //            $this->view->assign('TABROW', $this->render_sidebar());
             $editareaMarkers['FLASHMESSAGES'] = $this->flashMessageService->getMessageQueueByIdentifier('ext.templavoila')->renderFlashMessages();
 
-            $editareaContent = \TYPO3\CMS\Core\Html\HtmlParser::substituteMarkerArray($editareaTpl, $editareaMarkers, '###|###', true);
+            $editareaContent = HtmlParser::substituteMarkerArray($editareaTpl, $editareaMarkers, '###|###', true);
 
             $this->view->assign('EDITAREA', $editareaContent);
             $bodyMarkers['EDITAREA'] = $editareaContent;
@@ -1439,17 +1445,17 @@ class MainController extends AbstractModuleController implements Configurable
         }
 
         try {
-            $toRepo = GeneralUtility::makeInstance(\Extension\Templavoila\Domain\Repository\TemplateRepository::class);
-            /** @var $toRepo \Extension\Templavoila\Domain\Repository\TemplateRepository */
+            $toRepo = GeneralUtility::makeInstance(TemplateRepository::class);
+            /** @var $toRepo TemplateRepository */
             $to = $toRepo->getTemplateByUid($toRecord['uid']);
-            /* @var $to \Extension\Templavoila\Domain\Model\Template */
+            /* @var $to Template */
             $beTemplate = $to->getBeLayout();
-        } catch (InvalidArgumentException $e) {
+        } catch (\InvalidArgumentException $e) {
             $to = null;
             // might happen if uid was not what the Repo expected - that's ok here
         }
 
-        if (!$to instanceof \Extension\Templavoila\Domain\Model\Template) {
+        if (!$to instanceof Template) {
             throw new \RuntimeException('Further execution of code leads to PHP errors.', 1404750505);
         }
 
@@ -2117,7 +2123,7 @@ class MainController extends AbstractModuleController implements Configurable
             // @Robert: How would you like this implementation better? Please advice and I will change it according to your wish!
             $status = '';
             if ($entry['table'] && $entry['uid']) {
-                $flexObj = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Configuration\FlexForm\FlexFormTools::class);
+                $flexObj = GeneralUtility::makeInstance(FlexFormTools::class);
                 $recRow = BackendUtility::getRecordWSOL($entry['table'], $entry['uid']);
                 if ($recRow['tx_templavoila_flex']) {
 
@@ -2130,7 +2136,7 @@ class MainController extends AbstractModuleController implements Configurable
                         $dataArr[$entry['table']][$entry['uid']]['tx_templavoila_flex'] = $newXML;
 
                         // Init TCEmain object and store:
-                        $tce = GeneralUtility::makeInstance(\TYPO3\CMS\Core\DataHandling\DataHandler::class);
+                        $tce = GeneralUtility::makeInstance(DataHandler::class);
                         $tce->stripslashes_values = 0;
                         $tce->start($dataArr, []);
                         $tce->process_datamap();
@@ -3216,8 +3222,8 @@ class MainController extends AbstractModuleController implements Configurable
         }
         $editingEnabled = true;
         try {
-            /** @var \Extension\Templavoila\Domain\Repository\TemplateRepository $toRepo */
-            $toRepo = GeneralUtility::makeInstance(\Extension\Templavoila\Domain\Repository\TemplateRepository::class);
+            /** @var TemplateRepository $toRepo */
+            $toRepo = GeneralUtility::makeInstance(TemplateRepository::class);
             $to = $toRepo->getTemplateByUid($toUid);
             $xml = $to->getLocalDataprotArray();
             if (isset($xml['meta']['noEditOnCreation'])) {

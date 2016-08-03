@@ -15,11 +15,17 @@ namespace Extension\Templavoila\Controller\Preview;
  * The TYPO3 project - inspiring people to share!
  */
 
+use Extension\Templavoila\Traits\LanguageService;
+use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+
 /**
  * List controller
  */
 class ListController extends TextController
 {
+
+    use LanguageService;
 
     /**
      * @var string
@@ -35,7 +41,7 @@ class ListController extends TextController
     {
         $extraInfo = $this->getExtraInfo($row);
 
-        $info = htmlspecialchars(\Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->sL(\TYPO3\CMS\Backend\Utility\BackendUtility::getLabelFromItemlist('tt_content', 'list_type', $row['list_type'])));
+        $info = htmlspecialchars(static::getLanguageService()->sL(BackendUtility::getLabelFromItemlist('tt_content', 'list_type', $row['list_type'])));
         $info .= $extraInfo ? ' &ndash; ' . $extraInfo : '';
 
         return $info;
@@ -60,7 +66,7 @@ class ListController extends TextController
         if (count($hookArr) > 0) {
             $_params = ['pObj' => &$this, 'row' => $row, 'infoArr' => []];
             foreach ($hookArr as $_funcRef) {
-                $extraInfo .= \TYPO3\CMS\Core\Utility\GeneralUtility::callUserFunction($_funcRef, $_params, $this);
+                $extraInfo .= GeneralUtility::callUserFunction($_funcRef, $_params, $this);
             }
         }
 

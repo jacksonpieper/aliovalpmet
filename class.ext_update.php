@@ -12,11 +12,15 @@
  * The TYPO3 project - inspiring people to share!
  */
 
+use Extension\Templavoila\Traits\BackendUser;
+
 /**
  * Update wizard for the extension manager
  */
 class ext_update
 {
+
+    use BackendUser;
 
     /**
      * Main function, returning the HTML content of the module
@@ -40,6 +44,6 @@ class ext_update
      */
     public function access($what = 'all')
     {
-        return \Extension\Templavoila\Utility\GeneralUtility::getBackendUser()->isAdmin();
+        return static::getBackendUser()->isAdmin();
     }
 }

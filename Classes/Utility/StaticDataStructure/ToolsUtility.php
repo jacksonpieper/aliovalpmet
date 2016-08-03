@@ -15,6 +15,9 @@ namespace Extension\Templavoila\Utility\StaticDataStructure;
  * The TYPO3 project - inspiring people to share!
  */
 
+use Extension\Templavoila\Domain\Model\AbstractDataStructure;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+
 /**
  * Class for userFuncs within the Extension Manager.
  *
@@ -30,8 +33,8 @@ class ToolsUtility
     {
         $paths = array_unique(['fce' => $conf['staticDS.']['path_fce'], 'page' => $conf['staticDS.']['path_page']]);
         foreach ($paths as $type => $path) {
-            $absolutePath = \TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName($path);
-            $files = \TYPO3\CMS\Core\Utility\GeneralUtility::getFilesInDir($absolutePath, 'xml', true);
+            $absolutePath = GeneralUtility::getFileAbsFileName($path);
+            $files = GeneralUtility::getFilesInDir($absolutePath, 'xml', true);
             // if all files are in the same folder, don't resolve the scope by path type
             if (count($paths) == 1) {
                 $type = false;
@@ -48,9 +51,9 @@ class ToolsUtility
                 }
 
                 if (($type !== false && $type === 'fce') || strpos($pathInfo['filename'], '(fce)') !== false) {
-                    $staticDataStructure['scope'] = \Extension\Templavoila\Domain\Model\AbstractDataStructure::SCOPE_FCE;
+                    $staticDataStructure['scope'] = AbstractDataStructure::SCOPE_FCE;
                 } else {
-                    $staticDataStructure['scope'] = \Extension\Templavoila\Domain\Model\AbstractDataStructure::SCOPE_PAGE;
+                    $staticDataStructure['scope'] = AbstractDataStructure::SCOPE_PAGE;
                 }
 
                 $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['templavoila']['staticDataStructures'][] = $staticDataStructure;

@@ -15,10 +15,12 @@ namespace Extension\Templavoila\Tests\Unit;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Tests\UnitTestCase;
+
 /**
  * @author Alexander Schnitzler <typo3@alexanderschnitzler.de>
  */
-class Pi1Test extends \TYPO3\CMS\Core\Tests\UnitTestCase
+class Pi1Test extends UnitTestCase
 {
 
     /**

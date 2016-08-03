@@ -15,6 +15,9 @@ namespace Extension\Templavoila\Controller\Preview;
  * The TYPO3 project - inspiring people to share!
  */
 
+use Extension\Templavoila\Utility\GeneralUtility;
+use TYPO3\CMS\Backend\Utility\BackendUtility;
+
 /**
  * Default controller
  */
@@ -32,6 +35,6 @@ class DefaultController
      */
     public function render_previewContent($row, $table, $output, $alreadyRendered, &$ref)
     {
-        return '<strong>' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->sL(\TYPO3\CMS\Backend\Utility\BackendUtility::getLabelFromItemlist('tt_content', 'CType', $row['CType'])) . '</strong>';
+        return '<strong>' . GeneralUtility::getLanguageService()->sL(BackendUtility::getLabelFromItemlist('tt_content', 'CType', $row['CType'])) . '</strong>';
     }
 }

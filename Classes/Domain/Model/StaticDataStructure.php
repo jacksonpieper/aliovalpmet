@@ -15,6 +15,11 @@ namespace Extension\Templavoila\Domain\Model;
  * The TYPO3 project - inspiring people to share!
  */
 
+use Extension\Templavoila\Domain\Repository\DataStructureRepository;
+use Extension\Templavoila\Traits\DatabaseConnection;
+use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+
 /**
  * Class to provide unique access to static datastructure
  *
@@ -22,6 +27,8 @@ namespace Extension\Templavoila\Domain\Model;
  */
 class StaticDataStructure extends AbstractDataStructure
 {
+
+    use DatabaseConnection;
 
     /**
      * @var string
@@ -35,7 +42,7 @@ class StaticDataStructure extends AbstractDataStructure
      */
     public function __construct($key)
     {
-        $conf = \Extension\Templavoila\Domain\Repository\DataStructureRepository::getStaticDatastructureConfiguration();
+        $conf = DataStructureRepository::getStaticDatastructureConfiguration();
 
         if (!isset($conf[$key])) {
             throw new \InvalidArgumentException(
@@ -58,10 +65,10 @@ class StaticDataStructure extends AbstractDataStructure
     public function getStoragePids()
     {
         $pids = [];
-        $toList = \Extension\Templavoila\Utility\GeneralUtility::getDatabaseConnection()->exec_SELECTgetRows(
+        $toList = static::getDatabaseConnection()->exec_SELECTgetRows(
             'tx_templavoila_tmplobj.uid,tx_templavoila_tmplobj.pid',
             'tx_templavoila_tmplobj',
-            'tx_templavoila_tmplobj.datastructure=' . \Extension\Templavoila\Utility\GeneralUtility::getDatabaseConnection()->fullQuoteStr($this->filename, 'tx_templavoila_tmplobj') . \TYPO3\CMS\Backend\Utility\BackendUtility::deleteClause('tx_templavoila_tmplobj')
+            'tx_templavoila_tmplobj.datastructure=' . static::getDatabaseConnection()->fullQuoteStr($this->filename, 'tx_templavoila_tmplobj') . BackendUtility::deleteClause('tx_templavoila_tmplobj')
         );
         foreach ($toList as $toRow) {
             $pids[$toRow['pid']]++;
@@ -86,7 +93,7 @@ class StaticDataStructure extends AbstractDataStructure
     public function getDataprotXML()
     {
         $xml = '';
-        $file = \TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName($this->filename);
+        $file = GeneralUtility::getFileAbsFileName($this->filename);
         if (is_readable($file)) {
             $xml = file_get_contents($file);
         } else {
@@ -129,7 +136,7 @@ class StaticDataStructure extends AbstractDataStructure
      */
     public function getTstamp()
     {
-        $file = \TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName($this->filename);
+        $file = GeneralUtility::getFileAbsFileName($this->filename);
         if (is_readable($file)) {
             $tstamp = filemtime($file);
         } else {
@@ -146,7 +153,7 @@ class StaticDataStructure extends AbstractDataStructure
      */
     public function getCrdate()
     {
-        $file = \TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName($this->filename);
+        $file = GeneralUtility::getFileAbsFileName($this->filename);
         if (is_readable($file)) {
             $tstamp = filectime($file);
         } else {
@@ -174,9 +181,9 @@ class StaticDataStructure extends AbstractDataStructure
     public function getBeLayout()
     {
         $beLayout = false;
-        $file = substr(\TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName($this->filename), 0, -3) . 'html';
+        $file = substr(GeneralUtility::getFileAbsFileName($this->filename), 0, -3) . 'html';
         if (file_exists($file)) {
-            $beLayout = \TYPO3\CMS\Core\Utility\GeneralUtility::getURL($file);
+            $beLayout = GeneralUtility::getURL($file);
         }
 
         return $beLayout;

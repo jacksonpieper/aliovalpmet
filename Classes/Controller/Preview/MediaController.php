@@ -15,11 +15,17 @@ namespace Extension\Templavoila\Controller\Preview;
  * The TYPO3 project - inspiring people to share!
  */
 
+use Extension\Templavoila\Traits\LanguageService;
+use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+
 /**
  * Media controller
  */
 class MediaController
 {
+
+    use LanguageService;
 
     /**
      * @var string
@@ -56,7 +62,7 @@ class MediaController
     {
         $data = '';
         if (is_array($row) && $row['pi_flexform']) {
-            $flexform = \TYPO3\CMS\Core\Utility\GeneralUtility::xml2array($row['pi_flexform']);
+            $flexform = GeneralUtility::xml2array($row['pi_flexform']);
             if (isset($flexform['data']['sDEF']['lDEF']['mmFile']['vDEF'])) {
                 $data = '<span>' . $flexform['data']['sDEF']['lDEF']['mmFile']['vDEF'] . '</span>';
             }
@@ -70,6 +76,6 @@ class MediaController
      */
     protected function getPreviewLabel()
     {
-        return \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->sL(\TYPO3\CMS\Backend\Utility\BackendUtility::getLabelFromItemlist('tt_content', 'CType', $this->previewField));
+        return static::getLanguageService()->sL(BackendUtility::getLabelFromItemlist('tt_content', 'CType', $this->previewField));
     }
 }

@@ -11,6 +11,10 @@
  *
  * The TYPO3 project - inspiring people to share!
  */
+use Extension\Templavoila\Traits\DatabaseConnection;
+use Extension\Templavoila\Traits\LanguageService;
+use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Class for userFuncs within the Extension Manager.
@@ -20,6 +24,9 @@
 class tx_templavoila_staticds_wizard
 {
 
+    use DatabaseConnection;
+    use LanguageService;
+    
     /**
      * Step for the wizard. Can be manipulated by internal function
      *
@@ -34,14 +41,14 @@ class tx_templavoila_staticds_wizard
      */
     public function staticDsWizard()
     {
-        $this->step = \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('dsWizardDoIt') ? (int)\TYPO3\CMS\Core\Utility\GeneralUtility::_GP('dsWizardStep') : 0;
+        $this->step = GeneralUtility::_GP('dsWizardDoIt') ? (int)GeneralUtility::_GP('dsWizardStep') : 0;
         $conf = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['templavoila']);
 
-        $title = \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->sL(
+        $title = static::getLanguageService()->sL(
             'LLL:EXT:templavoila/Resources/Private/Language/template_conf.xlf:staticDS.wizard.title.' . $this->step,
             true
         );
-        $description = \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->sL(
+        $description = static::getLanguageService()->sL(
             'LLL:EXT:templavoila/Resources/Private/Language/template_conf.xlf:staticDS.wizard.description.' . $this->step
         );
         $out = '<h2>' . $title . '</h2>';
@@ -51,28 +58,28 @@ class tx_templavoila_staticds_wizard
         switch ($this->step) {
             case 1:
                 $ok = [true, true];
-                if (\TYPO3\CMS\Core\Utility\GeneralUtility::_GP('dsWizardDoIt')) {
+                if (GeneralUtility::_GP('dsWizardDoIt')) {
                     if (!isset($conf['staticDS.']['path_fce']) || !strlen($conf['staticDS.']['path_fce'])) {
                         $ok[0] = false;
-                        $description .= sprintf('||' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->sL('LLL:EXT:templavoila/Resources/Private/Language/template_conf.xlf:staticDS.wizard.dircheck.notset'), 'staticDS.path_fce');
+                        $description .= sprintf('||' . static::getLanguageService()->sL('LLL:EXT:templavoila/Resources/Private/Language/template_conf.xlf:staticDS.wizard.dircheck.notset'), 'staticDS.path_fce');
                     } else {
                         $ok[0] = $this->checkDirectory($conf['staticDS.']['path_fce']);
                         if ($ok[0]) {
-                            $description .= sprintf('||' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->sL('LLL:EXT:templavoila/Resources/Private/Language/template_conf.xlf:staticDS.wizard.dircheck.ok'), htmlspecialchars($conf['staticDS.']['path_fce']));
+                            $description .= sprintf('||' . static::getLanguageService()->sL('LLL:EXT:templavoila/Resources/Private/Language/template_conf.xlf:staticDS.wizard.dircheck.ok'), htmlspecialchars($conf['staticDS.']['path_fce']));
                         } else {
-                            $description .= sprintf('||' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->sL('LLL:EXT:templavoila/Resources/Private/Language/template_conf.xlf:staticDS.wizard.dircheck.notok'), htmlspecialchars($conf['staticDS.']['path_fce']));
+                            $description .= sprintf('||' . static::getLanguageService()->sL('LLL:EXT:templavoila/Resources/Private/Language/template_conf.xlf:staticDS.wizard.dircheck.notok'), htmlspecialchars($conf['staticDS.']['path_fce']));
                         }
                     }
 
                     if (!isset($conf['staticDS.']['path_page']) || !strlen($conf['staticDS.']['path_page'])) {
                         $ok[0] = false;
-                        $description .= sprintf('||' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->sL('LLL:EXT:templavoila/Resources/Private/Language/template_conf.xlf:staticDS.wizard.dircheck.notset'), 'staticDS.path_page');
+                        $description .= sprintf('||' . static::getLanguageService()->sL('LLL:EXT:templavoila/Resources/Private/Language/template_conf.xlf:staticDS.wizard.dircheck.notset'), 'staticDS.path_page');
                     } else {
                         $ok[1] = $this->checkDirectory($conf['staticDS.']['path_page']);
                         if ($ok[1]) {
-                            $description .= sprintf('|' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->sL('LLL:EXT:templavoila/Resources/Private/Language/template_conf.xlf:staticDS.wizard.dircheck.ok'), htmlspecialchars($conf['staticDS.']['path_page']));
+                            $description .= sprintf('|' . static::getLanguageService()->sL('LLL:EXT:templavoila/Resources/Private/Language/template_conf.xlf:staticDS.wizard.dircheck.ok'), htmlspecialchars($conf['staticDS.']['path_page']));
                         } else {
-                            $description .= sprintf('|' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->sL('LLL:EXT:templavoila/Resources/Private/Language/template_conf.xlf:staticDS.wizard.dircheck.notok'), htmlspecialchars($conf['staticDS.']['path_page']));
+                            $description .= sprintf('|' . static::getLanguageService()->sL('LLL:EXT:templavoila/Resources/Private/Language/template_conf.xlf:staticDS.wizard.dircheck.notok'), htmlspecialchars($conf['staticDS.']['path_page']));
                         }
                     }
                     if ($ok == [true, true]) {
@@ -81,15 +88,15 @@ class tx_templavoila_staticds_wizard
                 }
                 if ($ok == [true, true] && $this->step < 3) {
                     $submitText = $conf['staticDS.']['enable']
-                        ? \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->sL('LLL:EXT:templavoila/Resources/Private/Language/template_conf.xlf:staticDS.wizard.submit3')
-                        : \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->sL('LLL:EXT:templavoila/Resources/Private/Language/template_conf.xlf:staticDS.wizard.submit2');
+                        ? static::getLanguageService()->sL('LLL:EXT:templavoila/Resources/Private/Language/template_conf.xlf:staticDS.wizard.submit3')
+                        : static::getLanguageService()->sL('LLL:EXT:templavoila/Resources/Private/Language/template_conf.xlf:staticDS.wizard.submit2');
                     $controls .= '<br /><input type="hidden" name="dsWizardStep" value="1" />
                     <input type="submit" name="dsWizardDoIt" value="' . $submitText . '" />';
                 }
                 break;
             default:
                 $controls .= '<input type="hidden" name="dsWizardStep" value="1" />
-                <input type="submit" name="dsWizardDoIt" value="' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->sL('LLL:EXT:templavoila/Resources/Private/Language/template_conf.xlf:staticDS.wizard.submit1') . '" />';
+                <input type="submit" name="dsWizardDoIt" value="' . static::getLanguageService()->sL('LLL:EXT:templavoila/Resources/Private/Language/template_conf.xlf:staticDS.wizard.submit1') . '" />';
                 break;
         }
 
@@ -110,14 +117,14 @@ class tx_templavoila_staticds_wizard
     {
         $status = false;
         $path = rtrim($path, '/') . '/';
-        $absolutePath = \TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName($path);
+        $absolutePath = GeneralUtility::getFileAbsFileName($path);
         if (!empty($absolutePath)) {
             if (@is_writable($absolutePath)) {
                 $status = true;
             }
             if (!is_dir($absolutePath)) {
                 try {
-                    $errors = \TYPO3\CMS\Core\Utility\GeneralUtility::mkdir_deep(PATH_site, $path);
+                    $errors = GeneralUtility::mkdir_deep(PATH_site, $path);
                     if ($errors === null) {
                         $status = true;
                     }
@@ -140,14 +147,14 @@ class tx_templavoila_staticds_wizard
     {
         $updateMessage = '';
         $writeDsIds = [];
-        $writeIds = \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('staticDSwizard');
-        $options = \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('staticDSwizardoptions');
-        $checkAll = \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('sdw-checkall');
+        $writeIds = GeneralUtility::_GP('staticDSwizard');
+        $options = GeneralUtility::_GP('staticDSwizardoptions');
+        $checkAll = GeneralUtility::_GP('sdw-checkall');
 
         if (count($writeIds)) {
             $writeDsIds = array_keys($writeIds);
         }
-        $rows = \Extension\Templavoila\Utility\GeneralUtility::getDatabaseConnection()->exec_SELECTgetRows(
+        $rows = static::getDatabaseConnection()->exec_SELECTgetRows(
             '*',
             'tx_templavoila_datastructure',
             'deleted=0',
@@ -156,71 +163,71 @@ class tx_templavoila_staticds_wizard
         );
         $out = '<table id="staticDSwizard_getdsrecords"><thead>
             <tr class="bgColor5">
-                <td style="vertical-align:middle;">' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->sL('LLL:EXT:templavoila/Resources/Private/Language/template_conf.xlf:staticDS.wizard.uid') . '</td>
-                <td style="vertical-align:middle;">' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->sL('LLL:EXT:templavoila/Resources/Private/Language/template_conf.xlf:staticDS.wizard.pid') . '</td>
-                <td style="vertical-align:middle;">' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->sL('LLL:EXT:templavoila/Resources/Private/Language/template_conf.xlf:staticDS.wizard.title') . '</td>
-                <td style="vertical-align:middle;">' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->sL('LLL:EXT:templavoila/Resources/Private/Language/template_conf.xlf:staticDS.wizard.scope') . '</td>
-                <td style="vertical-align:middle;">' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->sL('LLL:EXT:templavoila/Resources/Private/Language/template_conf.xlf:staticDS.wizard.usage') . '</td>
+                <td style="vertical-align:middle;">' . static::getLanguageService()->sL('LLL:EXT:templavoila/Resources/Private/Language/template_conf.xlf:staticDS.wizard.uid') . '</td>
+                <td style="vertical-align:middle;">' . static::getLanguageService()->sL('LLL:EXT:templavoila/Resources/Private/Language/template_conf.xlf:staticDS.wizard.pid') . '</td>
+                <td style="vertical-align:middle;">' . static::getLanguageService()->sL('LLL:EXT:templavoila/Resources/Private/Language/template_conf.xlf:staticDS.wizard.title') . '</td>
+                <td style="vertical-align:middle;">' . static::getLanguageService()->sL('LLL:EXT:templavoila/Resources/Private/Language/template_conf.xlf:staticDS.wizard.scope') . '</td>
+                <td style="vertical-align:middle;">' . static::getLanguageService()->sL('LLL:EXT:templavoila/Resources/Private/Language/template_conf.xlf:staticDS.wizard.usage') . '</td>
                 <td>
-                    <label for="sdw-checkall">' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->sL('LLL:EXT:templavoila/Resources/Private/Language/template_conf.xlf:staticDS.wizard.selectall') . '</label>
+                    <label for="sdw-checkall">' . static::getLanguageService()->sL('LLL:EXT:templavoila/Resources/Private/Language/template_conf.xlf:staticDS.wizard.selectall') . '</label>
                     <input type="checkbox" class="checkbox" id="sdw-checkall" name="sdw-checkall" onclick="$$(\'.staticDScheck\').each(function(e){e.checked=$(\'sdw-checkall\').checked;});" value="1" ' .
                     ($checkAll ? 'checked="checked"' : '') . ' /></td>
         </tr></thead><tbody>';
         foreach ($rows as $row) {
-            $dirPath = \TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName($row['scope'] == 2 ? $conf['path_fce'] : $conf['path_page']);
+            $dirPath = GeneralUtility::getFileAbsFileName($row['scope'] == 2 ? $conf['path_fce'] : $conf['path_page']);
             $dirPath = $dirPath . (substr($dirPath, -1) == '/' ? '' : '/');
             $title = preg_replace('|[/,\."\']+|', '_', $row['title']);
             $path = $dirPath . $title . ' (' . ($row['scope'] == 1 ? 'page' : 'fce') . ').xml';
             $outPath = substr($path, strlen(PATH_site));
 
-            $usage = \Extension\Templavoila\Utility\GeneralUtility::getDatabaseConnection()->exec_SELECTgetRows(
+            $usage = static::getDatabaseConnection()->exec_SELECTgetRows(
                 'count(*)',
                 'tx_templavoila_tmplobj',
-                'datastructure=' . (int) $row['uid'] . \TYPO3\CMS\Backend\Utility\BackendUtility::BEenableFields('tx_templavoila_tmplobj')
+                'datastructure=' . (int) $row['uid'] . BackendUtility::BEenableFields('tx_templavoila_tmplobj')
             );
             if (count($writeDsIds) && in_array($row['uid'], $writeDsIds)) {
-                \TYPO3\CMS\Core\Utility\GeneralUtility::writeFile($path, $row['dataprot']);
+                GeneralUtility::writeFile($path, $row['dataprot']);
                 if ($row['previewicon']) {
-                    copy(\TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName('uploads/tx_templavoila/' . $row['previewicon']), $dirPath . $title . ' (' . ($row['scope'] == 1
+                    copy(GeneralUtility::getFileAbsFileName('uploads/tx_templavoila/' . $row['previewicon']), $dirPath . $title . ' (' . ($row['scope'] == 1
                             ? 'page' : 'fce') . ').gif');
                 }
                 if ($options['updateRecords']) {
                     // remove DS records
-                    \Extension\Templavoila\Utility\GeneralUtility::getDatabaseConnection()->exec_UPDATEquery(
+                    static::getDatabaseConnection()->exec_UPDATEquery(
                         'tx_templavoila_datastructure',
                         'uid="' . $row['uid'] . '"',
                         ['deleted' => 1]
                     );
                     // update TO records
-                    \Extension\Templavoila\Utility\GeneralUtility::getDatabaseConnection()->exec_UPDATEquery(
+                    static::getDatabaseConnection()->exec_UPDATEquery(
                         'tx_templavoila_tmplobj',
                         'datastructure="' . $row['uid'] . '"',
                         ['datastructure' => $outPath]
                     );
                     // update page records
-                    \Extension\Templavoila\Utility\GeneralUtility::getDatabaseConnection()->exec_UPDATEquery(
+                    static::getDatabaseConnection()->exec_UPDATEquery(
                         'pages',
                         'tx_templavoila_ds="' . $row['uid'] . '"',
                         ['tx_templavoila_ds' => $outPath]
                     );
-                    \Extension\Templavoila\Utility\GeneralUtility::getDatabaseConnection()->exec_UPDATEquery(
+                    static::getDatabaseConnection()->exec_UPDATEquery(
                         'pages',
                         'tx_templavoila_next_ds="' . $row['uid'] . '"',
                         ['tx_templavoila_next_ds' => $outPath]
                     );
                     // update tt_content records
-                    \Extension\Templavoila\Utility\GeneralUtility::getDatabaseConnection()->exec_UPDATEquery(
+                    static::getDatabaseConnection()->exec_UPDATEquery(
                         'tt_content',
                         'tx_templavoila_ds="' . $row['uid'] . '"',
                         ['tx_templavoila_ds' => $outPath]
                     );
                     // delete DS records
-                    \Extension\Templavoila\Utility\GeneralUtility::getDatabaseConnection()->exec_UPDATEquery(
+                    static::getDatabaseConnection()->exec_UPDATEquery(
                         'tx_templavoila_datastructure',
                         'uid=' . $row['uid'],
                         ['deleted' => 1]
                     );
-                    $updateMessage = \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->sL('LLL:EXT:templavoila/Resources/Private/Language/template_conf.xlf:staticDS.wizard.updated');
+                    $updateMessage = static::getLanguageService()->sL('LLL:EXT:templavoila/Resources/Private/Language/template_conf.xlf:staticDS.wizard.updated');
                     $this->step = 3;
                 }
             }
@@ -241,12 +248,12 @@ class tx_templavoila_staticds_wizard
 
         if ($conf['enable']) {
             if ($updateMessage) {
-                $out .= '<p>' . $updateMessage . '</p><p><strong>' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->sL('LLL:EXT:templavoila/Resources/Private/Language/template_conf.xlf:staticDS.wizard.clearcache') . '</strong></p>';
+                $out .= '<p>' . $updateMessage . '</p><p><strong>' . static::getLanguageService()->sL('LLL:EXT:templavoila/Resources/Private/Language/template_conf.xlf:staticDS.wizard.clearcache') . '</strong></p>';
             } else {
-                $out .= '<h4>' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->sL('LLL:EXT:templavoila/Resources/Private/Language/template_conf.xlf:staticDS.wizard.description2.1') . '</h4>';
+                $out .= '<h4>' . static::getLanguageService()->sL('LLL:EXT:templavoila/Resources/Private/Language/template_conf.xlf:staticDS.wizard.description2.1') . '</h4>';
                 $out .= '<p>
                 <input type="checkbox" class="checkbox" name="staticDSwizardoptions[updateRecords]" id="sdw-updateRecords" value="1" />
-                <label for="sdw-updateRecords">' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->sL('LLL:EXT:templavoila/Resources/Private/Language/template_conf.xlf:staticDS.wizard.updaterecords') . '</label><br />
+                <label for="sdw-updateRecords">' . static::getLanguageService()->sL('LLL:EXT:templavoila/Resources/Private/Language/template_conf.xlf:staticDS.wizard.updaterecords') . '</label><br />
                 </p>';
             }
         }
@@ -261,7 +268,7 @@ class tx_templavoila_staticds_wizard
      */
     protected function datastructureDbCount()
     {
-        return \Extension\Templavoila\Utility\GeneralUtility::getDatabaseConnection()->exec_SELECTcountRows(
+        return static::getDatabaseConnection()->exec_SELECTcountRows(
             '*',
             'tx_templavoila_datastructure',
             'deleted=0'

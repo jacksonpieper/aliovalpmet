@@ -15,6 +15,14 @@ namespace Extension\Templavoila\Domain\Model;
  * The TYPO3 project - inspiring people to share!
  */
 
+use Extension\Templavoila\Traits\DatabaseConnection;
+use TYPO3\CMS\Backend\Utility\IconUtility;
+use TYPO3\CMS\Core\Html\HtmlParser;
+use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Utility\MathUtility;
+use TYPO3\CMS\Frontend\Page\PageGenerator;
+
 /**
  * HTML markup/search class; can mark up HTML with small images for each element AND
  * as well help you extract parts of the HTML based on a socalled 'PATH'.
@@ -24,6 +32,8 @@ namespace Extension\Templavoila\Domain\Model;
 class HtmlMarkup
 {
 
+    use DatabaseConnection;
+    
     /**
      * @var array
      */
@@ -218,7 +228,7 @@ class HtmlMarkup
     /**
      * Will contain the HTML-parser object. (See init())
      *
-     * @var \TYPO3\CMS\Core\Html\HtmlParser
+     * @var HtmlParser
      */
     public $htmlParse;
 
@@ -306,7 +316,7 @@ class HtmlMarkup
 
         /* build primary cache for icon-images */
         foreach ($this->tags as $tag => &$conf) {
-            $conf['icon'] = \TYPO3\CMS\Backend\Utility\IconUtility::skinImg($this->backPath, \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath('templavoila') . 'html_tags/' . $tag . '.gif', 'height="17"') . ' alt="" border="0"';
+            $conf['icon'] = IconUtility::skinImg($this->backPath, ExtensionManagementUtility::extRelPath('templavoila') . 'html_tags/' . $tag . '.gif', 'height="17"') . ' alt="" border="0"';
         }
 
         list($tagList_elements, $tagList_single) = $this->splitTagTypes($showTags);
@@ -564,7 +574,7 @@ class HtmlMarkup
     public function mergeSampleDataIntoTemplateStructure($dataStruct, $currentMappingInfo, $firstLevelImplodeToken = '', $sampleOrder = '')
     {
         foreach ($currentMappingInfo['cArray'] as $key => $val) {
-            if (!\TYPO3\CMS\Core\Utility\MathUtility::canBeInterpretedAsInteger($key) && $dataStruct[$key]) {
+            if (!MathUtility::canBeInterpretedAsInteger($key) && $dataStruct[$key]) {
                 if ($dataStruct[$key]['type'] == 'array') {
                     if (is_array($currentMappingInfo['sub'][$key])) {
                         $currentMappingInfo['cArray'][$key] = $this->mergeSampleDataIntoTemplateStructure($dataStruct[$key]['el'], $currentMappingInfo['sub'][$key], '',
@@ -608,7 +618,7 @@ class HtmlMarkup
     public function mergeFormDataIntoTemplateStructure($editStruct, $currentMappingInfo, $firstLevelImplodeToken = '', $valueKey = 'vDEF')
     {
         $isSection = 0;
-        $htmlParse = ($this->htmlParse ? $this->htmlParse : \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\Html\HtmlParser::class));
+        $htmlParse = ($this->htmlParse ? $this->htmlParse : GeneralUtility::makeInstance(HtmlParser::class));
         if (is_array($editStruct) && count($editStruct)) {
             $testInt = implode('', array_keys($editStruct));
             $isSection = !preg_match('/[^0-9]/', $testInt);
@@ -627,7 +637,7 @@ class HtmlMarkup
         } else {
             if (is_array($currentMappingInfo['cArray'])) {
                 foreach ($currentMappingInfo['cArray'] as $key => $val) {
-                    if (!\TYPO3\CMS\Core\Utility\MathUtility::canBeInterpretedAsInteger($key)) {
+                    if (!MathUtility::canBeInterpretedAsInteger($key)) {
                         if (is_array($editStruct[$key]['el']) && $currentMappingInfo['sub'][$key]) {
                             $currentMappingInfo['cArray'][$key] = $this->mergeFormDataIntoTemplateStructure($editStruct[$key]['el'], $currentMappingInfo['sub'][$key], '', $valueKey);
                         } else {
@@ -654,20 +664,20 @@ class HtmlMarkup
      */
     public function splitPath($pathStr)
     {
-        $subPaths = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode('|', $pathStr, 1);
+        $subPaths = GeneralUtility::trimExplode('|', $pathStr, 1);
 
         foreach ($subPaths as $index => $path) {
             $subPaths[$index] = [];
             $subPaths[$index]['fullpath'] = $path;
 
             // Get base parts of the page: the PATH and the COMMAND
-            list($thePath, $theCmd) = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode('/', $path, 1);
+            list($thePath, $theCmd) = GeneralUtility::trimExplode('/', $path, 1);
 
             // Split the path part into its units: results in an array with path units.
             $splitParts = preg_split('/\s+/', $thePath);
 
             // modifier:
-            $modArr = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(':', $theCmd, 1);
+            $modArr = GeneralUtility::trimExplode(':', $theCmd, 1);
             if ($modArr[0]) {
                 $subPaths[$index]['modifier'] = $modArr[0];
                 $subPaths[$index]['modifier_value'] = $modArr[1];
@@ -714,12 +724,12 @@ class HtmlMarkup
     {
         global $TCA;
         if (isset($TCA['tx_templavoila_tmplobj'])) {
-            $res = \Extension\Templavoila\Utility\GeneralUtility::getDatabaseConnection()->exec_SELECTquery(
+            $res = static::getDatabaseConnection()->exec_SELECTquery(
                 '*',
                 'tx_templavoila_tmplobj',
                 'uid=' . (int)$uid . ($TCA['tx_templavoila_tmplobj']['ctrl']['delete'] ? ' AND NOT ' . $TCA['tx_templavoila_tmplobj']['ctrl']['delete'] : '')
             );
-            $row = \Extension\Templavoila\Utility\GeneralUtility::getDatabaseConnection()->sql_fetch_assoc($res);
+            $row = static::getDatabaseConnection()->sql_fetch_assoc($res);
             $this->tDat = unserialize($row['templatemapping']);
 
             return $this->tDat['MappingData_cached'];
@@ -761,7 +771,7 @@ class HtmlMarkup
      */
     public function getTemplateRecord($uid, $renderType, $langUid)
     {
-        if (\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('templavoila')) {
+        if (ExtensionManagementUtility::isLoaded('templavoila')) {
             $rec = $GLOBALS['TSFE']->sys_page->checkRecord('tx_templavoila_tmplobj', $uid);
             $parentUid = $rec['uid'];
             $rendertype_ref = $rec['rendertype_ref'] ? $GLOBALS['TSFE']->sys_page->checkRecord('tx_templavoila_tmplobj', $rec['rendertype_ref']) : false;
@@ -770,22 +780,22 @@ class HtmlMarkup
                 if ($renderType) { // If print-flag try to find a proper print-record. If the lang-uid is also set, try to find a combined print/lang record, but if not found, the print rec. will take precedence.
 
                     // Look up print-row for default language:
-                    $printRow = $this->getTemplateRecord_query($parentUid, 'AND rendertype=' . \Extension\Templavoila\Utility\GeneralUtility::getDatabaseConnection()->fullQuoteStr($renderType, 'tx_templavoila_tmplobj') . ' AND sys_language_uid=0');
+                    $printRow = $this->getTemplateRecord_query($parentUid, 'AND rendertype=' . static::getDatabaseConnection()->fullQuoteStr($renderType, 'tx_templavoila_tmplobj') . ' AND sys_language_uid=0');
                     if (is_array($printRow)) {
                         $rec = $printRow;
                     } elseif ($rendertype_ref) { // Look in rendertype_ref record:
-                        $printRow = $this->getTemplateRecord_query($rendertype_ref['uid'], 'AND rendertype=' . \Extension\Templavoila\Utility\GeneralUtility::getDatabaseConnection()->fullQuoteStr($renderType, 'tx_templavoila_tmplobj') . ' AND sys_language_uid=0');
+                        $printRow = $this->getTemplateRecord_query($rendertype_ref['uid'], 'AND rendertype=' . static::getDatabaseConnection()->fullQuoteStr($renderType, 'tx_templavoila_tmplobj') . ' AND sys_language_uid=0');
                         if (is_array($printRow)) {
                             $rec = $printRow;
                         }
                     }
 
                     if ($langUid) { // If lang_uid is set, try to look up for current language:
-                        $printRow = $this->getTemplateRecord_query($parentUid, 'AND rendertype=' . \Extension\Templavoila\Utility\GeneralUtility::getDatabaseConnection()->fullQuoteStr($renderType, 'tx_templavoila_tmplobj') . ' AND sys_language_uid=' . (int)$langUid);
+                        $printRow = $this->getTemplateRecord_query($parentUid, 'AND rendertype=' . static::getDatabaseConnection()->fullQuoteStr($renderType, 'tx_templavoila_tmplobj') . ' AND sys_language_uid=' . (int)$langUid);
                         if (is_array($printRow)) {
                             $rec = $printRow;
                         } elseif ($rendertype_ref) { // Look in rendertype_ref record:
-                            $printRow = $this->getTemplateRecord_query($rendertype_ref['uid'], 'AND rendertype=' . \Extension\Templavoila\Utility\GeneralUtility::getDatabaseConnection()->fullQuoteStr($renderType, 'tx_templavoila_tmplobj') . ' AND sys_language_uid=' . (int)$langUid);
+                            $printRow = $this->getTemplateRecord_query($rendertype_ref['uid'], 'AND rendertype=' . static::getDatabaseConnection()->fullQuoteStr($renderType, 'tx_templavoila_tmplobj') . ' AND sys_language_uid=' . (int)$langUid);
                             if (is_array($printRow)) {
                                 $rec = $printRow;
                             }
@@ -840,12 +850,12 @@ class HtmlMarkup
     {
         global $TSFE;
 
-        $res = \Extension\Templavoila\Utility\GeneralUtility::getDatabaseConnection()->exec_SELECTquery(
+        $res = static::getDatabaseConnection()->exec_SELECTquery(
             '*',
             'tx_templavoila_tmplobj',
             'parent=' . (int)$uid . ' ' . $where . $TSFE->sys_page->enableFields('tx_templavoila_tmplobj')
         );
-        $printRow = \Extension\Templavoila\Utility\GeneralUtility::getDatabaseConnection()->sql_fetch_assoc($res);
+        $printRow = static::getDatabaseConnection()->sql_fetch_assoc($res);
 
         return $printRow;
     }
@@ -860,8 +870,8 @@ class HtmlMarkup
      */
     public function setHeaderBodyParts($MappingInfo_head, $MappingData_head_cached, $BodyTag_cached = '', $pageRenderer = false)
     {
-        $htmlParse = ($this->htmlParse ? $this->htmlParse : \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\Html\HtmlParser::class));
-        /* @var $htmlParse \TYPO3\CMS\Core\Html\HtmlParser */
+        $htmlParse = ($this->htmlParse ? $this->htmlParse : GeneralUtility::makeInstance(HtmlParser::class));
+        /* @var $htmlParse HtmlParser */
 
         $types = [
             'LINK' => 'text/css',
@@ -893,7 +903,7 @@ class HtmlMarkup
                             case 'STYLE':
                                 $cont = $htmlParse->removeFirstAndLastTag($MappingData_head_cached['cArray']['el_' . $kk]);
                                 if ($GLOBALS['TSFE']->config['config']['inlineStyle2TempFile']) {
-                                    $pageRenderer->addCssFile(\TYPO3\CMS\Frontend\Page\PageGenerator::inline2TempFile($cont, 'css'));
+                                    $pageRenderer->addCssFile(PageGenerator::inline2TempFile($cont, 'css'));
                                 } else {
                                     $pageRenderer->addCssInlineBlock($name, $cont);
                                 }
@@ -947,7 +957,7 @@ class HtmlMarkup
     public function init()
     {
         // HTML parser object initialized.
-        $this->htmlParse = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\Html\HtmlParser::class);
+        $this->htmlParse = GeneralUtility::makeInstance(HtmlParser::class);
         /* @var $this ->htmlParse \TYPO3\CMS\Core\Html\HtmlParser */
 
         // Resetting element count array
@@ -956,7 +966,7 @@ class HtmlMarkup
 
         // Setting gnyf style
         $style = '';
-        $style .= (!\TYPO3\CMS\Core\Utility\GeneralUtility::inList('explode,checkbox', $this->mode) ? 'position:absolute;' : '');
+        $style .= (!GeneralUtility::inList('explode,checkbox', $this->mode) ? 'position:absolute;' : '');
         $this->gnyfStyle = $style ? ' style="' . htmlspecialchars($style) . '"' : '';
     }
 
@@ -1003,7 +1013,7 @@ class HtmlMarkup
      */
     public function splitTagTypes($showTags)
     {
-        $showTagsArr = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', strtolower($showTags), 1);
+        $showTagsArr = GeneralUtility::trimExplode(',', strtolower($showTags), 1);
         $showTagsArr = array_flip($showTagsArr);
         $tagList_elements = [];
         $tagList_single = [];
@@ -1049,7 +1059,7 @@ class HtmlMarkup
         $startCCTag = $endCCTag = '';
 
         //pre-processing of blocks
-        if ((\TYPO3\CMS\Core\Utility\GeneralUtility::inList($tagsBlock, 'script') && \TYPO3\CMS\Core\Utility\GeneralUtility::inList($tagsBlock, 'style')) && count($blocks) > 1) {
+        if ((GeneralUtility::inList($tagsBlock, 'script') && GeneralUtility::inList($tagsBlock, 'style')) && count($blocks) > 1) {
             // correct the blocks (start of CC could be in prior block, end of CC in net block)
 
             if (count($blocks) > 1) {
@@ -1197,7 +1207,7 @@ class HtmlMarkup
             // Disable A tags:
             if ($firstTagName == 'a') {
                 $params[0]['onclick'] = 'return false;';
-                $firstTag = '<' . trim($firstTagName . ' ' . \TYPO3\CMS\Core\Utility\GeneralUtility::implodeAttributes($params[0])) . '>';
+                $firstTag = '<' . trim($firstTagName . ' ' . GeneralUtility::implodeAttributes($params[0])) . '>';
             }
             // Display modes:
             if ($this->mode == 'explode') {
@@ -1206,20 +1216,20 @@ class HtmlMarkup
                     $params[0]['cellspacing'] = 4;
                     $params[0]['cellpadding'] = 0;
                     $params[0]['style'] .= '; border: 1px dotted #666666;';
-                    $firstTag = '<' . trim($firstTagName . ' ' . \TYPO3\CMS\Core\Utility\GeneralUtility::implodeAttributes($params[0])) . '>';
+                    $firstTag = '<' . trim($firstTagName . ' ' . GeneralUtility::implodeAttributes($params[0])) . '>';
                 } elseif ($firstTagName == 'td') {
                     $params[0]['style'] .= '; border: 1px dotted #666666;';
-                    $firstTag = '<' . trim($firstTagName . ' ' . \TYPO3\CMS\Core\Utility\GeneralUtility::implodeAttributes($params[0])) . '>';
+                    $firstTag = '<' . trim($firstTagName . ' ' . GeneralUtility::implodeAttributes($params[0])) . '>';
 
                     $v = (string) $v != '' ? $v : '&nbsp;';
                 }
             } elseif ($this->mode == 'borders') {
                 if ($firstTagName == 'table') {
                     $params[0]['style'] .= '; border: 1px dotted #666666;';
-                    $firstTag = '<' . trim($firstTagName . ' ' . \TYPO3\CMS\Core\Utility\GeneralUtility::implodeAttributes($params[0])) . '>';
+                    $firstTag = '<' . trim($firstTagName . ' ' . GeneralUtility::implodeAttributes($params[0])) . '>';
                 } elseif ($firstTagName == 'td') {
                     $params[0]['style'] .= '; border: 1px dotted #666666;';
-                    $firstTag = '<' . trim($firstTagName . ' ' . \TYPO3\CMS\Core\Utility\GeneralUtility::implodeAttributes($params[0])) . '>';
+                    $firstTag = '<' . trim($firstTagName . ' ' . GeneralUtility::implodeAttributes($params[0])) . '>';
                 }
             }
             // Get tag configuration
@@ -1291,7 +1301,7 @@ class HtmlMarkup
                 case 'INNER+ATTR':
                     // Attribute
                     if ($this->searchPaths[$subPath]['modifier_value']) {
-                        $attributeArray = array_unique(\TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $this->searchPaths[$subPath]['modifier_value'], 1));
+                        $attributeArray = array_unique(GeneralUtility::trimExplode(',', $this->searchPaths[$subPath]['modifier_value'], 1));
                         foreach ($attributeArray as $attr) {
                             $placeholder = '###' . $placeholder . '###';
                             $this->searchPaths[$subPath]['attr'][$attr]['placeholder'] = $placeholder;
@@ -1299,7 +1309,7 @@ class HtmlMarkup
                             $params[0][$attr] = $placeholder;
                             $placeholder = md5(uniqid(rand(), true));
                         }
-                        $firstTag = '<' . trim($firstTagName . ' ' . \TYPO3\CMS\Core\Utility\GeneralUtility::implodeAttributes($params[0])) . ($mode != 'block' ? ' /' : '') . '>';
+                        $firstTag = '<' . trim($firstTagName . ' ' . GeneralUtility::implodeAttributes($params[0])) . ($mode != 'block' ? ' /' : '') . '>';
                         if ($mode != 'block') {
                             $v = $firstTag;
                             $firstTag = '';
@@ -1363,7 +1373,7 @@ class HtmlMarkup
             return str_pad('', $recursion * 2, ' ', STR_PAD_LEFT) .
             $gnyf .
             ($valueStr ? '<font color="#6666FF"><em>' : '') .
-            htmlspecialchars(\TYPO3\CMS\Core\Utility\GeneralUtility::fixed_lgd_cs(preg_replace('/\s+/', ' ', $str), $this->maxLineLengthInSourceMode)) .
+            htmlspecialchars(GeneralUtility::fixed_lgd_cs(preg_replace('/\s+/', ' ', $str), $this->maxLineLengthInSourceMode)) .
             ($valueStr ? '</em></font>' : '') .
             chr(10);
         }
@@ -1447,7 +1457,7 @@ class HtmlMarkup
      */
     public function getGnyf($firstTagName, $path, $title)
     {
-        if (!$this->onlyElements || \TYPO3\CMS\Core\Utility\GeneralUtility::inList($this->onlyElements, $firstTagName)) {
+        if (!$this->onlyElements || GeneralUtility::inList($this->onlyElements, $firstTagName)) {
             $onclick = str_replace('###PATH###', $this->pathPrefix . $path, $this->gnyfImgAdd);
 
             $gnyf = $this->textGnyf
@@ -1476,7 +1486,7 @@ class HtmlMarkup
         if (!isset(self::$tagConf[$tag])) {
             return '';
         } else {
-            return '<span class="gnyfBox"><span ' . $onclick . ' class="gnyfElement gnyf' . ucfirst(self::$tagConf[$tag]['blocktype']) . '" title="' . htmlspecialchars(\TYPO3\CMS\Core\Utility\GeneralUtility::fixed_lgd_cs($title, -200)) . '">' . htmlspecialchars($tag) . '</span></span>';
+            return '<span class="gnyfBox"><span ' . $onclick . ' class="gnyfElement gnyf' . ucfirst(self::$tagConf[$tag]['blocktype']) . '" title="' . htmlspecialchars(GeneralUtility::fixed_lgd_cs($title, -200)) . '">' . htmlspecialchars($tag) . '</span></span>';
         }
     }
 }

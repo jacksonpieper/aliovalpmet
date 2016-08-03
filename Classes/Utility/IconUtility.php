@@ -15,6 +15,9 @@ namespace Extension\Templavoila\Utility;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+
 /**
  * Class which adds an additional layer for icon creation
  */
@@ -45,9 +48,9 @@ final class IconUtility
         $flagName = (strlen($flagName) > 0) ? $flagName : 'unknown';
 
         // same dirty trick as for #17286 in Core
-        if (is_file(\TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName('EXT:t3skin/images/flags/' . $flagName . '.png', false))) {
+        if (is_file(GeneralUtility::getFileAbsFileName('EXT:t3skin/images/flags/' . $flagName . '.png', false))) {
             // resolving extpath on its own because otherwise this might not return a relative path
-            $flag = $GLOBALS['BACK_PATH'] . \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath('t3skin') . '/images/flags/' . $flagName . '.png';
+            $flag = $GLOBALS['BACK_PATH'] . ExtensionManagementUtility::extRelPath('t3skin') . '/images/flags/' . $flagName . '.png';
         }
 
         return $flag;

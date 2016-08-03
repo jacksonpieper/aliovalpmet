@@ -15,6 +15,10 @@ namespace Extension\Templavoila\Service\UserFunc;
  * The TYPO3 project - inspiring people to share!
  */
 
+use Extension\Templavoila\Traits\BackendUser;
+use Extension\Templavoila\Traits\LanguageService;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+
 /**
  * Class being included by UserAuthGroup using a hook
  *
@@ -22,6 +26,9 @@ namespace Extension\Templavoila\Service\UserFunc;
  */
 class Access
 {
+
+    use BackendUser;
+    use LanguageService;
 
     /**
      * Checks if user is allowed to modify FCE.
@@ -35,7 +42,7 @@ class Access
     {
         if ($params['table'] == 'tt_content' && is_array($params['idOrRow']) && $params['idOrRow']['CType'] == 'templavoila_pi1') {
             if (!$ref) {
-                $user = & \Extension\Templavoila\Utility\GeneralUtility::getBackendUser();
+                $user = & static::getBackendUser();
             } else {
                 $user = & $ref;
             }
@@ -51,8 +58,8 @@ class Access
                 return true;
             }
             if ($ref) {
-                \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->init($user->uc['lang']);
-                $ref->errorMsg = \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->sL('LLL:EXT:templavoila/Resources/Private/Language/locallang_access.xlf:' . $error);
+                static::getLanguageService()->init($user->uc['lang']);
+                $ref->errorMsg = static::getLanguageService()->sL('LLL:EXT:templavoila/Resources/Private/Language/locallang_access.xlf:' . $error);
             }
 
             return false;
@@ -73,12 +80,12 @@ class Access
     public function checkObjectAccess($table, $uid, $be_user)
     {
         if (!$be_user) {
-            $be_user = \Extension\Templavoila\Utility\GeneralUtility::getBackendUser();
+            $be_user = static::getBackendUser();
         }
         if (!$be_user->isAdmin()) {
             $prefLen = strlen($table) + 1;
             foreach ($be_user->userGroups as $group) {
-                $items = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $group['tx_templavoila_access'], 1);
+                $items = GeneralUtility::trimExplode(',', $group['tx_templavoila_access'], 1);
                 foreach ($items as $ref) {
                     if (strstr($ref, $table)) {
                         if ($uid == (int)substr($ref, $prefLen)) {

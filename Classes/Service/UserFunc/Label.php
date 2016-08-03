@@ -15,6 +15,8 @@ namespace Extension\Templavoila\Service\UserFunc;
  * The TYPO3 project - inspiring people to share!
  */
 
+use Extension\Templavoila\Traits\LanguageService;
+
 /**
  * Class 'tx_templavoila_label' for the 'templavoila' extension.
  *
@@ -25,6 +27,8 @@ namespace Extension\Templavoila\Service\UserFunc;
 class Label
 {
 
+    use LanguageService;
+
     /**
      * Retrive the label for TCAFORM title attribute.
      *
@@ -33,6 +37,6 @@ class Label
      */
     public function getLabel(&$params, &$pObj)
     {
-        $params['title'] = \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->sL($params['row']['title']);
+        $params['title'] = static::getLanguageService()->sL($params['row']['title']);
     }
 }

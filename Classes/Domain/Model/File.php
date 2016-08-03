@@ -15,6 +15,10 @@ namespace Extension\Templavoila\Domain\Model;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Resource\FileInterface;
+use TYPO3\CMS\Core\Resource\ResourceFactory;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+
 /**
  * File model
  */
@@ -34,12 +38,12 @@ class File
      *
      * @param $filename
      *
-     * @return \TYPO3\CMS\Core\Resource\FileInterface|\TYPO3\CMS\Core\Resource\Folder
+     * @return FileInterface|\TYPO3\CMS\Core\Resource\Folder
      */
     protected static function file($filename)
     {
-        /** @var $resourceFactory \TYPO3\CMS\Core\Resource\ResourceFactory */
-        $resourceFactory = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\Resource\ResourceFactory::class);
+        /** @var $resourceFactory ResourceFactory */
+        $resourceFactory = GeneralUtility::makeInstance(ResourceFactory::class);
         $file = $resourceFactory->getObjectFromCombinedIdentifier($filename);
 
         return $file;
@@ -107,7 +111,7 @@ class File
         $isXmlFile = false;
         try {
             $file = self::file($filename);
-            if ($file instanceof \TYPO3\CMS\Core\Resource\FileInterface) {
+            if ($file instanceof FileInterface) {
                 $isXmlFile = in_array($file->getMimeType(), ['text/html', 'application/xml']);
             }
         } catch (\Exception $e) {
@@ -131,8 +135,8 @@ class File
             $finfoMode = defined('FILEINFO_MIME_TYPE') ? FILEINFO_MIME_TYPE : FILEINFO_MIME;
             $fi = finfo_open($finfoMode);
             $mimeInformation = @finfo_file($fi, $filename);
-            if (\TYPO3\CMS\Core\Utility\GeneralUtility::isFirstPartOfStr($mimeInformation, 'text/html') ||
-                \TYPO3\CMS\Core\Utility\GeneralUtility::isFirstPartOfStr($mimeInformation, 'application/xml')
+            if (GeneralUtility::isFirstPartOfStr($mimeInformation, 'text/html') ||
+                GeneralUtility::isFirstPartOfStr($mimeInformation, 'application/xml')
             ) {
                 $isXml = true;
             }

@@ -15,6 +15,9 @@ namespace Extension\Templavoila\Service;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Html\HtmlParser;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+
 /**
  * Syntax Highlighting class.
  *
@@ -24,7 +27,7 @@ class SyntaxHighlightingService
 {
 
     /**
-     * @var \TYPO3\CMS\Core\Html\HtmlParser
+     * @var HtmlParser
      */
     protected $htmlParse; // Parse object.
 
@@ -97,12 +100,12 @@ class SyntaxHighlightingService
     {
 
         // Parse DS to verify that it is valid:
-        $DS = \TYPO3\CMS\Core\Utility\GeneralUtility::xml2array($str);
+        $DS = GeneralUtility::xml2array($str);
         if (is_array($DS)) {
             $completeTagList = array_unique($this->getAllTags($str)); // Complete list of tags in DS
 
             // Highlighting source:
-            $this->htmlParse = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\Html\HtmlParser::class); // Init parser object
+            $this->htmlParse = GeneralUtility::makeInstance(HtmlParser::class); // Init parser object
             $struct = $this->splitXMLbyTags(implode(',', $completeTagList), $str); // Split the XML by the found tags, recursively into LARGE array.
             $markUp = $this->highLight_DS_markUpRecursively($struct); // Perform color-markup on the parsed content. Markup preserves the LINE formatting of the XML.
 
@@ -195,12 +198,12 @@ class SyntaxHighlightingService
     {
 
         // Parse DS to verify that it is valid:
-        $DS = \TYPO3\CMS\Core\Utility\GeneralUtility::xml2array($str);
+        $DS = GeneralUtility::xml2array($str);
         if (is_array($DS)) {
             $completeTagList = array_unique($this->getAllTags($str)); // Complete list of tags in DS
 
             // Highlighting source:
-            $this->htmlParse = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\Html\HtmlParser::class); // Init parser object
+            $this->htmlParse = GeneralUtility::makeInstance(HtmlParser::class); // Init parser object
             $struct = $this->splitXMLbyTags(implode(',', $completeTagList), $str); // Split the XML by the found tags, recursively into LARGE array.
             $markUp = $this->highLight_FF_markUpRecursively($struct); // Perform color-markup on the parsed content. Markup preserves the LINE formatting of the XML.
 

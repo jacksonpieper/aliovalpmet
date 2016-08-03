@@ -12,12 +12,19 @@
  * The TYPO3 project - inspiring people to share!
  */
 
+use Extension\Templavoila\Traits\DatabaseConnection;
+use Extension\Templavoila\Traits\LanguageService;
+use TYPO3\CMS\Backend\Utility\BackendUtility;
+
 /**
  * Static DS check
  */
 class tx_templavoila_staticds_check
 {
 
+    use DatabaseConnection;
+    use LanguageService;
+    
     /**
      * Display message
      *
@@ -32,7 +39,7 @@ class tx_templavoila_staticds_check
             return '';
         }
 
-        $link = \TYPO3\CMS\Backend\Utility\BackendUtility::getModuleUrl(
+        $link = BackendUtility::getModuleUrl(
             'tools_ExtensionmanagerExtensionmanager',
             [
                 'tx_extensionmanager_tools_extensionmanagerextensionmanager[extensionKey]' => 'templavoila',
@@ -44,11 +51,11 @@ class tx_templavoila_staticds_check
         return '
         <div style="position:absolute;top:10px;right:10px; width:300px;">
             <div class="typo3-message message-information">
-                <div class="message-header">' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->sL('LLL:EXT:templavoila/Resources/Private/Language/locallang.xlf:extconf.staticWizard.header') . '</div>
+                <div class="message-header">' . static::getLanguageService()->sL('LLL:EXT:templavoila/Resources/Private/Language/locallang.xlf:extconf.staticWizard.header') . '</div>
                 <div class="message-body">
-                    ' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->sL('LLL:EXT:templavoila/Resources/Private/Language/locallang.xlf:extconf.staticWizard.message') . '<br />
+                    ' . static::getLanguageService()->sL('LLL:EXT:templavoila/Resources/Private/Language/locallang.xlf:extconf.staticWizard.message') . '<br />
                     <a style="text-decoration:underline;" href="' . $link . '">
-                    ' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->sL('LLL:EXT:templavoila/Resources/Private/Language/locallang.xlf:extconf.staticWizard.link') . '</a>
+                    ' . static::getLanguageService()->sL('LLL:EXT:templavoila/Resources/Private/Language/locallang.xlf:extconf.staticWizard.link') . '</a>
                 </div>
             </div>
         </div>
@@ -73,7 +80,7 @@ class tx_templavoila_staticds_check
      */
     protected function datastructureDbCount()
     {
-        return \Extension\Templavoila\Utility\GeneralUtility::getDatabaseConnection()->exec_SELECTcountRows(
+        return static::getDatabaseConnection()->exec_SELECTcountRows(
             '*',
             'tx_templavoila_datastructure',
             'deleted=0'

@@ -15,6 +15,8 @@ namespace Extension\Templavoila\Controller\Preview;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Backend\Utility\BackendUtility;
+
 /**
  * Image controller
  */
@@ -44,7 +46,7 @@ class ImageController extends TextController
         } else {
             $text = '<strong>' . $label . '</strong>';
         }
-        $text .= \TYPO3\CMS\Backend\Utility\BackendUtility::thumbCode($row, 'tt_content', 'image', $ref->doc->backPath);
+        $text .= BackendUtility::thumbCode($row, 'tt_content', 'image', $ref->doc->backPath);
 
         return $text;
     }

@@ -15,8 +15,13 @@ namespace Extension\Templavoila\Comand;
  * The TYPO3 project - inspiring people to share!
  */
 
+use Extension\Templavoila\Service\ApiService;
+use Extension\Templavoila\Traits\DatabaseConnection;
+use TYPO3\CMS\Core\DataHandling\DataHandler;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Core\Utility\MathUtility;
+use TYPO3\CMS\Lowlevel\CleanerCommand;
 
 /**
  * Cleaner module: Finding unused content elements on pages.
@@ -25,9 +30,11 @@ use TYPO3\CMS\Backend\Utility\BackendUtility;
  *
  * @author Kasper Skårhøj <kasperYYYY@typo3.com>
  */
-class UnusedContentElementComand extends \TYPO3\CMS\Lowlevel\CleanerCommand
+class UnusedContentElementComand extends CleanerCommand
 {
 
+    use DatabaseConnection;
+    
     /**
      * @var array
      */
@@ -95,8 +102,8 @@ Automatic Repair:
             'deleteMe' => [],
         ];
 
-        $startingPoint = $this->cli_isArg('--pid') ? \TYPO3\CMS\Core\Utility\MathUtility::forceIntegerInRange($this->cli_argValue('--pid'), 0) : 0;
-        $depth = $this->cli_isArg('--depth') ? \TYPO3\CMS\Core\Utility\MathUtility::forceIntegerInRange($this->cli_argValue('--depth'), 0) : 1000;
+        $startingPoint = $this->cli_isArg('--pid') ? MathUtility::forceIntegerInRange($this->cli_argValue('--pid'), 0) : 0;
+        $depth = $this->cli_isArg('--depth') ? MathUtility::forceIntegerInRange($this->cli_argValue('--depth'), 0) : 1000;
         $this->excludePageIdList = $this->cli_isArg('--excludePageIdList') ? GeneralUtility::intExplode(',', $this->cli_argValue('--excludePageIdList')) : [];
 
         $this->resultArray = & $resultArray;
@@ -123,7 +130,7 @@ Automatic Repair:
             if (!$versionSwapmode) {
 
                 // Initialize TemplaVoila API class:
-                $apiObj = GeneralUtility::makeInstance(\Extension\Templavoila\Service\ApiService::class, 'pages');
+                $apiObj = GeneralUtility::makeInstance(ApiService::class, 'pages');
 
                 // Fetch the content structure of page:
                 $contentTreeData = $apiObj->getContentTree('pages', BackendUtility::getRecordRaw('pages', 'uid=' . (int)$uid));
@@ -132,7 +139,7 @@ Automatic Repair:
                     $usedUids[] = 0;
 
                     // Look up all content elements that are NOT used on this page...
-                    $res = \Extension\Templavoila\Utility\GeneralUtility::getDatabaseConnection()->exec_SELECTquery(
+                    $res = static::getDatabaseConnection()->exec_SELECTquery(
                         'uid, header',
                         'tt_content',
                         'pid=' . (int)$uid . ' ' .
@@ -146,25 +153,25 @@ Automatic Repair:
                     );
 
                     // Traverse, for each find references if any and register them.
-                    while (false !== ($row = \Extension\Templavoila\Utility\GeneralUtility::getDatabaseConnection()->sql_fetch_assoc($res))) {
+                    while (false !== ($row = static::getDatabaseConnection()->sql_fetch_assoc($res))) {
 
                         // Look up references to elements:
-                        $refrows = \Extension\Templavoila\Utility\GeneralUtility::getDatabaseConnection()->exec_SELECTgetRows(
+                        $refrows = static::getDatabaseConnection()->exec_SELECTgetRows(
                             'hash',
                             'sys_refindex',
-                            'ref_table=' . \Extension\Templavoila\Utility\GeneralUtility::getDatabaseConnection()->fullQuoteStr('tt_content', 'sys_refindex') .
+                            'ref_table=' . static::getDatabaseConnection()->fullQuoteStr('tt_content', 'sys_refindex') .
                             ' AND ref_uid=' . (int)$row['uid'] .
                             ' AND deleted=0'
                         );
 
                         // Look up TRANSLATION references FROM this element to another content element:
                         $isATranslationChild = false;
-                        $refrows_From = \Extension\Templavoila\Utility\GeneralUtility::getDatabaseConnection()->exec_SELECTgetRows(
+                        $refrows_From = static::getDatabaseConnection()->exec_SELECTgetRows(
                             'ref_uid',
                             'sys_refindex',
-                            'tablename=' . \Extension\Templavoila\Utility\GeneralUtility::getDatabaseConnection()->fullQuoteStr('tt_content', 'sys_refindex') .
+                            'tablename=' . static::getDatabaseConnection()->fullQuoteStr('tt_content', 'sys_refindex') .
                             ' AND recuid=' . (int)$row['uid'] .
-                            ' AND field=' . \Extension\Templavoila\Utility\GeneralUtility::getDatabaseConnection()->fullQuoteStr('l18n_parent', 'sys_refindex')
+                            ' AND field=' . static::getDatabaseConnection()->fullQuoteStr('l18n_parent', 'sys_refindex')
                         );
                         // Check if that other record is deleted or not:
                         if ($refrows_From[0] && $refrows_From[0]['ref_uid']) {
@@ -221,7 +228,7 @@ Automatic Repair:
             } else {
 
                 // Execute CMD array:
-                $tce = GeneralUtility::makeInstance(\TYPO3\CMS\Core\DataHandling\DataHandler::class);
+                $tce = GeneralUtility::makeInstance(DataHandler::class);
                 $tce->stripslashes_values = false;
                 $tce->start([], []);
                 $tce->deleteAction('tt_content', $uid);

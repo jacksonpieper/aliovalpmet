@@ -20,7 +20,11 @@ use Extension\Templavoila\Domain\Repository\DataStructureRepository;
 use Extension\Templavoila\Domain\Repository\TemplateRepository;
 use Extension\Templavoila\Service\SyntaxHighlightingService;
 use Psr\Http\Message\ResponseInterface;
+use TYPO3\CMS\Backend\Template\DocumentTemplate;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Backend\Utility\IconUtility;
+use TYPO3\CMS\Core\DataHandling\DataHandler;
+use TYPO3\CMS\Core\Html\HtmlParser;
 use TYPO3\CMS\Core\Http\Response;
 use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Core\Imaging\Icon;
@@ -28,6 +32,8 @@ use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Resource\FileInterface;
 use TYPO3\CMS\Core\Resource\FileRepository;
 use TYPO3\CMS\Core\Resource\Index\FileIndexRepository;
+use TYPO3\CMS\Core\TypoScript\Parser\TypoScriptParser;
+use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -276,7 +282,7 @@ class MainController extends AbstractModuleController
         $this->pageinfo = BackendUtility::readPageAccess($this->getId(), $this->perms_clause);
         $access = is_array($this->pageinfo) ? 1 : 0;
 
-        $this->doc = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Template\DocumentTemplate::class);
+        $this->doc = GeneralUtility::makeInstance(DocumentTemplate::class);
         $this->doc->docType = 'xhtml_trans';
         $this->doc->backPath = $BACK_PATH;
         $this->doc->setModuleTemplate('EXT:templavoila/Resources/Private/Templates/mod2_default.html');
@@ -288,7 +294,7 @@ class MainController extends AbstractModuleController
             // Draw the header.
 
             // Add custom styles
-            $this->doc->styleSheetFile2 = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath($this->extKey) . 'mod2/styles.css';
+            $this->doc->styleSheetFile2 = ExtensionManagementUtility::extRelPath($this->extKey) . 'mod2/styles.css';
 
             // Adding classic jumpToUrl function, needed for the function menu.
             // Also, the id in the parent frameset is configured.
@@ -710,7 +716,7 @@ class MainController extends AbstractModuleController
 
         if ($dsObj->isFilebased()) {
             $onClick = 'document.location=\'' . $this->doc->backPath . 'file_edit.php?target=' . rawurlencode(GeneralUtility::getFileAbsFileName($dsObj->getKey())) . '&returnUrl=' . rawurlencode(GeneralUtility::sanitizeLocalUrl(GeneralUtility::getIndpEnv('REQUEST_URI'))) . '\';';
-            $dsIcon = '<a href="#" onclick="' . htmlspecialchars($onClick) . '"><img' . \TYPO3\CMS\Backend\Utility\IconUtility::skinImg($this->doc->backPath, 'gfx/fileicons/xml.gif', 'width="18" height="16"') . ' alt="" title="' . $dsObj->getKey() . '" class="absmiddle" /></a>';
+            $dsIcon = '<a href="#" onclick="' . htmlspecialchars($onClick) . '"><img' . IconUtility::skinImg($this->doc->backPath, 'gfx/fileicons/xml.gif', 'width="18" height="16"') . ' alt="" title="' . $dsObj->getKey() . '" class="absmiddle" /></a>';
         } else {
             $dsIcon = $this->getModuleTemplate()->getIconFactory()->getIconForRecord('tx_templavoila_datastructure', [], Icon::SIZE_SMALL);
             $dsIcon = BackendUtility::wrapClickMenuOnIcon($dsIcon, 'tx_templavoila_datastructure', $dsObj->getKey(), 1, '&callingScriptId=' . rawurlencode($this->doc->scriptID));
@@ -1997,10 +2003,10 @@ class MainController extends AbstractModuleController
         foreach ($checkExtensions as $extKey) {
             $tRows[] = '<tr class="bgColor4">
                 <td>' . $extKey . '</td>
-                <td align="center">' . (\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded($extKey) ? static::getLanguageService()->getLL('newsitewizard_missingext_yes', true) : '<span class="typo3-red">' . static::getLanguageService()->getLL('newsitewizard_missingext_no', true) . '</span>') . '</td>
+                <td align="center">' . (ExtensionManagementUtility::isLoaded($extKey) ? static::getLanguageService()->getLL('newsitewizard_missingext_yes', true) : '<span class="typo3-red">' . static::getLanguageService()->getLL('newsitewizard_missingext_no', true) . '</span>') . '</td>
             </tr>';
 
-            if (!\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded($extKey)) {
+            if (!ExtensionManagementUtility::isLoaded($extKey)) {
                 $missingExtensions = true;
             }
         }
@@ -2176,7 +2182,7 @@ class MainController extends AbstractModuleController
                 if (isset($this->modTSconfig['properties']['newTvSiteFile'])) {
                     $inFile = GeneralUtility::getFileAbsFileName($this->modTSconfig['properties']['newTVsiteTemplate']);
                 } else {
-                    $inFile = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('templavoila') . 'mod2/new_tv_site.xml';
+                    $inFile = ExtensionManagementUtility::extPath('templavoila') . 'mod2/new_tv_site.xml';
                 }
                 if (@is_file($inFile) && $import->loadFile($inFile, 1)) {
                     $import->importData($this->importPageUid);
@@ -2220,7 +2226,7 @@ class MainController extends AbstractModuleController
                     }
 
                     // Execute changes:
-                    $tce = GeneralUtility::makeInstance(\TYPO3\CMS\Core\DataHandling\DataHandler::class);
+                    $tce = GeneralUtility::makeInstance(DataHandler::class);
                     $tce->stripslashes_values = 0;
                     $tce->dontProcessTransformations = 1;
                     $tce->start($data, []);
@@ -2296,7 +2302,7 @@ class MainController extends AbstractModuleController
             $outputString = sprintf(static::getLanguageService()->getLL('newsitewizard_basicsshouldwork', true), $menuTypeText, $menuType, $menuTypeText);
 
             // Start up HTML parser:
-            $htmlParser = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Html\HtmlParser::class);
+            $htmlParser = GeneralUtility::makeInstance(HtmlParser::class);
 
             // Parse into blocks
             $parts = $htmlParser->splitIntoBlock('td,tr,table,a,div,span,ol,ul,li,p,h1,h2,h3,h4,h5', $menuPart, 1);
@@ -2547,7 +2553,7 @@ lib.' . $menuType . '.1.ACT {
      */
     public function syntaxHLTypoScript($v)
     {
-        $tsparser = GeneralUtility::makeInstance(\TYPO3\CMS\Core\TypoScript\Parser\TypoScriptParser::class);
+        $tsparser = GeneralUtility::makeInstance(TypoScriptParser::class);
         $tsparser->lineNumberOffset = 0;
         $TScontent = $tsparser->doSyntaxHighlight(trim($v) . chr(10), '', 1);
 
@@ -2613,7 +2619,7 @@ lib.' . $menuType . '.1.ACT {
 ' . $TSrecord['config'];
 
                 // Execute changes:
-                $tce = GeneralUtility::makeInstance(\TYPO3\CMS\Core\DataHandling\DataHandler::class);
+                $tce = GeneralUtility::makeInstance(DataHandler::class);
                 $tce->stripslashes_values = 0;
                 $tce->dontProcessTransformations = 1;
                 $tce->start($data, []);
