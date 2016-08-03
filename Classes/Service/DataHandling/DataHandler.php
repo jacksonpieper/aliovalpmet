@@ -465,7 +465,6 @@ page.10.disableExplosivePreview = 1
      * @param int $pid Current page id
      *
      * @return void
-     * @access protected
      */
     public function correctSortingAndColposFieldsForPage($flexformXML, $pid)
     {

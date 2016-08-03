@@ -58,7 +58,6 @@ class tx_templavoila_mod1_specialdoktypes
      * @param \tx_templavoila_module1 $pObj Reference to the parent object ($this)
      *
      * @return void
-     * @access public
      */
     public function init(&$pObj)
     {
@@ -154,7 +153,6 @@ class tx_templavoila_mod1_specialdoktypes
      * @param array $pageRecord The current page record
      *
      * @return bool|string HTML output from this submodule or FALSE if this submodule doesn't feel responsible
-     * @access protected
      */
     public function renderDoktype_7($pageRecord)
     {
@@ -216,7 +214,6 @@ class tx_templavoila_mod1_specialdoktypes
      * Returns TRUE if the logged in BE user has access to the list module.
      *
      * @return bool
-     * @access protected
      */
     public function userHasAccessToListModule()
     {

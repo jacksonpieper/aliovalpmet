@@ -474,7 +474,6 @@ class tx_templavoila_mod1_wizards
      * @param int $positionPid
      * @param string $fieldName field name of TCAFORM
      *
-     * @access private
      * @return string comma seperated list of integer
      */
     public function getDisallowedTSconfigItemsByFieldName($positionPid, $fieldName)

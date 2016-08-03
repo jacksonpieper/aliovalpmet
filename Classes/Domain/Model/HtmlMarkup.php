@@ -831,7 +831,6 @@ class HtmlMarkup
      * @param string $where The where clause.
      *
      * @return mixed An array if a record is found, otherwise null
-     * @access private
      * @see getTemplateRecord()
      */
     public function getTemplateRecord_query($uid, $where)

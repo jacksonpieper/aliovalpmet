@@ -1431,7 +1431,6 @@ class ApiService
      * @param bool $includePreviewData If set, preview related data is included.
      *
      * @return array Array with tree and register of used content elements
-     * @access public
      */
     public function getContentTree($table, $row, $includePreviewData = true)
     {

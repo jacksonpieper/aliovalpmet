@@ -1045,7 +1045,6 @@ class MainController extends AbstractModuleController implements Configurable
      * Displays the default view of a page, showing the nested structure of elements.
      *
      * @return string The modules content
-     * @access protected
      */
     public function render_editPageScreen()
     {
@@ -1136,7 +1135,6 @@ class MainController extends AbstractModuleController implements Configurable
      * @param array $parentDsMeta Meta array from parent DS (passing information about parent containers localization mode)
      *
      * @return string HTML
-     * @access protected
      * @see render_framework_singleSheet()
      */
     public function render_framework_allSheets($contentTreeArr, $languageKey = 'DEF', $parentPointer = [], $parentDsMeta = [])
@@ -1176,7 +1174,6 @@ class MainController extends AbstractModuleController implements Configurable
      * @param array $parentDsMeta Meta array from parent DS (passing information about parent containers localization mode)
      *
      * @return string HTML
-     * @access protected
      * @see render_framework_singleSheet()
      */
     public function render_framework_singleSheet($contentTreeArr, $languageKey, $sheet, $parentPointer = [], $parentDsMeta = [])
@@ -1394,7 +1391,6 @@ class MainController extends AbstractModuleController implements Configurable
      * @throws RuntimeException
      *
      * @return string HTML output (a table) of the sub elements and some "insert new" and "paste" buttons
-     * @access protected
      * @see render_framework_allSheets(), render_framework_singleSheet()
      */
     public function render_framework_subElements($elementContentTreeArr, $languageKey, $sheet, $calcPerms = 0)
@@ -1891,7 +1887,6 @@ class MainController extends AbstractModuleController implements Configurable
      * @param array $row The row of tt_content containing the content element record.
      *
      * @return string HTML preview content
-     * @access protected
      * @see getContentTree(), render_localizationInfoTable()
      */
     public function render_previewContent($row)
@@ -1931,7 +1926,6 @@ class MainController extends AbstractModuleController implements Configurable
      * @param array $parentDsMeta Meta array from parent DS (passing information about parent containers localization mode)
      *
      * @return string HTML
-     * @access protected
      * @see render_framework_singleSheet()
      */
     public function render_localizationInfoTable($contentTreeArr, $parentPointer, $parentDsMeta = [])
@@ -2184,7 +2178,6 @@ class MainController extends AbstractModuleController implements Configurable
      * @param string $controls HTML for controls to add for this element
      *
      * @return void
-     * @access protected
      * @see render_outline_allSheets()
      */
     public function render_outline_element($contentTreeArr, &$entries, $indentLevel = 0, $parentPointer = [], $controls = '')
@@ -2319,7 +2312,6 @@ class MainController extends AbstractModuleController implements Configurable
      * @param int $indentLevel Indentation level
      *
      * @return void
-     * @access protected
      */
     public function render_outline_subElements($contentTreeArr, $sheet, &$entries, $indentLevel)
     {
@@ -2407,7 +2399,6 @@ class MainController extends AbstractModuleController implements Configurable
      * @param int $indentLevel Indentation level
      *
      * @return string HTML
-     * @access protected
      * @see render_framework_singleSheet()
      */
     public function render_outline_localizations($contentTreeArr, &$entries, $indentLevel)
@@ -2485,7 +2476,6 @@ class MainController extends AbstractModuleController implements Configurable
      *
      * @return string HTML anchor tag containing the label and the correct link
      * @throws \UnexpectedValueException
-     * @access protected
      */
     public function link_edit($label, $table, $uid, $forced = false, $usePid = 0, $linkClass = '')
     {
@@ -2531,7 +2521,6 @@ class MainController extends AbstractModuleController implements Configurable
      * @param array $el
      *
      * @return string HTML anchor tag containing the label and the correct link
-     * @access protected
      */
     public function icon_hide($el)
     {
@@ -2626,7 +2615,6 @@ class MainController extends AbstractModuleController implements Configurable
      * @param array $parentPointer Flexform pointer defining the parent element of the new record
      *
      * @return string HTML anchor tag containing the label and the correct link
-     * @access protected
      */
     public function link_browse($label, $parentPointer)
     {
@@ -2650,7 +2638,6 @@ class MainController extends AbstractModuleController implements Configurable
      * @param array $parentPointer Flexform pointer defining the parent element of the new record
      *
      * @return string HTML anchor tag containing the label and the correct link
-     * @access protected
      */
     public function link_new($label, $parentPointer)
     {
@@ -2689,7 +2676,6 @@ class MainController extends AbstractModuleController implements Configurable
      * @param string $elementPointer
      *
      * @return string HTML anchor tag containing the label and the unlink-link
-     * @access protected
      */
     public function link_unlink($label, $table, $uid, $realDelete = false, $foreignReferences = false, $elementPointer = '')
     {
@@ -2725,7 +2711,6 @@ class MainController extends AbstractModuleController implements Configurable
      * @param array $makeLocalPointer Flexform pointer pointing to the element which shall be copied
      *
      * @return string HTML anchor tag containing the label and the unlink-link
-     * @access protected
      */
     public function link_makeLocal($label, $makeLocalPointer)
     {
@@ -2736,7 +2721,6 @@ class MainController extends AbstractModuleController implements Configurable
      * Creates additional parameters which are used for linking to the current page while editing it
      *
      * @return string parameters
-     * @access public
      */
     public function link_getParameters()
     {
@@ -2799,7 +2783,6 @@ class MainController extends AbstractModuleController implements Configurable
      * 'makeLocalRecord', 'localizeElement', 'createNewPageTranslation' and 'editPageLanguageOverlay'
      *
      * @return void
-     * @access protected
      */
     public function handleIncomingCommands()
     {
@@ -2975,7 +2958,6 @@ class MainController extends AbstractModuleController implements Configurable
      * @param bool $setMulti If set, an array entry for "multiple languages" is added (uid -1)
      *
      * @return array
-     * @access protected
      */
     /**
      * @param int $id If zero, the query will select all sys_language records from root level. If set to another value, the query will select all sys_language records that has a pages_language_overlay record on that page (and is not hidden, unless you are admin user)
@@ -2984,7 +2966,6 @@ class MainController extends AbstractModuleController implements Configurable
      * @param bool $setMulti If set, an array entry for "multiple languages" is added (uid -1)
      *
      * @return array
-     * @access protected
      */
     public function getAvailableLanguages($id = 0, $onlyIsoCoded = true, $setDefault = true, $setMulti = false)
     {
@@ -3075,7 +3056,6 @@ class MainController extends AbstractModuleController implements Configurable
      * @param string $hookName Name of the hook
      *
      * @return array Array of object references
-     * @access protected
      */
     public function hooks_prepareObjectsArray($hookName)
     {
