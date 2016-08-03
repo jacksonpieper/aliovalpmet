@@ -1,4 +1,5 @@
 <?php
+
 namespace Extension\Templavoila\Tests\Unit;
 
 /**
