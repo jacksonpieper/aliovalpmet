@@ -87,7 +87,9 @@ return [
                             'pid' => '###CURRENT_PID###',
                             'setValue' => 'set'
                         ],
-                        'script' => 'wizard_add.php',
+                        'module' => [
+                            'name' => 'wizard_add'
+                        ]
                     ],
                 ]
             ],
