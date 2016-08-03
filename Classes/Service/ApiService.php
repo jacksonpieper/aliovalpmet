@@ -1137,6 +1137,7 @@ class ApiService
      * @param int $elementUid UID of a tt_content element
      *
      * @return array Array with an updated reference list
+     *
      * @see flexform_getElementReferencesFromXML(), flexform_removeElementReferenceFromList()
      */
     public function flexform_insertElementReferenceIntoList($currentReferencesArr, $position, $elementUid)
@@ -1178,6 +1179,7 @@ class ApiService
      * @param int $position Position of the element reference which should be removed. 1 = first element, 2 = second element etc.
      *
      * @return array Array with an updated reference list
+     *
      * @see flexform_getElementReferencesFromXML(), flexform_insertElementReferenceIntoList()
      */
     public function flexform_removeElementReferenceFromList($currentReferencesArr, $position)
@@ -1686,6 +1688,7 @@ class ApiService
      * @param array $tt_content_elementRegister Array of sys_language UIDs with some information as the value
      *
      * @return array Localization information
+     *
      * @see getContentTree_element()
      */
     public function getContentTree_getLocalizationInfoForElement($contentTreeArr, &$tt_content_elementRegister)

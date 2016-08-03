@@ -1295,6 +1295,7 @@ class tx_templavoila_module2 extends \TYPO3\CMS\Backend\Module\BaseScriptClass
      * @param string $scope Scope string
      *
      * @return array Array with content
+     *
      * @see setErrorLog()
      */
     public function getErrorLog($scope)

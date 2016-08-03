@@ -335,6 +335,7 @@ class HtmlMarkup
      * @param string $altStyle Alternative CSS style value from the style attribute of the <pre></pre>-section
      *
      * @return string Modified HTML
+     *
      * @see markupHTMLcontent()
      */
     public function passthroughHTMLcontent($content, $relPathFix, $mode = '', $altStyle = '')
@@ -831,6 +832,7 @@ class HtmlMarkup
      * @param string $where The where clause.
      *
      * @return mixed An array if a record is found, otherwise null
+     *
      * @see getTemplateRecord()
      */
     public function getTemplateRecord_query($uid, $where)

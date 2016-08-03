@@ -354,6 +354,7 @@ class MainController extends AbstractModuleController implements Configurable
      * @param Response $response
      *
      * @return ResponseInterface
+     *
      * @throws \TYPO3\CMS\Core\Exception
      * @throws \InvalidArgumentException
      * @throws \BadFunctionCallException
@@ -418,6 +419,7 @@ class MainController extends AbstractModuleController implements Configurable
 
     /**
      * @param array $params
+     *
      * @return string
      */
     public function getReturnUrl(array $params = [])
@@ -557,7 +559,6 @@ class MainController extends AbstractModuleController implements Configurable
      * Main function of the module.
      *
      * @throws RuntimeException
-     *
      * @throws \TYPO3\CMS\Core\Exception
      * @throws \BadFunctionCallException
      * @throws \InvalidArgumentException
@@ -1131,6 +1132,7 @@ class MainController extends AbstractModuleController implements Configurable
      * @param array $parentDsMeta Meta array from parent DS (passing information about parent containers localization mode)
      *
      * @return string HTML
+     *
      * @see render_framework_singleSheet()
      */
     public function render_framework_allSheets($contentTreeArr, $languageKey = 'DEF', $parentPointer = [], $parentDsMeta = [])
@@ -1170,6 +1172,7 @@ class MainController extends AbstractModuleController implements Configurable
      * @param array $parentDsMeta Meta array from parent DS (passing information about parent containers localization mode)
      *
      * @return string HTML
+     *
      * @see render_framework_singleSheet()
      */
     public function render_framework_singleSheet($contentTreeArr, $languageKey, $sheet, $parentPointer = [], $parentDsMeta = [])
@@ -1387,6 +1390,7 @@ class MainController extends AbstractModuleController implements Configurable
      * @throws RuntimeException
      *
      * @return string HTML output (a table) of the sub elements and some "insert new" and "paste" buttons
+     *
      * @see render_framework_allSheets(), render_framework_singleSheet()
      */
     public function render_framework_subElements($elementContentTreeArr, $languageKey, $sheet, $calcPerms = 0)
@@ -1883,6 +1887,7 @@ class MainController extends AbstractModuleController implements Configurable
      * @param array $row The row of tt_content containing the content element record.
      *
      * @return string HTML preview content
+     *
      * @see getContentTree(), render_localizationInfoTable()
      */
     public function render_previewContent($row)
@@ -1922,6 +1927,7 @@ class MainController extends AbstractModuleController implements Configurable
      * @param array $parentDsMeta Meta array from parent DS (passing information about parent containers localization mode)
      *
      * @return string HTML
+     *
      * @see render_framework_singleSheet()
      */
     public function render_localizationInfoTable($contentTreeArr, $parentPointer, $parentDsMeta = [])
@@ -2392,6 +2398,7 @@ class MainController extends AbstractModuleController implements Configurable
      * @param int $indentLevel Indentation level
      *
      * @return string HTML
+     *
      * @see render_framework_singleSheet()
      */
     public function render_outline_localizations($contentTreeArr, &$entries, $indentLevel)
@@ -2468,6 +2475,7 @@ class MainController extends AbstractModuleController implements Configurable
      * @param string $linkClass css class to use for regular content elements
      *
      * @return string HTML anchor tag containing the label and the correct link
+     *
      * @throws \UnexpectedValueException
      */
     public function link_edit($label, $table, $uid, $forced = false, $usePid = 0, $linkClass = '')
@@ -2533,6 +2541,7 @@ class MainController extends AbstractModuleController implements Configurable
      * @param int $usePid
      *
      * @return string
+     *
      * @throws \UnexpectedValueException
      */
     public function link_hide($label, $table, $uid, $hidden, $forced = false, $usePid = 0)

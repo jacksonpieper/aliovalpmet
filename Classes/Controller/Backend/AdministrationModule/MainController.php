@@ -131,6 +131,7 @@ class MainController extends AbstractModuleController
      * @param Response $response
      *
      * @return ResponseInterface
+     *
      * @throws \TYPO3\CMS\Fluid\View\Exception\InvalidTemplateResourceException
      * @throws \RuntimeException
      * @throws \BadFunctionCallException
@@ -423,6 +424,7 @@ class MainController extends AbstractModuleController
      * Renders module content, overview of pages with DS/TO on.
      *
      * @return string
+     *
      * @throws \InvalidArgumentException
      */
     public function renderModuleContent_searchForTODS()
@@ -822,6 +824,7 @@ class MainController extends AbstractModuleController
      * @param int $children If set, the function is asked to render children to template objects (and should not call it self recursively again).
      *
      * @return string HTML content
+     *
      * @throws \RuntimeException
      * @throws \InvalidArgumentException
      */
@@ -1442,6 +1445,7 @@ class MainController extends AbstractModuleController
      * @param string $typeValue
      *
      * @return string
+     *
      * @throws \InvalidArgumentException
      */
     protected function getProcessedValue($table, $typeField, $typeValue)
@@ -1477,6 +1481,7 @@ class MainController extends AbstractModuleController
      * @param string $scope Scope string
      *
      * @return array Array with content
+     *
      * @see setErrorLog()
      */
     public function getErrorLog($scope)
@@ -1874,6 +1879,7 @@ class MainController extends AbstractModuleController
      * Wizard overview page - before the wizard is started.
      *
      * @return string
+     *
      * @throws \InvalidArgumentException
      */
     public function renderNewSiteWizard_overview()

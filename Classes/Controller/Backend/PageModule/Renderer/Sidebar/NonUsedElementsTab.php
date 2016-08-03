@@ -46,8 +46,10 @@ class NonUsedElementsTab implements Renderable
 
     /**
      * @return SidebarRenderer
+     *
      * @throws \UnexpectedValueException
      * @throws \InvalidArgumentException
+     *
      * @param MainController $controller
      */
     public function __construct(MainController $controller)

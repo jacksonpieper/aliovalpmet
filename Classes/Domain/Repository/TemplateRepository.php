@@ -143,6 +143,7 @@ class TemplateRepository
      * @param \Extension\Templavoila\Domain\Model\Template $obj2
      *
      * @return int Result of the comparison (see strcmp())
+     *
      * @see usort()
      * @see strcmp()
      */

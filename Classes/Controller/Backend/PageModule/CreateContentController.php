@@ -67,6 +67,7 @@ class CreateContentController extends AbstractModuleController
     /**
      * @param ServerRequest $request
      * @param Response $response
+     *
      * @throws \BadFunctionCallException
      * @throws \InvalidArgumentException
      * @throws \UnexpectedValueException
@@ -129,7 +130,9 @@ class CreateContentController extends AbstractModuleController
      * @throws \UnexpectedValueException
      *
      * @return string
+     *
      * @throws \InvalidArgumentException
+     *
      * @todo provide position mapping if no position is given already. Like the columns selector but for our cascading element style ...
      */
     public function main()
@@ -205,6 +208,7 @@ class CreateContentController extends AbstractModuleController
      * For the plugin section there is support for adding elements there from a global variable.
      *
      * @return array
+     *
      * @throws \InvalidArgumentException
      */
     public function getWizardItems()
@@ -262,6 +266,7 @@ class CreateContentController extends AbstractModuleController
      * @param array $wizardElements
      *
      * @return array $returnElements
+     *
      * @throws \InvalidArgumentException
      */
     private function wizard_appendWizards($wizardElements)
@@ -290,6 +295,7 @@ class CreateContentController extends AbstractModuleController
      * Get wizard array for FCEs
      *
      * @return array $returnElements
+     *
      * @throws \InvalidArgumentException
      */
     private function wizard_renderFCEs()

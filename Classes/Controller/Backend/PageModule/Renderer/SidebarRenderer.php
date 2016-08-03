@@ -46,6 +46,7 @@ class SidebarRenderer
 
     /**
      * @return SidebarRenderer
+     *
      * @param MainController $controller
      */
     public function __construct(MainController $controller)

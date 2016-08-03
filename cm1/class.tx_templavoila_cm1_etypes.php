@@ -399,6 +399,7 @@ class tx_templavoila_cm1_eTypes
      * @param string $content HTML Content string
      *
      * @return array Configuration
+     *
      * @see substEtypeWithRealStuff()
      */
     public function substEtypeWithRealStuff_contentInfo($content)

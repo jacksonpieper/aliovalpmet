@@ -112,6 +112,7 @@ class tx_templavoila_pi1 extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
      * @param array $conf Configuration (see above for entries)
      *
      * @return string Generated content
+     *
      * @todo Create a new content element with this functionality and DS/TO selector?
      * @todo Create TS element with this functionality?
      * @todo Support sheet selector?

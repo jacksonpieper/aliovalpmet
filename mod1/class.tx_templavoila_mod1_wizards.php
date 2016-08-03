@@ -76,6 +76,7 @@ class tx_templavoila_mod1_wizards
      * @param int $positionPid Can be positive and negative depending of where the new page is going: Negative always points to a position AFTER the page having the abs. value of the positionId. Positive numbers means to create as the first subpage to another page.
      *
      * @return string Content for the screen output.
+     *
      * @todo  Check required field(s), support t3d
      */
     public function renderWizard_createNewPage($positionPid)

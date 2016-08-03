@@ -279,6 +279,7 @@ class DataStructureRepository
      * @param \Extension\Templavoila\Domain\Model\AbstractDataStructure $obj2
      *
      * @return int Result of the comparison (see strcmp())
+     *
      * @see usort()
      * @see strcmp()
      */

@@ -18,6 +18,7 @@ namespace Extension\Templavoila\Service\DataHandling;
  * Class being included by TCEmain using a hook
  *
  * @author Robert Lemke <robert@typo3.org>
+ *
  * @package TYPO3
  * @subpackage templavoila
  */

@@ -69,6 +69,7 @@ class FileController extends AbstractModuleController implements Configurable
      * @param Response $response
      *
      * @return ResponseInterface
+     *
      * @throws \InvalidArgumentException
      */
     public function index(ServerRequest $request, Response $response)
@@ -117,7 +118,9 @@ class FileController extends AbstractModuleController implements Configurable
      * @param string $limitTags List of tags to show
      *
      * @return string
+     *
      * @throws \InvalidArgumentException
+     *
      * @see main_display()
      */
     public function displayFileContentWithMarkup($content, $path, $relPathFix, $limitTags)
@@ -168,7 +171,9 @@ class FileController extends AbstractModuleController implements Configurable
      * @param string $relPathFix The rel-path string to fix images/links with.
      *
      * @return string
+     *
      * @throws \InvalidArgumentException
+     *
      * @see main_display()
      */
     public function displayFileContentWithPreview($content, $relPathFix = '')

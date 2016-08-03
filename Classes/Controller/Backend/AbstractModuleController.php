@@ -86,6 +86,7 @@ abstract class AbstractModuleController extends AbstractModule
 
     /**
      * @param int $flag
+     *
      * @return bool
      */
     public function hasAccess($flag = self::ACCESS_READ)
@@ -104,6 +105,7 @@ abstract class AbstractModuleController extends AbstractModule
 
     /**
      * @param string $key
+     *
      * @return mixed
      */
     public function getSetting($key)
@@ -124,7 +126,9 @@ abstract class AbstractModuleController extends AbstractModule
     
     /**
      * @param $templateName
+     *
      * @return StandaloneView
+     *
      * @throws \TYPO3\CMS\Fluid\View\Exception\InvalidTemplateResourceException
      * @throws \BadFunctionCallException
      * @throws \InvalidArgumentException

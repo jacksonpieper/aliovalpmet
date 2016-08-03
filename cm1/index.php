@@ -1629,6 +1629,7 @@ class tx_templavoila_cm1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass
      * @param int $headerPart Process the headerPart instead of the bodyPart
      *
      * @return array Array with two keys (0/1) with a) content and b) currentMappingInfo which is retrieved inside (currentMappingInfo will be different based on whether "head" or "body" content is "mapped")
+     *
      * @see renderTO()
      */
     public function renderTO_editProcessing(&$dataStruct, $row, $theFile, $headerPart = 0)
@@ -2498,6 +2499,7 @@ class tx_templavoila_cm1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass
      * @param array $array Overriding parameters.
      *
      * @return string URL, already htmlspecialchars()'ed
+     *
      * @see drawDataStructureMap()
      */
     public function linkThisScript($array = [])
@@ -2525,6 +2527,7 @@ class tx_templavoila_cm1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass
      * @param int $preview Preview enabled.
      *
      * @return string HTML code for the IFRAME.
+     *
      * @see main_display()
      */
     public function makeIframeForVisual($file, $path, $limitTags, $showOnly, $preview = 0)
@@ -2704,6 +2707,7 @@ class tx_templavoila_cm1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass
      * @param string $limitTags List of tags to show
      *
      * @return string
+     *
      * @see main_display()
      */
     public function displayFileContentWithMarkup($content, $path, $relPathFix, $limitTags)
@@ -2752,6 +2756,7 @@ class tx_templavoila_cm1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass
      * @param string $relPathFix The rel-path string to fix images/links with.
      *
      * @return string
+     *
      * @see main_display()
      */
     public function displayFileContentWithPreview($content, $relPathFix)

@@ -23,6 +23,7 @@ class tx_templavoila_staticds_check
      *
      * @param array $params
      * @param \TYPO3\CMS\Extensionmanager\ViewHelpers\Form\TypoScriptConstantsViewHelper $tsObj
+     *
      * @return string
      */
     public function displayMessage(&$params, &$tsObj)

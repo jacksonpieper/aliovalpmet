@@ -39,7 +39,9 @@ class LocalizationTab implements Renderable
 
     /**
      * @return SidebarRenderer
+     *
      * @throws \BadFunctionCallException
+     *
      * @param MainController $controller
      */
     public function __construct(MainController $controller)
@@ -49,6 +51,7 @@ class LocalizationTab implements Renderable
 
     /**
      * @return string
+     *
      * @throws \TYPO3\CMS\Core\Type\Exception\InvalidEnumerationValueException
      */
     public function render()
@@ -73,6 +76,7 @@ class LocalizationTab implements Renderable
      * Renders the HTML code for a selectorbox for selecting the language version of the current page.
      *
      * @return bool|string HTML code for the selectorbox or FALSE if no language is available.
+     *
      * @throws \TYPO3\CMS\Core\Type\Exception\InvalidEnumerationValueException
      */
     private function sidebar_renderItem_renderLanguageSelectorbox()

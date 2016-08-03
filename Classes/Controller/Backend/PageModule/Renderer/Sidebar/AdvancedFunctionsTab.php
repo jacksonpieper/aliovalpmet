@@ -42,8 +42,10 @@ class AdvancedFunctionsTab implements Renderable
 
     /**
      * @return SidebarRenderer
+     *
      * @throws \UnexpectedValueException
      * @throws \InvalidArgumentException
+     *
      * @param MainController $controller
      */
     public function __construct(MainController $controller)
@@ -55,6 +57,7 @@ class AdvancedFunctionsTab implements Renderable
 
     /**
      * @return string
+     *
      * @throws \InvalidArgumentException
      * @throws \TYPO3\CMS\Core\Type\Exception\InvalidEnumerationValueException
      */

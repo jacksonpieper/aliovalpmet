@@ -28,6 +28,7 @@ class SysLanguageRepository
 
     /**
      * @param array $where
+     *
      * @return array
      */
     protected function addExcludeHiddenWhereClause(array $where = [])
@@ -41,7 +42,9 @@ class SysLanguageRepository
 
     /**
      * @param bool $excludeHidden
+     *
      * @return array
+     *
      * @throws \InvalidArgumentException
      */
     public function findAll()
@@ -66,7 +69,9 @@ class SysLanguageRepository
 
     /**
      * @param int $pid
+     *
      * @return array
+     *
      * @throws \InvalidArgumentException
      */
     public function findAllForPid($pid)

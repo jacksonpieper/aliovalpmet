@@ -103,6 +103,7 @@ class tx_templavoila_staticds_wizard
      * Check directory
      *
      * @param string $path
+     *
      * @return bool TRUE if directory exists and is writable or could be created
      */
     protected function checkDirectory($path)
@@ -132,6 +133,7 @@ class tx_templavoila_staticds_wizard
      * Get DS records
      *
      * @param array $conf
+     *
      * @return string
      */
     protected function getDsRecords($conf)

@@ -441,6 +441,7 @@ class tx_templavoila_cm1_dsEdit
      * @param string $key Templavoila field name.
      *
      * @return string HTML with extra form fields
+     *
      * @see drawDataStructureMap_editItem()
      */
     public function drawDataStructureMap_editItem_editTypeExtra($type, $formFieldName, $curValue, $key = '')

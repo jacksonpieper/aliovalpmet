@@ -35,6 +35,7 @@ class VersioningTab implements Renderable
 
     /**
      * @return SidebarRenderer
+     *
      * @param MainController $controller
      */
     public function __construct(MainController $controller)
@@ -44,6 +45,7 @@ class VersioningTab implements Renderable
 
     /**
      * @return string
+     *
      * @throws \InvalidArgumentException
      * @throws \TYPO3\CMS\Core\Type\Exception\InvalidEnumerationValueException
      */
