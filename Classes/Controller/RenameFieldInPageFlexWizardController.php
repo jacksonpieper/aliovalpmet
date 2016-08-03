@@ -245,7 +245,7 @@ class RenameFieldInPageFlexWizardController extends \TYPO3\CMS\Backend\Module\Ab
         $dsList = $this->getKnownPageDS();
         $return = [];
         foreach ($dsList as $ds) {
-            /** @var $ds \Extension\Templavoila\Domain\Model\AbstractDataStructure */
+            /* @var $ds \Extension\Templavoila\Domain\Model\AbstractDataStructure */
             $return[$ds->getLabel()] = [];
             $t = $ds->getDataprotArray();
             foreach (array_keys($t['ROOT']['el']) as $field) {

@@ -462,7 +462,7 @@ class tx_templavoila_module2 extends \TYPO3\CMS\Backend\Module\BaseScriptClass
         // Traverse data structures to list:
         if (count($dsList)) {
             foreach ($dsList as $dsObj) {
-                /** @var \Extension\Templavoila\Domain\Model\AbstractDataStructure $dsObj */
+                /* @var \Extension\Templavoila\Domain\Model\AbstractDataStructure $dsObj */
 
                 // Traverse template objects which are not children of anything:
                 $TOcontent = '';
@@ -475,7 +475,7 @@ class tx_templavoila_module2 extends \TYPO3\CMS\Backend\Module\BaseScriptClass
                 $newTitle = $dsObj->getLabel() . ' [TEMPLATE]';
                 if (count($toList)) {
                     foreach ($toList as $toObj) {
-                        /** @var \Extension\Templavoila\Domain\Model\Template $toObj */
+                        /* @var \Extension\Templavoila\Domain\Model\Template $toObj */
                         $toIdArray[] = $toObj->getKey();
                         if ($toObj->hasParentTemplate()) {
                             continue;
@@ -2514,7 +2514,7 @@ lib.' . $menuType . '.1.ACT {
         $prefix = \TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName($GLOBALS['TYPO3_CONF_VARS']['BE']['fileadminDir']);
 
         foreach (\Extension\Templavoila\Utility\GeneralUtility::getBackendUser()->getFileStorages() as $driver) {
-            /** @var TYPO3\CMS\Core\Resource\ResourceStorage $driver */
+            /* @var TYPO3\CMS\Core\Resource\ResourceStorage $driver */
             $driverpath = $driver->getConfiguration();
             $driverpath = \TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName($driverpath['basePath']);
             foreach ($paths as $path) {

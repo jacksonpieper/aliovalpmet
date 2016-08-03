@@ -134,7 +134,7 @@ class ApiService
 
         if ($destinationPointer['position'] > 0) {
             $currentReferencesArr = $this->flexform_getElementReferencesFromXML($parentRecord['tx_templavoila_flex'], $destinationPointer);
-            /**
+            /*
              * @todo: check why $currentReferencesArr isn't used
              */
         }
@@ -1223,7 +1223,7 @@ class ApiService
         $tce->stripslashes_values = 0;
         $tce->start($dataArr, []);
 
-        /**
+        /*
          * Set workspace to 0 because:
          * 1) we want shadow-records to be placed in the Live-Workspace
          * 2) there's no need to create a new version of the parent-record

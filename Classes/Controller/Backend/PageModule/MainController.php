@@ -1445,7 +1445,7 @@ class MainController extends AbstractModuleController implements Configurable
             $toRepo = GeneralUtility::makeInstance(\Extension\Templavoila\Domain\Repository\TemplateRepository::class);
             /** @var $toRepo \Extension\Templavoila\Domain\Repository\TemplateRepository */
             $to = $toRepo->getTemplateByUid($toRecord['uid']);
-            /** @var $to \Extension\Templavoila\Domain\Model\Template */
+            /* @var $to \Extension\Templavoila\Domain\Model\Template */
             $beTemplate = $to->getBeLayout();
         } catch (InvalidArgumentException $e) {
             $to = null;
@@ -3024,7 +3024,7 @@ class MainController extends AbstractModuleController implements Configurable
                     $enableFields = '';
                 }
                 $enableFields .= BackendUtility::deleteClause($table);
-                /**
+                /*
                  * @todo: check if enable fields should be used in the query
                  */
 

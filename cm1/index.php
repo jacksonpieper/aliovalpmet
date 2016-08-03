@@ -2130,7 +2130,7 @@ class tx_templavoila_cm1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass
      */
     protected function getRangeParameters($lastEl, $elParentLevel)
     {
-        /**
+        /*
          * Add options for "samelevel" elements -
          * If element has an id the "parent" is empty, therefore we need two steps to get the elements (see #11842)
          */

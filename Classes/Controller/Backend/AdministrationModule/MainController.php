@@ -612,7 +612,7 @@ class MainController extends AbstractModuleController
         // Traverse data structures to list:
         if (count($dsList)) {
             foreach ($dsList as $dsObj) {
-                /** @var AbstractDataStructure $dsObj */
+                /* @var AbstractDataStructure $dsObj */
 
                 // Traverse template objects which are not children of anything:
                 $TOcontent = '';
@@ -625,7 +625,7 @@ class MainController extends AbstractModuleController
                 $newTitle = $dsObj->getLabel() . ' [TEMPLATE]';
                 if (count($toList)) {
                     foreach ($toList as $toObj) {
-                        /** @var \Extension\Templavoila\Domain\Model\Template $toObj */
+                        /* @var \Extension\Templavoila\Domain\Model\Template $toObj */
                         $toIdArray[] = $toObj->getKey();
                         if ($toObj->hasParentTemplate()) {
                             continue;
@@ -2690,7 +2690,7 @@ lib.' . $menuType . '.1.ACT {
         $prefix = GeneralUtility::getFileAbsFileName($GLOBALS['TYPO3_CONF_VARS']['BE']['fileadminDir']);
 
         foreach (static::getBackendUser()->getFileStorages() as $driver) {
-            /** @var TYPO3\CMS\Core\Resource\ResourceStorage $driver */
+            /* @var TYPO3\CMS\Core\Resource\ResourceStorage $driver */
             $driverpath = $driver->getConfiguration();
             $driverpath = GeneralUtility::getFileAbsFileName($driverpath['basePath']);
             foreach ($paths as $path) {
