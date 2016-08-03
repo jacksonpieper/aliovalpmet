@@ -30,8 +30,19 @@ if (TYPO3_MODE === 'BE') {
     \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addModule(
         'web',
         'txtemplavoilaM2',
+        'bottom',
         '',
-        \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($_EXTKEY) . 'mod2/'
+        [
+            'name' => 'web_txtemplavoilaM2',
+            'access' => 'admin',
+            'routeTarget' => \Extension\Templavoila\Controller\Backend\AdministrationModule\MainController::class . '::processRequest',
+            'labels' => [
+                'll_ref' => 'LLL:EXT:templavoila/mod2/locallang_mod.xlf',
+                'tabs_images' => [
+                    'tab' => 'EXT:templavoila/Resources/Public/Icon/Modules/AdministrationModuleIcon.png'
+                ]
+            ]
+        ]
     );
 
     $_EXTCONF = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['templavoila']);

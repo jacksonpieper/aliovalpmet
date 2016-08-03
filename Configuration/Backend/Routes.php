@@ -6,4 +6,9 @@ return [
         'access' => 'public',
         'target' => \Extension\Templavoila\Controller\Backend\PageModule\CreateContentController::class . '::processRequest'
     ],
+    'tv_mod_admin_file' => [
+        'path' => '/templavoila/admininstration/file',
+        'access' => 'public',
+        'target' => \Extension\Templavoila\Controller\Backend\Module\Administration\FileController::class . '::processRequest'
+    ]
 ];

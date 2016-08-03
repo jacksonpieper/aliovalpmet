@@ -1,0 +1,31 @@
+{namespace tv=Extension\Templavoila\ViewHelpers}
+
+{title->f:format.raw()}
+
+<div class="checkbox">
+    <label>
+        <input
+            type="checkbox"
+            name="SET[set_details]"
+            data-url-enable="{f:uri.page( additionalParams:'{ SET: { set_details: 1 } }' )}"
+            data-url-disable="{f:uri.page( additionalParams:'{ SET: { set_details: 0 } }' )}"
+            onclick="window.location.href = this.dataset[this.checked ? 'urlEnable' : 'urlDisable']"
+            {f:if( condition:settings.set_details, then:'checked' )}
+        > {tv:ll( index:'showdetails')}
+    </label>
+</div>
+
+<div class="checkbox">
+    <label>
+        <input
+            type="checkbox"
+            name="SET[set_unusedDs]"
+            data-url-enable="{f:uri.page( additionalParams:'{ SET: { set_unusedDs: 1 } }' )}"
+            data-url-disable="{f:uri.page( additionalParams:'{ SET: { set_unusedDs: 0 } }' )}"
+            onclick="window.location.href = this.dataset[this.checked ? 'urlEnable' : 'urlDisable']"
+            {f:if( condition:settings.set_unusedDs, then:'checked' )}
+        > {tv:ll( index:'showuused')}
+    </label>
+</div>
+
+{content->f:format.raw()}
