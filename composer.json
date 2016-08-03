@@ -8,6 +8,13 @@
 	"autoload": {
 		"psr-4": {
 			"Extension\\Templavoila\\": "Classes/"
-		}
+		},
+		"classmap": [
+			"cm1/",
+			"cm2/",
+			"mod1/",
+			"mod2/",
+			"pi1/"
+		]
 	}
 }
