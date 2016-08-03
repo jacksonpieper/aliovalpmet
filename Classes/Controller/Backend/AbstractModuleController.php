@@ -179,5 +179,4 @@ abstract class AbstractModuleController extends AbstractModule
     {
         return $this->moduleTemplate;
     }
-
 }

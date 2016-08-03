@@ -166,5 +166,4 @@ class RecordsTab implements Renderable
 
         return $content;
     }
-
 }

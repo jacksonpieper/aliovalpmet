@@ -101,5 +101,4 @@ class SysLanguageRepository
             'sys_language.title'
         );
     }
-
 }

@@ -433,5 +433,4 @@ class CreateContentController extends AbstractModuleController
 
         return $dsValues;
     }
-
 }

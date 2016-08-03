@@ -29,5 +29,4 @@ interface Configurable
      * @return array
      */
     public function getDefaultSettings();
-
 }

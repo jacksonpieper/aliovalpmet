@@ -23,9 +23,8 @@ trait LanguageService
     /**
      * @return \TYPO3\CMS\Lang\LanguageService
      */
-    static public function getLanguageService()
+    public static function getLanguageService()
     {
         return $GLOBALS['LANG'];
     }
-
 }

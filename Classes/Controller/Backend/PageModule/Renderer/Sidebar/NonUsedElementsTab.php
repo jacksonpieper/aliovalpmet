@@ -192,5 +192,4 @@ class NonUsedElementsTab implements Renderable
             '</a>';
         }
     }
-
 }

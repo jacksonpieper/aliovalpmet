@@ -1336,7 +1336,7 @@ class MainController extends AbstractModuleController implements Configurable
         $previewContent = $contentTreeArr['ds_meta']['disableDataPreview'] ? '&nbsp;' : $this->render_previewData($contentTreeArr['previewData'], $contentTreeArr['el'], $contentTreeArr['ds_meta'], $languageKey, $sheet);
 
         // Wrap workspace notification colors:
-        if ($contentTreeArr['el']['_ORIG_uid'])    {
+        if ($contentTreeArr['el']['_ORIG_uid']) {
             $previewContent = '<div class="ver-element">' . ($previewContent ? $previewContent : '<em>[New version]</em>') . '</div>';
         }
 
@@ -1465,7 +1465,8 @@ class MainController extends AbstractModuleController implements Configurable
             try {
                 $newValue = $to->getLocalDataprotValueByXpath('//' . $fieldID . '/tx_templavoila/preview');
                 $elementContentTreeArr['previewData']['sheets'][$sheet][$fieldID]['tx_templavoila']['preview'] = $newValue;
-            } catch (\Exception $e) {}
+            } catch (\Exception $e) {
+            }
 
             if (is_array($fieldValuesContent[$vKey]) && (
                     $elementContentTreeArr['previewData']['sheets'][$sheet][$fieldID]['isMapped'] ||
@@ -3322,5 +3323,4 @@ class MainController extends AbstractModuleController implements Configurable
             'disablePageStructureInheritance' => ''
         ];
     }
-
 }

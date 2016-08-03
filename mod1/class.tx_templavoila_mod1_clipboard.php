@@ -243,7 +243,6 @@ class tx_templavoila_mod1_clipboard
 
         $output = '';
         if (!in_array('pasteAfter', $this->controller->blindIcons)) {
-
             $params = [
                 'pasteRecord' => $pasteMode,
                 'source' => $sourcePointerString,
@@ -258,7 +257,6 @@ class tx_templavoila_mod1_clipboard
         }
         // FCEs with sub elements have two different paste icons, normal elements only one:
         if ($pasteMode === 'copy' && $clipboardElementHasSubElements && !in_array('pasteSubRef', $this->controller->blindIcons)) {
-
             $params = [
                 'pasteRecord' => 'copyref',
                 'source' => $sourcePointerString,
@@ -274,5 +272,4 @@ class tx_templavoila_mod1_clipboard
 
         return $output;
     }
-
 }

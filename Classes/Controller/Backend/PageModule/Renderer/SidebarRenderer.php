@@ -56,7 +56,7 @@ class SidebarRenderer
         $hideIfEmpty = $this->controller->modTSconfig['properties']['showTabsIfEmpty'] ? false : true;
 
         $recordTables = GeneralUtility::trimExplode(',', $this->controller->modTSconfig['properties']['recordDisplay_tables'], true);
-        array_filter($recordTables, function($table) use($controller) {
+        array_filter($recordTables, function ($table) use ($controller) {
             return $table !== 'pages' && $table !== 'tt_content' && isset($GLOBALS['TCA'][$table]) && static::getBackendUser()->check('tables_select', $table);
         });
 
@@ -135,8 +135,6 @@ class SidebarRenderer
             );
         } catch (\Exception $e) {
         }
-
-
     }
 
     /**
@@ -177,7 +175,7 @@ class SidebarRenderer
             return '';
         }
 
-        usort($this->sideBarItems, function($a, $b) {
+        usort($this->sideBarItems, function ($a, $b) {
             return $a['priority'] < $b['priority'];
         });
 
@@ -220,5 +218,4 @@ class SidebarRenderer
 
         return $sideBar;
     }
-
 }

@@ -108,5 +108,4 @@ class HeaderFieldsTab implements Renderable
 
         return $output;
     }
-
 }

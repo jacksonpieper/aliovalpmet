@@ -23,9 +23,8 @@ trait BackendUser
     /**
      * @return \TYPO3\CMS\Core\Authentication\BackendUserAuthentication
      */
-    static public function getBackendUser()
+    public static function getBackendUser()
     {
         return $GLOBALS['BE_USER'];
     }
-
 }

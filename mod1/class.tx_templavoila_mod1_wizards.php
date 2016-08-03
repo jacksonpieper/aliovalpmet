@@ -501,5 +501,4 @@ class tx_templavoila_mod1_wizards
 
         return (count($tmp_disallowedPageTemplateItems)) ? implode(',', $tmp_disallowedPageTemplateItems) : '0';
     }
-
 }

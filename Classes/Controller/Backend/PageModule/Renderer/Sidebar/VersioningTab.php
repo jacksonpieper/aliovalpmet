@@ -78,5 +78,4 @@ class VersioningTab implements Renderable
 
         return '';
     }
-
 }

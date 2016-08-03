@@ -31,14 +31,14 @@ class LlViewHelper extends AbstractViewHelper implements CompilableInterface
     /**
      * @var LanguageService
      */
-    static protected $languageService;
+    protected static $languageService;
 
     /**
      * @throws InvalidArgumentException
      *
      * @return LanguageService
      */
-    static protected function getLanguageService()
+    protected static function getLanguageService()
     {
         if (!static::$languageService instanceof LanguageService) {
             static::$languageService = GeneralUtility::makeInstance(LanguageService::class);
@@ -74,7 +74,7 @@ class LlViewHelper extends AbstractViewHelper implements CompilableInterface
      *
      * @return string
      */
-    static public function renderStatic(
+    public static function renderStatic(
         array $arguments,
         \Closure $renderChildrenClosure,
         RenderingContextInterface $renderingContext
@@ -88,5 +88,4 @@ class LlViewHelper extends AbstractViewHelper implements CompilableInterface
         $value = static::getLanguageService()->getLL($index);
         return $value ?: 'LL:' . $index;
     }
-
 }

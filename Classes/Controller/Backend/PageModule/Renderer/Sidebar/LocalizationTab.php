@@ -224,7 +224,7 @@ class LocalizationTab implements Renderable
 
         $output = '';
         if (count($optionsArr) > 1) {
-//            $linkParam =
+            //            $linkParam =
 //            $link = 'index.php?' . $this->pObj->link_getParameters() . '&createNewPageTranslation=\'+this.options[this.selectedIndex].value+\'&pid=' . $this->pObj->getId() . $linkParam;
             $output = '
                 <tr class="bgColor4">
@@ -240,5 +240,4 @@ class LocalizationTab implements Renderable
 
         return $output;
     }
-
 }

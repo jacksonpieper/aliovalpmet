@@ -23,9 +23,8 @@ trait DatabaseConnection
     /**
      * @return \TYPO3\CMS\Core\Database\DatabaseConnection
      */
-    static public function getDatabaseConnection()
+    public static function getDatabaseConnection()
     {
         return $GLOBALS['TYPO3_DB'];
     }
-
 }

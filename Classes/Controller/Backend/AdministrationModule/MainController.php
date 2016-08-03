@@ -477,7 +477,7 @@ class MainController extends AbstractModuleController
      */
     public function renderModuleContent_mainView()
     {
-//        // Traverse scopes of data structures display template records belonging to them:
+        //        // Traverse scopes of data structures display template records belonging to them:
 //        // Each scope is places in its own tab in the tab menu:
 //        $dsScopes = [
 //            AbstractDataStructure::SCOPE_PAGE,
@@ -2715,5 +2715,4 @@ lib.' . $menuType . '.1.ACT {
             'wiz_step' => ''
         ];
     }
-
 }

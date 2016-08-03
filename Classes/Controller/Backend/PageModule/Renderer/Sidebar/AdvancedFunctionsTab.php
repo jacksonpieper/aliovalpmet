@@ -98,5 +98,4 @@ class AdvancedFunctionsTab implements Renderable
 
         return $this->view->render();
     }
-
 }
