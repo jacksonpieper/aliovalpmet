@@ -184,7 +184,7 @@ class ReferenceElementWizardController extends \TYPO3\CMS\Backend\Module\Abstrac
      * References all unreferenced elements with the specified
      * parent id (page uid)
      *
-     * @param integer $pageUid Parent id of the elements to reference
+     * @param int $pageUid Parent id of the elements to reference
      *
      * @return void
      */
@@ -248,7 +248,7 @@ class ReferenceElementWizardController extends \TYPO3\CMS\Backend\Module\Abstrac
      * Returns an array of tt_content records which are not referenced on
      * the page with the given uid (= parent id).
      *
-     * @param integer $pid Parent id of the content elements (= uid of the page)
+     * @param int $pid Parent id of the content elements (= uid of the page)
      *
      * @return array Array of tt_content records with the following fields: uid, header, bodytext, sys_language_uid and colpos
      */
@@ -284,10 +284,10 @@ class ReferenceElementWizardController extends \TYPO3\CMS\Backend\Module\Abstrac
     /**
      * Get available languages
      *
-     * @param integer $id
-     * @param boolean $onlyIsoCoded
-     * @param boolean $setDefault
-     * @param boolean $setMulti
+     * @param int $id
+     * @param bool $onlyIsoCoded
+     * @param bool $setDefault
+     * @param bool $setMulti
      *
      * @return array
      */

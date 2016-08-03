@@ -48,7 +48,7 @@ class RenameFieldInPageFlexWizardController extends \TYPO3\CMS\Backend\Module\Ab
     }
 
     /**
-     * @param integer $uid
+     * @param int $uid
      *
      * @return array
      */

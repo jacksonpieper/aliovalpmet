@@ -100,7 +100,7 @@ class tx_templavoila_cm1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass
     /**
      * Setting whether we are editing a data structure or not.
      *
-     * @var integer
+     * @var int
      */
     public $editDataStruct = 0;
 
@@ -114,7 +114,7 @@ class tx_templavoila_cm1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass
     /**
      * The storageFolders pids imploded to a comma list including "0"
      *
-     * @var integer
+     * @var int
      */
     public $storageFolders_pidList = 0;
 
@@ -161,7 +161,7 @@ class tx_templavoila_cm1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass
     public $returnUrl = ''; //
 
     /**
-     * @var boolean
+     * @var bool
      */
     public $_preview;
 
@@ -171,12 +171,12 @@ class tx_templavoila_cm1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass
     public $mapElPath;
 
     /**
-     * @var boolean
+     * @var bool
      */
     public $doMappingOfPath;
 
     /**
-     * @var boolean
+     * @var bool
      */
     public $showPathOnly;
 
@@ -201,17 +201,17 @@ class tx_templavoila_cm1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass
     public $fieldName;
 
     /**
-     * @var boolean
+     * @var bool
      */
     public $_load_ds_xml_content;
 
     /**
-     * @var boolean
+     * @var bool
      */
     public $_load_ds_xml_to;
 
     /**
-     * @var integer
+     * @var int
      */
     public $_saveDSandTO_TOuid;
 
@@ -226,21 +226,21 @@ class tx_templavoila_cm1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass
     public $_saveDSandTO_type;
 
     /**
-     * @var integer
+     * @var int
      */
     public $_saveDSandTO_pid;
 
     /**
      * Boolean; if true no mapping-links are rendered.
      *
-     * @var boolean
+     * @var bool
      */
     public $show;
 
     /**
      * Boolean; if true, the currentMappingInfo preview data is merged in
      *
-     * @var boolean
+     * @var bool
      */
     public $preview;
 
@@ -282,7 +282,7 @@ class tx_templavoila_cm1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass
     /**
      * Boolean; if true DS records are file based
      *
-     * @var boolean
+     * @var bool
      */
     public $staticDS = false;
 
@@ -452,9 +452,9 @@ class tx_templavoila_cm1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass
      *
      * @param array $arr0 First array
      * @param array $arr1 Second array, overruling the first array
-     * @param integer $notAddKeys If set, keys that are NOT found in $arr0 (first array) will not be set. Thus only existing value can/will be overruled from second array.
-     * @param boolean $includeEmtpyValues If set, values from $arr1 will overrule if they are empty or zero. Default: true
-     * @param boolean $kill If set, anything will override arrays in $arr0
+     * @param int $notAddKeys If set, keys that are NOT found in $arr0 (first array) will not be set. Thus only existing value can/will be overruled from second array.
+     * @param bool $includeEmtpyValues If set, values from $arr1 will overrule if they are empty or zero. Default: true
+     * @param bool $kill If set, anything will override arrays in $arr0
      *
      * @return array Resulting array where $arr1 values has overruled $arr0 values
      */
@@ -1640,7 +1640,7 @@ class tx_templavoila_cm1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass
      * @param array &$dataStruct Data Structure. Passed by reference; The sheets found inside will be resolved if found!
      * @param array $row TO record row
      * @param string Template file path (absolute)
-     * @param integer $headerPart Process the headerPart instead of the bodyPart
+     * @param int $headerPart Process the headerPart instead of the bodyPart
      *
      * @return array Array with two keys (0/1) with a) content and b) currentMappingInfo which is retrieved inside (currentMappingInfo will be different based on whether "head" or "body" content is "mapped")
      * @see renderTO()
@@ -1867,7 +1867,7 @@ class tx_templavoila_cm1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass
      *
      * @param string $displayFile The abs file name to read
      * @param array $currentHeaderMappingInfo Header mapping information
-     * @param boolean $showBodyTag If true, show body tag.
+     * @param bool $showBodyTag If true, show body tag.
      * @param string $htmlAfterDSTable HTML content to show after the Data Structure table.
      *
      * @return string HTML table.
@@ -2191,16 +2191,16 @@ class tx_templavoila_cm1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass
      * Calls itself recursively
      *
      * @param array $dataStruct Part of Data Structure (array of elements)
-     * @param integer $mappingMode If true, the Data Structure table will show links for mapping actions. Otherwise it will just layout the Data Structure visually.
+     * @param int $mappingMode If true, the Data Structure table will show links for mapping actions. Otherwise it will just layout the Data Structure visually.
      * @param array $currentMappingInfo Part of Current mapping information corresponding to the $dataStruct array - used to evaluate the status of mapping for a certain point in the structure.
      * @param array $pathLevels Array of HTML paths
      * @param array $optDat Options for mapping mode control (INNER, OUTER etc...)
      * @param array $contentSplittedByMapping Content from template file splitted by current mapping info - needed to evaluate whether mapping information for a certain level actually worked on live content!
-     * @param integer $level Recursion level, counting up
+     * @param int $level Recursion level, counting up
      * @param array $tRows Accumulates the table rows containing the structure. This is the array returned from the function.
      * @param string $formPrefix Form field prefix. For each recursion of this function, two [] parts are added to this prefix
      * @param string $path HTML path. For each recursion a section (divided by "|") is added.
-     * @param integer $mapOK
+     * @param int $mapOK
      *
      * @internal param boolean $mapOk If true, the "Map" link can be shown, otherwise not. Used internally in the recursions.
      *
@@ -2535,8 +2535,8 @@ class tx_templavoila_cm1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass
      * @param string $file File name to display in exploded mode.
      * @param string $path HTML-page
      * @param string $limitTags Tags which is the only ones to show
-     * @param boolean $showOnly If set, the template is only shown, mapping links disabled.
-     * @param integer $preview Preview enabled.
+     * @param bool $showOnly If set, the template is only shown, mapping links disabled.
+     * @param int $preview Preview enabled.
      *
      * @return string HTML code for the IFRAME.
      * @see main_display()
@@ -2556,7 +2556,7 @@ class tx_templavoila_cm1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass
      * Converts a list of mapping rules to an array
      *
      * @param string $mappingToTags Mapping rules in a list
-     * @param integer $unsetAll If set, then the ALL rule (key "*") will be unset.
+     * @param int $unsetAll If set, then the ALL rule (key "*") will be unset.
      *
      * @return array Mapping rules in a multidimensional array.
      */
@@ -2844,7 +2844,7 @@ class tx_templavoila_cm1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass
      * @param string $field Field name (CSH locallang main key)
      * @param string $BACK_PATH Back path
      * @param string $wrap Wrap code for icon-mode, splitted by "|". Not used for full-text mode.
-     * @param boolean $onlyIconMode If set, the full text will never be shown (only icon). Useful for places where it will break the page if the table with full text is shown.
+     * @param bool $onlyIconMode If set, the full text will never be shown (only icon). Useful for places where it will break the page if the table with full text is shown.
      * @param string $styleAttrib Additional style-attribute content for wrapping table (full text mode only)
      *
      * @return string HTML content for help text
@@ -2933,7 +2933,7 @@ class tx_templavoila_cm1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass
 if (!function_exists('md5_file')) {
     /**
      * @param string $file
-     * @param boolean $raw
+     * @param bool $raw
      *
      * @return string
      */

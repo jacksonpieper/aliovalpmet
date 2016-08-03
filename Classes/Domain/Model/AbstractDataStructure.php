@@ -23,22 +23,22 @@ abstract class AbstractDataStructure
 {
 
     /**
-     * @var integer
+     * @var int
      */
     const SCOPE_UNKNOWN = 0;
 
     /**
-     * @var integer
+     * @var int
      */
     const SCOPE_PAGE = 1;
 
     /**
-     * @var integer
+     * @var int
      */
     const SCOPE_FCE = 2;
 
     /**
-     * @var integer
+     * @var int
      */
     protected $scope = self::SCOPE_UNKNOWN;
 
@@ -75,7 +75,7 @@ abstract class AbstractDataStructure
     /**
      * Retrieve the label of the datastructure
      *
-     * @return integer
+     * @return int
      */
     public function getScope()
     {
@@ -83,7 +83,7 @@ abstract class AbstractDataStructure
     }
 
     /**
-     * @param integer $scope
+     * @param int $scope
      *
      * @return void
      */
@@ -164,7 +164,7 @@ abstract class AbstractDataStructure
      * @param array $parentRow
      * @param array $removeItems
      *
-     * @return boolean
+     * @return bool
      */
     abstract public function isPermittedForUser($parentRow = [], $removeItems = []);
 
@@ -172,7 +172,7 @@ abstract class AbstractDataStructure
      * Enables to determine whether this element is based on a record or on a file
      * Required for view-related tasks (edit-icons)
      *
-     * @return boolean
+     * @return bool
      */
     public function isFilebased()
     {

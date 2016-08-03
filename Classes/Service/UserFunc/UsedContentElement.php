@@ -31,7 +31,7 @@ class UsedContentElement
     /**
      * Initialize object with page id.
      *
-     * @param integer $page_uid UID of page in processing
+     * @param int $page_uid UID of page in processing
      *
      * @return void
      */
@@ -53,9 +53,9 @@ class UsedContentElement
      * Returns TRUE if either table is NOT tt_content OR (in case it is tt_content) if the uid is in the built page.
      *
      * @param string $table
-     * @param integer $uid
+     * @param int $uid
      *
-     * @return boolean
+     * @return bool
      */
     public function filter($table, $uid)
     {

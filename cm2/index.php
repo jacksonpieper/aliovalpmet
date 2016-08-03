@@ -35,7 +35,7 @@ class tx_templavoila_cm2 extends \TYPO3\CMS\Backend\Module\BaseScriptClass
     /**
      * Showing linenumbers if true.
      *
-     * @var boolean
+     * @var bool
      */
     public $option_linenumbers = true;
 

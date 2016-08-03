@@ -141,8 +141,8 @@ class SidebarRenderer
      * @param string $itemKey A unique identifier for your sidebar item. Generally use your extension key to make sure it is unique (eg. 'tx_templavoila_sidebar_item1').
      * @param Renderable $object A reference to the instantiated class containing the method which renders the sidebar item (usually $this).
      * @param string $label The label which will be shown for your item in the sidebar menu. Make sure that this label is localized!
-     * @param integer $priority An integer between 0 and 100. The higher the value, the higher the item will be displayed in the sidebar. Default is 50
-     * @param boolean $hideIfEmpty
+     * @param int $priority An integer between 0 and 100. The higher the value, the higher the item will be displayed in the sidebar. Default is 50
+     * @param bool $hideIfEmpty
      */
     public function addItem($itemKey, Renderable $object, $label, $priority = 50, $hideIfEmpty = false)
     {

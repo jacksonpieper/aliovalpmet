@@ -43,7 +43,7 @@ class MainController extends AbstractModuleController implements Configurable
     public $rootElementTable;
 
     /**
-     * @var integer
+     * @var int
      */
     public $rootElementUid;
 
@@ -53,12 +53,12 @@ class MainController extends AbstractModuleController implements Configurable
     public $rootElementRecord;
 
     /**
-     * @var integer
+     * @var int
      */
     public $containedElementsPointer;
 
     /**
-     * @var integer
+     * @var int
      */
     public $rootElementUid_pidForContent;
 
@@ -128,7 +128,7 @@ class MainController extends AbstractModuleController implements Configurable
     /**
      * Versioning: The current version id
      *
-     * @var integer
+     * @var int
      */
     public $versionId = 0;
 
@@ -142,7 +142,7 @@ class MainController extends AbstractModuleController implements Configurable
     /**
      * Contains the currently selected language uid (Example: -1, 0, 1, 2, ...)
      *
-     * @var integer
+     * @var int
      */
     public $currentLanguageUid;
 
@@ -180,7 +180,7 @@ class MainController extends AbstractModuleController implements Configurable
     /**
      * Permissions for the parrent record (normally page). Used for hiding icons.
      *
-     * @var integer
+     * @var int
      */
     public $calcPerms;
 
@@ -267,7 +267,7 @@ class MainController extends AbstractModuleController implements Configurable
     public $renderPreviewDataObjects = null;
 
     /**
-     * @var integer
+     * @var int
      */
     public $previewTitleMaxLen = 50;
 
@@ -277,12 +277,12 @@ class MainController extends AbstractModuleController implements Configurable
     public $visibleContentHookObjects = [];
 
     /**
-     * @var boolean
+     * @var bool
      */
     protected static $visibleContentHookObjectsPrepared = false;
 
     /**
-     * @var boolean
+     * @var bool
      */
     public $debug = false;
 
@@ -306,7 +306,7 @@ class MainController extends AbstractModuleController implements Configurable
     /**
      * Used for Content preview and is used as flag if content should be linked or not
      *
-     * @var boolean
+     * @var bool
      */
     public $currentElementBelongsToCurrentPage;
 
@@ -325,7 +325,7 @@ class MainController extends AbstractModuleController implements Configurable
     /**
      * With this doktype the normal Edit screen is rendered
      *
-     * @var integer
+     * @var int
      */
     const DOKTYPE_NORMAL_EDIT = 1;
 
@@ -933,7 +933,7 @@ class MainController extends AbstractModuleController implements Configurable
     /**
      * Create the panel of buttons for submitting the form or otherwise perform operations.
      *
-     * @param boolean $noButtons Determine whether to show any icons or not
+     * @param bool $noButtons Determine whether to show any icons or not
      *
      * @return array all available buttons as an assoc. array
      */
@@ -1389,7 +1389,7 @@ class MainController extends AbstractModuleController implements Configurable
      * @param array $elementContentTreeArr Content tree starting with the element which possibly has sub elements
      * @param string $languageKey Language key for current display
      * @param string $sheet Key of the sheet we want to render
-     * @param integer $calcPerms Defined the access rights for the enclosing parent
+     * @param int $calcPerms Defined the access rights for the enclosing parent
      *
      * @throws RuntimeException
      *
@@ -1681,7 +1681,7 @@ class MainController extends AbstractModuleController implements Configurable
     }
 
     /**
-     * @param boolean $langDisable
+     * @param bool $langDisable
      * @param string $langChildren
      * @param string $languageKey
      *
@@ -1698,7 +1698,7 @@ class MainController extends AbstractModuleController implements Configurable
      * @param string $lKey
      * @param string $vKey
      *
-     * @return boolean
+     * @return bool
      */
     protected function disablePageStructureInheritance($elementContentTreeArr, $sheet, $lKey, $vKey)
     {
@@ -1816,7 +1816,7 @@ class MainController extends AbstractModuleController implements Configurable
      *
      * @param array $fieldData
      * @param string $table
-     * @param integer $uid
+     * @param int $uid
      * @param string $vKey
      *
      * @return string
@@ -2179,7 +2179,7 @@ class MainController extends AbstractModuleController implements Configurable
      *
      * @param array $contentTreeArr DataStructure info array (the whole tree)
      * @param array $entries Entries accumulated in this array (passed by reference)
-     * @param integer $indentLevel Indentation level
+     * @param int $indentLevel Indentation level
      * @param array $parentPointer Element position in structure
      * @param string $controls HTML for controls to add for this element
      *
@@ -2316,7 +2316,7 @@ class MainController extends AbstractModuleController implements Configurable
      * @param array $contentTreeArr DataStructure info array (the whole tree)
      * @param string $sheet Which sheet to display
      * @param array $entries Entries accumulated in this array (passed by reference)
-     * @param integer $indentLevel Indentation level
+     * @param int $indentLevel Indentation level
      *
      * @return void
      * @access protected
@@ -2404,7 +2404,7 @@ class MainController extends AbstractModuleController implements Configurable
      *
      * @param array $contentTreeArr Part of the contentTreeArr for the element
      * @param array $entries Entries accumulated in this array (passed by reference)
-     * @param integer $indentLevel Indentation level
+     * @param int $indentLevel Indentation level
      *
      * @return string HTML
      * @access protected
@@ -2478,9 +2478,9 @@ class MainController extends AbstractModuleController implements Configurable
      *
      * @param string $label The label (or image)
      * @param string $table The table, fx. 'tt_content'
-     * @param integer $uid The uid of the element to be edited
-     * @param boolean $forced By default the link is not shown if translatorMode is set, but with this boolean it can be forced anyway.
-     * @param integer $usePid ...
+     * @param int $uid The uid of the element to be edited
+     * @param bool $forced By default the link is not shown if translatorMode is set, but with this boolean it can be forced anyway.
+     * @param int $usePid ...
      * @param string $linkClass css class to use for regular content elements
      *
      * @return string HTML anchor tag containing the label and the correct link
@@ -2545,10 +2545,10 @@ class MainController extends AbstractModuleController implements Configurable
     /**
      * @param string $label
      * @param string $table
-     * @param integer $uid
-     * @param integer $hidden
-     * @param boolean $forced
-     * @param integer $usePid
+     * @param int $uid
+     * @param int $hidden
+     * @param bool $forced
+     * @param int $usePid
      *
      * @return string
      * @throws \UnexpectedValueException
@@ -2684,8 +2684,8 @@ class MainController extends AbstractModuleController implements Configurable
      * @param string $label The label
      * @param string $table
      * @param int $uid
-     * @param boolean $realDelete If set, the record is not just unlinked but deleted!
-     * @param boolean $foreignReferences If set, the record seems to have references on other pages
+     * @param bool $realDelete If set, the record is not just unlinked but deleted!
+     * @param bool $foreignReferences If set, the record seems to have references on other pages
      * @param string $elementPointer
      *
      * @return string HTML anchor tag containing the label and the unlink-link
@@ -2753,7 +2753,7 @@ class MainController extends AbstractModuleController implements Configurable
      * which sit below each content element
      *
      * @param array $elementPointer
-     * @param boolean $canCreateNew
+     * @param bool $canCreateNew
      *
      * @return string
      */
@@ -2969,19 +2969,19 @@ class MainController extends AbstractModuleController implements Configurable
     /**
      * Returns an array of available languages (to use for FlexForms)
      *
-     * @param integer $id If zero, the query will select all sys_language records from root level. If set to another value, the query will select all sys_language records that has a pages_language_overlay record on that page (and is not hidden, unless you are admin user)
-     * @param boolean $onlyIsoCoded If set, only languages which are paired with a static_info_table / static_language record will be returned.
-     * @param boolean $setDefault If set, an array entry for a default language is set.
-     * @param boolean $setMulti If set, an array entry for "multiple languages" is added (uid -1)
+     * @param int $id If zero, the query will select all sys_language records from root level. If set to another value, the query will select all sys_language records that has a pages_language_overlay record on that page (and is not hidden, unless you are admin user)
+     * @param bool $onlyIsoCoded If set, only languages which are paired with a static_info_table / static_language record will be returned.
+     * @param bool $setDefault If set, an array entry for a default language is set.
+     * @param bool $setMulti If set, an array entry for "multiple languages" is added (uid -1)
      *
      * @return array
      * @access protected
      */
     /**
-     * @param integer $id If zero, the query will select all sys_language records from root level. If set to another value, the query will select all sys_language records that has a pages_language_overlay record on that page (and is not hidden, unless you are admin user)
-     * @param boolean $onlyIsoCoded If set, only languages which are paired with a static_info_table / static_language record will be returned.
-     * @param boolean $setDefault If set, an array entry for a default language is set.
-     * @param boolean $setMulti If set, an array entry for "multiple languages" is added (uid -1)
+     * @param int $id If zero, the query will select all sys_language records from root level. If set to another value, the query will select all sys_language records that has a pages_language_overlay record on that page (and is not hidden, unless you are admin user)
+     * @param bool $onlyIsoCoded If set, only languages which are paired with a static_info_table / static_language record will be returned.
+     * @param bool $setDefault If set, an array entry for a default language is set.
+     * @param bool $setMulti If set, an array entry for "multiple languages" is added (uid -1)
      *
      * @return array
      * @access protected
@@ -3094,7 +3094,7 @@ class MainController extends AbstractModuleController implements Configurable
     /**
      * Checks if translation to alternative languages can be applied to this page.
      *
-     * @return boolean <code>true</code> if alternative languages exist
+     * @return bool <code>true</code> if alternative languages exist
      */
     public function alternativeLanguagesDefined()
     {
@@ -3106,7 +3106,7 @@ class MainController extends AbstractModuleController implements Configurable
      *
      * @param array $subElementArr Sub element array
      *
-     * @return boolean Display or not
+     * @return bool Display or not
      */
     public function displayElement($subElementArr)
     {
@@ -3136,7 +3136,7 @@ class MainController extends AbstractModuleController implements Configurable
      * Returns label, localized and converted to current charset. Label must be from FlexForm (= always in UTF-8).
      *
      * @param string $label Label
-     * @param boolean $hsc <code>true</code> if HSC required
+     * @param bool $hsc <code>true</code> if HSC required
      *
      * @return string Converted label
      */
@@ -3152,7 +3152,7 @@ class MainController extends AbstractModuleController implements Configurable
 
     /**
      * @param string $table
-     * @param integer $id
+     * @param int $id
      *
      * @return string
      */
@@ -3224,10 +3224,10 @@ class MainController extends AbstractModuleController implements Configurable
     /**
      * Checks whether the datastructure for a new FCE contains the noEditOnCreation meta configuration
      *
-     * @param integer $dsUid uid of the datastructure we want to check
-     * @param integer $toUid uid of the tmplobj we want to check
+     * @param int $dsUid uid of the datastructure we want to check
+     * @param int $toUid uid of the tmplobj we want to check
      *
-     * @return boolean
+     * @return bool
      */
     protected function editingOfNewElementIsEnabled($dsUid, $toUid)
     {
@@ -3254,7 +3254,7 @@ class MainController extends AbstractModuleController implements Configurable
      * Adds a flexPointer to the stack of sortable items for drag&drop
      *
      * @param string $pointerStr the sourcePointer for the referenced element
-     * @param boolean $addToSortables determine wether the element should be used for drag and drop
+     * @param bool $addToSortables determine wether the element should be used for drag and drop
      *
      * @return string the key for the related html-element
      */
@@ -3270,9 +3270,9 @@ class MainController extends AbstractModuleController implements Configurable
     }
 
     /**
-     * @param integer $pid
+     * @param int $pid
      *
-     * @return integer
+     * @return int
      */
     protected function getCalcPerms($pid)
     {
@@ -3293,7 +3293,7 @@ class MainController extends AbstractModuleController implements Configurable
      * @param string $table
      * @param array $record
      *
-     * @return boolean
+     * @return bool
      */
     protected function hasBasicEditRights($table = null, array $record = null)
     {

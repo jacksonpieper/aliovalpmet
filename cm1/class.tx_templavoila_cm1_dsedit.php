@@ -28,7 +28,7 @@ class tx_templavoila_cm1_dsEdit
     protected $pObj;
 
     /**
-     * @var integer
+     * @var int
      */
     protected $oldStyleColumnNumber = 0;
 
@@ -46,7 +46,7 @@ class tx_templavoila_cm1_dsEdit
      * @param string $formPrefix Form element prefix
      * @param string $key Key for form element
      * @param array $value Values for element
-     * @param integer $level Indentation level
+     * @param int $level Indentation level
      * @param array $rowCells Array containing mapping links and commands
      *
      * @return array Two values, first is addEditRows (string HTML content), second is boolean whether to place row before or after.

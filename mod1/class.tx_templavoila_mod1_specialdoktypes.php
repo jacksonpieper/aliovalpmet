@@ -24,7 +24,7 @@ class tx_templavoila_mod1_specialdoktypes
 {
 
     /**
-     * @var integer
+     * @var int
      */
     protected $id;
 
@@ -153,7 +153,7 @@ class tx_templavoila_mod1_specialdoktypes
      *
      * @param array $pageRecord The current page record
      *
-     * @return boolean|string HTML output from this submodule or FALSE if this submodule doesn't feel responsible
+     * @return bool|string HTML output from this submodule or FALSE if this submodule doesn't feel responsible
      * @access protected
      */
     public function renderDoktype_7($pageRecord)
@@ -215,7 +215,7 @@ class tx_templavoila_mod1_specialdoktypes
     /**
      * Returns TRUE if the logged in BE user has access to the list module.
      *
-     * @return boolean
+     * @return bool
      * @access protected
      */
     public function userHasAccessToListModule()

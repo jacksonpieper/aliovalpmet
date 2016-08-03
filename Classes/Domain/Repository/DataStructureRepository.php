@@ -23,14 +23,14 @@ class DataStructureRepository
 {
 
     /**
-     * @var boolean
+     * @var bool
      */
     protected static $staticDsInitComplete = false;
 
     /**
      * Retrieve a single datastructure by uid or xml-file path
      *
-     * @param integer $uidOrFile
+     * @param int $uidOrFile
      *
      * @throws \InvalidArgumentException
      *
@@ -60,7 +60,7 @@ class DataStructureRepository
     /**
      * Retrieve a collection (array) of tx_templavoila_datastructure objects
      *
-     * @param integer $pid
+     * @param int $pid
      *
      * @return array
      */
@@ -99,8 +99,8 @@ class DataStructureRepository
     /**
      * Retrieve a collection (array) of tx_templavoila_datastructure objects
      *
-     * @param integer $pid
-     * @param integer $scope
+     * @param int $pid
+     * @param int $scope
      *
      * @return array
      */
@@ -141,7 +141,7 @@ class DataStructureRepository
     /**
      * Retrieve a collection (array) of tx_templavoila_datastructure objects
      *
-     * @param integer $scope
+     * @param int $scope
      *
      * @return array
      */
@@ -233,7 +233,7 @@ class DataStructureRepository
     }
 
     /**
-     * @return boolean
+     * @return bool
      */
     protected function isStaticDsEnabled()
     {
@@ -278,7 +278,7 @@ class DataStructureRepository
      * @param \Extension\Templavoila\Domain\Model\AbstractDataStructure $obj1
      * @param \Extension\Templavoila\Domain\Model\AbstractDataStructure $obj2
      *
-     * @return integer Result of the comparison (see strcmp())
+     * @return int Result of the comparison (see strcmp())
      * @see usort()
      * @see strcmp()
      */
@@ -288,9 +288,9 @@ class DataStructureRepository
     }
 
     /**
-     * @param integer $pid
+     * @param int $pid
      *
-     * @return integer
+     * @return int
      */
     public function getDatastructureCountForPid($pid)
     {

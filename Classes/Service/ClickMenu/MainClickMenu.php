@@ -32,7 +32,7 @@ class MainClickMenu
      * @param object &$backRef Reference to the parent object of the clickmenu class which calls this function
      * @param array $menuItems The current array of menu items - you have to add or remove items to this array in this function. Thats the point...
      * @param string $table The database table OR filename
-     * @param integer $uid For database tables, the UID
+     * @param int $uid For database tables, the UID
      *
      * @return array The modified menu array.
      */

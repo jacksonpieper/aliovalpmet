@@ -73,7 +73,7 @@ class tx_templavoila_mod1_wizards
     /**
      * Creates the screen for "new page wizard"
      *
-     * @param integer $positionPid Can be positive and negative depending of where the new page is going: Negative always points to a position AFTER the page having the abs. value of the positionId. Positive numbers means to create as the first subpage to another page.
+     * @param int $positionPid Can be positive and negative depending of where the new page is going: Negative always points to a position AFTER the page having the abs. value of the positionId. Positive numbers means to create as the first subpage to another page.
      *
      * @return string Content for the screen output.
      * @todo  Check required field(s), support t3d
@@ -235,7 +235,7 @@ class tx_templavoila_mod1_wizards
     /**
      * Renders the template selector.
      *
-     * @param integer $positionPid Position id. Can be positive and negative depending of where the new page is going: Negative always points to a position AFTER the page having the abs. value of the positionId. Positive numbers means to create as the first subpage to another page.
+     * @param int $positionPid Position id. Can be positive and negative depending of where the new page is going: Negative always points to a position AFTER the page having the abs. value of the positionId. Positive numbers means to create as the first subpage to another page.
      * @param string $templateType The template type, 'tmplobj' or 't3d'
      *
      * @return string HTML output containing a table with the template selector
@@ -394,9 +394,9 @@ class tx_templavoila_mod1_wizards
      * Performs the neccessary steps to creates a new page
      *
      * @param array $pageArray array containing the fields for the new page
-     * @param integer $positionPid location within the page tree (parent id)
+     * @param int $positionPid location within the page tree (parent id)
      *
-     * @return integer uid of the new page record
+     * @return int uid of the new page record
      */
     public function createPage($pageArray, $positionPid)
     {
@@ -471,7 +471,7 @@ class tx_templavoila_mod1_wizards
     /**
      * Extract the disallowed TCAFORM field values of $fieldName given field
      *
-     * @param integer $positionPid
+     * @param int $positionPid
      * @param string $fieldName field name of TCAFORM
      *
      * @access private

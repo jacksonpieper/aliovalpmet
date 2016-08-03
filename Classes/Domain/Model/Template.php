@@ -48,7 +48,7 @@ class Template
     protected $fileref;
 
     /**
-     * @var integer
+     * @var int
      */
     protected $fileref_mtime;
 
@@ -63,12 +63,12 @@ class Template
     protected $sortbyField;
 
     /**
-     * @var integer
+     * @var int
      */
     protected $parent;
 
     /**
-     * @param integer $uid
+     * @param int $uid
      */
     public function __construct($uid)
     {
@@ -174,7 +174,7 @@ class Template
     /**
      * Retrieve the filereference of the template
      *
-     * @return integer
+     * @return int
      */
     public function getFilerefMtime()
     {
@@ -182,7 +182,7 @@ class Template
     }
 
     /**
-     * @param integer $str
+     * @param int $str
      *
      * @return void
      */
@@ -262,7 +262,7 @@ class Template
     /**
      * Retrieve the system language of the template
      *
-     * @return integer
+     * @return int
      */
     public function getSyslang()
     {
@@ -272,7 +272,7 @@ class Template
     /**
      * Check if this is a subtemplate or not
      *
-     * @return boolean
+     * @return bool
      */
     public function hasParentTemplate()
     {
@@ -286,7 +286,7 @@ class Template
      * @param mixed $parentRow
      * @param mixed $removeItems
      *
-     * @return boolean
+     * @return bool
      */
     public function isPermittedForUser($parentRow = [], $removeItems = [])
     {
@@ -336,7 +336,7 @@ class Template
     }
 
     /**
-     * @return integer
+     * @return int
      */
     protected function getScope()
     {
@@ -344,7 +344,7 @@ class Template
     }
 
     /**
-     * @param boolean $skipDsDataprot
+     * @param bool $skipDsDataprot
      *
      * @return string
      */
@@ -354,7 +354,7 @@ class Template
     }
 
     /**
-     * @param boolean $skipDsDataprot
+     * @param bool $skipDsDataprot
      *
      * @return array
      */
@@ -443,7 +443,7 @@ class Template
     }
 
     /**
-     * @param integer $parent
+     * @param int $parent
      *
      * @return void
      */
@@ -453,7 +453,7 @@ class Template
     }
 
     /**
-     * @return integer
+     * @return int
      */
     public function getParent()
     {
@@ -461,7 +461,7 @@ class Template
     }
 
     /**
-     * @return boolean
+     * @return bool
      */
     public function hasParent()
     {

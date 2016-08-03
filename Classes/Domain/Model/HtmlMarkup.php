@@ -47,7 +47,7 @@ class HtmlMarkup
     /**
      * When in source mode the lines are truncated with "..." if longer than this number of characters.
      *
-     * @var integer
+     * @var int
      */
     public $maxLineLengthInSourceMode = 150;
 
@@ -65,7 +65,7 @@ class HtmlMarkup
     /**
      * Maximum recursions into the HTML code. Works as a break to avoid run-away function calls if that is potentially possible.
      *
-     * @var integer
+     * @var int
      */
     public $maxRecursion = 99;
 
@@ -84,7 +84,7 @@ class HtmlMarkup
     public $checkboxPathsSet = []; //
 
     /**
-     * @var boolean
+     * @var bool
      */
     public $textGnyf = false;
 
@@ -704,9 +704,9 @@ class HtmlMarkup
     /**
      * For use in both frontend and backend
      *
-     * @param integer $uid
+     * @param int $uid
      *
-     * @return string|boolean
+     * @return string|bool
      */
     public function getTemplateArrayForTO($uid)
     {
@@ -730,7 +730,7 @@ class HtmlMarkup
      * @param array $TA
      * @param array $data
      *
-     * @return string|boolean
+     * @return string|bool
      */
     public function mergeDataArrayToTemplateArray($TA, $data)
     {
@@ -751,9 +751,9 @@ class HtmlMarkup
      * Returns the right template record for the current display
      * Requires the extension "TemplaVoila"
      *
-     * @param integer $uid The UID of the template record
+     * @param int $uid The UID of the template record
      * @param string $renderType
-     * @param integer $langUid
+     * @param int $langUid
      *
      * @return mixed The record array or <code>false</code>
      */
@@ -809,9 +809,9 @@ class HtmlMarkup
     }
 
     /**
-     * @param integer $uid
+     * @param int $uid
      * @param string $renderType
-     * @param integer $langUid
+     * @param int $langUid
      * @param string $sheet
      *
      * @return mixed
@@ -827,7 +827,7 @@ class HtmlMarkup
     /**
      * Helper function to build the query for searching print/language templates.
      *
-     * @param integer $uid The UID of the template record
+     * @param int $uid The UID of the template record
      * @param string $where The where clause.
      *
      * @return mixed An array if a record is found, otherwise null
@@ -854,7 +854,7 @@ class HtmlMarkup
      * @param array $MappingInfo_head ...
      * @param array $MappingData_head_cached ...
      * @param string $BodyTag_cached ...
-     * @param boolean $pageRenderer try to use the pageRenderer for script and style inclusion
+     * @param bool $pageRenderer try to use the pageRenderer for script and style inclusion
      *
      * @return void
      */
@@ -1040,7 +1040,7 @@ class HtmlMarkup
      * @param string $tagsSolo list of solo (single) tags; which are stand-alone (eg. <img>, <br>, <hr>, <input>)
      * @param string $mode Denotes which mode of operation to apply: 'markup' will markup the html, 'search' will return HTML code with markers inserted for the found paths. Default does nothing.
      * @param string $path Used to accumulate the tags 'path' in the document
-     * @param integer $recursion Used internally to control recursion.
+     * @param int $recursion Used internally to control recursion.
      *
      * @return string HTML
      */
@@ -1182,7 +1182,7 @@ class HtmlMarkup
      * @param string $firstTag Current tag, full
      * @param string $endTag End tag for the current tag
      * @param string $subPath Current path of element
-     * @param integer $recursion The recursion number
+     * @param int $recursion The recursion number
      *
      * @return string Modified sub HTML code ($v)
      */
@@ -1274,7 +1274,7 @@ class HtmlMarkup
      * @param string $endTag End tag for the current tag
      * @param string $subPath Current path of element
      * @param string $path
-     * @param integer $recursion The recursion number
+     * @param int $recursion The recursion number
      *
      * @return string Modified sub HTML code ($v)
      */
@@ -1357,9 +1357,9 @@ class HtmlMarkup
      * Will format content for display in 'source' mode.
      *
      * @param string $str Input string to format.
-     * @param integer $recursion The recursion integer - used to indent the code.
+     * @param int $recursion The recursion integer - used to indent the code.
      * @param string $gnyf The gnyf-image to display.
-     * @param integer $valueStr If set, then the line will be formatted in color as a "value" (means outside of the tag which might otherwise be what is shown)
+     * @param int $valueStr If set, then the line will be formatted in color as a "value" (means outside of the tag which might otherwise be what is shown)
      *
      * @return string Formatted input.
      */
@@ -1381,10 +1381,10 @@ class HtmlMarkup
      * Will format content for display in 'checkbox' mode.
      *
      * @param string $str Input string to format.
-     * @param integer $recursion The recursion integer - used to indent the code.
+     * @param int $recursion The recursion integer - used to indent the code.
      * @param string $path HTML path
      * @param string $gnyf The gnyf-image to display.
-     * @param integer $valueStr If set, then the line will be formatted in color as a "value" (means outside of the tag which might otherwise be what is shown)
+     * @param int $valueStr If set, then the line will be formatted in color as a "value" (means outside of the tag which might otherwise be what is shown)
      *
      * @return string Formatted input.
      */

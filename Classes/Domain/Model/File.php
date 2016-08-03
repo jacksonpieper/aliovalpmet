@@ -21,7 +21,7 @@ class File
 {
 
     /**
-     * @return boolean
+     * @return bool
      */
     public static function includesFal()
     {
@@ -72,7 +72,7 @@ class File
      *
      * @param string $filename
      *
-     * @return boolean
+     * @return bool
      */
     public static function is_file($filename)
     {
@@ -96,7 +96,7 @@ class File
      *
      * @param string $filename
      *
-     * @return boolean
+     * @return bool
      */
     public static function is_xmlFile($filename)
     {
@@ -121,7 +121,7 @@ class File
      *
      * @param $filename
      *
-     * @return boolean
+     * @return bool
      */
     protected static function is_xmlFile_finfo($filename)
     {

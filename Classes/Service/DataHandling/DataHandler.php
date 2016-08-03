@@ -25,7 +25,7 @@ class DataHandler
 {
 
     /**
-     * @var boolean
+     * @var bool
      */
     public $debug = false;
 
@@ -373,8 +373,8 @@ page.10.disableExplosivePreview = 1
      * the page. We make sure that this is also reflected in the pages references.
      *
      * @param string $table    The table we're dealing with
-     * @param integer $uid The record UID
-     * @param integer $destPid The page UID of the page the element has been moved to
+     * @param int $uid The record UID
+     * @param int $destPid The page UID of the page the element has been moved to
      * @param array $sourceRecordBeforeMove (A part of) the record before it has been moved (and thus the PID has possibly been changed)
      * @param array $updateFields The updated fields of the record row in question (we don't use that)
      * @param object $reference A reference to the TCEmain instance
@@ -418,9 +418,9 @@ page.10.disableExplosivePreview = 1
      * the page. We make sure that this is also reflected in the pages references.
      *
      * @param string $table    The table we're dealing with
-     * @param integer $uid The record UID
-     * @param integer $destPid The page UID of the page the element has been moved to
-     * @param integer $origDestPid The "original" PID: This tells us more about after which record our record wants to be moved. So it's not a page uid but a tt_content uid!
+     * @param int $uid The record UID
+     * @param int $destPid The page UID of the page the element has been moved to
+     * @param int $origDestPid The "original" PID: This tells us more about after which record our record wants to be moved. So it's not a page uid but a tt_content uid!
      * @param array $sourceRecordBeforeMove (A part of) the record before it has been moved (and thus the PID has possibly been changed)
      * @param array $updateFields The updated fields of the record row in question (we don't use that)
      * @param object $reference A reference to the TCEmain instance
@@ -462,7 +462,7 @@ page.10.disableExplosivePreview = 1
      * so they reflect the order of the references.
      *
      * @param string $flexformXML The flexform XML data of the page
-     * @param integer $pid Current page id
+     * @param int $pid Current page id
      *
      * @return void
      * @access protected
@@ -597,9 +597,9 @@ page.10.disableExplosivePreview = 1
      * @see http://bugs.typo3.org/view.php?id=485
      *
      * @param string $table
-     * @param integer $id
+     * @param int $id
      * @param array $data
-     * @param boolean $res
+     * @param bool $res
      * @param object $pObj
      *
      * @return mixed - "1" if we grant access and "false" if we can't decide whether to give access or not

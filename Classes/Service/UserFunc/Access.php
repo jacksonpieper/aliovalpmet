@@ -28,7 +28,7 @@ class Access
      * @param array $params Parameters
      * @param object $ref Parent object
      *
-     * @return boolean <code>true</code> if change is allowed
+     * @return bool <code>true</code> if change is allowed
      */
     public function recordEditAccessInternals($params, $ref)
     {
@@ -67,7 +67,7 @@ class Access
      * @param int $uid UID of the record
      * @param object $be_user BE user object
      *
-     * @return boolean <code>true</code> if access is allowed
+     * @return bool <code>true</code> if access is allowed
      */
     public function checkObjectAccess($table, $uid, $be_user)
     {

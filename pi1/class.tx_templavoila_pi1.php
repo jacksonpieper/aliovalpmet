@@ -45,12 +45,12 @@ class tx_templavoila_pi1 extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
     /**
      * If set, children-translations will take the value from the default if "false" (zero or blank)
      *
-     * @var integer
+     * @var int
      */
     public $inheritValueFromDefault = 1;
 
     /**
-     * @var boolean
+     * @var bool
      */
     public static $enablePageRenderer = true;
 

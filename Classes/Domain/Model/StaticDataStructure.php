@@ -30,7 +30,7 @@ class StaticDataStructure extends AbstractDataStructure
     /**
      * @throws \InvalidArgumentException
      *
-     * @param integer $key
+     * @param int $key
      */
     public function __construct($key)
     {
@@ -103,7 +103,7 @@ class StaticDataStructure extends AbstractDataStructure
      * @param mixed $parentRow
      * @param mixed $removeItems
      *
-     * @return boolean
+     * @return bool
      */
     public function isPermittedForUser($parentRow = [], $removeItems = [])
     {
@@ -114,7 +114,7 @@ class StaticDataStructure extends AbstractDataStructure
      * Enables to determine whether this element is based on a record or on a file
      * Required for view-related tasks (edit-icons)
      *
-     * @return boolean
+     * @return bool
      */
     public function isFilebased()
     {
@@ -124,7 +124,7 @@ class StaticDataStructure extends AbstractDataStructure
     /**
      * Retrieve the filereference of the template
      *
-     * @return integer
+     * @return int
      */
     public function getTstamp()
     {
@@ -141,7 +141,7 @@ class StaticDataStructure extends AbstractDataStructure
     /**
      * Retrieve the filereference of the template
      *
-     * @return integer
+     * @return int
      */
     public function getCrdate()
     {
@@ -158,7 +158,7 @@ class StaticDataStructure extends AbstractDataStructure
     /**
      * Retrieve the filereference of the template
      *
-     * @return integer
+     * @return int
      */
     public function getCruser()
     {

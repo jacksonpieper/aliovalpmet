@@ -57,7 +57,7 @@ class tx_templavoila_staticds_check
     /**
      * Is static DS enabled?
      *
-     * @return boolean
+     * @return bool
      */
     protected function staticDsIsEnabled()
     {
@@ -68,7 +68,7 @@ class tx_templavoila_staticds_check
     /**
      * Get data structure count
      *
-     * @return integer
+     * @return int
      */
     protected function datastructureDbCount()
     {

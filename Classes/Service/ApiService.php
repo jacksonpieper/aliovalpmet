@@ -27,7 +27,7 @@ class ApiService
 {
 
     /**
-     * @var boolean
+     * @var bool
      */
     protected $includePreviewData;
 
@@ -37,7 +37,7 @@ class ApiService
     protected $rootTable;
 
     /**
-     * @var boolean
+     * @var bool
      */
     public $debug = false;
 
@@ -47,7 +47,7 @@ class ApiService
     protected $allSystemWebsiteLanguages = []; // ->loadWebsiteLanguages() will set this to content of sys_language
 
     /**
-     * @var boolean
+     * @var bool
      */
     protected $modifyReferencesInLiveWS = false;
 
@@ -193,9 +193,9 @@ class ApiService
      * record.
      *
      * @param array $destinationPointer Flexform pointer defining the parent element of the new element. Position refers to the element _after_ which the new element should be inserted. Position == 0 means before the first element.
-     * @param integer $uid UID of the tt_content record
+     * @param int $uid UID of the tt_content record
      *
-     * @return boolean
+     * @return bool
      */
     public function insertElement_setElementReferences($destinationPointer, $uid)
     {
@@ -222,7 +222,7 @@ class ApiService
      * @param array $sourcePointer flexform pointer pointing to the element which shall be moved
      * @param array $destinationPointer flexform pointer to the new location
      *
-     * @return boolean TRUE if operation was successfuly, otherwise false
+     * @return bool TRUE if operation was successfuly, otherwise false
      */
     public function moveElement($sourcePointer, $destinationPointer)
     {
@@ -241,7 +241,7 @@ class ApiService
      * @param array $sourcePointer flexform pointer pointing to the element which shall be moved
      * @param array $destinationPointer flexform pointer to the new location
      *
-     * @return boolean TRUE if operation was successfuly, otherwise false
+     * @return bool TRUE if operation was successfuly, otherwise false
      */
     public function moveElement_setElementReferences($sourcePointer, $destinationPointer)
     {
@@ -259,7 +259,7 @@ class ApiService
      *
      * @param array $sourcePointer flexform pointer pointing to the element which shall be copied
      * @param array $destinationPointer flexform pointer to the location for the copy
-     * @param boolean $copySubElements If set to TRUE, also all sub elements will be truly copied
+     * @param bool $copySubElements If set to TRUE, also all sub elements will be truly copied
      *
      * @return mixed UID of the created copy, otherwise FALSE
      */
@@ -325,7 +325,7 @@ class ApiService
      * @param array $sourcePointer flexform pointer pointing to the reference target
      * @param array $destinationPointer flexform pointer to the location where the reference should be stored
      *
-     * @return boolean TRUE if operation was successfuly, otherwise false
+     * @return bool TRUE if operation was successfuly, otherwise false
      */
     public function referenceElement($sourcePointer, $destinationPointer)
     {
@@ -343,10 +343,10 @@ class ApiService
      * Use this function in those situations when no flexform pointer exists, for example if
      * you want a reference an element which has not yet been referenced anywhere else.
      *
-     * @param integer $uid UID of the tt_content element which shall be referenced
+     * @param int $uid UID of the tt_content element which shall be referenced
      * @param array $destinationPointer flexform pointer to the location where the reference should be stored
      *
-     * @return boolean TRUE if operation was successfuly, otherwise false
+     * @return bool TRUE if operation was successfuly, otherwise false
      */
     public function referenceElementByUid($uid, $destinationPointer)
     {
@@ -366,7 +366,7 @@ class ApiService
      *
      * @param array $sourcePointer flexform pointer pointing to the reference which shall be removed
      *
-     * @return boolean TRUE if operation was successfuly, otherwise false
+     * @return bool TRUE if operation was successfuly, otherwise false
      */
     public function unlinkElement($sourcePointer)
     {
@@ -383,7 +383,7 @@ class ApiService
      *
      * @param array $sourcePointer flexform pointer pointing to the element which shall be deleted
      *
-     * @return boolean TRUE if operation was successfuly, otherwise false
+     * @return bool TRUE if operation was successfuly, otherwise false
      */
     public function deleteElement($sourcePointer)
     {
@@ -406,7 +406,7 @@ class ApiService
      * @param string $mode Kind of processing
      * @param array $sourcePointer flexform pointer pointing to the element which will be processed. If "sheet", "sLang" etc. are set, it describes the position by specifying the (future) parent. If not, it describes the element directly with "table" and "uid".
      * @param mixed $destinationPointer flexform pointer to the destination location (if neccessary)
-     * @param boolean $onlyHandleReferences If set, the record itself won't be moved, deleted etc. but only the references are set correctly. Use this feature if you are sure that the record has been handled before (eg. by TCEmain)
+     * @param bool $onlyHandleReferences If set, the record itself won't be moved, deleted etc. but only the references are set correctly. Use this feature if you are sure that the record has been handled before (eg. by TCEmain)
      *
      * @return mixed TRUE or something else (depends on operation) if operation was successful, otherwise FALSE
      */
@@ -502,9 +502,9 @@ class ApiService
      * @param array $sourceParentRecord Database record of the source location (either from table 'pages' or 'tt_content')
      * @param array $destinationParentRecord Database record of the destination location (either from table 'pages' or 'tt_content')
      * @param array $elementRecord The database record of the element to be moved
-     * @param boolean $onlyHandleReferences If TRUE, only the references will be set, the record itself will not be moved (because that happens elsewhere)
+     * @param bool $onlyHandleReferences If TRUE, only the references will be set, the record itself will not be moved (because that happens elsewhere)
      *
-     * @return boolean TRUE if operation was successfuly, otherwise false
+     * @return bool TRUE if operation was successfuly, otherwise false
      */
     public function process_move($sourcePointer, $destinationPointer, $sourceReferencesArr, $destinationReferencesArr, $sourceParentRecord, $destinationParentRecord, $elementRecord, $onlyHandleReferences)
     {
@@ -579,7 +579,7 @@ class ApiService
     /**
      * Makes a copy of the specified element and only points to the sub elements with references.
      *
-     * @param integer $sourceElementUid UID of the element to be copied
+     * @param int $sourceElementUid UID of the element to be copied
      * @param array $destinationPointer flexform pointer to the destination location
      * @param array $destinationReferencesArr Current list of the parent destination's element references
      * @param array $destinationParentRecord Database record of the destination location (either from table 'pages' or 'tt_content')
@@ -615,7 +615,7 @@ class ApiService
      * Makes a true copy of the specified element and all sub elements and sets the element references of the parent element
      * accordingly.
      *
-     * @param integer $sourceElementUid UID of the element to be copied
+     * @param int $sourceElementUid UID of the element to be copied
      * @param array $destinationPointer flexform pointer to the destination location
      * @param array $destinationReferencesArr Current list of the parent destination's element references
      * @param array $destinationParentRecord Database record of the destination location (either from table 'pages' or 'tt_content')
@@ -658,7 +658,7 @@ class ApiService
     /**
      * Localizes the specified element and only points to the sub elements with references.
      *
-     * @param integer $sourceElementUid UID of the element to be copied
+     * @param int $sourceElementUid UID of the element to be copied
      * @param array $destinationPointer flexform pointer to the destination location
      * @param array $destinationReferencesArr Database record of the destination location (either from table 'pages' or 'tt_content')
      *
@@ -711,9 +711,9 @@ class ApiService
      *
      * @param array $destinationPointer flexform pointer to the location where the reference should be stored
      * @param array $destinationReferencesArr Current list of the parent destination's element references
-     * @param integer $elementUid UID of the tt_content element to be referenced
+     * @param int $elementUid UID of the tt_content element to be referenced
      *
-     * @return boolean TRUE if the operation was successful or FALSE if an error occurred.
+     * @return bool TRUE if the operation was successful or FALSE if an error occurred.
      */
     public function process_reference($destinationPointer, $destinationReferencesArr, $elementUid)
     {
@@ -729,7 +729,7 @@ class ApiService
      * @param array $sourcePointer flexform pointer pointing to the reference which shall be removed
      * @param array $sourceReferencesArr Current list of the parent source's element references
      *
-     * @return boolean TRUE if the operation was successful, otherwise FALSE
+     * @return bool TRUE if the operation was successful, otherwise FALSE
      */
     public function process_unlink($sourcePointer, $sourceReferencesArr)
     {
@@ -744,9 +744,9 @@ class ApiService
      *
      * @param array $sourcePointer flexform pointer pointing to the element which will be the target of the reference
      * @param array $sourceReferencesArr Current list of the parent source's element references
-     * @param integer $elementUid UID of the tt_content element to be deleted
+     * @param int $elementUid UID of the tt_content element to be deleted
      *
-     * @return boolean TRUE if the operation was successful, otherwise FALSE
+     * @return bool TRUE if the operation was successful, otherwise FALSE
      */
     public function process_delete($sourcePointer, $sourceReferencesArr, $elementUid)
     {
@@ -881,7 +881,7 @@ class ApiService
      *
      * @param array $flexformPointer A valid flexform pointer array
      *
-     * @return boolean|string A string of the format "table:uid:sheet:sLang:field:vLang:position". The string might additionally contain "/table:uid" which is used to check the target record of the pointer. If an error occurs: FALSE
+     * @return bool|string A string of the format "table:uid:sheet:sLang:field:vLang:position". The string might additionally contain "/table:uid" which is used to check the target record of the pointer. If an error occurs: FALSE
      */
     public function flexform_getStringFromPointer($flexformPointer)
     {
@@ -943,8 +943,8 @@ class ApiService
      * Returns an array of flexform pointers pointing to all occurrences of a tt_content record with uid $recordUid
      * on the page with uid $pageUid.
      *
-     * @param integer $elementUid UID of a tt_content record
-     * @param integer $pageUid UID of the page to search in
+     * @param int $elementUid UID of a tt_content record
+     * @param int $pageUid UID of the page to search in
      *
      * @return array Array of flexform pointers
      */
@@ -1012,9 +1012,9 @@ class ApiService
      * Returns an array of uids of all sub elements of the element specified by $table and $uid.
      *
      * @param string $table Name of the table of the parent element ('pages' or 'tt_content')
-     * @param integer $uid UID of the parent element
+     * @param int $uid UID of the parent element
      * @param array $recordUids Array of record UIDs - used internally, don't touch (but pass an empty array)
-     * @param integer $recursionDepth Tracks the current level of recursion - used internall, don't touch.
+     * @param int $recursionDepth Tracks the current level of recursion - used internall, don't touch.
      *
      * @return array Array of record UIDs
      */
@@ -1064,9 +1064,9 @@ class ApiService
      * Returns an array of flexform pointers to all sub elements of the element specified by $table and $uid.
      *
      * @param string $table Name of the table of the parent element ('pages' or 'tt_content')
-     * @param integer $uid UID of the parent element
+     * @param int $uid UID of the parent element
      * @param array $flexformPointers Array of flexform pointers - used internally, don't touch
-     * @param integer $recursionDepth Tracks the current level of recursion - used internall, don't touch.
+     * @param int $recursionDepth Tracks the current level of recursion - used internall, don't touch.
      *
      * @return array Array of flexform pointers
      */
@@ -1133,8 +1133,8 @@ class ApiService
      * Creates a new reference list (as an array) with the $elementUid inserted into the given reference list
      *
      * @param array $currentReferencesArr Array of tt_content uids from a current reference list
-     * @param integer $position Position where the new reference should be inserted: 0 = before the first element, 1 = after the first, 2 = after the second etc., -1 = insert as last element
-     * @param integer $elementUid UID of a tt_content element
+     * @param int $position Position where the new reference should be inserted: 0 = before the first element, 1 = after the first, 2 = after the second etc., -1 = insert as last element
+     * @param int $elementUid UID of a tt_content element
      *
      * @return array Array with an updated reference list
      * @see flexform_getElementReferencesFromXML(), flexform_removeElementReferenceFromList()
@@ -1175,7 +1175,7 @@ class ApiService
      * the updated list. (the list is passed and return as an array)
      *
      * @param array $currentReferencesArr Array of tt_content uids from a current reference list
-     * @param integer $position Position of the element reference which should be removed. 1 = first element, 2 = second element etc.
+     * @param int $position Position of the element reference which should be removed. 1 = first element, 2 = second element etc.
      *
      * @return array Array with an updated reference list
      * @see flexform_getElementReferencesFromXML(), flexform_insertElementReferenceIntoList()
@@ -1258,8 +1258,8 @@ class ApiService
      *
      * If all that fails, this function returns FALSE.
      *
-     * @param integer $contextPageUid The (current) page uid, used to determine which page datastructure is selected
-     * @param integer $columnPosition Column number to search a field for
+     * @param int $contextPageUid The (current) page uid, used to determine which page datastructure is selected
+     * @param int $columnPosition Column number to search a field for
      *
      * @return mixed Either the field name relating to the given column number or FALSE if all fall back methods failed and no suitable field could be found.
      */
@@ -1317,10 +1317,10 @@ class ApiService
      *
      * Reverse function of ds_getFieldNameByColumnPosition()
      *
-     * @param integer $contextPageUid The (current) page uid, used to determine which page datastructure is selected
+     * @param int $contextPageUid The (current) page uid, used to determine which page datastructure is selected
      * @param string $fieldName Field name in the data structure we are searching the column number for
      *
-     * @return integer The column number as used in the "colpos" field in tt_content
+     * @return int The column number as used in the "colpos" field in tt_content
      */
     public function ds_getColumnPositionByFieldName($contextPageUid, $fieldName)
     {
@@ -1388,7 +1388,7 @@ class ApiService
      * Note: All TO records which are found in the selected storage folder will be returned, no matter
      *       if they match the currently selected data structure for the given page.
      *
-     * @param integer $pageUid (current) page uid, used for finding the correct storage folder
+     * @param int $pageUid (current) page uid, used for finding the correct storage folder
      *
      * @return mixed Array of Template Object records or FALSE if an error occurred.
      */
@@ -1428,7 +1428,7 @@ class ApiService
      *
      * @param string $table Table name (top record; pages, tt_content etc). Requi
      * @param array $row Record row for table (must be overlaid with workspace data)
-     * @param boolean $includePreviewData If set, preview related data is included.
+     * @param bool $includePreviewData If set, preview related data is included.
      *
      * @return array Array with tree and register of used content elements
      * @access public
@@ -1461,7 +1461,7 @@ class ApiService
      * @param array $row Record of the root element where the tree starts (Possibly overlaid with workspace content)
      * @param array $tt_content_elementRegister Register of used tt_content elements, don't mess with it! (passed by reference since data is built up)
      * @param string $prevRecList comma separated list of uids, used internally for recursive calls. Don't mess with it!
-     * @param integer $depth nexting depth
+     * @param int $depth nexting depth
      *
      * @return array The content tree
      */
@@ -1642,7 +1642,7 @@ class ApiService
      * @param string $listOfSubElementUids List of tt_content elements to process
      * @param array $tt_content_elementRegister Register of tt_content elements used on the page (passed by reference since it is modified)
      * @param string $prevRecList List of previously processed record uids
-     * @param integer $depth nexting depth
+     * @param int $depth nexting depth
      *
      * @return array The sub tree for these elements
      */
@@ -1781,7 +1781,7 @@ class ApiService
      *
      * @param array $contentTreeArr The content element to check
      *
-     * @return boolean TRUE, if all conditions are met to enable localization for the FCE through the page module
+     * @return bool TRUE, if all conditions are met to enable localization for the FCE through the page module
      */
     public function isLocalizationLinkEnabledForFCE($contentTreeArr)
     {
@@ -1809,7 +1809,7 @@ class ApiService
      * function. If this flag is set, the TemplaVoila TCEmain userfunctions will be skipped to
      * avoid infinite loops and other bad effects.
      *
-     * @param boolean $flag If TRUE, our user functions will be omitted
+     * @param bool $flag If TRUE, our user functions will be omitted
      *
      * @return void
      */
@@ -1823,7 +1823,7 @@ class ApiService
      * function. If this flag is set, the TemplaVoila TCEmain userfunctions will be skipped to
      * avoid infinite loops and other bad effects.
      *
-     * @return boolean TRUE if flag is set, otherwise FALSE;
+     * @return bool TRUE if flag is set, otherwise FALSE;
      */
     public function getTCEmainRunningFlag()
     {
@@ -1833,9 +1833,9 @@ class ApiService
     /**
      * Returns the page uid of the selected storage folder from the context of the given page uid.
      *
-     * @param integer $pageUid : Context page uid
+     * @param int $pageUid : Context page uid
      *
-     * @return integer PID of the storage folder
+     * @return int PID of the storage folder
      */
     public function getStorageFolderPid($pageUid)
     {
@@ -1895,7 +1895,7 @@ class ApiService
     }
 
     /**
-     * @param boolean $enable
+     * @param bool $enable
      *
      * @return void
      */
@@ -1909,7 +1909,7 @@ class ApiService
      * This function is e.g. used to determine, if localization is enabled for FCEs.
      * Since they can be stored on different pages, different modTSconfigs might be needed.
      *
-     * @param integer $pageId The page id to get the modTSconfig for
+     * @param int $pageId The page id to get the modTSconfig for
      *
      * @return array The fetched modTSconfig for the web module
      */

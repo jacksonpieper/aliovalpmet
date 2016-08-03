@@ -39,7 +39,7 @@ class tx_templavoila_module2 extends \TYPO3\CMS\Backend\Module\BaseScriptClass
     /**
      * Import as first page in root!
      *
-     * @var integer
+     * @var int
      */
     public $importPageUid = 0;
 
@@ -435,7 +435,7 @@ class tx_templavoila_module2 extends \TYPO3\CMS\Backend\Module\BaseScriptClass
     /**
      * Renders Data Structures from $dsScopeArray
      *
-     * @param integer $scope
+     * @param int $scope
      *
      * @return array Returns array with three elements: 0: content, 1: number of DS shown, 2: number of root-level template objects shown.
      */
@@ -550,7 +550,7 @@ class tx_templavoila_module2 extends \TYPO3\CMS\Backend\Module\BaseScriptClass
      * Rendering a single data structures information
      *
      * @param \Extension\Templavoila\Domain\Model\AbstractDataStructure $dsObj Structure information
-     * @param integer $scope Scope.
+     * @param int $scope Scope.
      * @param array $toIdArray
      *
      * @return string HTML content
@@ -677,8 +677,8 @@ class tx_templavoila_module2 extends \TYPO3\CMS\Backend\Module\BaseScriptClass
      * Render display of a Template Object
      *
      * @param \Extension\Templavoila\Domain\Model\Template $toObj Template Object record to render
-     * @param integer $scope Scope of DS
-     * @param integer $children If set, the function is asked to render children to template objects (and should not call it self recursively again).
+     * @param int $scope Scope of DS
+     * @param int $children If set, the function is asked to render children to template objects (and should not call it self recursively again).
      *
      * @return string HTML content
      */
@@ -893,7 +893,7 @@ class tx_templavoila_module2 extends \TYPO3\CMS\Backend\Module\BaseScriptClass
      * Creates listings of pages / content elements where template objects are used.
      *
      * @param \Extension\Templavoila\Domain\Model\Template $toObj Template Object record
-     * @param integer $scope Scope value. 1) page,  2) content elements
+     * @param int $scope Scope value. 1) page,  2) content elements
      *
      * @return string HTML table listing usages.
      */
@@ -1039,7 +1039,7 @@ class tx_templavoila_module2 extends \TYPO3\CMS\Backend\Module\BaseScriptClass
      * Creates listings of pages / content elements where NO or WRONG template objects are used.
      *
      * @param \Extension\Templavoila\Domain\Model\AbstractDataStructure $dsObj Data Structure ID
-     * @param integer $scope Scope value. 1) page,  2) content elements
+     * @param int $scope Scope value. 1) page,  2) content elements
      * @param array $toIdArray Array with numerical toIDs. Must be integers and never be empty. You can always put in "-1" as dummy element.
      *
      * @return string HTML table listing usages.
@@ -1162,7 +1162,7 @@ class tx_templavoila_module2 extends \TYPO3\CMS\Backend\Module\BaseScriptClass
      * Checks if a PID value is accessible and if so returns the path for the page.
      * Processing is cached so many calls to the function are OK.
      *
-     * @param integer $pid Page id for check
+     * @param int $pid Page id for check
      *
      * @return string Page path of PID if accessible. otherwise zero.
      */
@@ -1843,7 +1843,7 @@ class tx_templavoila_module2 extends \TYPO3\CMS\Backend\Module\BaseScriptClass
     /**
      * Pre-checking for TemplaVoila configuration
      *
-     * @return boolean If string is returned, an error occured.
+     * @return bool If string is returned, an error occured.
      */
     public function wizard_checkConfiguration()
     {
@@ -2497,8 +2497,8 @@ lib.' . $menuType . '.1.ACT {
     /**
      * Find and check all template paths
      *
-     * @param boolean $relative if true returned paths are relative
-     * @param boolean $check if true the patchs are checked
+     * @param bool $relative if true returned paths are relative
+     * @param bool $check if true the patchs are checked
      *
      * @return array all relevant template paths
      */
@@ -2551,7 +2551,7 @@ lib.' . $menuType . '.1.ACT {
 if (!function_exists('md5_file')) {
     /**
      * @param string $file
-     * @param boolean $raw
+     * @param bool $raw
      *
      * @return string
      */

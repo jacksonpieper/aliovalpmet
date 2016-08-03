@@ -33,7 +33,7 @@ class DataStructure extends AbstractDataStructure
     protected $sortbyField;
 
     /**
-     * @param integer $uid
+     * @param int $uid
      */
     public function __construct($uid)
     {
@@ -84,7 +84,7 @@ class DataStructure extends AbstractDataStructure
      * @param array $parentRow
      * @param array $removeItems
      *
-     * @return boolean
+     * @return bool
      */
     public function isPermittedForUser($parentRow = [], $removeItems = [])
     {

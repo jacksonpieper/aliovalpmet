@@ -25,7 +25,7 @@ class TemplateRepository
     /**
      * Retrieve a single templateobject by uid or xml-file path
      *
-     * @param integer $uid
+     * @param int $uid
      *
      * @return \Extension\Templavoila\Domain\Model\Template
      */
@@ -38,7 +38,7 @@ class TemplateRepository
      * Retrieve template objects which are related to a specific datastructure
      *
      * @param \Extension\Templavoila\Domain\Model\AbstractDataStructure $ds
-     * @param integer $storagePid
+     * @param int $storagePid
      *
      * @return array
      */
@@ -65,8 +65,8 @@ class TemplateRepository
     /**
      * Retrieve template objects with a certain scope within the given storage folder
      *
-     * @param integer $storagePid
-     * @param integer $scope
+     * @param int $storagePid
+     * @param int $scope
      *
      * @return array
      */
@@ -87,7 +87,7 @@ class TemplateRepository
      * Retrieve template objects which have a specific template as their parent
      *
      * @param \Extension\Templavoila\Domain\Model\Template $to
-     * @param integer $storagePid
+     * @param int $storagePid
      *
      * @return array
      */
@@ -113,7 +113,7 @@ class TemplateRepository
     /**
      * Retrieve a collection (array) of tx_templavoila_datastructure objects
      *
-     * @param integer $storagePid
+     * @param int $storagePid
      *
      * @return array
      */
@@ -142,7 +142,7 @@ class TemplateRepository
      * @param \Extension\Templavoila\Domain\Model\Template $obj1
      * @param \Extension\Templavoila\Domain\Model\Template $obj2
      *
-     * @return integer Result of the comparison (see strcmp())
+     * @return int Result of the comparison (see strcmp())
      * @see usort()
      * @see strcmp()
      */
@@ -174,9 +174,9 @@ class TemplateRepository
     }
 
     /**
-     * @param integer $pid
+     * @param int $pid
      *
-     * @return integer
+     * @return int
      */
     public function getTemplateCountForPid($pid)
     {

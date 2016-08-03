@@ -49,7 +49,7 @@ class tx_templavoila_cm1_eTypes
      *
      * @param array $elArray Data Structure, passed by reference!
      * @param array $v_sub Actual template content splitted by Data Structure
-     * @param integer $scope Scope as defined in tx_templavoila_datastructure.scope
+     * @param int $scope Scope as defined in tx_templavoila_datastructure.scope
      *
      * @return void Note: The result is directly written in $elArray
      * @see renderFile()

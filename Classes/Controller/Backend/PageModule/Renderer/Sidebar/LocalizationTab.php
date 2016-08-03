@@ -72,7 +72,7 @@ class LocalizationTab implements Renderable
     /**
      * Renders the HTML code for a selectorbox for selecting the language version of the current page.
      *
-     * @return boolean|string HTML code for the selectorbox or FALSE if no language is available.
+     * @return bool|string HTML code for the selectorbox or FALSE if no language is available.
      * @throws \TYPO3\CMS\Core\Type\Exception\InvalidEnumerationValueException
      * @access protected
      */
@@ -192,7 +192,7 @@ class LocalizationTab implements Renderable
      * Renders the HTML code for a selectorbox for selecting a new translation language for the current
      * page (create a new "Alternative Page Header".
      *
-     * @return boolean|string HTML code for the selectorbox or FALSE if no new translation can be created.
+     * @return bool|string HTML code for the selectorbox or FALSE if no new translation can be created.
      * @access protected
      */
     private function sidebar_renderItem_renderNewTranslationSelectorbox()

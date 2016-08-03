@@ -36,7 +36,7 @@ class ext_update
      *
      * @param string $what What should be updated
      *
-     * @return boolean
+     * @return bool
      */
     public function access($what = 'all')
     {

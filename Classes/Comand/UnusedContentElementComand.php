@@ -33,17 +33,17 @@ class UnusedContentElementComand extends \TYPO3\CMS\Lowlevel\CleanerCommand
     protected $resultArray;
 
     /**
-     * @var boolean
+     * @var bool
      */
     public $checkRefIndex = true;
 
     /**
-     * @var boolean
+     * @var bool
      */
     public $genTree_traverseDeleted = false;
 
     /**
-     * @var boolean
+     * @var bool
      */
     public $genTree_traverseVersions = false;
 
@@ -111,10 +111,10 @@ Automatic Repair:
      * Call back function for page tree traversal!
      *
      * @param string $tableName Table name
-     * @param integer $uid UID of record in processing
-     * @param integer $echoLevel Echo level  (see calling function
+     * @param int $uid UID of record in processing
+     * @param int $echoLevel Echo level  (see calling function
      * @param string $versionSwapmode Version swap mode on that level (see calling function
-     * @param integer $rootIsVersion Is root version (see calling function
+     * @param int $rootIsVersion Is root version (see calling function
      *
      * @return void
      */

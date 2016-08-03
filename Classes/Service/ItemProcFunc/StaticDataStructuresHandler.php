@@ -277,7 +277,7 @@ class StaticDataStructuresHandler
      * @param array $params Parameters as come to the itemsProcFunc
      * @param \TYPO3\CMS\Backend\Form\FormEngine $pObj Calling object
      *
-     * @return integer Storage pid
+     * @return int Storage pid
      */
     protected function getStoragePid(array &$params, \TYPO3\CMS\Backend\Form\FormEngine &$pObj)
     {
@@ -300,7 +300,7 @@ class StaticDataStructuresHandler
      *
      * @param array $params
      *
-     * @return integer
+     * @return int
      */
     protected function getScope(array $params)
     {

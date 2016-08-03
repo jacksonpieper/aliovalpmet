@@ -1844,8 +1844,8 @@ class ApiTest extends \TYPO3\CMS\Core\Tests\FunctionalTestCase
     }
 
     /**
-     * @param integer $dataStructureUid
-     * @param integer $templateObjectUid
+     * @param int $dataStructureUid
+     * @param int $templateObjectUid
      *
      * @return array
      */

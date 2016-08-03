@@ -24,7 +24,7 @@ class DefaultController
      * @param array $row
      * @param string $table
      * @param string $output
-     * @param boolean $alreadyRendered
+     * @param bool $alreadyRendered
      * @param object $ref
      *
      * @return string

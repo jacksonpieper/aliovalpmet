@@ -64,11 +64,11 @@ final class GeneralUtility
      * Get a list of referencing elements other than the given pid.
      *
      * @param array $element array with tablename and uid for a element
-     * @param integer $pid the suppoed source-pid
-     * @param integer $recursion recursion limiter
+     * @param int $pid the suppoed source-pid
+     * @param int $recursion recursion limiter
      * @param array &$references array containing a list of the actual references
      *
-     * @return boolean true if there are other references for this element
+     * @return bool true if there are other references for this element
      */
     public static function getElementForeignReferences($element, $pid, $recursion = 99, &$references = null)
     {
@@ -109,11 +109,11 @@ final class GeneralUtility
      * Checks if a element is referenced from other pages / elements on other pages than his own.
      *
      * @param array $element array with tablename and uid for a element
-     * @param integer $pid the suppoed source-pid
-     * @param integer $recursion recursion limiter
+     * @param int $pid the suppoed source-pid
+     * @param int $recursion recursion limiter
      * @param array &$references array containing a list of the actual references
      *
-     * @return boolean true if there are other references for this element
+     * @return bool true if there are other references for this element
      */
     public static function hasElementForeignReferences($element, $pid, $recursion = 99, &$references = null)
     {
