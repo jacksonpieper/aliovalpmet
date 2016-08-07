@@ -16,6 +16,7 @@ namespace Extension\Templavoila\Controller\Backend\PageModule;
 
 use Extension\Templavoila\Controller\Backend\AbstractModuleController;
 use Extension\Templavoila\Controller\Backend\Configurable;
+use Extension\Templavoila\Controller\Backend\PageModule\Renderer\OutlineRenderer;
 use Extension\Templavoila\Controller\Backend\PageModule\Renderer\SidebarRenderer;
 use Extension\Templavoila\Domain\Model\Template;
 use Extension\Templavoila\Domain\Repository\SysLanguageRepository;
@@ -1092,7 +1093,8 @@ class MainController extends AbstractModuleController implements Configurable
             (static::getBackendUser()->isAdmin() || $this->modTSconfig['properties']['enableOutlineForNonAdmin'])
             && $this->MOD_SETTINGS['showOutline']
         ) {
-            $output .= $this->render_outline($contentTreeData['tree']);
+            $outlineRenderer = GeneralUtility::makeInstance(OutlineRenderer::class, $this, $contentTreeData['tree']);
+            $output .= $outlineRenderer->render();
         } else {
             $output .= $this->render_framework_allSheets($contentTreeData['tree'], $this->currentLanguageKey);
         }
@@ -2063,383 +2065,6 @@ class MainController extends AbstractModuleController implements Configurable
         return $output;
     }
 
-    /*******************************************
-     *
-     * Outline rendering:
-     *
-     *******************************************/
-
-    /**
-     * Rendering the outline display of the page structure
-     *
-     * @param array $contentTreeArr DataStructure info array (the whole tree)
-     *
-     * @return string HTML
-     */
-    public function render_outline($contentTreeArr)
-    {
-        // Load possible website languages:
-        $this->translatedLanguagesArr_isoCodes = [];
-        foreach ($this->translatedLanguagesArr as $langInfo) {
-            if ($langInfo['ISOcode']) {
-                $this->translatedLanguagesArr_isoCodes['all_lKeys'][] = 'l' . $langInfo['ISOcode'];
-                $this->translatedLanguagesArr_isoCodes['all_vKeys'][] = 'v' . $langInfo['ISOcode'];
-            }
-        }
-
-        // Rendering the entries:
-        $entries = [];
-        $this->render_outline_element($contentTreeArr, $entries);
-
-        // Header of table:
-        $output = '';
-        $output .= '<tr class="bgColor5 tableheader">
-                <td class="nobr">' . static::getLanguageService()->getLL('outline_header_title', true) . '</td>
-                <td class="nobr">' . static::getLanguageService()->getLL('outline_header_controls', true) . '</td>
-                <td class="nobr">' . static::getLanguageService()->getLL('outline_header_status', true) . '</td>
-                <td class="nobr">' . static::getLanguageService()->getLL('outline_header_element', true) . '</td>
-            </tr>';
-
-        // Render all entries:
-        $xmlCleanCandidates = false;
-        foreach ($entries as $entry) {
-
-            // Create indentation code:
-            $indent = '';
-            for ($a = 0; $a < $entry['indentLevel']; $a++) {
-                $indent .= '&nbsp;&nbsp;&nbsp;&nbsp;';
-            }
-
-            // Create status for FlexForm XML:
-            // WARNING: Also this section contains cleaning of XML which is sort of mixing functionality but a quick and easy solution for now.
-            // @Robert: How would you like this implementation better? Please advice and I will change it according to your wish!
-            $status = '';
-            if ($entry['table'] && $entry['uid']) {
-                $flexObj = GeneralUtility::makeInstance(FlexFormTools::class);
-                $recRow = BackendUtility::getRecordWSOL($entry['table'], $entry['uid']);
-                if ($recRow['tx_templavoila_flex']) {
-
-                    // Clean XML:
-                    $newXML = $flexObj->cleanFlexFormXML($entry['table'], 'tx_templavoila_flex', $recRow);
-
-                    // If the clean-all command is sent AND there is a difference in current/clean XML, save the clean:
-                    if (GeneralUtility::_POST('_CLEAN_XML_ALL') && md5($recRow['tx_templavoila_flex']) !== md5($newXML)) {
-                        $dataArr = [];
-                        $dataArr[$entry['table']][$entry['uid']]['tx_templavoila_flex'] = $newXML;
-
-                        // Init TCEmain object and store:
-                        $tce = GeneralUtility::makeInstance(DataHandler::class);
-                        $tce->stripslashes_values = 0;
-                        $tce->start($dataArr, []);
-                        $tce->process_datamap();
-
-                        // Re-fetch record:
-                        $recRow = BackendUtility::getRecordWSOL($entry['table'], $entry['uid']);
-                    }
-
-                    // Render status:
-                    $xmlUrl = '../cm2/index.php?viewRec[table]=' . $entry['table'] . '&viewRec[uid]=' . $entry['uid'] . '&viewRec[field_flex]=tx_templavoila_flex';
-                    if (md5($recRow['tx_templavoila_flex']) !== md5($newXML)) {
-                        $status = $this->doc->icons(1) . '<a href="' . htmlspecialchars($xmlUrl) . '">' . static::getLanguageService()->getLL('outline_status_dirty', 1) . '</a><br/>';
-                        $xmlCleanCandidates = true;
-                    } else {
-                        $status = $this->doc->icons(-1) . '<a href="' . htmlspecialchars($xmlUrl) . '">' . static::getLanguageService()->getLL('outline_status_clean', 1) . '</a><br/>';
-                    }
-                }
-            }
-
-            // Compile table row:
-            $class = ($entry['isNewVersion'] ? 'bgColor5' : 'bgColor4') . ' ' . $entry['elementTitlebarClass'];
-            $output .= '<tr class="' . $class . '">
-                    <td class="nobr">' . $indent . $entry['icon'] . $entry['flag'] . $entry['title'] . '</td>
-                    <td class="nobr">' . $entry['controls'] . '</td>
-                    <td>' . $status . $entry['warnings'] . ($entry['isNewVersion'] ? $this->doc->icons(1) . 'New version!' : '') . '</td>
-                    <td class="nobr">' . htmlspecialchars($entry['id'] ? $entry['id'] : $entry['table'] . ':' . $entry['uid']) . '</td>
-                </tr>';
-        }
-        $output = '<table border="0" cellpadding="1" cellspacing="1" class="tpm-outline-table">' . $output . '</table>';
-
-        // Show link for cleaning all XML structures:
-        if ($xmlCleanCandidates) {
-            $output .= '<br/>
-                ' . BackendUtility::cshItem('_MOD_web_txtemplavoilaM1', 'outline_status_cleanall', $this->doc->backPath) . '
-                <input type="submit" value="' . static::getLanguageService()->getLL('outline_status_cleanAll', true) . '" name="_CLEAN_XML_ALL" /><br/><br/>
-            ';
-        }
-
-        return $output;
-    }
-
-    /**
-     * Rendering a single element in outline:
-     *
-     * @param array $contentTreeArr DataStructure info array (the whole tree)
-     * @param array $entries Entries accumulated in this array (passed by reference)
-     * @param int $indentLevel Indentation level
-     * @param array $parentPointer Element position in structure
-     * @param string $controls HTML for controls to add for this element
-     *
-     * @see render_outline_allSheets()
-     */
-    public function render_outline_element($contentTreeArr, &$entries, $indentLevel = 0, $parentPointer = [], $controls = '')
-    {
-        // Get record of element:
-        $elementBelongsToCurrentPage = $contentTreeArr['el']['table'] === 'pages' || $contentTreeArr['el']['pid'] === $this->rootElementUid_pidForContent;
-
-        // Prepare the record icon including a context sensitive menu link wrapped around it:
-        if (isset($contentTreeArr['el']['iconTag'])) {
-            $recordIcon = $contentTreeArr['el']['iconTag'];
-        } else {
-            $recordIcon = '<img' . IconUtility::skinImg($this->doc->backPath, $contentTreeArr['el']['icon'], '') . ' border="0" title="' . htmlspecialchars('[' . $contentTreeArr['el']['table'] . ':' . $contentTreeArr['el']['uid'] . ']') . '" alt="" />';
-        }
-
-        $titleBarLeftButtons = $this->translatorMode ? $recordIcon : $this->doc->wrapClickMenuOnIcon($recordIcon, $contentTreeArr['el']['table'], $contentTreeArr['el']['uid'], 1, '&amp;callingScriptId=' . rawurlencode($this->doc->scriptID), 'new,copy,cut,pasteinto,pasteafter,delete');
-        $titleBarLeftButtons .= $this->getRecordStatHookValue($contentTreeArr['el']['table'], $contentTreeArr['el']['uid']);
-
-        $languageUid = 0;
-        $titleBarRightButtons = '';
-        // Prepare table specific settings:
-        switch ($contentTreeArr['el']['table']) {
-            case 'pages' :
-                $iconEdit = IconUtility::getSpriteIcon('actions-document-open', ['title' => static::getLanguageService()->sL('LLL:EXT:lang/locallang_mod_web_list.xlf:editPage')]);
-                $titleBarLeftButtons .= $this->translatorMode ? '' : $this->link_edit($iconEdit, $contentTreeArr['el']['table'], $contentTreeArr['el']['uid']);
-                $titleBarRightButtons = '';
-
-                $addGetVars = ($this->currentLanguageUid ? '&L=' . $this->currentLanguageUid : '');
-                $viewPageOnClick = 'onclick= "' . htmlspecialchars(BackendUtility::viewOnClick($contentTreeArr['el']['uid'], $this->doc->backPath, BackendUtility::BEgetRootLine($contentTreeArr['el']['uid']), '', '', $addGetVars)) . '"';
-                $viewPageIcon = IconUtility::getSpriteIcon('actions-document-view', ['title' => static::getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:labels.showPage', 1)]);
-                $titleBarLeftButtons .= '<a href="#" ' . $viewPageOnClick . '>' . $viewPageIcon . '</a>';
-                break;
-            case 'tt_content' :
-                $languageUid = $contentTreeArr['el']['sys_language_uid'];
-
-                if (!$this->translatorMode) {
-                    // Create CE specific buttons:
-                    $iconMakeLocal = IconUtility::getSpriteIcon('extensions-templavoila-makelocalcopy', ['title' => static::getLanguageService()->getLL('makeLocal')]);
-                    $linkMakeLocal = !$elementBelongsToCurrentPage ? $this->link_makeLocal($iconMakeLocal, $parentPointer) : '';
-                    if ($this->modTSconfig['properties']['enableDeleteIconForLocalElements'] < 2 ||
-                        !$elementBelongsToCurrentPage ||
-                        $this->global_tt_content_elementRegister[$contentTreeArr['el']['uid']] > 1
-                    ) {
-                        $iconUnlink = IconUtility::getSpriteIcon('extensions-templavoila-unlink', ['title' => static::getLanguageService()->getLL('unlinkRecord')]);
-//                        $linkUnlink = $this->link_unlink($iconUnlink, $parentPointer, false);
-                    } else {
-                        $linkUnlink = '';
-                    }
-                    if ($this->modTSconfig['properties']['enableDeleteIconForLocalElements'] && $elementBelongsToCurrentPage) {
-                        $hasForeignReferences = \Extension\Templavoila\Utility\GeneralUtility::hasElementForeignReferences($contentTreeArr['el'], $contentTreeArr['el']['pid']);
-                        $iconDelete = IconUtility::getSpriteIcon('actions-edit-delete', ['title' => static::getLanguageService()->getLL('deleteRecord')]);
-//                        $linkDelete = $this->link_unlink($iconDelete, $parentPointer, true, $hasForeignReferences);
-                    } else {
-                        $linkDelete = '';
-                    }
-                    $iconEdit = IconUtility::getSpriteIcon('actions-document-open', ['title' => static::getLanguageService()->getLL('editrecord')]);
-                    $linkEdit = ($elementBelongsToCurrentPage ? $this->link_edit($iconEdit, $contentTreeArr['el']['table'], $contentTreeArr['el']['uid']) : '');
-
-                    $titleBarRightButtons = $linkEdit . $this->clipboardObj->element_getSelectButtons($parentPointer) . $linkMakeLocal . $linkUnlink . $linkDelete;
-                }
-                break;
-        }
-
-        // Prepare the language icon:
-
-        if ($languageUid > 0) {
-            $languageLabel = htmlspecialchars($this->pObj->allAvailableLanguages[$languageUid]['title']);
-            if ($this->pObj->allAvailableLanguages[$languageUid]['flagIcon']) {
-                $languageIcon = \Extension\Templavoila\Utility\IconUtility::getFlagIconForLanguage($this->pObj->allAvailableLanguages[$languageUid]['flagIcon'], ['title' => $languageLabel, 'alt' => $languageLabel]);
-            } else {
-                $languageIcon = '[' . $languageLabel . ']';
-            }
-        } else {
-            $languageIcon = '';
-        }
-
-        // If there was a langauge icon and the language was not default or [all] and if that langauge is accessible for the user, then wrap the flag with an edit link (to support the "Click the flag!" principle for translators)
-        if ($languageIcon && $languageUid > 0 && static::getBackendUser()->checkLanguageAccess($languageUid) && $contentTreeArr['el']['table'] === 'tt_content') {
-            $languageIcon = $this->link_edit($languageIcon, 'tt_content', $contentTreeArr['el']['uid'], true);
-        }
-
-        // Create warning messages if neccessary:
-        $warnings = '';
-        if ($this->global_tt_content_elementRegister[$contentTreeArr['el']['uid']] > 1 && $this->rootElementLangParadigm !== 'free') {
-            $warnings .= '<br/>' . $this->doc->icons(2) . ' <em>' . htmlspecialchars(sprintf(static::getLanguageService()->getLL('warning_elementusedmorethanonce', ''), $this->global_tt_content_elementRegister[$contentTreeArr['el']['uid']], $contentTreeArr['el']['uid'])) . '</em>';
-        }
-
-        // Displaying warning for container content (in default sheet - a limitation) elements if localization is enabled:
-        $isContainerEl = count($contentTreeArr['sub']['sDEF']);
-        if (!$this->modTSconfig['properties']['disableContainerElementLocalizationWarning'] && $this->rootElementLangParadigm !== 'free' && $isContainerEl && $contentTreeArr['el']['table'] === 'tt_content' && $contentTreeArr['el']['CType'] === 'templavoila_pi1' && !$contentTreeArr['ds_meta']['langDisable']) {
-            if ($contentTreeArr['ds_meta']['langChildren']) {
-                if (!$this->modTSconfig['properties']['disableContainerElementLocalizationWarning_warningOnly']) {
-                    $warnings .= '<br/>' . $this->doc->icons(2) . ' <b>' . static::getLanguageService()->getLL('warning_containerInheritance_short') . '</b>';
-                }
-            } else {
-                $warnings .= '<br/>' . $this->doc->icons(3) . ' <b>' . static::getLanguageService()->getLL('warning_containerSeparate_short') . '</b>';
-            }
-        }
-
-        // Create entry for this element:
-        $entries[] = [
-            'indentLevel' => $indentLevel,
-            'icon' => $titleBarLeftButtons,
-            'title' => ($elementBelongsToCurrentPage ? '' : '<em>') . htmlspecialchars($contentTreeArr['el']['title']) . ($elementBelongsToCurrentPage ? '' : '</em>'),
-            'warnings' => $warnings,
-            'controls' => $titleBarRightButtons . $controls,
-            'table' => $contentTreeArr['el']['table'],
-            'uid' => $contentTreeArr['el']['uid'],
-            'flag' => $languageIcon,
-            'isNewVersion' => $contentTreeArr['el']['_ORIG_uid'] ? true : false,
-            'elementTitlebarClass' => (!$elementBelongsToCurrentPage ? 'tpm-elementRef' : 'tpm-element') . ' tpm-outline-level' . $indentLevel
-        ];
-
-        // Create entry for localizaitons...
-        $this->render_outline_localizations($contentTreeArr, $entries, $indentLevel + 1);
-
-        // Create entries for sub-elements in all sheets:
-        if ($contentTreeArr['sub']) {
-            foreach ($contentTreeArr['sub'] as $sheetKey => $sheetInfo) {
-                if (is_array($sheetInfo)) {
-                    $this->render_outline_subElements($contentTreeArr, $sheetKey, $entries, $indentLevel + 1);
-                }
-            }
-        }
-    }
-
-    /**
-     * Rendering outline for child-elements
-     *
-     * @param array $contentTreeArr DataStructure info array (the whole tree)
-     * @param string $sheet Which sheet to display
-     * @param array $entries Entries accumulated in this array (passed by reference)
-     * @param int $indentLevel Indentation level
-     */
-    public function render_outline_subElements($contentTreeArr, $sheet, &$entries, $indentLevel)
-    {
-        // Define l/v keys for current language:
-        $langChildren = (int)$contentTreeArr['ds_meta']['langChildren'];
-        $langDisable = (int)$contentTreeArr['ds_meta']['langDisable'];
-        $lKeys = $langDisable ? ['lDEF'] : ($langChildren ? ['lDEF'] : $this->translatedLanguagesArr_isoCodes['all_lKeys']);
-        $vKeys = $langDisable ? ['vDEF'] : ($langChildren ? $this->translatedLanguagesArr_isoCodes['all_vKeys'] : ['vDEF']);
-
-        // Traverse container fields:
-        foreach ($lKeys as $lKey) {
-
-            // Traverse fields:
-            if (is_array($contentTreeArr['sub'][$sheet][$lKey])) {
-                foreach ($contentTreeArr['sub'][$sheet][$lKey] as $fieldID => $fieldValuesContent) {
-                    foreach ($vKeys as $vKey) {
-                        if (is_array($fieldValuesContent[$vKey])) {
-                            $fieldContent = $fieldValuesContent[$vKey];
-
-                            // Create flexform pointer pointing to "before the first sub element":
-                            $subElementPointer = [
-                                'table' => $contentTreeArr['el']['table'],
-                                'uid' => $contentTreeArr['el']['uid'],
-                                'sheet' => $sheet,
-                                'sLang' => $lKey,
-                                'field' => $fieldID,
-                                'vLang' => $vKey,
-                                'position' => 0
-                            ];
-
-                            if (!$this->translatorMode) {
-                                // "New" and "Paste" icon:
-                                $newIcon = IconUtility::getSpriteIcon('actions-document-new', ['title' => static::getLanguageService()->getLL('createnewrecord')]);
-                                $newIcon = $this->moduleTemplate->getIconFactory()->getIcon('actions-document-new', Icon::SIZE_SMALL);
-                                $controls = $this->link_new($newIcon, $subElementPointer);
-                                $controls .= $this->clipboardObj->element_getPasteButtons($subElementPointer);
-                            } else {
-                                $controls = '';
-                            }
-
-                            // Add entry for lKey level:
-                            $specialPath = ($sheet !== 'sDEF' ? '<' . $sheet . '>' : '') . ($lKey !== 'lDEF' ? '<' . $lKey . '>' : '') . ($vKey !== 'vDEF' ? '<' . $vKey . '>' : '');
-                            $entries[] = [
-                                'indentLevel' => $indentLevel,
-                                'icon' => '',
-                                'title' => '<b>' . static::getLanguageService()->sL($fieldContent['meta']['title'], 1) . '</b>' . ($specialPath ? ' <em>' . htmlspecialchars($specialPath) . '</em>' : ''),
-                                'id' => '<' . $sheet . '><' . $lKey . '><' . $fieldID . '><' . $vKey . '>',
-                                'controls' => $controls,
-                                'elementTitlebarClass' => 'tpm-container tpm-outline-level' . $indentLevel,
-                            ];
-
-                            // Render the list of elements (and possibly call itself recursively if needed):
-                            if (is_array($fieldContent['el_list'])) {
-                                foreach ($fieldContent['el_list'] as $position => $subElementKey) {
-                                    $subElementArr = $fieldContent['el'][$subElementKey];
-                                    if (!$subElementArr['el']['isHidden'] || $this->MOD_SETTINGS['tt_content_showHidden'] !== '0') {
-
-                                        // Modify the flexform pointer so it points to the position of the curren sub element:
-                                        $subElementPointer['position'] = $position;
-
-                                        if (!$this->translatorMode) {
-                                            // "New" and "Paste" icon:
-                                            $newIcon = IconUtility::getSpriteIcon('actions-document-new', ['title' => static::getLanguageService()->getLL('createnewrecord')]);
-                                            $newIcon = $this->moduleTemplate->getIconFactory()->getIcon('actions-document-new', Icon::SIZE_SMALL);
-                                            $controls = $this->link_new($newIcon, $subElementPointer);
-                                            $controls .= $this->clipboardObj->element_getPasteButtons($subElementPointer);
-                                        }
-
-                                        $this->render_outline_element($subElementArr, $entries, $indentLevel + 1, $subElementPointer, $controls);
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        }
-    }
-
-    /**
-     * Renders localized elements of a record
-     *
-     * @param array $contentTreeArr Part of the contentTreeArr for the element
-     * @param array $entries Entries accumulated in this array (passed by reference)
-     * @param int $indentLevel Indentation level
-     *
-     * @return string HTML
-     *
-     * @see render_framework_singleSheet()
-     */
-    public function render_outline_localizations($contentTreeArr, &$entries, $indentLevel)
-    {
-        if ($contentTreeArr['el']['table'] === 'tt_content' && $contentTreeArr['el']['sys_language_uid'] <= 0) {
-
-            // Traverse the available languages of the page (not default and [All])
-            foreach ($this->translatedLanguagesArr as $sys_language_uid => $sLInfo) {
-                if ($sys_language_uid > 0 && static::getBackendUser()->checkLanguageAccess($sys_language_uid)) {
-                    switch ((string) $contentTreeArr['localizationInfo'][$sys_language_uid]['mode']) {
-                        case 'exists':
-
-                            // Get localized record:
-                            $olrow = BackendUtility::getRecordWSOL('tt_content', $contentTreeArr['localizationInfo'][$sys_language_uid]['localization_uid']);
-
-                            // Put together the records icon including content sensitive menu link wrapped around it:
-                            $recordIcon_l10n = $this->getRecordStatHookValue('tt_content', $olrow['uid']) .
-                                IconUtility::getSpriteIconForRecord('tt_content', $olrow);
-                            if (!$this->translatorMode) {
-                                $recordIcon_l10n = $this->doc->wrapClickMenuOnIcon($recordIcon_l10n, 'tt_content', $olrow['uid'], 1, '&amp;callingScriptId=' . rawurlencode($this->doc->scriptID), 'new,copy,cut,pasteinto,pasteafter');
-                            }
-
-                            list($flagLink_begin, $flagLink_end) = explode('|*|', $this->link_edit('|*|', 'tt_content', $olrow['uid'], true));
-
-                            // Create entry for this element:
-                            $entries[] = [
-                                'indentLevel' => $indentLevel,
-                                'icon' => $recordIcon_l10n,
-                                'title' => BackendUtility::getRecordTitle('tt_content', $olrow),
-                                'table' => 'tt_content',
-                                'uid' => $olrow['uid'],
-                                'flag' => $flagLink_begin . \Extension\Templavoila\Utility\IconUtility::getFlagIconForLanguage($sLInfo['flagIcon'], ['title' => $sLInfo['title'], 'alt' => $sLInfo['title']]) . $flagLink_end,
-                                'isNewVersion' => $olrow['_ORIG_uid'] ? true : false,
-                            ];
-                            break;
-                    }
-                }
-            }
-        }
-    }
-
     /**
      * Renders the sidebar, including the relevant hook objects
      *
@@ -3318,5 +2943,20 @@ class MainController extends AbstractModuleController implements Configurable
             'recordsView_start' => '',
             'disablePageStructureInheritance' => ''
         ];
+    }
+
+    /**
+     * @return bool
+     */
+    public static function isInTranslatorMode() {
+        return (!static::getBackendUser()->checkLanguageAccess(0) && !static::getBackendUser()->isAdmin());
+    }
+
+    /**
+     * @return \tx_templavoila_mod1_clipboard
+     */
+    public function getClipboard()
+    {
+        return $this->clipboardObj;
     }
 }
