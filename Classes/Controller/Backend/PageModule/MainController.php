@@ -1959,7 +1959,7 @@ class MainController extends AbstractModuleController implements Configurable
                             ];
 
                             // Put together the records icon including content sensitive menu link wrapped around it:
-                            $recordIcon_l10n = IconUtility::getSpriteIconForRecord('tt_content', $localizedRecordInfo['row']);
+                            $recordIcon_l10n = $this->getModuleTemplate()->getIconFactory()->getIconForRecord('tt_content', $localizedRecordInfo['row'], Icon::SIZE_SMALL);
                             if (!$this->translatorMode) {
                                 $recordIcon_l10n = $this->doc->wrapClickMenuOnIcon($recordIcon_l10n, 'tt_content', $localizedRecordInfo['uid'], 1, '&amp;callingScriptId=' . rawurlencode($this->doc->scriptID), 'new,copy,cut,pasteinto,pasteafter');
                             }
