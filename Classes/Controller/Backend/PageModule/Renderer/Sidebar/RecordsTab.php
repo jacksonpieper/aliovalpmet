@@ -155,7 +155,7 @@ class RecordsTab implements Renderable
 
 
             $this->dblist->start(
-                $this->controller->rootElementUid_pidForContent,
+                $this->controller->getPid(),
                 $this->table,
                 (int)$this->controller->getSetting('recordsView_start')
             );

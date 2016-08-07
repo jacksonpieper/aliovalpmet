@@ -69,10 +69,10 @@ class OutlineRenderer implements Renderable
     {
         // Load possible website languages:
         $this->translatedLanguagesArr_isoCodes = [];
-        foreach ($this->controller->translatedLanguagesArr as $langInfo) {
+        foreach ($this->controller->getPageTranslations() as $langInfo) {
             if ($langInfo['ISOcode']) {
-                $this->controller->translatedLanguagesArr_isoCodes['all_lKeys'][] = 'l' . $langInfo['ISOcode'];
-                $this->controller->translatedLanguagesArr_isoCodes['all_vKeys'][] = 'v' . $langInfo['ISOcode'];
+                $this->translatedLanguagesArr_isoCodes['all_lKeys'][] = 'l' . $langInfo['ISOcode'];
+                $this->translatedLanguagesArr_isoCodes['all_vKeys'][] = 'v' . $langInfo['ISOcode'];
             }
         }
 
@@ -173,7 +173,7 @@ class OutlineRenderer implements Renderable
     public function render_outline_element($contentTreeArr, &$entries, $indentLevel = 0, $parentPointer = [], $controls = '')
     {
         // Get record of element:
-        $elementBelongsToCurrentPage = $contentTreeArr['el']['table'] === 'pages' || $contentTreeArr['el']['pid'] === $this->controller->rootElementUid_pidForContent;
+        $elementBelongsToCurrentPage = $contentTreeArr['el']['table'] === 'pages' || $contentTreeArr['el']['pid'] === $this->controller->getPid();
 
         // Prepare the record icon including a context sensitive menu link wrapped around it:
         $recordIcon = '';
@@ -193,7 +193,7 @@ class OutlineRenderer implements Renderable
                 $titleBarLeftButtons .= MainController::isInTranslatorMode() ? '' : $this->controller->link_edit($iconEdit, $contentTreeArr['el']['table'], $contentTreeArr['el']['uid']);
                 $titleBarRightButtons = '';
 
-                $addGetVars = ($this->controller->currentLanguageUid ? '&L=' . $this->controller->currentLanguageUid : '');
+                $addGetVars = ($this->controller->getCurrentLanguageUid() ? '&L=' . $this->controller->getCurrentLanguageUid() : '');
                 $viewPageOnClick = 'onclick= "' . htmlspecialchars(BackendUtility::viewOnClick($contentTreeArr['el']['uid'], '', BackendUtility::BEgetRootLine($contentTreeArr['el']['uid']), '', '', $addGetVars)) . '"';
                 $viewPageIcon = $this->controller->getModuleTemplate()->getIconFactory()->getIcon('actions-document-view', Icon::SIZE_SMALL);
                 $titleBarLeftButtons .= '<a href="#" ' . $viewPageOnClick . '>' . $viewPageIcon . '</a>';
@@ -207,7 +207,7 @@ class OutlineRenderer implements Renderable
                     $linkMakeLocal = !$elementBelongsToCurrentPage ? $this->controller->link_makeLocal($iconMakeLocal, $parentPointer) : '';
                     if ($this->controller->modTSconfig['properties']['enableDeleteIconForLocalElements'] < 2 ||
                         !$elementBelongsToCurrentPage ||
-                        $this->controller->global_tt_content_elementRegister[$contentTreeArr['el']['uid']] > 1
+                        $this->controller->getElementRegister()[$contentTreeArr['el']['uid']] > 1
                     ) {
                         $iconUnlink = $this->controller->getModuleTemplate()->getIconFactory()->getIcon('actions-delete', Icon::SIZE_SMALL);
                         $linkUnlink = $this->controller->link_unlink($iconUnlink, $parentPointer['table'], $contentTreeArr['el']['uid']);
@@ -232,9 +232,9 @@ class OutlineRenderer implements Renderable
         // Prepare the language icon:
 
         if ($languageUid > 0) {
-            $languageLabel = htmlspecialchars($this->controller->allAvailableLanguages[$languageUid]['title']);
-            if ($this->controller->allAvailableLanguages[$languageUid]['flagIcon']) {
-                $languageIcon = \Extension\Templavoila\Utility\IconUtility::getFlagIconForLanguage($this->controller->allAvailableLanguages[$languageUid]['flagIcon'], ['title' => $languageLabel, 'alt' => $languageLabel]);
+            $languageLabel = htmlspecialchars($this->controller->getAllAvailableLanguages()[$languageUid]['title']);
+            if ($this->controller->getAllAvailableLanguages()[$languageUid]['flagIcon']) {
+                $languageIcon = \Extension\Templavoila\Utility\IconUtility::getFlagIconForLanguage($this->controller->getAllAvailableLanguages()[$languageUid]['flagIcon'], ['title' => $languageLabel, 'alt' => $languageLabel]);
             } else {
                 $languageIcon = '[' . $languageLabel . ']';
             }
@@ -249,13 +249,13 @@ class OutlineRenderer implements Renderable
 
         // Create warning messages if neccessary:
         $warnings = '';
-        if ($this->controller->global_tt_content_elementRegister[$contentTreeArr['el']['uid']] > 1 && $this->controller->rootElementLangParadigm !== 'free') {
-            $warnings .= '<br/>' . $this->controller->getModuleTemplate()->icons(2) . ' <em>' . htmlspecialchars(sprintf(static::getLanguageService()->getLL('warning_elementusedmorethanonce', ''), $this->controller->global_tt_content_elementRegister[$contentTreeArr['el']['uid']], $contentTreeArr['el']['uid'])) . '</em>';
+        if ($this->controller->getElementRegister()[$contentTreeArr['el']['uid']] > 1 && $this->controller->getLanguageParadigm() !== 'free') {
+            $warnings .= '<br/>' . $this->controller->getModuleTemplate()->icons(2) . ' <em>' . htmlspecialchars(sprintf(static::getLanguageService()->getLL('warning_elementusedmorethanonce', ''), $this->controller->getElementRegister()[$contentTreeArr['el']['uid']], $contentTreeArr['el']['uid'])) . '</em>';
         }
 
         // Displaying warning for container content (in default sheet - a limitation) elements if localization is enabled:
         $isContainerEl = count($contentTreeArr['sub']['sDEF']);
-        if (!$this->controller->modTSconfig['properties']['disableContainerElementLocalizationWarning'] && $this->controller->rootElementLangParadigm !== 'free' && $isContainerEl && $contentTreeArr['el']['table'] === 'tt_content' && $contentTreeArr['el']['CType'] === 'templavoila_pi1' && !$contentTreeArr['ds_meta']['langDisable']) {
+        if (!$this->controller->modTSconfig['properties']['disableContainerElementLocalizationWarning'] && $this->controller->getLanguageParadigm() !== 'free' && $isContainerEl && $contentTreeArr['el']['table'] === 'tt_content' && $contentTreeArr['el']['CType'] === 'templavoila_pi1' && !$contentTreeArr['ds_meta']['langDisable']) {
             if ($contentTreeArr['ds_meta']['langChildren']) {
                 if (!$this->controller->modTSconfig['properties']['disableContainerElementLocalizationWarning_warningOnly']) {
                     $warnings .= '<br/>' . $this->controller->getModuleTemplate()->icons(2) . ' <b>' . static::getLanguageService()->getLL('warning_containerInheritance_short') . '</b>';
@@ -308,7 +308,7 @@ class OutlineRenderer implements Renderable
         if ($contentTreeArr['el']['table'] === 'tt_content' && $contentTreeArr['el']['sys_language_uid'] <= 0) {
 
             // Traverse the available languages of the page (not default and [All])
-            foreach ($this->controller->translatedLanguagesArr as $sys_language_uid => $sLInfo) {
+            foreach ($this->controller->getPageTranslations() as $sys_language_uid => $sLInfo) {
                 if ($sys_language_uid > 0 && static::getBackendUser()->checkLanguageAccess($sys_language_uid)) {
                     switch ((string) $contentTreeArr['localizationInfo'][$sys_language_uid]['mode']) {
                         case 'exists':

@@ -65,7 +65,7 @@ class NonUsedElementsTab implements Renderable
     {
         $output = '';
         $elementRows = [];
-        $usedUids = array_keys($this->controller->global_tt_content_elementRegister);
+        $usedUids = array_keys($this->controller->getElementRegister());
         $usedUids[] = 0;
         $pid = $this->controller->getId(); // If workspaces should evaluated non-used elements it must consider the id: For "element" and "branch" versions it should accept the incoming id, for "page" type versions it must be remapped (because content elements are then related to the id of the offline version)
 
@@ -86,9 +86,9 @@ class NonUsedElementsTab implements Renderable
             $elementPointerString = 'tt_content:' . $row['uid'];
 
             // Prepare the language icon:
-            $languageLabel = htmlspecialchars($this->controller->allAvailableLanguages[$row['sys_language_uid']]['title']);
-            if ($this->controller->allAvailableLanguages[$row['sys_language_uid']]['flagIcon']) {
-                $languageIcon = IconUtility::getFlagIconForLanguage($this->controller->allAvailableLanguages[$row['sys_language_uid']]['flagIcon'], ['title' => $languageLabel, 'alt' => $languageLabel]);
+            $languageLabel = htmlspecialchars($this->controller->getAllAvailableLanguages()[$row['sys_language_uid']]['title']);
+            if ($this->controller->getAllAvailableLanguages()[$row['sys_language_uid']]['flagIcon']) {
+                $languageIcon = IconUtility::getFlagIconForLanguage($this->controller->getAllAvailableLanguages()[$row['sys_language_uid']]['flagIcon'], ['title' => $languageLabel, 'alt' => $languageLabel]);
             } else {
                 $languageIcon = ($languageLabel && !$row['sys_language_uid'] ? '[' . $languageLabel . ']' : '');
             }
@@ -174,7 +174,7 @@ class NonUsedElementsTab implements Renderable
             foreach ($rows as $row) {
                 if ($row['tablename'] === 'pages' && static::getBackendUser()->workspace && $this->controller->getId() === (int)$row['recuid']) {
                     // We would have found you but we didn't - you're most likely deleted
-                } elseif ($row['tablename'] === 'tt_content' && $this->controller->global_tt_content_elementRegister[$row['recuid']] > 0 && static::getBackendUser()->workspace) {
+                } elseif ($row['tablename'] === 'tt_content' && $this->controller->getElementRegister()[$row['recuid']] > 0 && static::getBackendUser()->workspace) {
                     // We would have found you but we didn't - you're most likely deleted
                 } else {
                     $infoData[] = $row['tablename'] . ':' . $row['recuid'] . ':' . $row['field'];

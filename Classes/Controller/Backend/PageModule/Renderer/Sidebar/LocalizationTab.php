@@ -82,7 +82,7 @@ class LocalizationTab implements Renderable
      */
     private function sidebar_renderItem_renderLanguageSelectorbox()
     {
-        $availableLanguagesArr = $this->controller->translatedLanguagesArr;
+        $availableLanguagesArr = $this->controller->getPageTranslations();
         $availableTranslationsFlags = '';
         $newLanguagesArr = $this->controller->getAvailableLanguages(0, true, false);
         if (count($availableLanguagesArr) <= 1) {
@@ -120,7 +120,7 @@ class LocalizationTab implements Renderable
             </tr>
         ';
 
-        if ($this->controller->currentLanguageUid >= 0 && (($this->controller->rootElementLangMode === 'disable') || ($this->controller->rootElementLangParadigm === 'bound'))) {
+        if ($this->controller->getCurrentLanguageUid() >= 0 && (($this->controller->getLanguageMode() === 'disable') || ($this->controller->getLanguageParadigm() === 'bound'))) {
             $options = [];
 
             $options[] = GeneralUtility::inList($this->controller->modTSconfig['properties']['disableDisplayMode'], 'default') ? '' : '<option value="' . $this->controller->getReturnUrl(['SET' => ['langDisplayMode' => 'default']]) .'"' . ($this->controller->getSetting('langDisplayMode') === '' ? ' selected="selected"' : '') . '>' .  static::getLanguageService()->sL('LLL:EXT:lang/locallang_general.xlf:LGL.default_value') . '</option>';
@@ -145,7 +145,7 @@ class LocalizationTab implements Renderable
             }
         }
 
-        if ($this->controller->rootElementLangMode !== 'disable') {
+        if ($this->controller->getLanguageMode() !== 'disable') {
             $output .= '
                 <tr class="bgColor4">
                     <td  width="20">
@@ -153,14 +153,14 @@ class LocalizationTab implements Renderable
                     </td><td width="200" style="vertical-align:middle;">
                         ' .  static::getLanguageService()->getLL('pageLocalizationMode', true) . ':
                     </td>
-                    <td style="vertical-align:middle;"><em>' .  static::getLanguageService()->getLL('pageLocalizationMode_' . $this->controller->rootElementLangMode, true) . ($this->controller->rootElementLangParadigm != 'free' ? (' / ' .  static::getLanguageService()->getLL('pageLocalizationParadigm_' . $this->controller->rootElementLangParadigm)) : '') . '</em></td>
+                    <td style="vertical-align:middle;"><em>' .  static::getLanguageService()->getLL('pageLocalizationMode_' . $this->controller->getLanguageMode(), true) . ($this->controller->getLanguageParadigm() != 'free' ? (' / ' .  static::getLanguageService()->getLL('pageLocalizationParadigm_' . $this->controller->getLanguageParadigm())) : '') . '</em></td>
                 </tr>
             ';
         }
 
         // enable/disable structure inheritance - see #7082 for details
         $adminOnlySetting = isset($this->controller->modTSconfig['properties']['adminOnlyPageStructureInheritance']) ? $this->controller->modTSconfig['properties']['adminOnlyPageStructureInheritance'] : 'strict';
-        if ((static::getBackendUser()->isAdmin() || $adminOnlySetting === 'false') && $this->controller->rootElementLangMode == 'inheritance') {
+        if ((static::getBackendUser()->isAdmin() || $adminOnlySetting === 'false') && $this->controller->getLanguageMode() == 'inheritance') {
             $link = '\'index.php?' . $this->controller->link_getParameters() . '&SET[disablePageStructureInheritance]=' . ((bool)$this->controller->getSetting('disablePageStructureInheritance') ? '0' : '1') . '\'';
             $output .= '
                 <tr class="bgColor4">
@@ -214,8 +214,8 @@ class LocalizationTab implements Renderable
         foreach ($newLanguagesArr as $language) {
             if (!array_key_exists($language['uid'], $translatedLanguagesArr) && static::getBackendUser()->checkLanguageAccess($language['uid'])) {
                 $params = ['createNewPageTranslation' => $language['uid'], 'pid' => $this->controller->getId()];
-                if ($this->controller->rootElementTable === 'pages') {
-                    $params['doktype'] = $this->controller->rootElementRecord['doktype'];
+                if ($this->controller->getTable() === 'pages') {
+                    $params['doktype'] = $this->controller->getRecord()['doktype'];
                 }
 
                 $optionsArr[] = '<option name="createNewPageTranslation" value="' . $this->controller->getReturnUrl($params) . '">' . htmlspecialchars($language['title']) . '</option>';

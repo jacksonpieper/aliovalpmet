@@ -56,13 +56,13 @@ class HeaderFieldsTab implements Renderable
     public function render()
     {
         $output = '';
-        if ($this->controller->rootElementTable !== 'pages') {
+        if ($this->controller->getTable() !== 'pages') {
             return '';
         }
 
         $conf = $GLOBALS['TCA']['pages']['columns']['tx_templavoila_flex']['config'];
 
-        $dataStructureArr = BackendUtility::getFlexFormDS($conf, $this->controller->rootElementRecord, 'pages');
+        $dataStructureArr = BackendUtility::getFlexFormDS($conf, $this->controller->getRecord(), 'pages');
 
         if (is_array($dataStructureArr) && is_array($dataStructureArr['ROOT']['tx_templavoila']['pageModule'])) {
             $headerTablesAndFieldNames = GeneralUtility::trimExplode(chr(10), str_replace(chr(13), '', $dataStructureArr['ROOT']['tx_templavoila']['pageModule']['displayHeaderFields']), 1);
@@ -78,7 +78,7 @@ class HeaderFieldsTab implements Renderable
                         'table' => $table,
                         'field' => $field,
                         'label' => static::getLanguageService()->sL(BackendUtility::getItemLabel('pages', $field)),
-                        'value' => BackendUtility::getProcessedValue('pages', $field, $this->controller->rootElementRecord[$field], 200)
+                        'value' => BackendUtility::getProcessedValue('pages', $field, $this->controller->getRecord()[$field], 200)
                     ];
                 }
                 if (count($headerFields)) {
