@@ -384,8 +384,8 @@ class MainController extends AbstractModuleController implements Configurable
         $this->modSharedTSconfig = BackendUtility::getModTSconfig($this->getId(), 'mod.SHARED');
 //        $this->MOD_SETTINGS = BackendUtility::getModuleData($this->MOD_MENU, GeneralUtility::_GP('SET'), $this->moduleName);
 
-        if ($this->MOD_SETTINGS['langDisplayMode'] === 'default') {
-            $this->MOD_SETTINGS['langDisplayMode'] = '';
+        if ($this->getSetting('langDisplayMode') === '') {
+            $this->updateSetting('langDisplayMode', 'default');
         }
 
         $tmpTSc = BackendUtility::getModTSconfig($this->getId(), 'mod.web_list');
@@ -412,8 +412,8 @@ class MainController extends AbstractModuleController implements Configurable
 
         // Fill array allAvailableLanguages and currently selected language (from language selector or from outside)
         $this->allAvailableLanguages = $this->getAvailableLanguages(0, true, true, true);
-        $this->currentLanguageKey = $this->getAllAvailableLanguages()[$this->MOD_SETTINGS['language']]['ISOcode'];
-        $this->currentLanguageUid = $this->getAllAvailableLanguages()[$this->MOD_SETTINGS['language']]['uid'];
+        $this->currentLanguageKey = $this->getAllAvailableLanguages()[$this->getSetting('language')]['ISOcode'];
+        $this->currentLanguageUid = $this->getAllAvailableLanguages()[$this->getSetting('language')]['uid'];
 
         // If no translations exist for this page, set the current language to default (as there won't be a language selector)
         $this->translatedLanguagesArr = $this->getAvailableLanguages($this->getId());
@@ -745,7 +745,7 @@ class MainController extends AbstractModuleController implements Configurable
 //                    $script .=
 //                        'var all_items = ' . $all_items_json . ';' .
 //                        'var sortable_items = ' . $sortable_items_json . ';' .
-//                        'var sortable_removeHidden = ' . ($this->MOD_SETTINGS['tt_content_showHidden'] !== '0' ? 'false;' : 'true;') .
+//                        'var sortable_removeHidden = ' . ($this->getSetting('tt_content_showHidden') !== '0' ? 'false;' : 'true;') .
 //                        'var sortable_linkParameters = \'' . $this->link_getParameters() . '\';';
 //
 //                    $containment = '[' . GeneralUtility::csvValues($this->sortableContainers, ',', '"') . ']';
@@ -1006,7 +1006,7 @@ class MainController extends AbstractModuleController implements Configurable
         // Display the content as outline or the nested page structure:
         if (
             (static::getBackendUser()->isAdmin() || $this->modTSconfig['properties']['enableOutlineForNonAdmin'])
-            && $this->MOD_SETTINGS['showOutline']
+            && $this->getSetting('showOutline')
         ) {
             $outlineRenderer = GeneralUtility::makeInstance(OutlineRenderer::class, $this, $contentTreeData['tree']);
             $output .= $outlineRenderer->render();
@@ -1840,7 +1840,7 @@ class MainController extends AbstractModuleController implements Configurable
             'language' => $translatedLanguagesUids,
             'clip_parentPos' => '',
             'clip' => '',
-            'langDisplayMode' => '',
+            'langDisplayMode' => 'default',
             'recordsView_table' => '',
             'recordsView_start' => '',
             'disablePageStructureInheritance' => ''

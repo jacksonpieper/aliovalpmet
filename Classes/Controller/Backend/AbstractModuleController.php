@@ -111,6 +111,21 @@ abstract class AbstractModuleController extends AbstractModule
     }
 
     /**
+     * @param string $key
+     * @param mixed $value
+     */
+    public function updateSetting($key, $value)
+    {
+        if ($this instanceof Configurable) {
+            $this->settings = BackendUtility::getModuleData(
+                $this->getDefaultSettings(),
+                [$key => $value],
+                $this->getModuleName()
+            );
+        }
+    }
+
+    /**
      * @return array
      */
     protected function getCurrentUrlQueryParts()
