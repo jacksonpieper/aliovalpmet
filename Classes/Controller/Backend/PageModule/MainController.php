@@ -27,7 +27,6 @@ use Psr\Http\Message\ResponseInterface;
 use TYPO3\CMS\Backend\Template\Components\ButtonBar;
 use TYPO3\CMS\Backend\Template\DocumentTemplate;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
-use TYPO3\CMS\Backend\Utility\IconUtility;
 use TYPO3\CMS\Core\Html\HtmlParser;
 use TYPO3\CMS\Core\Http\Response;
 use TYPO3\CMS\Core\Http\ServerRequest;
@@ -874,8 +873,8 @@ class MainController extends AbstractModuleController implements Configurable
 
         // View page
         $viewAddGetVars = $this->currentLanguageUid ? '&L=' . $this->currentLanguageUid : '';
-        $buttons['view'] = '<a href="#" onclick="' . htmlspecialchars(BackendUtility::viewOnClick($this->getId(), $BACK_PATH, BackendUtility::BEgetRootLine($this->getId()), '', '', $viewAddGetVars)) . '">' .
-            IconUtility::getSpriteIcon('actions-document-view', ['title' => static::getLanguageService()->sL('LLL:EXT:lang/locallang_core.php:labels.showPage', 1)]) .
+        $buttons['view'] = '<a title="' . static::getLanguageService()->sL('LLL:EXT:lang/locallang_core.php:labels.showPage', 1) . ' "href="#" onclick="' . htmlspecialchars(BackendUtility::viewOnClick($this->getId(), $BACK_PATH, BackendUtility::BEgetRootLine($this->getId()), '', '', $viewAddGetVars)) . '">' .
+            $this->getModuleTemplate()->getIconFactory()->getIcon('actions-document-view', Icon::SIZE_SMALL) .
             '</a>';
 
         // Shortcut
@@ -886,34 +885,34 @@ class MainController extends AbstractModuleController implements Configurable
         // If access to Web>List for user, then link to that module.
         if (static::getBackendUser()->check('modules', 'web_list')) {
             $href = BackendUtility::getModuleUrl('web_list', ['id' => $this->getId(), 'returnUrl' => GeneralUtility::getIndpEnv('REQUEST_URI')]);
-            $buttons['record_list'] = '<a href="' . htmlspecialchars($href) . '">' .
-                IconUtility::getSpriteIcon('actions-system-list-open', ['title' => static::getLanguageService()->sL('LLL:EXT:lang/locallang_core.php:labels.showList', 1)]) .
+            $buttons['record_list'] = '<a title="' . static::getLanguageService()->sL('LLL:EXT:lang/locallang_core.php:labels.showList', 1) . ' href="' . htmlspecialchars($href) . '">' .
+                $this->getModuleTemplate()->getIconFactory()->getIcon('actions-system-list-open', Icon::SIZE_SMALL) .
                 '</a>';
         }
 
         if (!$this->modTSconfig['properties']['disableIconToolbar']) {
 
             // Page history
-            $buttons['history_page'] = '<a href="#" onclick="' . htmlspecialchars('jumpToUrl(\'' . $BACK_PATH . 'show_rechis.php?element=' . rawurlencode('pages:' . $this->getId()) . '&returnUrl=' . rawurlencode(GeneralUtility::getIndpEnv('REQUEST_URI')) . '#latest\');return false;') . '">' .
-                IconUtility::getSpriteIcon('actions-document-history-open', ['title' => static::getLanguageService()->sL('LLL:EXT:cms/layout/locallang.xlf:recordHistory', 1)]) .
+            $buttons['history_page'] = '<a title="' . static::getLanguageService()->sL('LLL:EXT:cms/layout/locallang.xlf:recordHistory', 1) . ' href="#" onclick="' . htmlspecialchars('jumpToUrl(\'' . $BACK_PATH . 'show_rechis.php?element=' . rawurlencode('pages:' . $this->getId()) . '&returnUrl=' . rawurlencode(GeneralUtility::getIndpEnv('REQUEST_URI')) . '#latest\');return false;') . '">' .
+                $this->getModuleTemplate()->getIconFactory()->getIcon('actions-document-history-open', Icon::SIZE_SMALL) .
                 '</a>';
 
             if (!$this->translatorMode && static::getBackendUser()->isPSet($this->calcPerms, 'pages', 'new')) {
                 // Create new page (wizard)
-                $buttons['new_page'] = '<a href="#" onclick="' . htmlspecialchars('jumpToUrl(\'' . $BACK_PATH . 'db_new.php?id=' . $this->getId() . '&pagesOnly=1&returnUrl=' . rawurlencode(GeneralUtility::getIndpEnv('REQUEST_URI') . '&updatePageTree=true') . '\');return false;') . '">' .
-                    IconUtility::getSpriteIcon('actions-page-new', ['title' => static::getLanguageService()->sL('LLL:EXT:cms/layout/locallang.xlf:newPage', 1)]) .
+                $buttons['new_page'] = '<a title="' . static::getLanguageService()->sL('LLL:EXT:cms/layout/locallang.xlf:newPage', 1) . ' href="#" onclick="' . htmlspecialchars('jumpToUrl(\'' . $BACK_PATH . 'db_new.php?id=' . $this->getId() . '&pagesOnly=1&returnUrl=' . rawurlencode(GeneralUtility::getIndpEnv('REQUEST_URI') . '&updatePageTree=true') . '\');return false;') . '">' .
+                    $this->getModuleTemplate()->getIconFactory()->getIcon('actions-page-new', Icon::SIZE_SMALL) .
                     '</a>';
             }
 
             if (!$this->translatorMode && static::getBackendUser()->isPSet($this->calcPerms, 'pages', 'edit')) {
                 // Edit page properties
                 $params = '&edit[pages][' . $this->getId() . ']=edit';
-                $buttons['edit_page'] = '<a href="#" onclick="' . htmlspecialchars(BackendUtility::editOnClick($params, $BACK_PATH)) . '">' .
-                    IconUtility::getSpriteIcon('actions-document-open', ['title' => static::getLanguageService()->sL('LLL:EXT:cms/layout/locallang.xlf:editPageProperties', 1)]) .
+                $buttons['edit_page'] = '<a title="' . static::getLanguageService()->sL('LLL:EXT:cms/layout/locallang.xlf:editPageProperties', 1) . ' href="#" onclick="' . htmlspecialchars(BackendUtility::editOnClick($params, $BACK_PATH)) . '">' .
+                    $this->getModuleTemplate()->getIconFactory()->getIcon('actions-document-open', Icon::SIZE_SMALL) .
                     '</a>';
                 // Move page
-                $buttons['move_page'] = '<a href="' . htmlspecialchars($BACK_PATH . 'move_el.php?table=pages&uid=' . $this->getId() . '&returnUrl=' . rawurlencode(GeneralUtility::getIndpEnv('REQUEST_URI'))) . '">' .
-                    IconUtility::getSpriteIcon('actions-page-move', ['title' => static::getLanguageService()->sL('LLL:EXT:cms/layout/locallang.xlf:move_page', 1)]) .
+                $buttons['move_page'] = '<a title="' . static::getLanguageService()->sL('LLL:EXT:cms/layout/locallang.xlf:move_page', 1) . ' href="' . htmlspecialchars($BACK_PATH . 'move_el.php?table=pages&uid=' . $this->getId() . '&returnUrl=' . rawurlencode(GeneralUtility::getIndpEnv('REQUEST_URI'))) . '">' .
+                    $this->getModuleTemplate()->getIconFactory()->getIcon('actions-page-move', Icon::SIZE_SMALL) .
                     '</a>';
             }
 
@@ -926,7 +925,7 @@ class MainController extends AbstractModuleController implements Configurable
                     '&cacheCmd=' . $this->getId();
 
                 $buttons['cache'] = '<a href="' . $cacheUrl . '" title="' . static::getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:labels.clear_cache', true) . '">' .
-                    IconUtility::getSpriteIcon('actions-system-cache-clear') .
+                    $this->getModuleTemplate()->getIconFactory()->getIcon('actions-system-cache-clear', Icon::SIZE_SMALL) .
                     '</a>';
             }
         }
@@ -977,7 +976,7 @@ class MainController extends AbstractModuleController implements Configurable
         // Create a back button if neccessary:
         if (is_array($this->altRoot)) {
             $output .= '<div style="text-align:right; width:100%; margin-bottom:5px;"><a href="index.php?id=' . $this->getId() . '">' .
-                IconUtility::getSpriteIcon('actions-view-go-back', ['title' => htmlspecialchars(static::getLanguageService()->getLL('goback'))]) .
+                $this->getModuleTemplate()->getIconFactory()->getIcon('actions-view-go-back', ['title' => htmlspecialchars(static::getLanguageService()->getLL('goback'))]) .
                 '</a></div>';
         }
 

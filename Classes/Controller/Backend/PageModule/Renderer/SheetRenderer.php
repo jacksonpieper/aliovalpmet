@@ -262,7 +262,7 @@ class SheetRenderer implements Renderable
 
                 if (!MainController::isInTranslatorMode()) {
                     if ($canEditContent) {
-                        $iconMakeLocal = IconUtility::getSpriteIcon('extensions-templavoila-makelocalcopy', ['title' => static::getLanguageService()->getLL('makeLocal')]);
+                        $iconMakeLocal = $this->controller->getModuleTemplate()->getIconFactory()->getIcon('extensions-templavoila-makelocalcopy', Icon::SIZE_SMALL);
                         $linkMakeLocal = !$elementBelongsToCurrentPage && !in_array('makeLocal', $this->controller->blindIcons) ? $this->controller->link_makeLocal($iconMakeLocal, $parentPointer) : '';
                         $linkCut = $this->controller->getClipboard()->element_getSelectButtons($parentPointer, 'cut');
                         if ($this->controller->modTSconfig['properties']['enableDeleteIconForLocalElements'] < 2 ||
@@ -289,7 +289,7 @@ class SheetRenderer implements Renderable
 
                         if ($canEditContent && $this->controller->modTSconfig['properties']['enableDeleteIconForLocalElements'] && $elementBelongsToCurrentPage) {
                             $hasForeignReferences = \Extension\Templavoila\Utility\GeneralUtility::hasElementForeignReferences($contentTreeArr['el'], $contentTreeArr['el']['pid']);
-                            $iconDelete = IconUtility::getSpriteIcon('actions-edit-delete', ['title' => static::getLanguageService()->getLL('deleteRecord')]);
+                            $iconDelete = $this->controller->getModuleTemplate()->getIconFactory()->getIcon('actions-edit-delete', Icon::SIZE_SMALL);
                             $linkDelete = !in_array('delete', $this->controller->blindIcons) ? $this->controller->link_unlink($iconDelete, $parentPointer, true, $hasForeignReferences, $elementPointer) : '';
                         } else {
                             $linkDelete = '';
