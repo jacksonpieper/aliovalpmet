@@ -15,6 +15,7 @@ namespace Extension\Templavoila\Domain\Repository;
  * The TYPO3 project - inspiring people to share!
  */
 
+use Extension\Templavoila\Templavoila;
 use Extension\Templavoila\Traits\DatabaseConnection;
 use Extension\Templavoila\Utility\StaticDataStructure\ToolsUtility;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
@@ -245,7 +246,7 @@ class DataStructureRepository
      */
     protected function isStaticDsEnabled()
     {
-        $extConf = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['templavoila']);
+        $extConf = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf'][Templavoila::EXTKEY]);
 
         return $extConf['staticDS.']['enable'];
     }
@@ -257,7 +258,7 @@ class DataStructureRepository
     {
         $config = [];
         if (!self::$staticDsInitComplete) {
-            $extConfig = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['templavoila']);
+            $extConfig = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf'][Templavoila::EXTKEY]);
             if ($extConfig['staticDS.']['enable']) {
                 ToolsUtility::readStaticDsFilesIntoArray($extConfig);
             }
@@ -267,8 +268,8 @@ class DataStructureRepository
             $config = $GLOBALS['TBE_MODULES_EXT']['xMOD_tx_templavoila_cm1']['staticDataStructures'];
         }
 
-        if (is_array($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['templavoila']['staticDataStructures'])) {
-            $config = array_merge($config, $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['templavoila']['staticDataStructures']);
+        if (is_array($GLOBALS['TYPO3_CONF_VARS']['EXTCONF'][Templavoila::EXTKEY]['staticDataStructures'])) {
+            $config = array_merge($config, $GLOBALS['TYPO3_CONF_VARS']['EXTCONF'][Templavoila::EXTKEY]['staticDataStructures']);
         }
 
         $finalConfig = [];

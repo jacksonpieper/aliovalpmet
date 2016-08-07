@@ -16,6 +16,7 @@ namespace Extension\Templavoila\Service\DataHandling;
  */
 
 use Extension\Templavoila\Service\ApiService;
+use Extension\Templavoila\Templavoila;
 use Extension\Templavoila\Traits\DatabaseConnection;
 use Extension\Templavoila\Traits\LanguageService;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
@@ -53,7 +54,7 @@ class DataHandler
      */
     public function __construct()
     {
-        $this->extConf = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['templavoila']);
+        $this->extConf = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf'][Templavoila::EXTKEY]);
     }
 
     /********************************************
@@ -75,7 +76,7 @@ class DataHandler
     public function processDatamap_preProcessFieldArray(array &$incomingFieldArray, $table, $id, \TYPO3\CMS\Core\DataHandling\DataHandler &$reference)
     {
         if ($this->debug) {
-            GeneralUtility::devLog('processDatamap_preProcessFieldArray', 'templavoila', 0, [$incomingFieldArray, $table, $id]);
+            GeneralUtility::devLog('processDatamap_preProcessFieldArray', Templavoila::EXTKEY, 0, [$incomingFieldArray, $table, $id]);
         }
 
         if ($GLOBALS ['TYPO3_CONF_VARS']['SC_OPTIONS']['tx_templavoila_api']['apiIsRunningTCEmain']) {
@@ -107,7 +108,7 @@ class DataHandler
     public function processDatamap_postProcessFieldArray($status, $table, $id, &$fieldArray, &$reference)
     {
         if ($this->debug) {
-            GeneralUtility::devLog('processDatamap_postProcessFieldArray', 'templavoila', 0, [$status, $table, $id, $fieldArray]);
+            GeneralUtility::devLog('processDatamap_postProcessFieldArray', Templavoila::EXTKEY, 0, [$status, $table, $id, $fieldArray]);
         }
 
         // If the references for content element changed at the current page, save that information into the reference table:
@@ -197,7 +198,7 @@ page.10.disableExplosivePreview = 1
     public function processDatamap_afterDatabaseOperations($status, $table, $id, $fieldArray, &$reference)
     {
         if ($this->debug) {
-            GeneralUtility::devLog('processDatamap_afterDatabaseOperations ', 'templavoila', 0, [$status, $table, $id, $fieldArray]);
+            GeneralUtility::devLog('processDatamap_afterDatabaseOperations ', Templavoila::EXTKEY, 0, [$status, $table, $id, $fieldArray]);
         }
         if ($GLOBALS ['TYPO3_CONF_VARS']['SC_OPTIONS']['tx_templavoila_api']['apiIsRunningTCEmain']) {
             return;
@@ -295,7 +296,7 @@ page.10.disableExplosivePreview = 1
     public function processCmdmap_preProcess(&$command, $table, $id, $value, &$reference)
     {
         if ($this->debug) {
-            GeneralUtility::devLog('processCmdmap_preProcess', 'templavoila', 0, [$command, $table, $id, $value]);
+            GeneralUtility::devLog('processCmdmap_preProcess', Templavoila::EXTKEY, 0, [$command, $table, $id, $value]);
         }
         if ($GLOBALS ['TYPO3_CONF_VARS']['SC_OPTIONS']['tx_templavoila_api']['apiIsRunningTCEmain']) {
             return;
@@ -360,7 +361,7 @@ page.10.disableExplosivePreview = 1
     public function processCmdmap_postProcess($command, $table, $id, $value, &$reference)
     {
         if ($this->debug) {
-            GeneralUtility::devLog('processCmdmap_postProcess', 'templavoila', 0, [$command, $table, $id, $value]);
+            GeneralUtility::devLog('processCmdmap_postProcess', Templavoila::EXTKEY, 0, [$command, $table, $id, $value]);
         }
 
         if (isset($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tx_templavoila_tcemain']['doNotInsertElementRefsToPage'])) {
@@ -385,7 +386,7 @@ page.10.disableExplosivePreview = 1
     public function moveRecord_firstElementPostProcess($table, $uid, $destPid, $sourceRecordBeforeMove, $updateFields, &$reference)
     {
         if ($this->debug) {
-            GeneralUtility::devLog('moveRecord_firstElementPostProcess', 'templavoila', 0, [$table, $uid, $destPid, $sourceRecordBeforeMove, $updateFields]);
+            GeneralUtility::devLog('moveRecord_firstElementPostProcess', Templavoila::EXTKEY, 0, [$table, $uid, $destPid, $sourceRecordBeforeMove, $updateFields]);
         }
         if ($GLOBALS ['TYPO3_CONF_VARS']['SC_OPTIONS']['tx_templavoila_api']['apiIsRunningTCEmain']) {
             return;
@@ -429,7 +430,7 @@ page.10.disableExplosivePreview = 1
     public function moveRecord_afterAnotherElementPostProcess($table, $uid, $destPid, $origDestPid, $sourceRecordBeforeMove, $updateFields, &$reference)
     {
         if ($this->debug) {
-            GeneralUtility::devLog('moveRecord_afterAnotherElementPostProcess', 'templavoila', 0, [$table, $uid, $destPid, $origDestPid, $sourceRecordBeforeMove, $updateFields]);
+            GeneralUtility::devLog('moveRecord_afterAnotherElementPostProcess', Templavoila::EXTKEY, 0, [$table, $uid, $destPid, $origDestPid, $sourceRecordBeforeMove, $updateFields]);
         }
         if ($GLOBALS ['TYPO3_CONF_VARS']['SC_OPTIONS']['tx_templavoila_api']['apiIsRunningTCEmain']) {
             return;

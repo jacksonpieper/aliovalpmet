@@ -40,7 +40,7 @@ class MainClickMenu
     public function main(&$backRef, $menuItems, $table, $uid)
     {
         $localItems = [];
-        $extensionRelativePath = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath('templavoila');
+        $extensionRelativePath = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath(\Extension\Templavoila\Templavoila::EXTKEY);
         if (!$backRef->cmLevel) {
             $LL = GeneralUtility::getLanguageService()->includeLLFile(
                 'EXT:templavoila/Resources/Private/Language/locallang.xlf',

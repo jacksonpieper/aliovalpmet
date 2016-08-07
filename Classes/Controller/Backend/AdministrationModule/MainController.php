@@ -19,6 +19,7 @@ use Extension\Templavoila\Domain\Model\AbstractDataStructure;
 use Extension\Templavoila\Domain\Repository\DataStructureRepository;
 use Extension\Templavoila\Domain\Repository\TemplateRepository;
 use Extension\Templavoila\Service\SyntaxHighlightingService;
+use Extension\Templavoila\Templavoila;
 use Psr\Http\Message\ResponseInterface;
 use TYPO3\CMS\Backend\Template\DocumentTemplate;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
@@ -77,13 +78,6 @@ class MainController extends AbstractModuleController
     private $modTSconfig;
 
     /**
-     * Extension key of this module
-     *
-     * @var string
-     */
-    private $extKey = 'templavoila';
-
-    /**
      * @var array
      */
     private $tFileList = [];
@@ -130,7 +124,7 @@ class MainController extends AbstractModuleController
     public function init()
     {
         $this->modTSconfig = BackendUtility::getModTSconfig($this->getId(), 'mod.' . $this->getModuleName());
-        $this->extConf = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['templavoila']);
+        $this->extConf = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf'][Templavoila::EXTKEY]);
     }
 
     /**
@@ -294,7 +288,7 @@ class MainController extends AbstractModuleController
             // Draw the header.
 
             // Add custom styles
-            $this->doc->styleSheetFile2 = ExtensionManagementUtility::extRelPath($this->extKey) . 'mod2/styles.css';
+            $this->doc->styleSheetFile2 = ExtensionManagementUtility::extRelPath(Templavoila::EXTKEY) . 'mod2/styles.css';
 
             // Adding classic jumpToUrl function, needed for the function menu.
             // Also, the id in the parent frameset is configured.
@@ -2024,7 +2018,7 @@ class MainController extends AbstractModuleController
      */
     public function wizard_checkConfiguration()
     {
-        $TVconfig = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['templavoila']);
+        $TVconfig = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf'][Templavoila::EXTKEY]);
 
         return !is_array($TVconfig);
     }
@@ -2182,7 +2176,7 @@ class MainController extends AbstractModuleController
                 if (isset($this->modTSconfig['properties']['newTvSiteFile'])) {
                     $inFile = GeneralUtility::getFileAbsFileName($this->modTSconfig['properties']['newTVsiteTemplate']);
                 } else {
-                    $inFile = ExtensionManagementUtility::extPath('templavoila') . 'mod2/new_tv_site.xml';
+                    $inFile = ExtensionManagementUtility::extPath(Templavoila::EXTKEY) . 'mod2/new_tv_site.xml';
                 }
                 if (@is_file($inFile) && $import->loadFile($inFile, 1)) {
                     $import->importData($this->importPageUid);

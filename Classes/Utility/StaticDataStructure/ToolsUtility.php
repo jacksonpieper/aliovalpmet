@@ -56,7 +56,7 @@ class ToolsUtility
                     $staticDataStructure['scope'] = AbstractDataStructure::SCOPE_PAGE;
                 }
 
-                $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['templavoila']['staticDataStructures'][] = $staticDataStructure;
+                $GLOBALS['TYPO3_CONF_VARS']['EXTCONF'][\Extension\Templavoila\Templavoila::EXTKEY]['staticDataStructures'][] = $staticDataStructure;
             }
         }
     }

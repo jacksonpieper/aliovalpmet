@@ -65,7 +65,7 @@ $tempColumns = [
 ];
 \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addTCAcolumns('tt_content', $tempColumns);
 
-$GLOBALS['TCA']['tt_content']['ctrl']['typeicons']['templavoila_pi1'] = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath('templavoila') . '/Resources/Public/Icon/icon_fce_ce.png';
+$GLOBALS['TCA']['tt_content']['ctrl']['typeicons']['templavoila_pi1'] = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath(\Extension\Templavoila\Templavoila::EXTKEY) . '/Resources/Public/Icon/icon_fce_ce.png';
 $GLOBALS['TCA']['tt_content']['ctrl']['typeicon_classes']['templavoila_pi1'] = 'extensions-templavoila-type-fce';
 
 $GLOBALS['TCA']['tt_content']['types']['templavoila_pi1']['showitem'] =
@@ -78,7 +78,7 @@ $GLOBALS['TCA']['tt_content']['types']['templavoila_pi1']['showitem'] =
     . '--palette--;LLL:EXT:cms/locallang_ttc.xlf:palette.frames;frames,'
     . '--div--;LLL:EXT:cms/locallang_ttc.xlf:tabs.extended';
 
-$_EXTCONF = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['templavoila']);
+$_EXTCONF = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf'][\Extension\Templavoila\Templavoila::EXTKEY]);
 if ($_EXTCONF['enable.']['selectDataStructure']) {
     if ($GLOBALS['TCA']['tt_content']['ctrl']['requestUpdate'] !== '') {
         $GLOBALS['TCA']['tt_content']['ctrl']['requestUpdate'] .= ',';

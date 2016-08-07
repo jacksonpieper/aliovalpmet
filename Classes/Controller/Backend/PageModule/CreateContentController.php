@@ -19,6 +19,7 @@ use Extension\Templavoila\Domain\Model\AbstractDataStructure;
 use Extension\Templavoila\Domain\Model\Template;
 use Extension\Templavoila\Domain\Repository\TemplateRepository;
 use Extension\Templavoila\Service\ApiService;
+use Extension\Templavoila\Templavoila;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Backend\Wizard\NewContentElementWizardHookInterface;
 use TYPO3\CMS\Core\Http\Response;
@@ -142,8 +143,8 @@ class CreateContentController extends AbstractModuleController
         $wizardItems = $this->getWizardItems();
 
         // Hook for manipulating wizardItems, wrapper, onClickEvent etc.
-        if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['templavoila']['db_new_content_el']['wizardItemsHook'])) {
-            foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['templavoila']['db_new_content_el']['wizardItemsHook'] as $classData) {
+        if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS'][Templavoila::EXTKEY]['db_new_content_el']['wizardItemsHook'])) {
+            foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS'][Templavoila::EXTKEY]['db_new_content_el']['wizardItemsHook'] as $classData) {
                 $hookObject = GeneralUtility::getUserObj($classData);
 
                 if (!($hookObject instanceof NewContentElementWizardHookInterface)) {
@@ -314,7 +315,7 @@ class CreateContentController extends AbstractModuleController
             if ($template->isPermittedForUser()) {
                 $tmpFilename = $template->getIcon();
                 $returnElements['fce.']['elements.']['fce_' . $template->getKey() . '.'] = [
-                    'icon' => (@is_file(GeneralUtility::getFileAbsFileName(substr($tmpFilename, 3)))) ? $tmpFilename : ('../' . ExtensionManagementUtility::siteRelPath('templavoila') . 'Resources/Public/Image/default_previewicon.gif'),
+                    'icon' => (@is_file(GeneralUtility::getFileAbsFileName(substr($tmpFilename, 3)))) ? $tmpFilename : ('../' . ExtensionManagementUtility::siteRelPath(Templavoila::EXTKEY) . 'Resources/Public/Image/default_previewicon.gif'),
                     'description' => $template->getDescription() ? htmlspecialchars($template->getDescription()) : static::getLanguageService()->getLL('template_nodescriptionavailable'),
                     'title' => $template->getLabel(),
                     'params' => $this->getDsDefaultValues($template)

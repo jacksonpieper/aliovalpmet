@@ -162,7 +162,7 @@ class StaticDataStructuresHandler
      */
     public function templateObjectItemsProcFunc(array &$params, \TYPO3\CMS\Backend\Form\FormEngine &$pObj)
     {
-        $this->conf = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['templavoila']);
+        $this->conf = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf'][\Extension\Templavoila\Templavoila::EXTKEY]);
 
         if ($this->conf['enable.']['selectDataStructure']) {
             $this->templateObjectItemsProcFuncForCurrentDS($params, $pObj);

@@ -53,7 +53,7 @@ class AdvancedFunctionsTab implements Renderable
     {
         $this->controller = $controller;
         $this->view = new StandaloneView;
-        $this->view->setTemplatePathAndFilename(ExtensionManagementUtility::extPath('templavoila', 'Resources/Private/Templates/Backend/PageModule/Renderer/AdvancedFunctionsTab.html')); // todo: make configurable
+        $this->view->setTemplatePathAndFilename(ExtensionManagementUtility::extPath(\Extension\Templavoila\Templavoila::EXTKEY, 'Resources/Private/Templates/Backend/PageModule/Renderer/AdvancedFunctionsTab.html')); // todo: make configurable
     }
 
     /**

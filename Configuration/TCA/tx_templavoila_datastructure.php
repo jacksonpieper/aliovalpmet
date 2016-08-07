@@ -11,7 +11,7 @@ return [
         'sortby' => 'sorting',
         'default_sortby' => 'ORDER BY title',
         'delete' => 'deleted',
-        'iconfile' => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath('templavoila') . 'Resources/Public/Icon/icon_ds.gif',
+        'iconfile' => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath(\Extension\Templavoila\Templavoila::EXTKEY) . 'Resources/Public/Icon/icon_ds.gif',
         'selicon_field' => 'previewicon',
         'selicon_field_path' => 'uploads/tx_templavoila',
         'versioningWS' => true,

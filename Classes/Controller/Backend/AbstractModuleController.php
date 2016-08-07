@@ -14,6 +14,7 @@
 
 namespace Extension\Templavoila\Controller\Backend;
 
+use Extension\Templavoila\Templavoila;
 use Extension\Templavoila\Traits\BackendUser;
 use Extension\Templavoila\Traits\DatabaseConnection;
 use Extension\Templavoila\Traits\LanguageService;
@@ -35,11 +36,6 @@ abstract class AbstractModuleController extends AbstractModule
 {
 
     const ACCESS_READ = 1;
-
-    /**
-     * @var string
-     */
-    const EXTKEY = 'templavoila';
 
     /**
      * @var StandaloneView
@@ -137,7 +133,7 @@ abstract class AbstractModuleController extends AbstractModule
     protected function initializeView($templateName)
     {
         $privateResourcesPath = ExtensionManagementUtility::extPath(
-            static::EXTKEY,
+            Templavoila::EXTKEY,
             implode(
                 DIRECTORY_SEPARATOR,
                 [

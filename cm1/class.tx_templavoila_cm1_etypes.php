@@ -101,7 +101,7 @@ class tx_templavoila_cm1_eTypes
 
                 // Based on the eType (the preset type) we make configuration settings.
                 // If a user function was registered, use that instead of our own handlers:
-                if (isset($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['templavoila']['cm1']['eTypesConfGen'][$elArray[$key]['tx_templavoila']['eType']])) {
+                if (isset($GLOBALS['TYPO3_CONF_VARS']['EXTCONF'][\Extension\Templavoila\Templavoila::EXTKEY]['cm1']['eTypesConfGen'][$elArray[$key]['tx_templavoila']['eType']])) {
                     $_params = [
                         'key' => $key,
                         'elArray' => &$elArray,
@@ -110,7 +110,7 @@ class tx_templavoila_cm1_eTypes
 
                     $bef = $elArray[$key]['tx_templavoila']['TypoScript'];
 
-                    \TYPO3\CMS\Core\Utility\GeneralUtility::callUserFunction($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['templavoila']['cm1']['eTypesConfGen'][$elArray[$key]['tx_templavoila']['eType']], $_params, $this, '');
+                    \TYPO3\CMS\Core\Utility\GeneralUtility::callUserFunction($GLOBALS['TYPO3_CONF_VARS']['EXTCONF'][\Extension\Templavoila\Templavoila::EXTKEY]['cm1']['eTypesConfGen'][$elArray[$key]['tx_templavoila']['eType']], $_params, $this, '');
 
                     if (!$reset && trim($bef)) {
                         $elArray[$key]['tx_templavoila']['TypoScript'] = $bef;
@@ -637,14 +637,14 @@ backColor = #999999
         }
 
         // Hook
-        if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['templavoila']['eTypes'])) {
+        if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS'][\Extension\Templavoila\Templavoila::EXTKEY]['eTypes'])) {
             $params = [
                 'eType' => &$eTypes['eType'],
                 'defaultTypes_formFields' => &$eTypes['defaultTypes_formFields'],
                 'defaultTypes_typoscriptElements' => &$eTypes['defaultTypes_typoscriptElements'],
                 'defaultTypes_misc' => &$eTypes['defaultTypes_misc']
             ];
-            foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['templavoila']['eTypes'] as $hook) {
+            foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS'][\Extension\Templavoila\Templavoila::EXTKEY]['eTypes'] as $hook) {
                 \TYPO3\CMS\Core\Utility\GeneralUtility::callUserFunction($hook, $params, $this);
             }
         }

@@ -42,7 +42,7 @@ class tx_templavoila_staticds_wizard
     public function staticDsWizard()
     {
         $this->step = GeneralUtility::_GP('dsWizardDoIt') ? (int)GeneralUtility::_GP('dsWizardStep') : 0;
-        $conf = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['templavoila']);
+        $conf = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf'][\Extension\Templavoila\Templavoila::EXTKEY]);
 
         $title = static::getLanguageService()->sL(
             'LLL:EXT:templavoila/Resources/Private/Language/template_conf.xlf:staticDS.wizard.title.' . $this->step,

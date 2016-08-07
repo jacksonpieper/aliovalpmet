@@ -12,6 +12,7 @@
  * The TYPO3 project - inspiring people to share!
  */
 
+use Extension\Templavoila\Templavoila;
 /**
  * Plugin 'Flexible Content' for the 'templavoila' extension.
  *
@@ -34,13 +35,6 @@ class tx_templavoila_pi1 extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
      * @var string
      */
     public $scriptRelPath = 'pi1/class.tx_templavoila_pi1.php';
-
-    /**
-     * The extension key.
-     *
-     * @var string
-     */
-    public $extKey = 'templavoila';
 
     /**
      * If set, children-translations will take the value from the default if "false" (zero or blank)
@@ -238,8 +232,8 @@ class tx_templavoila_pi1 extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
 
         // First prepare user defined objects (if any) for hooks which extend this function:
         $hookObjectsArr = [];
-        if (is_array($TYPO3_CONF_VARS['EXTCONF']['templavoila']['pi1']['renderElementClass'])) {
-            foreach ($TYPO3_CONF_VARS['EXTCONF']['templavoila']['pi1']['renderElementClass'] as $classRef) {
+        if (is_array($TYPO3_CONF_VARS['EXTCONF'][Templavoila::EXTKEY]['pi1']['renderElementClass'])) {
+            foreach ($TYPO3_CONF_VARS['EXTCONF'][Templavoila::EXTKEY]['pi1']['renderElementClass'] as $classRef) {
                 $hookObjectsArr[] = & \TYPO3\CMS\Core\Utility\GeneralUtility::getUserObj($classRef);
             }
         }
@@ -938,6 +932,6 @@ class tx_templavoila_pi1 extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
      */
     public function log($message, $severity)
     {
-        \TYPO3\CMS\Core\Utility\GeneralUtility::sysLog($message, 'templavoila', $severity);
+        \TYPO3\CMS\Core\Utility\GeneralUtility::sysLog($message, Templavoila::EXTKEY, $severity);
     }
 }

@@ -73,7 +73,7 @@ class tx_templavoila_cm1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass
      *
      * @var string
      */
-    public $extKey = 'templavoila';
+    public $extKey = \Extension\Templavoila\Templavoila::EXTKEY;
 
     /**
      * @var array
@@ -371,7 +371,7 @@ class tx_templavoila_cm1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass
         $this->eTypes = \TYPO3\CMS\Core\Utility\GeneralUtility::getUserObj('tx_templavoila_cm1_eTypes', '');
         $this->eTypes->init($this);
 
-        $this->extConf = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['templavoila']);
+        $this->extConf = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf'][\Extension\Templavoila\Templavoila::EXTKEY]);
         $this->staticDS = ($this->extConf['staticDS.']['enable']);
 
         // Setting GPvars:
@@ -597,9 +597,9 @@ class tx_templavoila_cm1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass
                 // descriptive title
                 $title,
                 // image-path
-                \TYPO3\CMS\Backend\Utility\IconUtility::skinImg($this->doc->backPath, \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath('templavoila') . 'cm1/item_' . $id . '.gif', 'width="24" height="16" border="0" style="margin-right: 5px;"'),
+                \TYPO3\CMS\Backend\Utility\IconUtility::skinImg($this->doc->backPath, \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath(\Extension\Templavoila\Templavoila::EXTKEY) . 'cm1/item_' . $id . '.gif', 'width="24" height="16" border="0" style="margin-right: 5px;"'),
                 // background-path
-                \TYPO3\CMS\Backend\Utility\IconUtility::skinImg($this->doc->backPath, \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath('templavoila') . 'cm1/item_' . $id . '.gif', '', 1)
+                \TYPO3\CMS\Backend\Utility\IconUtility::skinImg($this->doc->backPath, \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath(\Extension\Templavoila\Templavoila::EXTKEY) . 'cm1/item_' . $id . '.gif', '', 1)
             ];
 
             // information

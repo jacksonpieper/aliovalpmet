@@ -448,13 +448,13 @@ class tx_templavoila_cm1_dsEdit
     {
         $curValue = (array)$curValue;
         // If a user function was registered, use that instead of our own handlers:
-        if (isset($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['templavoila']['cm1']['eTypesExtraFormFields'][$type])) {
+        if (isset($GLOBALS['TYPO3_CONF_VARS']['EXTCONF'][\Extension\Templavoila\Templavoila::EXTKEY]['cm1']['eTypesExtraFormFields'][$type])) {
             $_params = [
                 'type' => $type,
                 'formFieldName' => $formFieldName . '[tx_templavoila][eType_EXTRA]',
                 'curValue' => $curValue,
             ];
-            $output = \TYPO3\CMS\Core\Utility\GeneralUtility::callUserFunction($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['templavoila']['cm1']['eTypesExtraFormFields'][$type], $_params, $this);
+            $output = \TYPO3\CMS\Core\Utility\GeneralUtility::callUserFunction($GLOBALS['TYPO3_CONF_VARS']['EXTCONF'][\Extension\Templavoila\Templavoila::EXTKEY]['cm1']['eTypesExtraFormFields'][$type], $_params, $this);
         } else {
             switch ($type) {
                 default:

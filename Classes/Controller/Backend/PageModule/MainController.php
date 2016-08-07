@@ -21,6 +21,7 @@ use Extension\Templavoila\Domain\Model\Template;
 use Extension\Templavoila\Domain\Repository\SysLanguageRepository;
 use Extension\Templavoila\Domain\Repository\TemplateRepository;
 use Extension\Templavoila\Service\ApiService;
+use Extension\Templavoila\Templavoila;
 use Psr\Http\Message\ResponseInterface;
 use TYPO3\CMS\Backend\Template\Components\ButtonBar;
 use TYPO3\CMS\Backend\Template\DocumentTemplate;
@@ -102,13 +103,6 @@ class MainController extends AbstractModuleController implements Configurable
      * @var array
      */
     public $modSharedTSconfig;
-
-    /**
-     * Extension key of this module
-     *
-     * @var string
-     */
-    public $extKey = 'templavoila';
 
     /**
      * Contains a list of all content elements which are used on the page currently being displayed
@@ -472,11 +466,11 @@ class MainController extends AbstractModuleController implements Configurable
 
         $tmpTSc = BackendUtility::getModTSconfig($this->getId(), 'mod.web_list');
         $tmpTSc = $tmpTSc ['properties']['newContentWiz.']['overrideWithExtension'];
-        if ($tmpTSc !== 'templavoila' && ExtensionManagementUtility::isLoaded($tmpTSc)) {
+        if ($tmpTSc !== Templavoila::EXTKEY && ExtensionManagementUtility::isLoaded($tmpTSc)) {
             $this->newContentWizScriptPath = $GLOBALS['BACK_PATH'] . ExtensionManagementUtility::extRelPath($tmpTSc) . 'mod1/db_new_content_el.php';
         }
 
-        $this->extConf = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['templavoila']);
+        $this->extConf = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf'][Templavoila::EXTKEY]);
 
         $this->altRoot = GeneralUtility::_GP('altRoot');
         $this->versionId = GeneralUtility::_GP('versionId');
@@ -718,13 +712,13 @@ class MainController extends AbstractModuleController implements Configurable
 //            if (method_exists('\TYPO3\CMS\Core\Utility\GeneralUtility', 'createVersionNumberedFilename')) {
 //                $mod1_file = GeneralUtility::createVersionNumberedFilename($mod1_file);
 //            } else {
-//                $mod1_file .= '?' . filemtime(ExtensionManagementUtility::extPath('templavoila') . 'mod1/' . $mod1_file);
+//                $mod1_file .= '?' . filemtime(ExtensionManagementUtility::extPath(\Extension\Templavoila\Templavoila::EXTKEY) . 'mod1/' . $mod1_file);
 //            }
 
             //Prototype /Scriptaculous
             // prototype is loaded before, so no need to include twice.
 //            $this->doc->JScodeLibArray['scriptaculous'] = '<script src="' . $this->doc->backPath . 'contrib/scriptaculous/scriptaculous.js?load=effects,dragdrop,builder" type="text/javascript"></script>';
-//            $this->doc->JScodeLibArray['templavoila_mod1'] = '<script src="' . $this->doc->backPath . '../' . ExtensionManagementUtility::siteRelPath('templavoila') . 'mod1/' . $mod1_file . '" type="text/javascript"></script>';
+//            $this->doc->JScodeLibArray['templavoila_mod1'] = '<script src="' . $this->doc->backPath . '../' . ExtensionManagementUtility::siteRelPath(\Extension\Templavoila\Templavoila::EXTKEY) . 'mod1/' . $mod1_file . '" type="text/javascript"></script>';
 
 //            if (isset($this->modTSconfig['properties']['javascript.']) && is_array($this->modTSconfig['properties']['javascript.'])) {
 //                // add custom javascript files
@@ -1052,8 +1046,6 @@ class MainController extends AbstractModuleController implements Configurable
      */
     public function render_editPageScreen()
     {
-        global $TYPO3_CONF_VARS;
-
         $output = '';
 
         // Fetch the content structure of page:
@@ -1074,8 +1066,8 @@ class MainController extends AbstractModuleController implements Configurable
         }
 
         // Hook for content at the very top (fx. a toolbar):
-        if (is_array($TYPO3_CONF_VARS['EXTCONF']['templavoila']['mod1']['renderTopToolbar'])) {
-            foreach ($TYPO3_CONF_VARS['EXTCONF']['templavoila']['mod1']['renderTopToolbar'] as $_funcRef) {
+        if (is_array($GLOBALS['TYPO3_CONF_VARS']['EXTCONF'][Templavoila::EXTKEY]['mod1']['renderTopToolbar'])) {
+            foreach ($GLOBALS['TYPO3_CONF_VARS']['EXTCONF'][Templavoila::EXTKEY]['mod1']['renderTopToolbar'] as $_funcRef) {
                 $_params = [];
                 $output .= GeneralUtility::callUserFunction($_funcRef, $_params, $this);
             }
@@ -3067,11 +3059,9 @@ class MainController extends AbstractModuleController implements Configurable
      */
     public function hooks_prepareObjectsArray($hookName)
     {
-        global $TYPO3_CONF_VARS;
-
         $hookObjectsArr = [];
-        if (is_array($TYPO3_CONF_VARS['EXTCONF']['templavoila']['mod1'][$hookName])) {
-            foreach ($TYPO3_CONF_VARS['EXTCONF']['templavoila']['mod1'][$hookName] as $key => $classRef) {
+        if (is_array($GLOBALS['TYPO3_CONF_VARS']['EXTCONF'][Templavoila::EXTKEY]['mod1'][$hookName])) {
+            foreach ($GLOBALS['TYPO3_CONF_VARS']['EXTCONF'][Templavoila::EXTKEY]['mod1'][$hookName] as $key => $classRef) {
                 $hookObjectsArr[$key] = & GeneralUtility::getUserObj($classRef);
             }
         }
@@ -3173,7 +3163,7 @@ class MainController extends AbstractModuleController implements Configurable
             throw new \RuntimeException('Further execution of code leads to PHP errors.', 1404750505);
 
             // Include file required to unserialization
-            GeneralUtility::requireOnce(ExtensionManagementUtility::extPath('templavoila', 'newcewizard/model/class.tx_templavoila_contentelementdescriptor.php'));
+            GeneralUtility::requireOnce(ExtensionManagementUtility::extPath(Templavoila::EXTKEY, 'newcewizard/model/class.tx_templavoila_contentelementdescriptor.php'));
 
             $obj = @unserialize(base64_decode($ser));
 

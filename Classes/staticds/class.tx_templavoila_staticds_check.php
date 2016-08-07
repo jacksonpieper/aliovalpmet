@@ -42,7 +42,7 @@ class tx_templavoila_staticds_check
         $link = BackendUtility::getModuleUrl(
             'tools_ExtensionmanagerExtensionmanager',
             [
-                'tx_extensionmanager_tools_extensionmanagerextensionmanager[extensionKey]' => 'templavoila',
+                'tx_extensionmanager_tools_extensionmanagerextensionmanager[extensionKey]' => \Extension\Templavoila\Templavoila::EXTKEY,
                 'tx_extensionmanager_tools_extensionmanagerextensionmanager[action]' => 'show',
                 'tx_extensionmanager_tools_extensionmanagerextensionmanager[controller]' => 'UpdateScript'
             ]
@@ -69,7 +69,7 @@ class tx_templavoila_staticds_check
      */
     protected function staticDsIsEnabled()
     {
-        $conf = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['templavoila']);
+        $conf = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf'][\Extension\Templavoila\Templavoila::EXTKEY]);
         return (bool)$conf['staticDS.']['enable'];
     }
 
