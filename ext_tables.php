@@ -17,7 +17,7 @@ if (TYPO3_MODE === 'BE') {
         '',
         [
             'name' => 'web_txtemplavoilaM1',
-            'access' => 'admin',
+            'access' => 'group,user',
             'routeTarget' => \Extension\Templavoila\Controller\Backend\PageModule\MainController::class . '::processRequest',
             'labels' => [
                 'll_ref' => 'LLL:EXT:templavoila/mod1/locallang_mod.xlf',
@@ -35,7 +35,7 @@ if (TYPO3_MODE === 'BE') {
         '',
         [
             'name' => 'web_txtemplavoilaM2',
-            'access' => 'admin',
+            'access' => 'group,user',
             'routeTarget' => \Extension\Templavoila\Controller\Backend\AdministrationModule\MainController::class . '::processRequest',
             'labels' => [
                 'll_ref' => 'LLL:EXT:templavoila/mod2/locallang_mod.xlf',
