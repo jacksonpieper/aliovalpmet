@@ -47,16 +47,13 @@ class tx_templavoila_mod1_clipboard
      */
     private $apiService;
 
-    public function __construct()
-    {
-        $this->apiService = GeneralUtility::makeInstance(ApiService::class);
-    }
-
     /**
      * @param MainController $controller
      */
-    public function init(MainController $controller)
+    public function __construct(MainController $controller)
     {
+        $this->apiService = GeneralUtility::makeInstance(ApiService::class);
+
         // Make local reference to some important variables:
         $this->controller = $controller;
         $this->doc = $this->controller->doc;

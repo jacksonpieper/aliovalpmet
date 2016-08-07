@@ -507,8 +507,7 @@ class MainController extends AbstractModuleController implements Configurable
         // Initialize side bar and wizards:
         $this->sidebarRenderer = GeneralUtility::makeInstance(SidebarRenderer::class, $this);
 
-        $this->wizardsObj = GeneralUtility::getUserObj('&tx_templavoila_mod1_wizards', '');
-        $this->wizardsObj->init($this);
+        $this->wizardsObj = GeneralUtility::makeInstance(\tx_templavoila_mod1_wizards::class, $this);
 
         // Initialize TemplaVoila API class:
         $this->apiObj = GeneralUtility::makeInstance(ApiService::class, $this->altRoot ? $this->altRoot : 'pages');
@@ -516,8 +515,7 @@ class MainController extends AbstractModuleController implements Configurable
             $this->apiObj->modifyReferencesInLiveWS(true);
         }
         // Initialize the clipboard
-        $this->clipboardObj =& GeneralUtility::getUserObj('&tx_templavoila_mod1_clipboard', '');
-        $this->clipboardObj->init($this);
+        $this->clipboardObj = GeneralUtility::makeInstance(\tx_templavoila_mod1_clipboard::class, $this);
 
         $this->flashMessageService = GeneralUtility::makeInstance(FlashMessageService::class);
     }
