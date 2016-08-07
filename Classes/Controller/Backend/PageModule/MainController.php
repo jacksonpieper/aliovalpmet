@@ -1939,7 +1939,7 @@ class MainController extends AbstractModuleController implements Configurable
             // Traverse the available languages of the page (not default and [All])
             $tRows = [];
             foreach ($this->translatedLanguagesArr as $sys_language_uid => $sLInfo) {
-                if ($this->MOD_SETTINGS['langDisplayMode'] && ($this->currentLanguageUid !== $sys_language_uid)) {
+                if (($this->currentLanguageUid !== $sys_language_uid) && $this->getSetting('langDisplayMode') !== 'default') {
                     continue;
                 }
                 if ($sys_language_uid > 0) {
