@@ -38,18 +38,12 @@ class tx_templavoila_mod1_clipboard
     public $controller;
 
     /**
-     * @var \TYPO3\CMS\Backend\Template\DocumentTemplate
-     */
-    public $doc;
-
-    /**
      * @param MainController $controller
      */
     public function __construct(MainController $controller)
     {
         // Make local reference to some important variables:
         $this->controller = $controller;
-        $this->doc = $this->controller->doc;
 
         // Initialize the t3lib clipboard:
         $this->clipboard = GeneralUtility::makeInstance(Clipboard::class);
@@ -171,9 +165,9 @@ class tx_templavoila_mod1_clipboard
         $linkRef = '<a title="' . static::getLanguageService()->getLL('createreference') . '" class="btn btn-default tpm-ref" href="' . $this->controller->getReturnUrl($referenceUrlParams) . '">' . $refIcon . '</a>';
 
         $output =
-            (GeneralUtility::inList($listOfButtons, 'copy') && !in_array('copy', $this->controller->blindIcons) ? $linkCopy : '') .
-            (GeneralUtility::inList($listOfButtons, 'ref') && !in_array('ref', $this->controller->blindIcons) ? $linkRef : '') .
-            (GeneralUtility::inList($listOfButtons, 'cut') && !in_array('cut', $this->controller->blindIcons) ? $linkCut : '');
+            (GeneralUtility::inList($listOfButtons, 'copy') && !in_array('copy', $this->controller->getBlindIcons()) ? $linkCopy : '') .
+            (GeneralUtility::inList($listOfButtons, 'ref') && !in_array('ref', $this->controller->getBlindIcons()) ? $linkRef : '') .
+            (GeneralUtility::inList($listOfButtons, 'cut') && !in_array('cut', $this->controller->getBlindIcons()) ? $linkCut : '');
 
         return $output;
     }
@@ -189,7 +183,7 @@ class tx_templavoila_mod1_clipboard
      */
     public function element_getPasteButtons($destinationPointer)
     {
-        if (in_array('paste', $this->controller->blindIcons)) {
+        if (in_array('paste', $this->controller->getBlindIcons())) {
             return '';
         }
 
@@ -243,7 +237,7 @@ class tx_templavoila_mod1_clipboard
         $destinationPointerString = $this->controller->getApiService()->flexform_getStringFromPointer($destinationPointer);
 
         $output = '';
-        if (!in_array('pasteAfter', $this->controller->blindIcons)) {
+        if (!in_array('pasteAfter', $this->controller->getBlindIcons())) {
             $params = [
                 'pasteRecord' => $pasteMode,
                 'source' => $sourcePointerString,
@@ -257,7 +251,7 @@ class tx_templavoila_mod1_clipboard
             $output .= '<a title="' . static::getLanguageService()->getLL('pasterecord') . '" class="btn btn-default btn-sm tpm-pasteAfter" href="' . $this->controller->getReturnUrl($params) . '">' . $pasteAfterIcon . '</a>';
         }
         // FCEs with sub elements have two different paste icons, normal elements only one:
-        if ($pasteMode === 'copy' && $clipboardElementHasSubElements && !in_array('pasteSubRef', $this->controller->blindIcons)) {
+        if ($pasteMode === 'copy' && $clipboardElementHasSubElements && !in_array('pasteSubRef', $this->controller->getBlindIcons())) {
             $params = [
                 'pasteRecord' => 'copyref',
                 'source' => $sourcePointerString,

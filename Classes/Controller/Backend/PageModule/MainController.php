@@ -27,13 +27,11 @@ use Psr\Http\Message\ResponseInterface;
 use TYPO3\CMS\Backend\Template\Components\ButtonBar;
 use TYPO3\CMS\Backend\Template\DocumentTemplate;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
-use TYPO3\CMS\Core\Html\HtmlParser;
 use TYPO3\CMS\Core\Http\Response;
 use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Messaging\FlashMessageService;
-use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Fluid\View\StandaloneView;
 
@@ -100,7 +98,7 @@ class MainController extends AbstractModuleController implements Configurable
      *
      * @var array
      */
-    private $altRoot = [];
+    private $altRoot;
 
     /**
      * Versioning: The current version id
@@ -162,18 +160,6 @@ class MainController extends AbstractModuleController implements Configurable
     public $doc;
 
     /**
-     * @var SidebarRenderer
-     */
-    private $sidebarRenderer;
-
-    /**
-     * Instance of wizards class
-     *
-     * @var \tx_templavoila_mod1_wizards
-     */
-    private $wizardsObj;
-
-    /**
      * Instance of clipboard class
      *
      * @var \tx_templavoila_mod1_clipboard
@@ -199,7 +185,7 @@ class MainController extends AbstractModuleController implements Configurable
      *
      * @var array
      */
-    public $blindIcons = [];
+    private $blindIcons;
 
     /**
      * @var int
@@ -207,21 +193,9 @@ class MainController extends AbstractModuleController implements Configurable
     private $previewTitleMaxLen = 50;
 
     /**
-     * @var bool
-     */
-    private $debug = false;
-
-    /**
      * @var array
      */
     private static $calcPermCache = [];
-
-    /**
-     * Setting which new content wizard to use
-     *
-     * @var string
-     */
-    private $newContentWizScriptPath = 'db_new_content_el.php';
 
     /**
      * @var FlashMessageService
@@ -252,11 +226,72 @@ class MainController extends AbstractModuleController implements Configurable
      */
     private $sysLanguageRepository;
 
+    /**
+     * @var string
+     */
+    private $perms_clause;
+
+    /**
+     * @var string
+     */
+    private $CMD;
+
     public function __construct()
     {
         parent::__construct();
+        static::getLanguageService()->includeLLFile('EXT:lang/locallang_core.xlf');
+        static::getLanguageService()->includeLLFile('EXT:templavoila/mod1/locallang.xlf');
 
+        $this->extConf = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf'][Templavoila::EXTKEY]);
+
+        $this->modTSconfig = BackendUtility::getModTSconfig($this->getId(), 'mod.' . $this->moduleName);
+        if (!isset($this->modTSconfig['properties']['sideBarEnable'])) {
+            $this->modTSconfig['properties']['sideBarEnable'] = 1;
+        }
+
+        $this->modSharedTSconfig = BackendUtility::getModTSconfig($this->getId(), 'mod.SHARED');
+
+        $this->initializeButtons();
+
+        $this->doc = GeneralUtility::makeInstance(DocumentTemplate::class);
+        $this->flashMessageService = GeneralUtility::makeInstance(FlashMessageService::class);
         $this->sysLanguageRepository = GeneralUtility::makeInstance(SysLanguageRepository::class);
+    }
+
+    private function initializeButtons()
+    {
+        $documentViewButton = $this->moduleTemplate->getDocHeaderComponent()->getButtonBar()->makeLinkButton()
+            ->setTitle('title')
+            ->setHref('#')
+            ->setOnClick(BackendUtility::viewOnClick($this->getId()))
+            ->setIcon($this->moduleTemplate->getIconFactory()->getIcon('actions-document-view', Icon::SIZE_SMALL))
+        ;
+
+        $pageOpenButton = $this->moduleTemplate->getDocHeaderComponent()->getButtonBar()->makeLinkButton()
+            ->setTitle('Edit page properties')
+            ->setHref(BackendUtility::getModuleUrl(
+                'record_edit',
+                [
+                    'edit' => [
+                        'pages' => [
+                            $this->getId() => 'edit'
+                        ]
+                    ],
+                    'returnUrl' => $this->getReturnUrl()
+                ]
+            ))
+            ->setIcon($this->moduleTemplate->getIconFactory()->getIcon('actions-page-open', Icon::SIZE_SMALL))
+        ;
+
+        $clearCacheButton = $this->moduleTemplate->getDocHeaderComponent()->getButtonBar()->makeLinkButton()
+            ->setTitle(static::getLanguageService()->getLL('labels.clear_cache'))
+            ->setHref($this->getReturnUrl(['clear_cache' => 1]))
+            ->setIcon($this->moduleTemplate->getIconFactory()->getIcon('actions-system-cache-clear', Icon::SIZE_SMALL))
+        ;
+
+        $this->moduleTemplate->getDocHeaderComponent()->getButtonBar()->addButton($documentViewButton);
+        $this->moduleTemplate->getDocHeaderComponent()->getButtonBar()->addButton($pageOpenButton);
+        $this->moduleTemplate->getDocHeaderComponent()->getButtonBar()->addButton($clearCacheButton, ButtonBar::BUTTON_POSITION_RIGHT);
     }
 
     /**
@@ -282,61 +317,44 @@ class MainController extends AbstractModuleController implements Configurable
     public function index(ServerRequest $request, Response $response)
     {
         $this->CMD = $request->getQueryParams()['CMD'];
-
-        $view = $this->initializeView('Backend/PageModule/Main');
-        static::getLanguageService()->includeLLFile('EXT:templavoila/mod1/locallang.xlf');
         $this->moduleName = $request->getQueryParams()['M'];
+        $this->perms_clause = static::getBackendUser()->getPagePermsClause(1);
+        $this->versionId = GeneralUtility::_GP('versionId');
+        // Fill array allAvailableLanguages and currently selected language (from language selector or from outside)
+        $this->allAvailableLanguages = $this->getAvailableLanguages(0, true, true, true);
+        $this->currentLanguageKey = $this->getAllAvailableLanguages()[$this->getSetting('language')]['ISOcode'];
+        $this->currentLanguageUid = $this->getAllAvailableLanguages()[$this->getSetting('language')]['uid'];
 
-        $documentViewButton = $this->moduleTemplate->getDocHeaderComponent()->getButtonBar()->makeLinkButton()
-            ->setTitle('title')
-            ->setHref('#')
-            ->setOnClick(BackendUtility::viewOnClick($this->getId()))
-            ->setIcon($this->moduleTemplate->getIconFactory()->getIcon('actions-document-view', Icon::SIZE_SMALL))
-        ;
-
-        $pageOpenButton = $this->moduleTemplate->getDocHeaderComponent()->getButtonBar()->makeLinkButton()
-            ->setTitle('Edit page properties')
-            ->setHref(BackendUtility::getModuleUrl(
-                'record_edit',
-                [
-                    'edit' => [
-                        'pages' => [
-                            $this->getId() => 'edit'
-                        ]
-                    ],
-                    'returnUrl' => $this->getReturnUrl()
-                ]
-            ))
-            ->setIcon($this->moduleTemplate->getIconFactory()->getIcon('actions-page-open', Icon::SIZE_SMALL))
-        ;
-
-        $clearCacheButton = $this->moduleTemplate->getDocHeaderComponent()->getButtonBar()->makeLinkButton()
-            ->setTitle('Edit page properties')
-            ->setHref($this->getReturnUrl(['clear_cache' => 1]))
-            ->setIcon($this->moduleTemplate->getIconFactory()->getIcon('actions-system-cache-clear', Icon::SIZE_SMALL))
-        ;
-
-        $this->moduleTemplate->getDocHeaderComponent()->getButtonBar()->addButton($documentViewButton);
-        $this->moduleTemplate->getDocHeaderComponent()->getButtonBar()->addButton($pageOpenButton);
-
-        $this->moduleTemplate->getDocHeaderComponent()->getButtonBar()->addButton($clearCacheButton, ButtonBar::BUTTON_POSITION_RIGHT);
-
-        $this->moduleTemplate->setTitle(static::getLanguageService()->getLL('title'));
-        $this->moduleTemplate->getPageRenderer()->loadRequireJsModule('TYPO3/CMS/Backend/Modal');
-        $this->moduleTemplate->getPageRenderer()->loadRequireJsModule('TYPO3/CMS/Templavoila/PageModule');
-
-        $this->altRoot = GeneralUtility::_GP('altRoot');
-        $this->apiObj = GeneralUtility::makeInstance(ApiService::class, $this->altRoot ? $this->altRoot : 'pages');
-        if (isset($this->modSharedTSconfig['properties']['useLiveWorkspaceForReferenceListUpdates'])) {
-            $this->apiObj->modifyReferencesInLiveWS(true);
+        // If no translations exist for this page, set the current language to default (as there won't be a language selector)
+        $this->translatedLanguagesArr = $this->getAvailableLanguages($this->getId());
+        if (count($this->translatedLanguagesArr) === 1) { // Only default language exists
+            $this->currentLanguageKey = 'DEF';
         }
 
-        $this->init();
+        // Set translator mode if the default langauge is not accessible for the user:
+        if (!static::getBackendUser()->checkLanguageAccess(0) && !static::getBackendUser()->isAdmin()) {
+            $this->translatorMode = true;
+        }
+
+        if (isset($this->modTSconfig['properties']['previewTitleMaxLen'])) {
+            $this->previewTitleMaxLen = (int)$this->modTSconfig['properties']['previewTitleMaxLen'];
+        }
+
+        $this->altRoot = GeneralUtility::_GP('altRoot');
+        $this->clipboardObj = GeneralUtility::makeInstance(\tx_templavoila_mod1_clipboard::class, $this);
+
+        $view = $this->initializeView('Backend/PageModule/Main');
+
         $this->main($view);
         $record = BackendUtility::getRecordWSOL('pages', $this->getId());
 
         $view->assign('h1', $this->moduleTemplate->header($record['title']));
+
+        $this->moduleTemplate->setTitle(static::getLanguageService()->getLL('title'));
+        $this->moduleTemplate->getPageRenderer()->loadRequireJsModule('TYPO3/CMS/Backend/Modal');
+        $this->moduleTemplate->getPageRenderer()->loadRequireJsModule('TYPO3/CMS/Templavoila/PageModule');
         $this->moduleTemplate->setContent($view->render());
+
         $response->getBody()->write($this->moduleTemplate->renderContent());
         return $response;
     }
@@ -364,109 +382,6 @@ class MainController extends AbstractModuleController implements Configurable
 
     /*******************************************
      *
-     * Initialization functions
-     *
-     *******************************************/
-
-    /**
-     * Initialisation of this backend module
-     *
-     * @throws \InvalidArgumentException
-     */
-    public function init()
-    {
-        $this->CMD = GeneralUtility::_GP('CMD');
-        $this->perms_clause = static::getBackendUser()->getPagePermsClause(1);
-        $this->menuConfig();
-        $this->doc = GeneralUtility::makeInstance(DocumentTemplate::class);
-
-        $this->modSharedTSconfig = BackendUtility::getModTSconfig($this->getId(), 'mod.SHARED');
-//        $this->MOD_SETTINGS = BackendUtility::getModuleData($this->MOD_MENU, GeneralUtility::_GP('SET'), $this->moduleName);
-
-        if ($this->getSetting('langDisplayMode') === '') {
-            $this->updateSetting('langDisplayMode', 'default');
-        }
-
-        $tmpTSc = BackendUtility::getModTSconfig($this->getId(), 'mod.web_list');
-        $tmpTSc = $tmpTSc ['properties']['newContentWiz.']['overrideWithExtension'];
-        if ($tmpTSc !== Templavoila::EXTKEY && ExtensionManagementUtility::isLoaded($tmpTSc)) {
-            $this->newContentWizScriptPath = $GLOBALS['BACK_PATH'] . ExtensionManagementUtility::extRelPath($tmpTSc) . 'mod1/db_new_content_el.php';
-        }
-
-        $this->extConf = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf'][Templavoila::EXTKEY]);
-
-        $this->versionId = GeneralUtility::_GP('versionId');
-
-        if (isset($this->modTSconfig['properties']['previewTitleMaxLen'])) {
-            $this->previewTitleMaxLen = (int)$this->modTSconfig['properties']['previewTitleMaxLen'];
-        }
-
-        // enable debug for development
-        if ($this->modTSconfig['properties']['debug']) {
-            $this->debug = true;
-        }
-        $this->blindIcons = isset($this->modTSconfig['properties']['blindIcons']) ? GeneralUtility::trimExplode(',', $this->modTSconfig['properties']['blindIcons'], true) : [];
-
-        $this->addToRecentElements();
-
-        // Fill array allAvailableLanguages and currently selected language (from language selector or from outside)
-        $this->allAvailableLanguages = $this->getAvailableLanguages(0, true, true, true);
-        $this->currentLanguageKey = $this->getAllAvailableLanguages()[$this->getSetting('language')]['ISOcode'];
-        $this->currentLanguageUid = $this->getAllAvailableLanguages()[$this->getSetting('language')]['uid'];
-
-        // If no translations exist for this page, set the current language to default (as there won't be a language selector)
-        $this->translatedLanguagesArr = $this->getAvailableLanguages($this->getId());
-        if (count($this->translatedLanguagesArr) === 1) { // Only default language exists
-            $this->currentLanguageKey = 'DEF';
-        }
-
-        // Set translator mode if the default langauge is not accessible for the user:
-        if (!static::getBackendUser()->checkLanguageAccess(0) && !static::getBackendUser()->isAdmin()) {
-            $this->translatorMode = true;
-        }
-
-        // Initialize side bar and wizards:
-        $this->sidebarRenderer = GeneralUtility::makeInstance(SidebarRenderer::class, $this);
-
-        $this->wizardsObj = GeneralUtility::makeInstance(\tx_templavoila_mod1_wizards::class, $this);
-
-        // Initialize the clipboard
-        $this->clipboardObj = GeneralUtility::makeInstance(\tx_templavoila_mod1_clipboard::class, $this);
-
-        $this->flashMessageService = GeneralUtility::makeInstance(FlashMessageService::class);
-    }
-
-    /**
-     * Preparing menu content and initializing clipboard and module TSconfig
-     */
-    public function menuConfig()
-    {
-        $this->modTSconfig = BackendUtility::getModTSconfig($this->getId(), 'mod.' . $this->moduleName);
-
-        // Prepare array of sys_language uids for available translations:
-
-
-        // Hook: menuConfig_preProcessModMenu
-        $menuHooks = $this->hooks_prepareObjectsArray('menuConfigClass');
-        foreach ($menuHooks as $hookObj) {
-            if (method_exists($hookObj, 'menuConfig_preProcessModMenu')) {
-                $hookObj->menuConfig_preProcessModMenu($this->MOD_MENU, $this);
-            }
-        }
-
-        // page/be_user TSconfig settings and blinding of menu-items
-        $this->MOD_MENU['view'] = BackendUtility::unsetMenuItems($this->modTSconfig['properties'], $this->MOD_MENU['view'], 'menu.function');
-
-        if (!isset($this->modTSconfig['properties']['sideBarEnable'])) {
-            $this->modTSconfig['properties']['sideBarEnable'] = 1;
-        }
-
-        // CLEANSE SETTINGS
-        $this->MOD_SETTINGS = BackendUtility::getModuleData($this->MOD_MENU, GeneralUtility::_GP('SET'), $this->moduleName);
-    }
-
-    /*******************************************
-     *
      * Main functions
      *
      *******************************************/
@@ -481,7 +396,7 @@ class MainController extends AbstractModuleController implements Configurable
      */
     public function main(StandaloneView $view)
     {
-        $this->content = '';
+        $content = '';
 
         // Access check! The page will show only if there is a valid page and if this page may be viewed by the user
         if (is_array($this->altRoot)) {
@@ -496,8 +411,8 @@ class MainController extends AbstractModuleController implements Configurable
 
         if ($access) {
             if (GeneralUtility::_GP('ajaxUnlinkRecord')) {
-                $unlinkDestinationPointer = $this->apiObj->flexform_getPointerFromString(GeneralUtility::_GP('ajaxUnlinkRecord'));
-                $this->apiObj->unlinkElement($unlinkDestinationPointer);
+                $unlinkDestinationPointer = $this->getApiService()->flexform_getPointerFromString(GeneralUtility::_GP('ajaxUnlinkRecord'));
+                $this->getApiService()->unlinkElement($unlinkDestinationPointer);
             }
 
             $this->calcPerms = $this->getCalcPerms($pageInfoArr['uid']);
@@ -512,8 +427,6 @@ class MainController extends AbstractModuleController implements Configurable
                     $this->rootElementUid_pidForContent = $this->rootElementRecord['t3ver_oid'];
                 } else {
                     throw new \RuntimeException('Further execution of code leads to PHP errors.', 1404750505);
-                    $liveRec = BackendUtility::getLiveRecord($this->rootElementTable, $this->rootElementUid);
-                    $this->rootElementUid_pidForContent = $liveRec['pid'];
                 }
             } else {
                 // If pages use current UID, otherwhise you must use the PID to define the Page ID
@@ -529,146 +442,6 @@ class MainController extends AbstractModuleController implements Configurable
                 BackendUtility::setUpdateSignal('updatePageTree');
             }
 
-            // Draw the header.
-            $this->doc = GeneralUtility::makeInstance(DocumentTemplate::class);
-            $this->doc->backPath = $BACK_PATH;
-
-//            $templateFile = ExtensionManagementUtility::extPath($this->extKey) . 'Resources/Private/Templates/mod1_' . substr(TYPO3_version, 0, 3) . '.html';
-//            if (file_exists($templateFile)) {
-//                $this->doc->setModuleTemplate('EXT:templavoila/Resources/Private/Templates/mod1_' . substr(TYPO3_version, 0, 3) . '.html');
-//            } else {
-//                $this->doc->setModuleTemplate('EXT:templavoila/Resources/Private/Templates/mod1_default.html');
-//            }
-
-//            $this->doc->docType = 'xhtml_trans';
-//
-//            $this->doc->bodyTagId = 'typo3-mod-php';
-//            $this->doc->divClass = '';
-//            $this->doc->form = '<form action="' . htmlspecialchars('index.php?' . $this->link_getParameters()) . '" method="post">';
-
-            // Add custom styles
-//            $styleSheetFile = ExtensionManagementUtility::extPath($this->extKey) . 'Resources/Public/StyleSheet/mod1_' . substr(TYPO3_version, 0, 3) . '.css';
-//            if (file_exists($styleSheetFile)) {
-//                $styleSheetFile = ExtensionManagementUtility::extRelPath($this->extKey) . 'Resources/Public/StyleSheet/mod1_' . substr(TYPO3_version, 0, 3) . '.css';
-//            } else {
-//                $styleSheetFile = ExtensionManagementUtility::extRelPath($this->extKey) . 'Resources/Public/StyleSheet/mod1_default.css';
-//            }
-
-//            if (isset($this->modTSconfig['properties']['stylesheet'])) {
-//                $styleSheetFile = $this->modTSconfig['properties']['stylesheet'];
-//            }
-
-//            $this->doc->getPageRenderer()->addCssFile($GLOBALS['BACK_PATH'] . $styleSheetFile);
-
-//            if (isset($this->modTSconfig['properties']['stylesheet.'])) {
-//                foreach ($this->modTSconfig['properties']['stylesheet.'] as $file) {
-//                    if (substr($file, 0, 4) === 'EXT:') {
-//                        list($extKey, $local) = explode('/', substr($file, 4), 2);
-//                        if (strcmp($extKey, '') && ExtensionManagementUtility::isLoaded($extKey) && strcmp($local, '')) {
-//                            $file = ExtensionManagementUtility::extRelPath($extKey) . $local;
-//                        }
-//                    }
-//                    $this->doc->getPageRenderer()->addCssFile($GLOBALS['BACK_PATH'] . $file);
-//                }
-//            }
-
-            // Adding classic jumpToUrl function, needed for the function menu. Also, the id in the parent frameset is configured.
-//            $this->doc->JScode = $this->doc->wrapScriptTags('
-//                if (top.fsMod) top.fsMod.recentIds["web"] = ' . (int)$this->getId() . ';
-//                ' . $this->doc->redirectUrls() . '
-//                var T3_TV_MOD1_BACKPATH = "' . $BACK_PATH . '";
-//                var T3_TV_MOD1_RETURNURL = "' . rawurlencode(GeneralUtility::getIndpEnv('REQUEST_URI')) . '";
-//            ');
-
-//            $this->doc->getPageRenderer()->loadPrototype();
-//            $this->doc->getPageRenderer()->loadExtJs();
-//            $this->doc->JScode .= $this->doc->wrapScriptTags('
-//            $this->moduleTemplate->addJavaScriptCode('foo', '
-//                var typo3pageModule = {
-//                    /**
-//                     * Initialization
-//                     */
-//                    init: function() {
-//                        typo3pageModule.enableHighlighting();
-//                    },
-//
-//                    /**
-//                     * This method is used to bind the higlighting function "setActive"
-//                     * to the mouseenter event and the "setInactive" to the mouseleave event.
-//                     */
-//                    enableHighlighting: function() {
-//                        Ext.get(\'typo3-docbody\')
-//                            .on(\'mouseover\', typo3pageModule.setActive,typo3pageModule);
-//                    },
-//
-//                    /**
-//                     * This method is used as an event handler when the
-//                     * user hovers the a content element.
-//                     */
-//                    setActive: function(e, t) {
-//                        Ext.select(\'.active\').removeClass(\'active\').addClass(\'inactive\');
-//                        var parent = Ext.get(t).findParent(\'.t3-page-ce\', null, true);
-//                        if (parent) {
-//                            parent.removeClass(\'inactive\').addClass(\'active\');
-//                        }
-//                    }
-//                }
-//
-//                Ext.onReady(function() {
-//                    typo3pageModule.init();
-//                });
-//            ');
-
-            // Preparing context menues
-            // this also adds prototype to the list of required libraries
-            $CMparts = $this->doc->getContextMenuCode();
-
-//            $mod1_file = 'dragdrop' . ($this->debug ? '.js' : '-min.js');
-//            if (method_exists('\TYPO3\CMS\Core\Utility\GeneralUtility', 'createVersionNumberedFilename')) {
-//                $mod1_file = GeneralUtility::createVersionNumberedFilename($mod1_file);
-//            } else {
-//                $mod1_file .= '?' . filemtime(ExtensionManagementUtility::extPath(\Extension\Templavoila\Templavoila::EXTKEY) . 'mod1/' . $mod1_file);
-//            }
-
-            //Prototype /Scriptaculous
-            // prototype is loaded before, so no need to include twice.
-//            $this->doc->JScodeLibArray['scriptaculous'] = '<script src="' . $this->doc->backPath . 'contrib/scriptaculous/scriptaculous.js?load=effects,dragdrop,builder" type="text/javascript"></script>';
-//            $this->doc->JScodeLibArray['templavoila_mod1'] = '<script src="' . $this->doc->backPath . '../' . ExtensionManagementUtility::siteRelPath(\Extension\Templavoila\Templavoila::EXTKEY) . 'mod1/' . $mod1_file . '" type="text/javascript"></script>';
-
-//            if (isset($this->modTSconfig['properties']['javascript.']) && is_array($this->modTSconfig['properties']['javascript.'])) {
-//                // add custom javascript files
-//                foreach ($this->modTSconfig['properties']['javascript.'] as $key => $value) {
-//                    if ($value) {
-//                        if (substr($value, 0, 4) === 'EXT:') {
-//                            list($extKey, $local) = explode('/', substr($value, 4), 2);
-//                            if (strcmp($extKey, '') && ExtensionManagementUtility::isLoaded($extKey) && strcmp($local, '')) {
-//                                $value = ExtensionManagementUtility::extRelPath($extKey) . $local;
-//                            }
-//                        }
-//                        $this->doc->JScodeLibArray[$key] = '<script src="' . $this->doc->backPath . htmlspecialchars($value) . '" type="text/javascript"></script>';
-//                    }
-//                }
-//            }
-
-            // Set up JS for dynamic tab menu and side bar
-//            $this->doc->loadJavascriptLib('sysext/backend/Resources/Public/JavaScript/tabmenu.js');
-
-//            $this->doc->JScode .= $this->modTSconfig['properties']['sideBarEnable'] ? $this->sideBarObj->getJScode() : '';
-
-            // Setting up support for context menus (when clicking the items icon)
-//            $this->doc->bodyTagAdditions = $CMparts[1];
-//            $this->doc->JScode .= $CMparts[0];
-//            $this->doc->postCode .= $CMparts[2];
-
-            // CSS for drag and drop
-
-//            if (ExtensionManagementUtility::isLoaded('t3skin')) {
-//                // Fix padding for t3skin in disabled tabs
-//                $this->doc->inDocStyles .= '
-//                    table.typo3-dyntabmenu td.disabled, table.typo3-dyntabmenu td.disabled_over, table.typo3-dyntabmenu td.disabled:hover { padding-left: 10px; }
-//                ';
-//            }
-
             $this->handleIncomingCommands();
 
             // Start creating HTML output
@@ -679,7 +452,7 @@ class MainController extends AbstractModuleController implements Configurable
             if ($this->rootElementTable === 'pages') {
 
                 // Initialize the special doktype class:
-                $specialDoktypesObj =& GeneralUtility::getUserObj('&tx_templavoila_mod1_specialdoktypes', '');
+                $specialDoktypesObj =& GeneralUtility::getUserObj('&tx_templavoila_mod1_specialdoktypes');
                 $specialDoktypesObj->init($this);
                 $doktype = $this->rootElementRecord['doktype'];
 
@@ -694,11 +467,11 @@ class MainController extends AbstractModuleController implements Configurable
                 if (method_exists($specialDoktypesObj, $methodName)) {
                     $result = $specialDoktypesObj->$methodName($this->rootElementRecord);
                     if ($result !== false) {
-                        $this->content .= $result;
+                        $content .= $result;
                         if (static::getBackendUser()->isPSet($this->calcPerms, 'pages', 'edit')) {
                             // Edit icon only if page can be modified by user
                             $iconEdit = $this->moduleTemplate->getIconFactory()->getIcon('actions-document-open', Icon::SIZE_SMALL);
-                            $this->content .= '<br/><br/><strong>' . $this->link_edit($iconEdit . static::getLanguageService()->sL('LLL:EXT:lang/locallang_mod_web_list.xlf:editPage'), 'pages', $this->getId()) . '</strong>';
+                            $content .= '<br/><br/><strong>' . $this->link_edit($iconEdit . static::getLanguageService()->sL('LLL:EXT:lang/locallang_mod_web_list.xlf:editPage'), 'pages', $this->getId()) . '</strong>';
                         }
                         $render_editPageScreen = false; // Do not output editing code for special doctypes!
                     }
@@ -725,51 +498,24 @@ class MainController extends AbstractModuleController implements Configurable
                     $this->flashMessageService->getMessageQueueByIdentifier('ext.templavoila')->enqueue($flashMessage);
                 }
                 // Render "edit current page" (important to do before calling ->sideBarObj->render() - otherwise the translation tab is not rendered!
-                $editCurrentPageHTML .= $this->render_editPageScreen();
+                $content .= $this->render_editPageScreen();
 
                 if (GeneralUtility::_GP('ajaxUnlinkRecord')) {
                     $this->render_editPageScreen();
                     echo $this->render_sidebar();
                     exit;
                 }
-
-                $this->content .= $editCurrentPageHTML;
-
-                // Create sortables
-//                if (is_array($this->sortableContainers)) {
-//                    $script = '';
-//                    $sortable_items_json = json_encode($this->sortableItems);
-//                    $all_items_json = json_encode($this->allItems);
-//
-//                    $script .=
-//                        'var all_items = ' . $all_items_json . ';' .
-//                        'var sortable_items = ' . $sortable_items_json . ';' .
-//                        'var sortable_removeHidden = ' . ($this->getSetting('tt_content_showHidden') !== '0' ? 'false;' : 'true;') .
-//                        'var sortable_linkParameters = \'' . $this->link_getParameters() . '\';';
-//
-//                    $containment = '[' . GeneralUtility::csvValues($this->sortableContainers, ',', '"') . ']';
-//                    $script .= 'Event.observe(window,"load",function(){';
-//                    foreach ($this->sortableContainers as $s) {
-//                        $script .= 'tv_createSortable(\'' . $s . '\',' . $containment . ');';
-//                    }
-//                    $script .= '});';
-//                    $this->content .= GeneralUtility::wrapJS($script);
-//                }
-//
-//                $this->doc->divClass = 'tpm-editPageScreen';
             }
         } else { // No access or no current page uid:
             $this->doc = GeneralUtility::makeInstance(DocumentTemplate::class);
-            $this->doc->backPath = $BACK_PATH;
             $this->doc->setModuleTemplate('EXT:templavoila/Resources/Private/Templates/mod1_noaccess.html');
-            $this->doc->docType = 'xhtml_trans';
-
             $this->doc->bodyTagId = 'typo3-mod-php';
 
             $cmd = GeneralUtility::_GP('cmd');
 
             if ($cmd === 'crPage') { // create a new page
-                $this->content .= $this->wizardsObj->renderWizard_createNewPage(GeneralUtility::_GP('positionPid'));
+                $wizardsObj = GeneralUtility::makeInstance(\tx_templavoila_mod1_wizards::class, $this);
+                $content .= $wizardsObj->renderWizard_createNewPage(GeneralUtility::_GP('positionPid'));
             } else {
                 if (!isset($pageInfoArr['uid'])) {
                     $flashMessage = GeneralUtility::makeInstance(
@@ -778,7 +524,7 @@ class MainController extends AbstractModuleController implements Configurable
                         static::getLanguageService()->getLL('title'),
                         FlashMessage::INFO
                     );
-                    $this->content .= $flashMessage->render();
+                    $content .= $flashMessage->render();
                 } else {
                     $flashMessage = GeneralUtility::makeInstance(
                         FlashMessage::class,
@@ -786,7 +532,7 @@ class MainController extends AbstractModuleController implements Configurable
                         static::getLanguageService()->getLL('title'),
                         FlashMessage::INFO
                     );
-                    $this->content .= $flashMessage->render();
+                    $content .= $flashMessage->render();
                 }
             }
         }
@@ -797,7 +543,7 @@ class MainController extends AbstractModuleController implements Configurable
         }
 
         $view->assign('sidebar', $this->render_sidebar());
-        $view->assign('content', $this->content);
+        $view->assign('content', $content);
     }
 
     /*************************
@@ -805,43 +551,6 @@ class MainController extends AbstractModuleController implements Configurable
      * RENDERING UTILITIES
      *
      *************************/
-
-    /**
-     * Gets the filled markers that are used in the HTML template.
-     *
-     * @return array The filled marker array
-     */
-    protected function getBodyMarkers()
-    {
-        $bodyMarkers = [
-            'TITLE' => static::getLanguageService()->getLL('title'),
-        ];
-
-        $sidebarMode = 'SIDEBAR_DISABLED';
-        if ($this->modTSconfig['properties']['sideBarEnable']) {
-            $sidebarMode = 'SIDEBAR_TOP';
-        }
-
-        $editareaTpl = HtmlParser::getSubpart($this->doc->moduleTemplate, $sidebarMode);
-        if ($editareaTpl) {
-            $editareaMarkers = [
-                'TABROW' => $this->render_sidebar(),
-                'CONTENT' => $this->content
-            ];
-//            $this->view->assign('TABROW', $this->render_sidebar());
-            $editareaMarkers['FLASHMESSAGES'] = $this->flashMessageService->getMessageQueueByIdentifier('ext.templavoila')->renderFlashMessages();
-
-            $editareaContent = HtmlParser::substituteMarkerArray($editareaTpl, $editareaMarkers, '###|###', true);
-
-            $this->view->assign('EDITAREA', $editareaContent);
-            $bodyMarkers['EDITAREA'] = $editareaContent;
-        } else {
-            $this->view->assign('CONTENT', $editareaContent);
-            $bodyMarkers['CONTENT'] = $this->content;
-        }
-
-        return $bodyMarkers;
-    }
 
     /**
      * Create the panel of buttons for submitting the form or otherwise perform operations.
@@ -964,7 +673,7 @@ class MainController extends AbstractModuleController implements Configurable
         $output = '';
 
         // Fetch the content structure of page:
-        $contentTreeData = $this->apiObj->getContentTree($this->rootElementTable, $this->rootElementRecord); // TODO Dima: seems like it does not return <TCEForms> for elements inside sectiions. Thus titles are not visible for these elements!
+        $contentTreeData = $this->getApiService()->getContentTree($this->rootElementTable, $this->rootElementRecord); // TODO Dima: seems like it does not return <TCEForms> for elements inside sectiions. Thus titles are not visible for these elements!
 
         // Set internal variable which registers all used content elements:
         $this->global_tt_content_elementRegister = $contentTreeData['contentElementUsage'];
@@ -1040,15 +749,17 @@ class MainController extends AbstractModuleController implements Configurable
      */
     protected function render_sidebar()
     {
+        $sidebarRenderer = GeneralUtility::makeInstance(SidebarRenderer::class, $this);
+
         // Hook for adding new sidebars or removing existing
         $sideBarHooks = $this->hooks_prepareObjectsArray('sideBarClass');
         foreach ($sideBarHooks as $hookObj) {
             if (method_exists($hookObj, 'main_alterSideBar')) {
-                $hookObj->main_alterSideBar($this->sidebarRenderer, $this);
+                $hookObj->main_alterSideBar($sidebarRenderer, $this);
             }
         }
 
-        return $this->sidebarRenderer->render();
+        return $sidebarRenderer->render();
     }
 
     /*******************************************
@@ -1085,7 +796,7 @@ class MainController extends AbstractModuleController implements Configurable
                 if ($table === 'pages' && $this->currentLanguageUid) {
                     return '<a class="tpm-pageedit" href="index.php?' . $this->link_getParameters() . '&amp;editPageLanguageOverlay=' . $this->currentLanguageUid . '">' . $label . '</a>';
                 } else {
-                    $returnUrl = $this->currentElementParentPointer ? GeneralUtility::getIndpEnv('REQUEST_URI') . '#c' . md5($this->apiObj->flexform_getStringFromPointer($this->currentElementParentPointer) . $uid) : GeneralUtility::getIndpEnv('REQUEST_URI');
+                    $returnUrl = $this->currentElementParentPointer ? GeneralUtility::getIndpEnv('REQUEST_URI') . '#c' . md5($this->getApiService()->flexform_getStringFromPointer($this->currentElementParentPointer) . $uid) : GeneralUtility::getIndpEnv('REQUEST_URI');
 
                     $url = BackendUtility::getModuleUrl(
                         'record_edit',
@@ -1160,7 +871,7 @@ class MainController extends AbstractModuleController implements Configurable
                      * can safely use '#'
                      */
                     // /typo3/index.php?route=/record/commit&token=95e22a63987e872bed3517f172e8a160ab70bad7&prErr=1&uPT=1&vC=363bdc1323&data[tt_content][46][hidden]=1&redirect=/typo3/index.php?M=web_layout&moduleToken=267a409d06c8b2de513cfebc280ca638a7fd6620&id=2
-                    $returnUrl = $this->currentElementParentPointer ? GeneralUtility::getIndpEnv('REQUEST_URI') . '#c' . md5($this->apiObj->flexform_getStringFromPointer($this->currentElementParentPointer) . $uid) : GeneralUtility::getIndpEnv('REQUEST_URI');
+                    $returnUrl = $this->currentElementParentPointer ? GeneralUtility::getIndpEnv('REQUEST_URI') . '#c' . md5($this->getApiService()->flexform_getStringFromPointer($this->currentElementParentPointer) . $uid) : GeneralUtility::getIndpEnv('REQUEST_URI');
                     if ($hidden) {
                         $url = BackendUtility::getModuleUrl(
                             'tce_db',
@@ -1217,7 +928,7 @@ class MainController extends AbstractModuleController implements Configurable
             $this->link_getParameters() .
             '&pasteRecord=ref' .
             '&source=' . rawurlencode('###') .
-            '&destination=' . rawurlencode($this->apiObj->flexform_getStringFromPointer($parentPointer));
+            '&destination=' . rawurlencode($this->getApiService()->flexform_getStringFromPointer($parentPointer));
         $onClick =
             'browserPos = this;' .
             'setFormValueOpenBrowser(\'db\',\'browser[communication]|||tt_content\');' .
@@ -1241,7 +952,7 @@ class MainController extends AbstractModuleController implements Configurable
             [
                 'id' => $this->getId(),
                 'versionId' => $this->versionId,
-                'parentRecord' => $this->apiObj->flexform_getStringFromPointer($parentPointer),
+                'parentRecord' => $this->getApiService()->flexform_getStringFromPointer($parentPointer),
                 'returnUrl' => GeneralUtility::getIndpEnv('REQUEST_URI'),
             ]
         );
@@ -1253,7 +964,7 @@ class MainController extends AbstractModuleController implements Configurable
 
         $parameters =
             $this->link_getParameters() .
-            '&amp;parentRecord=' . rawurlencode($this->apiObj->flexform_getStringFromPointer($parentPointer)) .
+            '&amp;parentRecord=' . rawurlencode($this->getApiService()->flexform_getStringFromPointer($parentPointer)) .
             '&amp;returnUrl=' . rawurlencode(GeneralUtility::getIndpEnv('REQUEST_URI'));
 //
         return '<a class="btn btn-default btn-sm tpm-new" href="' . $url . '">' . $label . ' Content' . '</a>';
@@ -1274,7 +985,7 @@ class MainController extends AbstractModuleController implements Configurable
      */
     public function link_unlink($label, $table, $uid, $realDelete = false, $foreignReferences = false, $elementPointer = '')
     {
-        $unlinkPointerString = (string)$this->apiObj->flexform_getStringFromPointer($unlinkPointer);
+        $unlinkPointerString = (string)$this->getApiService()->flexform_getStringFromPointer($unlinkPointer);
         $encodedUnlinkPointerString = rawurlencode($unlinkPointerString);
 
         if ($realDelete) {
@@ -1310,7 +1021,7 @@ class MainController extends AbstractModuleController implements Configurable
      */
     public function link_makeLocal($label, $makeLocalPointer)
     {
-        return '<a class="tpm-makeLocal" href="index.php?' . $this->link_getParameters() . '&amp;makeLocalRecord=' . rawurlencode($this->apiObj->flexform_getStringFromPointer($makeLocalPointer)) . '" onclick="' . htmlspecialchars('return confirm(' . GeneralUtility::quoteJSvalue(static::getLanguageService()->getLL('makeLocalMsg')) . ');') . '">' . $label . '</a>';
+        return '<a class="tpm-makeLocal" href="index.php?' . $this->link_getParameters() . '&amp;makeLocalRecord=' . rawurlencode($this->getApiService()->flexform_getStringFromPointer($makeLocalPointer)) . '" onclick="' . htmlspecialchars('return confirm(' . GeneralUtility::quoteJSvalue(static::getLanguageService()->getLL('makeLocalMsg')) . ');') . '">' . $label . '</a>';
     }
 
     /**
@@ -1342,13 +1053,13 @@ class MainController extends AbstractModuleController implements Configurable
         $output = '<span class="tpm-bottom-controls">';
 
         // "New" icon:
-        if ($canCreateNew && !in_array('new', $this->blindIcons)) {
+        if ($canCreateNew && !in_array('new', $this->getBlindIcons())) {
             $newIcon = $this->moduleTemplate->getIconFactory()->getIcon('actions-document-new', Icon::SIZE_SMALL);
             $output .= $this->link_new($newIcon, $elementPointer);
         }
 
         // "Browse Record" icon
-        if ($canCreateNew && !in_array('browse', $this->blindIcons)) {
+        if ($canCreateNew && !in_array('browse', $this->getBlindIcons())) {
             $newIcon = $this->getModuleTemplate()->getIconFactory()->getIcon('actions-insert-record', Icon::SIZE_SMALL);
             $output .= $this->link_browse($newIcon, $elementPointer);
         }
@@ -1407,8 +1118,8 @@ class MainController extends AbstractModuleController implements Configurable
                         $newRow = is_array($defVals['tt_content']) ? $defVals['tt_content'] : [];
 
                         // Create new record and open it for editing
-                        $destinationPointer = $this->apiObj->flexform_getPointerFromString($commandParameters);
-                        $newUid = $this->apiObj->insertElement($destinationPointer, $newRow);
+                        $destinationPointer = $this->getApiService()->flexform_getPointerFromString($commandParameters);
+                        $newUid = $this->getApiService()->insertElement($destinationPointer, $newRow);
 
                         if ($this->editingOfNewElementIsEnabled($newRow['tx_templavoila_ds'], $newRow['tx_templavoila_to'])) {
                             $returnUrl = BackendUtility::getModuleUrl(
@@ -1433,44 +1144,44 @@ class MainController extends AbstractModuleController implements Configurable
                         break;
 
                     case 'unlinkRecord':
-                        $unlinkDestinationPointer = $this->apiObj->flexform_getPointerFromString($commandParameters);
-                        $this->apiObj->unlinkElement($unlinkDestinationPointer);
+                        $unlinkDestinationPointer = $this->getApiService()->flexform_getPointerFromString($commandParameters);
+                        $this->getApiService()->unlinkElement($unlinkDestinationPointer);
                         break;
 
                     case 'deleteRecord':
-                        $deleteDestinationPointer = $this->apiObj->flexform_getPointerFromString($commandParameters);
-                        $this->apiObj->deleteElement($deleteDestinationPointer);
+                        $deleteDestinationPointer = $this->getApiService()->flexform_getPointerFromString($commandParameters);
+                        $this->getApiService()->deleteElement($deleteDestinationPointer);
                         break;
 
                     case 'pasteRecord':
-                        $sourcePointer = $this->apiObj->flexform_getPointerFromString(GeneralUtility::_GP('source'));
-                        $destinationPointer = $this->apiObj->flexform_getPointerFromString(GeneralUtility::_GP('destination'));
+                        $sourcePointer = $this->getApiService()->flexform_getPointerFromString(GeneralUtility::_GP('source'));
+                        $destinationPointer = $this->getApiService()->flexform_getPointerFromString(GeneralUtility::_GP('destination'));
                         switch ($commandParameters) {
                             case 'copy' :
-                                $this->apiObj->copyElement($sourcePointer, $destinationPointer);
+                                $this->getApiService()->copyElement($sourcePointer, $destinationPointer);
                                 break;
                             case 'copyref':
-                                $this->apiObj->copyElement($sourcePointer, $destinationPointer, false);
+                                $this->getApiService()->copyElement($sourcePointer, $destinationPointer, false);
                                 break;
                             case 'cut':
-                                $this->apiObj->moveElement($sourcePointer, $destinationPointer);
+                                $this->getApiService()->moveElement($sourcePointer, $destinationPointer);
                                 break;
                             case 'ref':
                                 list(, $uid) = explode(':', GeneralUtility::_GP('source'));
-                                $this->apiObj->referenceElementByUid($uid, $destinationPointer);
+                                $this->getApiService()->referenceElementByUid($uid, $destinationPointer);
                                 break;
                         }
                         break;
 
                     case 'makeLocalRecord':
-                        $sourcePointer = $this->apiObj->flexform_getPointerFromString($commandParameters);
-                        $this->apiObj->copyElement($sourcePointer, $sourcePointer);
-                        $this->apiObj->unlinkElement($sourcePointer);
+                        $sourcePointer = $this->getApiService()->flexform_getPointerFromString($commandParameters);
+                        $this->getApiService()->copyElement($sourcePointer, $sourcePointer);
+                        $this->getApiService()->unlinkElement($sourcePointer);
                         break;
 
                     case 'localizeElement':
-                        $sourcePointer = $this->apiObj->flexform_getPointerFromString(GeneralUtility::_GP('source'));
-                        $this->apiObj->localizeElement($sourcePointer, $commandParameters);
+                        $sourcePointer = $this->getApiService()->flexform_getPointerFromString(GeneralUtility::_GP('source'));
+                        $this->getApiService()->localizeElement($sourcePointer, $commandParameters);
                         break;
 
                     case 'createNewPageTranslation':
@@ -1604,16 +1315,11 @@ class MainController extends AbstractModuleController implements Configurable
                  */
 
                 // Selecting overlay record:
-                $resP = static::getDatabaseConnection()->exec_SELECTquery(
+                $pageRow = static::getDatabaseConnection()->exec_SELECTgetSingleRow(
                     '*',
                     'pages_language_overlay',
-                    'pid=' . (int)$id . ' AND sys_language_uid=' . (int)$row['uid'],
-                    '',
-                    '',
-                    '1'
+                    'pid=' . (int)$id . ' AND sys_language_uid=' . (int)$row['uid']
                 );
-                $pageRow = static::getDatabaseConnection()->sql_fetch_assoc($resP);
-                static::getDatabaseConnection()->sql_free_result($resP);
                 BackendUtility::workspaceOL('pages_language_overlay', $pageRow);
                 $row['PLO_hidden'] = $pageRow['hidden'];
                 $row['PLO_title'] = $pageRow['title'];
@@ -1696,53 +1402,6 @@ class MainController extends AbstractModuleController implements Configurable
     }
 
     /**
-     * Adds element to the list of recet elements
-     *
-     * @throws RuntimeException
-     */
-    protected function addToRecentElements()
-    {
-        // Add recent element
-        $ser = GeneralUtility::_GP('ser');
-        if ($ser) {
-            throw new \RuntimeException('Further execution of code leads to PHP errors.', 1404750505);
-
-            // Include file required to unserialization
-            GeneralUtility::requireOnce(ExtensionManagementUtility::extPath(Templavoila::EXTKEY, 'newcewizard/model/class.tx_templavoila_contentelementdescriptor.php'));
-
-            $obj = @unserialize(base64_decode($ser));
-
-            if ($obj instanceof \tx_templavoila_contentElementDescriptor) {
-                $data = (array) @unserialize(static::getBackendUser()->uc['tx_templavoila_recentce']);
-                // Find this element
-                $pos = false;
-                $count = count($data);
-                for ($i = 0; $i < $count; $i++) {
-                    // Notice: must be "==", not "==="!
-                    if ($data[$i] === $obj) {
-                        $pos = $i;
-                        break;
-                    }
-                }
-                if ($pos !== 0) {
-                    if ($pos !== false) {
-                        // Remove it
-                        array_splice($data, $pos, 1);
-                    } else {
-                        // Check if there are more than necessary elements
-                        if ($count >= 10) {
-                            $data = array_slice($data, 0, 9);
-                        }
-                    }
-                    array_unshift($data, $obj);
-                    static::getBackendUser()->uc['tx_templavoila_recentce'] = serialize($data);
-                    static::getBackendUser()->writeUC();
-                }
-            }
-        }
-    }
-
-    /**
      * Checks whether the datastructure for a new FCE contains the noEditOnCreation meta configuration
      *
      * @param int $dsUid uid of the datastructure we want to check
@@ -1764,7 +1423,7 @@ class MainController extends AbstractModuleController implements Configurable
             if (isset($xml['meta']['noEditOnCreation'])) {
                 $editingEnabled = $xml['meta']['noEditOnCreation'] !== 1;
             }
-        } catch (InvalidArgumentException $e) {
+        } catch (\InvalidArgumentException $e) {
             //  might happen if uid was not what the Repo expected - that's ok here
         }
 
@@ -1866,6 +1525,17 @@ class MainController extends AbstractModuleController implements Configurable
      */
     public function getApiService()
     {
+        if (!$this->apiObj instanceof ApiService) {
+            $this->apiObj = GeneralUtility::makeInstance(
+                ApiService::class,
+                isset($this->altRoot['table']) ? $this->altRoot['table'] : 'pages'
+            );
+
+            if (isset($this->modSharedTSconfig['properties']['useLiveWorkspaceForReferenceListUpdates'])) {
+                $this->apiObj->modifyReferencesInLiveWS(true);
+            }
+        }
+
         return $this->apiObj;
     }
 
@@ -1963,5 +1633,19 @@ class MainController extends AbstractModuleController implements Configurable
     public function getPid()
     {
         return $this->rootElementUid_pidForContent;
+    }
+
+    /**
+     * @return array
+     */
+    public function getBlindIcons()
+    {
+        if (!is_array($this->blindIcons)) {
+            $this->blindIcons = isset($this->modTSconfig['properties']['blindIcons']) ?
+                GeneralUtility::trimExplode(',', $this->modTSconfig['properties']['blindIcons'], true)
+                : [];
+        }
+
+        return $this->blindIcons;
     }
 }

@@ -263,14 +263,14 @@ class SheetRenderer implements Renderable
                 if (!MainController::isInTranslatorMode()) {
                     if ($canEditContent) {
                         $iconMakeLocal = $this->controller->getModuleTemplate()->getIconFactory()->getIcon('extensions-templavoila-makelocalcopy', Icon::SIZE_SMALL);
-                        $linkMakeLocal = !$elementBelongsToCurrentPage && !in_array('makeLocal', $this->controller->blindIcons) ? $this->controller->link_makeLocal($iconMakeLocal, $parentPointer) : '';
+                        $linkMakeLocal = !$elementBelongsToCurrentPage && !in_array('makeLocal', $this->controller->getBlindIcons()) ? $this->controller->link_makeLocal($iconMakeLocal, $parentPointer) : '';
                         $linkCut = $this->controller->getClipboard()->element_getSelectButtons($parentPointer, 'cut');
                         if ($this->controller->modTSconfig['properties']['enableDeleteIconForLocalElements'] < 2 ||
                             !$elementBelongsToCurrentPage ||
                             $this->controller->getElementRegister()[$contentTreeArr['el']['uid']] > 1
                         ) {
                             $iconUnlink = $this->controller->getModuleTemplate()->getIconFactory()->getIcon('actions-edit-delete', Icon::SIZE_SMALL);
-                            $linkUnlink = !in_array('unlink', $this->controller->blindIcons) ? $this->controller->link_unlink($iconUnlink, 'tt_content', $contentTreeArr['el']['uid'], false, false, $elementPointer) : '';
+                            $linkUnlink = !in_array('unlink', $this->controller->getBlindIcons()) ? $this->controller->link_unlink($iconUnlink, 'tt_content', $contentTreeArr['el']['uid'], false, false, $elementPointer) : '';
                         } else {
                             $linkUnlink = '';
                         }
@@ -279,18 +279,18 @@ class SheetRenderer implements Renderable
                     }
 
                     if ($canEditElement && static::getBackendUser()->recordEditAccessInternals('tt_content', $contentTreeArr['previewData']['fullRow'])) {
-                        if (($elementBelongsToCurrentPage || $this->controller->modTSconfig['properties']['enableEditIconForRefElements']) && !in_array('edit', $this->controller->blindIcons)) {
+                        if (($elementBelongsToCurrentPage || $this->controller->modTSconfig['properties']['enableEditIconForRefElements']) && !in_array('edit', $this->controller->getBlindIcons())) {
                             $iconEdit = $this->controller->getModuleTemplate()->getIconFactory()->getIcon('actions-document-open', Icon::SIZE_SMALL);
                             $linkEdit = $this->controller->link_edit($iconEdit, $contentTreeArr['el']['table'], $contentTreeArr['el']['uid'], false, $contentTreeArr['el']['pid'], 'btn btn-default');
                         } else {
                             $linkEdit = '';
                         }
-                        $linkHide = !in_array('hide', $this->controller->blindIcons) ? $this->controller->icon_hide($contentTreeArr['el']) : '';
+                        $linkHide = !in_array('hide', $this->controller->getBlindIcons()) ? $this->controller->icon_hide($contentTreeArr['el']) : '';
 
                         if ($canEditContent && $this->controller->modTSconfig['properties']['enableDeleteIconForLocalElements'] && $elementBelongsToCurrentPage) {
                             $hasForeignReferences = \Extension\Templavoila\Utility\GeneralUtility::hasElementForeignReferences($contentTreeArr['el'], $contentTreeArr['el']['pid']);
                             $iconDelete = $this->controller->getModuleTemplate()->getIconFactory()->getIcon('actions-edit-delete', Icon::SIZE_SMALL);
-                            $linkDelete = !in_array('delete', $this->controller->blindIcons) ? $this->controller->link_unlink($iconDelete, $parentPointer, true, $hasForeignReferences, $elementPointer) : '';
+                            $linkDelete = !in_array('delete', $this->controller->getBlindIcons()) ? $this->controller->link_unlink($iconDelete, $parentPointer, true, $hasForeignReferences, $elementPointer) : '';
                         } else {
                             $linkDelete = '';
                         }
