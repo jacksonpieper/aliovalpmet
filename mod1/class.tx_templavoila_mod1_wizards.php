@@ -1,4 +1,5 @@
 <?php
+
 /*
  * This file is part of the TYPO3 CMS project.
  *
@@ -11,7 +12,20 @@
  *
  * The TYPO3 project - inspiring people to share!
  */
+
+use Extension\Templavoila\Controller\Backend\AbstractModuleController;
 use Extension\Templavoila\Controller\Backend\PageModule\MainController;
+use Extension\Templavoila\Domain\Model\AbstractDataStructure;
+use Extension\Templavoila\Domain\Repository\DataStructureRepository;
+use Extension\Templavoila\Domain\Repository\TemplateRepository;
+use Extension\Templavoila\Service\ApiService;
+use Extension\Templavoila\Templavoila;
+use Extension\Templavoila\Traits\BackendUser;
+use Extension\Templavoila\Traits\LanguageService;
+use TYPO3\CMS\Backend\Template\DocumentTemplate;
+use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Core\DataHandling\DataHandler;
+use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Impexp\ImportExport;
 
@@ -21,47 +35,37 @@ use TYPO3\CMS\Impexp\ImportExport;
 class tx_templavoila_mod1_wizards
 {
 
-    /**
-     * @var \Extension\Templavoila\Service\ApiService
-     */
-    protected $apiObj;
+    use BackendUser;
+    use LanguageService;
 
     /**
-     * @var \tx_templavoila_module1
+     * @var ApiService
      */
-    public $controller; // A pointer to the parent object, that is the templavoila page module script. Set by calling the method init() of this class.
+    private $apiService;
 
     /**
-     * A reference to the doc object of the parent object.
-     *
-     * @var \TYPO3\CMS\Backend\Template\DocumentTemplate
+     * @var MainController
      */
-    public $doc;
+    private $controller;
 
     /**
-     * A reference to extension key of the parent object.
-     *
-     * @var string
+     * @var DocumentTemplate
      */
-    public $extKey;
+    private $doc;
 
     /**
-     * Config of TCAdefaults
-     *
      * @var array
      */
-    public $TCAdefaultOverride;
+    private $TCAdefaultOverride;
 
     /**
      * @param MainController $controller
      */
-    public function init(MainController $controller)
+    public function __construct(MainController $controller)
     {
-        // Make local reference to some important variables:
         $this->controller = $controller;
         $this->doc = $this->controller->doc;
-        $this->extKey = $this->controller->extKey;
-        $this->apiObj = $this->controller->apiObj;
+        $this->apiService = GeneralUtility::makeInstance(ApiService::class);
     }
 
     /********************************************
@@ -71,20 +75,16 @@ class tx_templavoila_mod1_wizards
      ********************************************/
 
     /**
-     * Creates the screen for "new page wizard"
+     * @param int $positionPid
      *
-     * @param int $positionPid Can be positive and negative depending of where the new page is going: Negative always points to a position AFTER the page having the abs. value of the positionId. Positive numbers means to create as the first subpage to another page.
-     *
-     * @return string Content for the screen output.
+     * @return string
      *
      * @todo  Check required field(s), support t3d
      */
     public function renderWizard_createNewPage($positionPid)
     {
-        global $TYPO3_CONF_VARS;
-
         // Get default TCA values specific for the page and user
-        $temp = \TYPO3\CMS\Backend\Utility\BackendUtility::getModTSconfig(abs($positionPid), 'TCAdefaults');
+        $temp = BackendUtility::getModTSconfig(abs($positionPid), 'TCAdefaults');
         if (isset($temp['properties'])) {
             $this->TCAdefaultOverride = $temp['properties'];
         }
@@ -95,14 +95,14 @@ class tx_templavoila_mod1_wizards
             // Check if the HTTP_REFERER is valid
             $refInfo = parse_url(GeneralUtility::getIndpEnv('HTTP_REFERER'));
             $httpHost = GeneralUtility::getIndpEnv('TYPO3_HOST_ONLY');
-            if ($httpHost == $refInfo['host'] || GeneralUtility::_GP('vC') == \Extension\Templavoila\Utility\GeneralUtility::getBackendUser()->veriCode() || $GLOBALS['TYPO3_CONF_VARS']['SYS']['doNotCheckReferer']) {
+            if ($httpHost == $refInfo['host'] || GeneralUtility::_GP('vC') == static::getBackendUser()->veriCode() || $GLOBALS['TYPO3_CONF_VARS']['SYS']['doNotCheckReferer']) {
 
                 // Create new page
                 $newID = $this->createPage(GeneralUtility::_GP('data'), $positionPid);
                 if ($newID > 0) {
 
                     // Get TSconfig for a different selection of fields in the editing form
-                    $TSconfig = \TYPO3\CMS\Backend\Utility\BackendUtility::getModTSconfig($newID, 'mod.web_txtemplavoilaM1.createPageWizard.fieldNames');
+                    $TSconfig = BackendUtility::getModTSconfig($newID, 'mod.web_txtemplavoilaM1.createPageWizard.fieldNames');
                     $fieldNames = trim(isset($TSconfig['value']) ? $TSconfig['value'] : 'hidden,title,alias');
                     $columnsOnly = '';
                     if ($fieldNames !== '*') {
@@ -113,7 +113,7 @@ class tx_templavoila_mod1_wizards
                     $params = '&edit[pages][' . $newID . ']=edit' . $columnsOnly;
                     $returnUrl = rawurlencode(GeneralUtility::getIndpEnv('SCRIPT_NAME') . '?id=' . $newID . '&updatePageTree=1');
 
-                    header('Location: ' . GeneralUtility::locationHeaderUrl($this->doc->backPath . 'alt_doc.php?returnUrl=' . $returnUrl . $params));
+                    header('Location: ' . GeneralUtility::locationHeaderUrl('alt_doc.php?returnUrl=' . $returnUrl . $params));
                     exit();
                 } else {
                     debug('Error: Could not create page!');
@@ -128,7 +128,7 @@ class tx_templavoila_mod1_wizards
             if (GeneralUtility::getFileAbsFileName($templateFile) && @is_file($templateFile)) {
 
                 // First, find positive PID for import of the page:
-                $importPID = \TYPO3\CMS\Backend\Utility\BackendUtility::getTSconfig_pidValue('pages', '', $positionPid);
+                $importPID = BackendUtility::getTSconfig_pidValue('pages', '', $positionPid);
 
                 // Initialize the import object:
                 $import = $this->getImportObject();
@@ -154,14 +154,14 @@ class tx_templavoila_mod1_wizards
 
                         // PLAIN COPY FROM ABOVE - BEGIN
                         // Get TSconfig for a different selection of fields in the editing form
-                        $TSconfig = \TYPO3\CMS\Backend\Utility\BackendUtility::getModTSconfig($newID, 'tx_templavoila.mod1.createPageWizard.fieldNames');
+                        $TSconfig = BackendUtility::getModTSconfig($newID, 'tx_templavoila.mod1.createPageWizard.fieldNames');
                         $fieldNames = isset($TSconfig['value']) ? $TSconfig['value'] : 'hidden,title,alias';
 
                         // Create parameters and finally run the classic page module's edit form for the new page:
                         $params = '&edit[pages][' . $newID . ']=edit&columnsOnly=' . rawurlencode($fieldNames);
                         $returnUrl = rawurlencode(GeneralUtility::getIndpEnv('SCRIPT_NAME') . '?id=' . $newID . '&updatePageTree=1');
 
-                        header('Location: ' . GeneralUtility::locationHeaderUrl($this->doc->backPath . 'alt_doc.php?returnUrl=' . $returnUrl . $params));
+                        header('Location: ' . GeneralUtility::locationHeaderUrl('alt_doc.php?returnUrl=' . $returnUrl . $params));
                         exit();
                         // PLAIN COPY FROM ABOVE - END
                     } else {
@@ -172,7 +172,7 @@ class tx_templavoila_mod1_wizards
         }
         // Start assembling the HTML output
 
-        $this->doc->form = '<form action="' . htmlspecialchars('index.php?id=' . $this->controller->id) . '" method="post" autocomplete="off" enctype="' . $TYPO3_CONF_VARS['SYS']['form_enctype'] . '" onsubmit="return TBE_EDITOR_checkSubmit(1);">';
+        $this->doc->form = '<form action="' . htmlspecialchars('index.php?id=' . $this->controller->getId()) . '" method="post" autocomplete="off" enctype="' . $TYPO3_CONF_VARS['SYS']['form_enctype'] . '" onsubmit="return TBE_EDITOR_checkSubmit(1);">';
         $this->doc->divClass = '';
         $this->doc->getTabMenu(0, '_', 0, ['' => '']);
 
@@ -192,8 +192,8 @@ class tx_templavoila_mod1_wizards
         $this->doc->inDocStyles .= '.c-inputButton{ cursor:pointer; }';
 
         $content = '';
-        $content .= $this->doc->header(\Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:db_new.php.pagetitle'));
-        $content .= $this->doc->startPage(\Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('createnewpage_title'));
+        $content .= $this->doc->header(static::getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:db_new.php.pagetitle'));
+        $content .= $this->doc->startPage(static::getLanguageService()->getLL('createnewpage_title'));
 
         // Add template selectors
         $tmplSelectorCode = '';
@@ -212,8 +212,8 @@ class tx_templavoila_mod1_wizards
         }
 
         if ($tmplSelectorCode) {
-            $content .= '<h3>' . htmlspecialchars(\Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('createnewpage_selecttemplate')) . '</h3>';
-            $content .= \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('createnewpage_templateobject_description');
+            $content .= '<h3>' . htmlspecialchars(static::getLanguageService()->getLL('createnewpage_selecttemplate')) . '</h3>';
+            $content .= static::getLanguageService()->getLL('createnewpage_templateobject_description');
             $content .= $this->doc->spacer(10);
             $content .= $tmplSelectorCode;
         }
@@ -245,15 +245,15 @@ class tx_templavoila_mod1_wizards
     {
         // Negative PID values is pointing to a page on the same level as the current.
         if ($positionPid < 0) {
-            $pidRow = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecordWSOL('pages', abs($positionPid), 'pid');
+            $pidRow = BackendUtility::getRecordWSOL('pages', abs($positionPid), 'pid');
             $parentPageId = $pidRow['pid'];
         } else {
             $parentPageId = $positionPid;
         }
 
-        $storageFolderPID = $this->apiObj->getStorageFolderPid($parentPageId);
+        $storageFolderPID = $this->apiService->getStorageFolderPid($parentPageId);
         $tmplHTML = [];
-        $defaultIcon = $this->doc->backPath . '../' . \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::siteRelPath($this->extKey) . 'Resources/Public/Image/default_previewicon.gif';
+        $defaultIcon = '../' . ExtensionManagementUtility::siteRelPath(Templavoila::EXTKEY) . 'Resources/Public/Image/default_previewicon.gif';
 
         // look for TCEFORM.pages.tx_templavoila_ds.removeItems / TCEFORM.pages.tx_templavoila_to.removeItems
         $disallowedPageTemplateItems = $this->getDisallowedTSconfigItemsByFieldName($parentPageId, 'tx_templavoila_ds');
@@ -264,7 +264,7 @@ class tx_templavoila_mod1_wizards
                 // Create the "Default template" entry
                 //Fetch Default TO
                 $fakeRow = ['uid' => $parentPageId];
-                $defaultTO = $this->controller->apiObj->getContentTree_fetchPageTemplateObject($fakeRow);
+                $defaultTO = $this->apiService->getContentTree_fetchPageTemplateObject($fakeRow);
 
                 // Create the "Default template" entry
                 if ($defaultTO['previewicon']) {
@@ -274,25 +274,25 @@ class tx_templavoila_mod1_wizards
                 }
 
                 $previewIcon = '<input type="image" class="c-inputButton" name="i0" value="0" src="' . $previewIconFilename . '" title="" />';
-                $description = $defaultTO['description'] ? htmlspecialchars($defaultTO['description']) : \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('template_descriptiondefault', true);
+                $description = $defaultTO['description'] ? htmlspecialchars($defaultTO['description']) : static::getLanguageService()->getLL('template_descriptiondefault', true);
                 $tmplHTML [] = '<table style="float:left; width: 100%;" valign="top">
                 <tr>
                     <td colspan="2" nowrap="nowrap">
-                        <h3 class="bgColor3-20">' . htmlspecialchars(\Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('template_titleInherit')) . '</h3>
+                        <h3 class="bgColor3-20">' . htmlspecialchars(static::getLanguageService()->getLL('template_titleInherit')) . '</h3>
                     </td>
                 </tr><tr>
                     <td valign="top">' . $previewIcon . '</td>
                     <td width="120" valign="top">
-                        <p><h4>' . htmlspecialchars(\Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->sL($defaultTO['title'])) . '</h4>' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->sL($description) . '</p>
+                        <p><h4>' . htmlspecialchars(static::getLanguageService()->sL($defaultTO['title'])) . '</h4>' . static::getLanguageService()->sL($description) . '</p>
                     </td>
                 </tr>
                 </table>';
 
-                $dsRepo = GeneralUtility::makeInstance(\Extension\Templavoila\Domain\Repository\DataStructureRepository::class);
-                $toRepo = GeneralUtility::makeInstance(\Extension\Templavoila\Domain\Repository\TemplateRepository::class);
-                $dsList = $dsRepo->getDatastructuresByStoragePidAndScope($storageFolderPID, \Extension\Templavoila\Domain\Model\AbstractDataStructure::SCOPE_PAGE);
+                $dsRepo = GeneralUtility::makeInstance(DataStructureRepository::class);
+                $toRepo = GeneralUtility::makeInstance(TemplateRepository::class);
+                $dsList = $dsRepo->getDatastructuresByStoragePidAndScope($storageFolderPID, AbstractDataStructure::SCOPE_PAGE);
                 foreach ($dsList as $dsObj) {
-                    /** @var \Extension\Templavoila\Domain\Model\AbstractDataStructure $dsObj */
+                    /** @var AbstractDataStructure $dsObj */
                     if (GeneralUtility::inList($disallowedPageTemplateItems, $dsObj->getKey()) ||
                         !$dsObj->isPermittedForUser()
                     ) {
@@ -313,16 +313,16 @@ class tx_templavoila_mod1_wizards
                         $previewIconFilename = (@is_file(GeneralUtility::getFileAbsFileName(PATH_site . substr($tmpFilename, 3)))) ? ($GLOBALS['BACK_PATH'] . $tmpFilename) : $defaultIcon;
                         // Note: we cannot use value of image input element because MSIE replaces this value with mouse coordinates! Thus on click we set value to a hidden field. See http://bugs.typo3.org/view.php?id=3376
                         $previewIcon = '<input type="image" class="c-inputButton" name="i' . $row['uid'] . '" onclick="document.getElementById(\'data_tx_templavoila_to\').value=' . $toObj->getKey() . '" src="' . $previewIconFilename . '" title="" />';
-                        $description = $toObj->getDescription() ? htmlspecialchars($toObj->getDescription()) : \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('template_nodescriptionavailable');
+                        $description = $toObj->getDescription() ? htmlspecialchars($toObj->getDescription()) : static::getLanguageService()->getLL('template_nodescriptionavailable');
                         $tmplHTML [] = '<table style="width: 100%;" valign="top"><tr><td colspan="2" nowrap="nowrap"><h3 class="bgColor3-20">' . htmlspecialchars($toObj->getLabel()) . '</h3></td></tr>' .
-                            '<tr><td valign="top">' . $previewIcon . '</td><td width="120" valign="top"><p>' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->sL($description) . '</p></td></tr></table>';
+                            '<tr><td valign="top">' . $previewIcon . '</td><td width="120" valign="top"><p>' . static::getLanguageService()->sL($description) . '</p></td></tr></table>';
                     }
                 }
                 $tmplHTML[] = '<input type="hidden" id="data_tx_templavoila_to" name="data[tx_templavoila_to]" value="0" />';
                 break;
 
             case 't3d':
-                if (\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('impexp')) {
+                if (ExtensionManagementUtility::isLoaded('impexp')) {
 
                     // Read template files from a certain folder. I suggest this is configurable in some way. But here it is hardcoded for initial tests.
                     $templateFolder = GeneralUtility::getFileAbsFileName($GLOBALS['TYPO3_CONF_VARS']['BE']['fileadminDir'] . '/export/templates/');
@@ -353,7 +353,7 @@ class tx_templavoila_mod1_wizards
                                         // Check that the image really is an image and not a malicious PHP script...
                                         if (getimagesize($fileName)) {
                                             // Create icon tag:
-                                            $iconTag = '<img src="' . $this->doc->backPath . '../' . substr($fileName, strlen(PATH_site)) . '" ' . $import->dat['header']['thumbnail']['imgInfo'][3] . ' vspace="5" style="border: solid black 1px;" alt="" />';
+                                            $iconTag = '<img src="' . '../' . substr($fileName, strlen(PATH_site)) . '" ' . $import->dat['header']['thumbnail']['imgInfo'][3] . ' vspace="5" style="border: solid black 1px;" alt="" />';
                                         } else {
                                             GeneralUtility::unlink_tempfile($fileName);
                                         }
@@ -401,7 +401,7 @@ class tx_templavoila_mod1_wizards
      */
     public function createPage($pageArray, $positionPid)
     {
-        $positionPageMoveToRow = \TYPO3\CMS\Backend\Utility\BackendUtility::getMovePlaceholder('pages', abs($positionPid));
+        $positionPageMoveToRow = BackendUtility::getMovePlaceholder('pages', abs($positionPid));
         if (is_array($positionPageMoveToRow)) {
             $positionPid = ($positionPid > 0) ? $positionPageMoveToRow['uid'] : '-' . $positionPageMoveToRow['uid'];
         }
@@ -416,11 +416,11 @@ class tx_templavoila_mod1_wizards
 
         // If no data structure is set, try to find one by using the template object
         if ($dataArr['pages']['NEW']['tx_templavoila_to'] && !$dataArr['pages']['NEW']['tx_templavoila_ds']) {
-            $templateObjectRow = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecordWSOL('tx_templavoila_tmplobj', $dataArr['pages']['NEW']['tx_templavoila_to'], 'uid,pid,datastructure');
+            $templateObjectRow = BackendUtility::getRecordWSOL('tx_templavoila_tmplobj', $dataArr['pages']['NEW']['tx_templavoila_to'], 'uid,pid,datastructure');
             $dataArr['pages']['NEW']['tx_templavoila_ds'] = $templateObjectRow['datastructure'];
         }
 
-        $tce = GeneralUtility::makeInstance(\TYPO3\CMS\Core\DataHandling\DataHandler::class);
+        $tce = GeneralUtility::makeInstance(DataHandler::class);
 
         if (is_array($this->TCAdefaultOverride)) {
             $tce->setDefaultsFromUserTS($this->TCAdefaultOverride);
@@ -454,9 +454,9 @@ class tx_templavoila_mod1_wizards
     public function buildRecordWhere($table)
     {
         $result = [];
-        if (!\Extension\Templavoila\Utility\GeneralUtility::getBackendUser()->isAdmin()) {
+        if (!static::getBackendUser()->isAdmin()) {
             $prefLen = strlen($table) + 1;
-            foreach (\Extension\Templavoila\Utility\GeneralUtility::getBackendUser()->userGroups as $group) {
+            foreach (static::getBackendUser()->userGroups as $group) {
                 $items = GeneralUtility::trimExplode(',', $group['tx_templavoila_access'], 1);
                 foreach ($items as $ref) {
                     if (strstr($ref, $table)) {
@@ -482,14 +482,14 @@ class tx_templavoila_mod1_wizards
 
         // Negative PID values is pointing to a page on the same level as the current.
         if ($positionPid < 0) {
-            $pidRow = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecordWSOL('pages', abs($positionPid), 'pid');
+            $pidRow = BackendUtility::getRecordWSOL('pages', abs($positionPid), 'pid');
             $parentPageId = $pidRow['pid'];
         } else {
             $parentPageId = $positionPid;
         }
 
         // Get PageTSconfig for reduce the output of selectded template structs
-        $disallowPageTemplateStruct = \TYPO3\CMS\Backend\Utility\BackendUtility::getModTSconfig(abs($parentPageId), 'TCEFORM.pages.' . $fieldName);
+        $disallowPageTemplateStruct = BackendUtility::getModTSconfig(abs($parentPageId), 'TCEFORM.pages.' . $fieldName);
 
         if (isset($disallowPageTemplateStruct['properties']['removeItems'])) {
             $disallowedPageTemplateList = $disallowPageTemplateStruct['properties']['removeItems'];
