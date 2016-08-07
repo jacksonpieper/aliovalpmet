@@ -2321,7 +2321,8 @@ class MainController extends AbstractModuleController implements Configurable
                                 'delete' => 1
                             ]
                         ]
-                    ]
+                    ],
+                    'redirect' => $this->getReturnUrl()
                 ]
             );
 
