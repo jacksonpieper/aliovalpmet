@@ -13,6 +13,7 @@
  */
 
 use Extension\Templavoila\Controller\Backend\PageModule\MainController;
+use Extension\Templavoila\Service\ApiService;
 use Extension\Templavoila\Traits\LanguageService;
 use TYPO3\CMS\Backend\Clipboard\Clipboard;
 use TYPO3\CMS\Core\Imaging\Icon;
@@ -40,6 +41,16 @@ class tx_templavoila_mod1_clipboard
      * @var \TYPO3\CMS\Backend\Template\DocumentTemplate
      */
     public $doc;
+
+    /**
+     * @var ApiService
+     */
+    private $apiService;
+
+    public function __construct()
+    {
+        $this->apiService = GeneralUtility::makeInstance(ApiService::class);
+    }
 
     /**
      * @param MainController $controller
@@ -92,16 +103,16 @@ class tx_templavoila_mod1_clipboard
     public function element_getSelectButtons($elementPointer, $listOfButtons = 'copy,cut,ref')
     {
         $clipActive_copy = $clipActive_cut = $clipActive_ref = false;
-        if (!$elementPointer = $this->controller->apiObj->flexform_getValidPointer($elementPointer)) {
+        if (!$elementPointer = $this->apiService->flexform_getValidPointer($elementPointer)) {
             return '';
         }
-        $elementRecord = $this->controller->apiObj->flexform_getRecordByPointer($elementPointer);
+        $elementRecord = $this->apiService->flexform_getRecordByPointer($elementPointer);
 
         // Fetch the element from the "normal" clipboard (if any) and set the button states accordingly:
         if (is_array($this->clipboard->clipData['normal']['el'])) {
             reset($this->clipboard->clipData['normal']['el']);
             list($clipboardElementTableAndUid, $clipboardElementPointerString) = each($this->clipboard->clipData['normal']['el']);
-            $clipboardElementPointer = $this->controller->apiObj->flexform_getValidPointer($clipboardElementPointerString);
+            $clipboardElementPointer = $this->apiService->flexform_getValidPointer($clipboardElementPointerString);
 
             // If we have no flexform reference pointing to the element, we create a short flexform pointer pointing to the record directly:
             if (!is_array($clipboardElementPointer)) {
@@ -136,7 +147,7 @@ class tx_templavoila_mod1_clipboard
         if ($clipActive_copy) {
             $copyUrlParams['CB']['removeAll'] = 'normal';
         } else {
-            $copyUrlParams['CB']['el']['tt_content|' . $elementRecord['uid']] = $this->controller->apiObj->flexform_getStringFromPointer($elementPointer);
+            $copyUrlParams['CB']['el']['tt_content|' . $elementRecord['uid']] = $this->apiService->flexform_getStringFromPointer($elementPointer);
         }
 
         $cutUrlParams = [
@@ -149,7 +160,7 @@ class tx_templavoila_mod1_clipboard
         if ($clipActive_cut) {
             $cutUrlParams['CB']['removeAll'] = 'normal';
         } else {
-            $cutUrlParams['CB']['el']['tt_content|' . $elementRecord['uid']] = $this->controller->apiObj->flexform_getStringFromPointer($elementPointer);
+            $cutUrlParams['CB']['el']['tt_content|' . $elementRecord['uid']] = $this->apiService->flexform_getStringFromPointer($elementPointer);
         }
 
         $referenceUrlParams = [
@@ -193,7 +204,7 @@ class tx_templavoila_mod1_clipboard
         }
 
         $origDestinationPointer = $destinationPointer;
-        if (!$destinationPointer = $this->controller->apiObj->flexform_getValidPointer($destinationPointer)) {
+        if (!$destinationPointer = $this->apiService->flexform_getValidPointer($destinationPointer)) {
             return '';
         }
         if (!is_array($this->clipboard->clipData['normal']['el'])) {
@@ -202,7 +213,7 @@ class tx_templavoila_mod1_clipboard
 
         reset($this->clipboard->clipData['normal']['el']);
         list($clipboardElementTableAndUid, $clipboardElementPointerString) = each($this->clipboard->clipData['normal']['el']);
-        $clipboardElementPointer = $this->controller->apiObj->flexform_getValidPointer($clipboardElementPointerString);
+        $clipboardElementPointer = $this->apiService->flexform_getValidPointer($clipboardElementPointerString);
 
         // If we have no flexform reference pointing to the element, we create a short flexform pointer pointing to the record directly:
         list($clipboardElementTable, $clipboardElementUid) = explode('|', $clipboardElementTableAndUid);
@@ -218,10 +229,10 @@ class tx_templavoila_mod1_clipboard
         }
 
         // If the destination element is already a sub element of the clipboard element, we mustn't show any paste icon:
-        $destinationRecord = $this->controller->apiObj->flexform_getRecordByPointer($destinationPointer);
-        $clipboardElementRecord = $this->controller->apiObj->flexform_getRecordByPointer($clipboardElementPointer);
+        $destinationRecord = $this->apiService->flexform_getRecordByPointer($destinationPointer);
+        $clipboardElementRecord = $this->apiService->flexform_getRecordByPointer($clipboardElementPointer);
         $dummyArr = [];
-        $clipboardSubElementUidsArr = $this->controller->apiObj->flexform_getListOfSubElementUidsRecursively('tt_content', $clipboardElementRecord['uid'], $dummyArr);
+        $clipboardSubElementUidsArr = $this->apiService->flexform_getListOfSubElementUidsRecursively('tt_content', $clipboardElementRecord['uid'], $dummyArr);
         $clipboardElementHasSubElements = count($clipboardSubElementUidsArr) > 0;
 
         if ($clipboardElementHasSubElements) {
@@ -238,8 +249,8 @@ class tx_templavoila_mod1_clipboard
         $pasteAfterIcon = $this->controller->getModuleTemplate()->getIconFactory()->getIcon('actions-document-paste-after', Icon::SIZE_SMALL);
         $pasteSubRefIcon = $this->controller->getModuleTemplate()->getIconFactory()->getIcon('extensions-templavoila-pasteSubRef', Icon::SIZE_SMALL);
 
-        $sourcePointerString = $this->controller->apiObj->flexform_getStringFromPointer($clipboardElementPointer);
-        $destinationPointerString = $this->controller->apiObj->flexform_getStringFromPointer($destinationPointer);
+        $sourcePointerString = $this->apiService->flexform_getStringFromPointer($clipboardElementPointer);
+        $destinationPointerString = $this->apiService->flexform_getStringFromPointer($destinationPointer);
 
         $output = '';
         if (!in_array('pasteAfter', $this->controller->blindIcons)) {
