@@ -39,11 +39,6 @@ class tx_templavoila_mod1_wizards
     use LanguageService;
 
     /**
-     * @var ApiService
-     */
-    private $apiService;
-
-    /**
      * @var MainController
      */
     private $controller;
@@ -65,7 +60,6 @@ class tx_templavoila_mod1_wizards
     {
         $this->controller = $controller;
         $this->doc = $this->controller->doc;
-        $this->apiService = GeneralUtility::makeInstance(ApiService::class);
     }
 
     /********************************************
@@ -251,7 +245,7 @@ class tx_templavoila_mod1_wizards
             $parentPageId = $positionPid;
         }
 
-        $storageFolderPID = $this->apiService->getStorageFolderPid($parentPageId);
+        $storageFolderPID = $this->controller->getApiService()->getStorageFolderPid($parentPageId);
         $tmplHTML = [];
         $defaultIcon = '../' . ExtensionManagementUtility::siteRelPath(Templavoila::EXTKEY) . 'Resources/Public/Image/default_previewicon.gif';
 
@@ -264,7 +258,7 @@ class tx_templavoila_mod1_wizards
                 // Create the "Default template" entry
                 //Fetch Default TO
                 $fakeRow = ['uid' => $parentPageId];
-                $defaultTO = $this->apiService->getContentTree_fetchPageTemplateObject($fakeRow);
+                $defaultTO = $this->controller->getApiService()->getContentTree_fetchPageTemplateObject($fakeRow);
 
                 // Create the "Default template" entry
                 if ($defaultTO['previewicon']) {

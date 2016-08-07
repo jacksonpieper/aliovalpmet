@@ -409,6 +409,12 @@ class MainController extends AbstractModuleController implements Configurable
         $this->moduleTemplate->getPageRenderer()->loadRequireJsModule('TYPO3/CMS/Backend/Modal');
         $this->moduleTemplate->getPageRenderer()->loadRequireJsModule('TYPO3/CMS/Templavoila/PageModule');
 
+        $this->altRoot = GeneralUtility::_GP('altRoot');
+        $this->apiObj = GeneralUtility::makeInstance(ApiService::class, $this->altRoot ? $this->altRoot : 'pages');
+        if (isset($this->modSharedTSconfig['properties']['useLiveWorkspaceForReferenceListUpdates'])) {
+            $this->apiObj->modifyReferencesInLiveWS(true);
+        }
+
         $this->init();
         $this->main($view);
         $record = BackendUtility::getRecordWSOL('pages', $this->getId());
@@ -473,7 +479,6 @@ class MainController extends AbstractModuleController implements Configurable
 
         $this->extConf = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf'][Templavoila::EXTKEY]);
 
-        $this->altRoot = GeneralUtility::_GP('altRoot');
         $this->versionId = GeneralUtility::_GP('versionId');
 
         if (isset($this->modTSconfig['properties']['previewTitleMaxLen'])) {
@@ -509,11 +514,6 @@ class MainController extends AbstractModuleController implements Configurable
 
         $this->wizardsObj = GeneralUtility::makeInstance(\tx_templavoila_mod1_wizards::class, $this);
 
-        // Initialize TemplaVoila API class:
-        $this->apiObj = GeneralUtility::makeInstance(ApiService::class, $this->altRoot ? $this->altRoot : 'pages');
-        if (isset($this->modSharedTSconfig['properties']['useLiveWorkspaceForReferenceListUpdates'])) {
-            $this->apiObj->modifyReferencesInLiveWS(true);
-        }
         // Initialize the clipboard
         $this->clipboardObj = GeneralUtility::makeInstance(\tx_templavoila_mod1_clipboard::class, $this);
 
@@ -2957,5 +2957,13 @@ class MainController extends AbstractModuleController implements Configurable
     public function getClipboard()
     {
         return $this->clipboardObj;
+    }
+
+    /**
+     * @return ApiService
+     */
+    public function getApiService()
+    {
+        return $this->apiObj;
     }
 }
