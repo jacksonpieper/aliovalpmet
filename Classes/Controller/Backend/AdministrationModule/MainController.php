@@ -15,6 +15,7 @@
 namespace Extension\Templavoila\Controller\Backend\AdministrationModule;
 
 use Extension\Templavoila\Controller\Backend\AbstractModuleController;
+use Extension\Templavoila\Controller\Backend\Configurable;
 use Extension\Templavoila\Domain\Model\AbstractDataStructure;
 use Extension\Templavoila\Domain\Repository\DataStructureRepository;
 use Extension\Templavoila\Domain\Repository\TemplateRepository;
@@ -40,7 +41,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 /**
  * Class Extension\Templavoila\Controller\Backend\AdministrationModule\MainController
  */
-class MainController extends AbstractModuleController
+class MainController extends AbstractModuleController implements Configurable
 {
 
     /**
