@@ -244,18 +244,18 @@ class MainController extends AbstractModuleController implements Configurable
 
         $this->extConf = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf'][Templavoila::EXTKEY]);
 
+        $this->doc = GeneralUtility::makeInstance(DocumentTemplate::class);
+        $this->flashMessageService = GeneralUtility::makeInstance(FlashMessageService::class);
+        $this->sysLanguageRepository = GeneralUtility::makeInstance(SysLanguageRepository::class);
+    }
+
+    private function initializeTsConfig() {
         $this->modTSconfig = BackendUtility::getModTSconfig($this->getId(), 'mod.' . $this->moduleName);
         if (!isset($this->modTSconfig['properties']['sideBarEnable'])) {
             $this->modTSconfig['properties']['sideBarEnable'] = 1;
         }
 
         $this->modSharedTSconfig = BackendUtility::getModTSconfig($this->getId(), 'mod.SHARED');
-
-        $this->initializeButtons();
-
-        $this->doc = GeneralUtility::makeInstance(DocumentTemplate::class);
-        $this->flashMessageService = GeneralUtility::makeInstance(FlashMessageService::class);
-        $this->sysLanguageRepository = GeneralUtility::makeInstance(SysLanguageRepository::class);
     }
 
     private function initializeButtons()
@@ -316,6 +316,9 @@ class MainController extends AbstractModuleController implements Configurable
      */
     public function index(ServerRequest $request, Response $response)
     {
+        $this->initializeTsConfig();
+        $this->initializeButtons();
+
         $this->CMD = $request->getQueryParams()['CMD'];
         $this->moduleName = $request->getQueryParams()['M'];
         $this->perms_clause = static::getBackendUser()->getPagePermsClause(1);
