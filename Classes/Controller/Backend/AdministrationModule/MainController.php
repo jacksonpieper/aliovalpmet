@@ -156,22 +156,15 @@ class MainController extends AbstractModuleController
             ;// todo handle this case
         }
 
-        $view = $this->initializeView('Backend/AdministrationModule/Main');
-        $view->assign('title', $this->moduleTemplate->header(static::getLanguageService()->getLL('title')));
-
         $countDS = $this->dataStructureRepository->countByPid($this->getId());
         $countTO = $this->templateRepository->countByPid($this->getId());
 
         if ($countDS + $countTO === 0) {
-            $content = '';
-            $content .= $this->renderModuleContent_searchForTODS();
-            $content .= $this->renderNewSiteWizard_overview();
-
-            $view->assign('content', $content);
-            $this->moduleTemplate->setContent($view->render());
-            $response->getBody()->write($this->moduleTemplate->renderContent());
-            return $response;
+            return $this->noRecordsAction($request, $response);
         }
+
+        $view = $this->initializeView('Backend/AdministrationModule/Main');
+        $view->assign('title', $this->moduleTemplate->header(static::getLanguageService()->getLL('title')));
 
         // Traverse scopes of data structures display template records belonging to them:
         // Each scope is places in its own tab in the tab menu:
@@ -261,6 +254,25 @@ class MainController extends AbstractModuleController
         $output = $this->getModuleTemplate()->getDynamicTabMenu($parts, 'TEMPLAVOILA:templateOverviewModule:' . $this->getId(), 1);
 
         $view->assign('content', $output);
+        $this->moduleTemplate->setContent($view->render());
+        $response->getBody()->write($this->moduleTemplate->renderContent());
+        return $response;
+    }
+
+    /**
+     * @param ServerRequest $request
+     * @param Response $response
+     */
+    public function noRecordsAction(ServerRequest $request, Response $response)
+    {
+        $view = $this->initializeView('Backend/AdministrationModule/NoRecordsFound');
+        $view->assign('title', $this->moduleTemplate->header(static::getLanguageService()->getLL('title')));
+
+        $content = '';
+        $content .= $this->renderModuleContent_searchForTODS();
+        $content .= $this->renderNewSiteWizard_overview();
+
+        $view->assign('content', $content);
         $this->moduleTemplate->setContent($view->render());
         $response->getBody()->write($this->moduleTemplate->renderContent());
         return $response;
