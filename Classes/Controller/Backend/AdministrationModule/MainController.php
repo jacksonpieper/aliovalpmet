@@ -104,11 +104,23 @@ class MainController extends AbstractModuleController
      */
     private $MOD_SETTINGS;
 
+    /**
+     * @var DataStructureRepository
+     */
+    private $dataStructureRepository;
+
+    /**
+     * @var TemplateRepository
+     */
+    private $templateRepository;
+
     public function __construct()
     {
         parent::__construct();
 
         static::getLanguageService()->includeLLFile('EXT:templavoila/mod2/locallang.xlf');
+        $this->dataStructureRepository = GeneralUtility::makeInstance(DataStructureRepository::class);
+        $this->templateRepository = GeneralUtility::makeInstance(TemplateRepository::class);
     }
 
     /**
@@ -147,18 +159,8 @@ class MainController extends AbstractModuleController
         $view = $this->initializeView('Backend/AdministrationModule/Main');
         $view->assign('title', $this->moduleTemplate->header(static::getLanguageService()->getLL('title')));
 
-        // todo: put these queries into repository
-        $countDS = (int) static::getDatabaseConnection()->exec_SELECTcountRows(
-            '*',
-            'tx_templavoila_datastructure',
-            'pid=' . (int)$this->getId() . BackendUtility::deleteClause('tx_templavoila_datastructure')
-        );
-
-        $countTO = (int) static::getDatabaseConnection()->exec_SELECTcountRows(
-            '*',
-            'tx_templavoila_tmplobj',
-            'pid=' . (int)$this->getId() . BackendUtility::deleteClause('tx_templavoila_tmplobj')
-        );
+        $countDS = $this->dataStructureRepository->countByPid($this->getId());
+        $countTO = $this->templateRepository->countByPid($this->getId());
 
         if ($countDS + $countTO === 0) {
             $content = '';

@@ -304,14 +304,21 @@ class DataStructureRepository
      */
     public function getDatastructureCountForPid($pid)
     {
-        $dsCnt = static::getDatabaseConnection()->exec_SELECTgetRows(
-            'DISTINCT datastructure',
+        return (int)static::getDatabaseConnection()->exec_SELECTcountRows(
+            '*',
             'tx_templavoila_tmplobj',
-            'pid=' . (int)$pid . BackendUtility::deleteClause('tx_templavoila_tmplobj'),
-            'datastructure'
+            'pid=' . (int)$pid . BackendUtility::deleteClause('tx_templavoila_tmplobj')
         );
-        array_unique($dsCnt);
-
-        return count($dsCnt);
     }
+
+    /**
+     * @param int $pid
+     *
+     * @return int
+     */
+    public function countByPid($pid)
+    {
+        return $this->getDatastructureCountForPid($pid);
+    }
+
 }

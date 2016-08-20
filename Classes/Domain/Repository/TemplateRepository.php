@@ -190,12 +190,21 @@ class TemplateRepository
      */
     public function getTemplateCountForPid($pid)
     {
-        $toCnt = static::getDatabaseConnection()->exec_SELECTgetRows(
-            'count(*) as cnt',
+        return static::getDatabaseConnection()->exec_SELECTcountRows(
+            '*',
             'tx_templavoila_tmplobj',
             'pid=' . (int)$pid . BackendUtility::deleteClause('tx_templavoila_tmplobj')
         );
-
-        return $toCnt[0]['cnt'];
     }
+
+    /**
+     * @param int $pid
+     *
+     * @return int
+     */
+    public function countByPid($pid)
+    {
+        return $this->getTemplateCountForPid($pid);
+    }
+
 }
