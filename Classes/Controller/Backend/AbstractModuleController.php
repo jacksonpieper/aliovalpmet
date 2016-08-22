@@ -70,6 +70,10 @@ abstract class AbstractModuleController extends AbstractModule
     {
         $this->id = (int) $request->getQueryParams()['id'];
 
+        if ($request->getQueryParams()['updatePageTree']) {
+            BackendUtility::setUpdateSignal('updatePageTree');
+        }
+
         if ($this instanceof Configurable) {
             $this->settings = BackendUtility::getModuleData(
                 $this->getDefaultSettings(),

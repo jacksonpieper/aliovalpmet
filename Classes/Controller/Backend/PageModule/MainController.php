@@ -515,11 +515,6 @@ class MainController extends AbstractModuleController implements Configurable
             }
         }
 
-        // Check if we have to update the pagetree:
-        if (GeneralUtility::_GP('updatePageTree')) {
-            BackendUtility::setUpdateSignal('updatePageTree');
-        }
-
         $this->handleIncomingCommands();
 
         // warn if page renders content from other page
