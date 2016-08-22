@@ -15,6 +15,8 @@
 
 namespace Extension\Templavoila;
 
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+
 /**
  * Class Extension\Templavoila\Templavoila
  */
@@ -25,5 +27,21 @@ final class Templavoila
     private function __construct()
     {
         // deliberately private
+    }
+
+    /**
+     * @param string $name
+     * @return array
+     */
+    public static function getHooks($name)
+    {
+        $hookObjectsArr = [];
+        if (is_array($GLOBALS['TYPO3_CONF_VARS']['EXTCONF'][Templavoila::EXTKEY]['mod1'][$name])) {
+            foreach ($GLOBALS['TYPO3_CONF_VARS']['EXTCONF'][Templavoila::EXTKEY]['mod1'][$name] as $key => $classRef) {
+                $hookObjectsArr[$key] = GeneralUtility::getUserObj($classRef);
+            }
+        }
+
+        return $hookObjectsArr;
     }
 }

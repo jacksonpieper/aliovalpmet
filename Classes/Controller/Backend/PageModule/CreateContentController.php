@@ -169,13 +169,20 @@ class CreateContentController extends AbstractModuleController
 
             $urlParams = [
                 'id' => $this->getId(),
-                'createNewRecord' => $this->parentRecord
+                'action' => 'create',
+                'parentRecord' => $this->parentRecord,
+                'returnUrl' => BackendUtility::getModuleUrl(
+                    'web_txtemplavoilaM1',
+                    [
+                        'id' => $this->getId()
+                    ]
+                )
             ];
 
             $urlParams = array_merge_recursive($urlParams, $wizardItem['params']);
 
             $newRecordLink = BackendUtility::getModuleUrl(
-                'web_txtemplavoilaM1',
+                'tv_mod_pagemodule_contentcontroller',
                 $urlParams
             );
 

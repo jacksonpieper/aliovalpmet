@@ -1083,7 +1083,7 @@ class MainController extends AbstractModuleController implements Configurable
      */
     public function handleIncomingCommands()
     {
-        $possibleCommands = ['createNewRecord', 'unlinkRecord', 'deleteRecord', 'pasteRecord', 'makeLocalRecord', 'localizeElement', 'createNewPageTranslation', 'editPageLanguageOverlay'];
+        $possibleCommands = ['unlinkRecord', 'deleteRecord', 'pasteRecord', 'makeLocalRecord', 'localizeElement', 'createNewPageTranslation', 'editPageLanguageOverlay'];
 
         $hooks = $this->hooks_prepareObjectsArray('handleIncomingCommands');
 
@@ -1103,37 +1103,6 @@ class MainController extends AbstractModuleController implements Configurable
                 }
 
                 switch ($command) {
-
-                    case 'createNewRecord':
-                        // Historically "defVals" has been used for submitting the preset row data for the new element, so we still support it here:
-                        $defVals = GeneralUtility::_GP('defVals');
-                        $newRow = is_array($defVals['tt_content']) ? $defVals['tt_content'] : [];
-
-                        // Create new record and open it for editing
-                        $destinationPointer = $this->getApiService()->flexform_getPointerFromString($commandParameters);
-                        $newUid = $this->getApiService()->insertElement($destinationPointer, $newRow);
-
-                        if ($this->editingOfNewElementIsEnabled($newRow['tx_templavoila_ds'], $newRow['tx_templavoila_to'])) {
-                            $returnUrl = BackendUtility::getModuleUrl(
-                                $this->getModuleName(),
-                                [
-                                    'id' => $this->getId()
-                                ]
-                            );
-
-                            $redirectLocation = BackendUtility::getModuleUrl(
-                                'record_edit',
-                                [
-                                    'edit' => [
-                                        'tt_content' => [
-                                            $newUid => 'edit'
-                                        ]
-                                    ],
-                                    'returnUrl' => $returnUrl
-                                ]
-                            );
-                        }
-                        break;
 
                     case 'unlinkRecord':
                         $unlinkDestinationPointer = $this->getApiService()->flexform_getPointerFromString($commandParameters);
@@ -1391,35 +1360,6 @@ class MainController extends AbstractModuleController implements Configurable
         }
 
         return '';
-    }
-
-    /**
-     * Checks whether the datastructure for a new FCE contains the noEditOnCreation meta configuration
-     *
-     * @param int $dsUid uid of the datastructure we want to check
-     * @param int $toUid uid of the tmplobj we want to check
-     *
-     * @return bool
-     */
-    protected function editingOfNewElementIsEnabled($dsUid, $toUid)
-    {
-        if (!strlen($dsUid) || !(int)$toUid) {
-            return true;
-        }
-        $editingEnabled = true;
-        try {
-            /** @var TemplateRepository $toRepo */
-            $toRepo = GeneralUtility::makeInstance(TemplateRepository::class);
-            $to = $toRepo->getTemplateByUid($toUid);
-            $xml = $to->getLocalDataprotArray();
-            if (isset($xml['meta']['noEditOnCreation'])) {
-                $editingEnabled = $xml['meta']['noEditOnCreation'] !== 1;
-            }
-        } catch (\InvalidArgumentException $e) {
-            //  might happen if uid was not what the Repo expected - that's ok here
-        }
-
-        return $editingEnabled;
     }
 
     /**

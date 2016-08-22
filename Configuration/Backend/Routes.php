@@ -10,5 +10,10 @@ return [
         'path' => '/templavoila/admininstration/file',
         'access' => 'public',
         'target' => \Extension\Templavoila\Controller\Backend\Module\Administration\FileController::class . '::processRequest'
+    ],
+    'tv_mod_pagemodule_contentcontroller' => [
+        'path' => '/templavoila/pagemodule/content',
+        'access' => 'public',
+        'target' => Extension\Templavoila\Controller\Backend\PageModule\ContentController::class . '::processRequest'
     ]
 ];
