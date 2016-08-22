@@ -316,6 +316,10 @@ class MainController extends AbstractModuleController implements Configurable
      */
     public function index(ServerRequest $request, Response $response)
     {
+        if (!$this->hasAccess()) {
+            return $this->forward('accessDenied', $request, $response);
+        }
+
         $this->initializeTsConfig();
         $this->initializeButtons();
 
@@ -363,6 +367,48 @@ class MainController extends AbstractModuleController implements Configurable
     }
 
     /**
+     * @param ServerRequest $request
+     * @param Response $response
+     */
+    public function accessDenied(ServerRequest $request, Response $response)
+    {
+        $content = '';
+        $this->doc = GeneralUtility::makeInstance(DocumentTemplate::class);
+        $this->doc->setModuleTemplate('EXT:templavoila/Resources/Private/Templates/mod1_noaccess.html');
+        $this->doc->bodyTagId = 'typo3-mod-php';
+
+        $cmd = GeneralUtility::_GP('cmd');
+
+        if ($cmd === 'crPage') { // create a new page
+            $wizardsObj = GeneralUtility::makeInstance(\tx_templavoila_mod1_wizards::class, $this);
+            $content .= $wizardsObj->renderWizard_createNewPage(GeneralUtility::_GP('positionPid'));
+        } else {
+            if (!isset($pageInfoArr['uid'])) {
+                $flashMessage = GeneralUtility::makeInstance(
+                    FlashMessage::class,
+                    static::getLanguageService()->getLL('page_not_found'),
+                    static::getLanguageService()->getLL('title'),
+                    FlashMessage::INFO
+                );
+                $content .= $flashMessage->render();
+            } else {
+                $flashMessage = GeneralUtility::makeInstance(
+                    FlashMessage::class,
+                    static::getLanguageService()->getLL('default_introduction'),
+                    static::getLanguageService()->getLL('title'),
+                    FlashMessage::INFO
+                );
+                $content .= $flashMessage->render();
+            }
+        }
+
+        $this->moduleTemplate->setContent($content);
+
+        $response->getBody()->write($this->moduleTemplate->renderContent());
+        return $response;
+    }
+
+    /**
      * @param array $params
      *
      * @return string
@@ -403,140 +449,108 @@ class MainController extends AbstractModuleController implements Configurable
 
         // Access check! The page will show only if there is a valid page and if this page may be viewed by the user
         if (is_array($this->altRoot)) {
-            $access = true;
             // get PID of altRoot Element to get pageInfoArr
             $altRootRecord = BackendUtility::getRecordWSOL($this->altRoot['table'], $this->altRoot['uid'], 'pid');
             $pageInfoArr = BackendUtility::readPageAccess($altRootRecord['pid'], $this->perms_clause);
+            $pid = (int)$pageInfoArr['uid'];
         } else {
-            $pageInfoArr = BackendUtility::readPageAccess($this->getId(), $this->perms_clause);
-            $access = (int)$pageInfoArr['uid'] > 0;
+            $pid = $this->getId();
         }
 
-        if ($access) {
-            if (GeneralUtility::_GP('ajaxUnlinkRecord')) {
-                $unlinkDestinationPointer = $this->getApiService()->flexform_getPointerFromString(GeneralUtility::_GP('ajaxUnlinkRecord'));
-                $this->getApiService()->unlinkElement($unlinkDestinationPointer);
-            }
+        if (GeneralUtility::_GP('ajaxUnlinkRecord')) {
+            $unlinkDestinationPointer = $this->getApiService()->flexform_getPointerFromString(GeneralUtility::_GP('ajaxUnlinkRecord'));
+            $this->getApiService()->unlinkElement($unlinkDestinationPointer);
+        }
 
-            $this->calcPerms = $this->getCalcPerms($pageInfoArr['uid']);
+        $this->calcPerms = $this->getCalcPerms($pid);
 
-            // Define the root element record:
-            $this->rootElementTable = is_array($this->altRoot) ? $this->altRoot['table'] : 'pages';
-            $this->rootElementUid = is_array($this->altRoot) ? $this->altRoot['uid'] : $this->getId();
-            $this->rootElementRecord = BackendUtility::getRecordWSOL($this->rootElementTable, $this->rootElementUid, '*');
-            if ($this->rootElementRecord['t3ver_oid'] && $this->rootElementRecord['pid'] < 0) {
-                // typo3 lacks a proper API to properly detect Offline versions and extract Live Versions therefore this is done by hand
-                if ($this->rootElementTable === 'pages') {
-                    $this->rootElementUid_pidForContent = $this->rootElementRecord['t3ver_oid'];
-                } else {
-                    throw new \RuntimeException('Further execution of code leads to PHP errors.', 1404750505);
-                }
-            } else {
-                // If pages use current UID, otherwhise you must use the PID to define the Page ID
-                if ($this->rootElementTable === 'pages') {
-                    $this->rootElementUid_pidForContent = $this->rootElementRecord['uid'];
-                } else {
-                    $this->rootElementUid_pidForContent = $this->rootElementRecord['pid'];
-                }
-            }
-
-            // Check if we have to update the pagetree:
-            if (GeneralUtility::_GP('updatePageTree')) {
-                BackendUtility::setUpdateSignal('updatePageTree');
-            }
-
-            $this->handleIncomingCommands();
-
-            // Start creating HTML output
-
-            $render_editPageScreen = true;
-
-            // Show message if the page is of a special doktype:
+        // Define the root element record:
+        $this->rootElementTable = is_array($this->altRoot) ? $this->altRoot['table'] : 'pages';
+        $this->rootElementUid = is_array($this->altRoot) ? $this->altRoot['uid'] : $this->getId();
+        $this->rootElementRecord = BackendUtility::getRecordWSOL($this->rootElementTable, $this->rootElementUid, '*');
+        if ($this->rootElementRecord['t3ver_oid'] && $this->rootElementRecord['pid'] < 0) {
+            // typo3 lacks a proper API to properly detect Offline versions and extract Live Versions therefore this is done by hand
             if ($this->rootElementTable === 'pages') {
-
-                // Initialize the special doktype class:
-                $specialDoktypesObj =& GeneralUtility::getUserObj('&tx_templavoila_mod1_specialdoktypes');
-                $specialDoktypesObj->init($this);
-                $doktype = $this->rootElementRecord['doktype'];
-
-                // if doktype is configured as editType render normal edit view
-                $docTypesToEdit = $this->modTSconfig['properties']['additionalDoktypesRenderToEditView'];
-                if ($docTypesToEdit && GeneralUtility::inList($docTypesToEdit, $doktype)) {
-                    //Make sure it is editable by page module
-                    $doktype = self::DOKTYPE_NORMAL_EDIT;
-                }
-
-                $methodName = 'renderDoktype_' . $doktype;
-                if (method_exists($specialDoktypesObj, $methodName)) {
-                    $result = $specialDoktypesObj->$methodName($this->rootElementRecord);
-                    if ($result !== false) {
-                        $content .= $result;
-                        if (static::getBackendUser()->isPSet($this->calcPerms, 'pages', 'edit')) {
-                            // Edit icon only if page can be modified by user
-                            $iconEdit = $this->moduleTemplate->getIconFactory()->getIcon('actions-document-open', Icon::SIZE_SMALL);
-                            $content .= '<br/><br/><strong>' . $this->link_edit($iconEdit . static::getLanguageService()->sL('LLL:EXT:lang/locallang_mod_web_list.xlf:editPage'), 'pages', $this->getId()) . '</strong>';
-                        }
-                        $render_editPageScreen = false; // Do not output editing code for special doctypes!
-                    }
-                }
-            }
-
-            if ($render_editPageScreen) {
-                $editCurrentPageHTML = '';
-
-                // warn if page renders content from other page
-                if ($this->rootElementRecord['content_from_pid']) {
-                    $contentPage = BackendUtility::getRecord('pages', (int)$this->rootElementRecord['content_from_pid']);
-                    $title = BackendUtility::getRecordTitle('pages', $contentPage);
-                    $linkToPid = 'index.php?id=' . (int)$this->rootElementRecord['content_from_pid'];
-                    $link = '<a href="' . $linkToPid . '">' . htmlspecialchars($title) . ' (PID ' . (int)$this->rootElementRecord['content_from_pid'] . ')</a>';
-                    /** @var FlashMessage $flashMessage */
-                    $flashMessage = GeneralUtility::makeInstance(
-                        FlashMessage::class,
-                        '',
-                        sprintf(static::getLanguageService()->getLL('content_from_pid_title'), $link),
-                        FlashMessage::INFO
-                    );
-                    $editCurrentPageHTML = '';
-                    $this->flashMessageService->getMessageQueueByIdentifier('ext.templavoila')->enqueue($flashMessage);
-                }
-                // Render "edit current page" (important to do before calling ->sideBarObj->render() - otherwise the translation tab is not rendered!
-                $content .= $this->render_editPageScreen();
-
-                if (GeneralUtility::_GP('ajaxUnlinkRecord')) {
-                    $this->render_editPageScreen();
-                    echo $this->render_sidebar();
-                    exit;
-                }
-            }
-        } else { // No access or no current page uid:
-            $this->doc = GeneralUtility::makeInstance(DocumentTemplate::class);
-            $this->doc->setModuleTemplate('EXT:templavoila/Resources/Private/Templates/mod1_noaccess.html');
-            $this->doc->bodyTagId = 'typo3-mod-php';
-
-            $cmd = GeneralUtility::_GP('cmd');
-
-            if ($cmd === 'crPage') { // create a new page
-                $wizardsObj = GeneralUtility::makeInstance(\tx_templavoila_mod1_wizards::class, $this);
-                $content .= $wizardsObj->renderWizard_createNewPage(GeneralUtility::_GP('positionPid'));
+                $this->rootElementUid_pidForContent = $this->rootElementRecord['t3ver_oid'];
             } else {
-                if (!isset($pageInfoArr['uid'])) {
-                    $flashMessage = GeneralUtility::makeInstance(
-                        FlashMessage::class,
-                        static::getLanguageService()->getLL('page_not_found'),
-                        static::getLanguageService()->getLL('title'),
-                        FlashMessage::INFO
-                    );
-                    $content .= $flashMessage->render();
-                } else {
-                    $flashMessage = GeneralUtility::makeInstance(
-                        FlashMessage::class,
-                        static::getLanguageService()->getLL('default_introduction'),
-                        static::getLanguageService()->getLL('title'),
-                        FlashMessage::INFO
-                    );
-                    $content .= $flashMessage->render();
+                throw new \RuntimeException('Further execution of code leads to PHP errors.', 1404750505);
+            }
+        } else {
+            // If pages use current UID, otherwhise you must use the PID to define the Page ID
+            if ($this->rootElementTable === 'pages') {
+                $this->rootElementUid_pidForContent = $this->rootElementRecord['uid'];
+            } else {
+                $this->rootElementUid_pidForContent = $this->rootElementRecord['pid'];
+            }
+        }
+
+        // Check if we have to update the pagetree:
+        if (GeneralUtility::_GP('updatePageTree')) {
+            BackendUtility::setUpdateSignal('updatePageTree');
+        }
+
+        $this->handleIncomingCommands();
+
+        // Start creating HTML output
+
+        $render_editPageScreen = true;
+
+        // Show message if the page is of a special doktype:
+        if ($this->rootElementTable === 'pages') {
+
+            // Initialize the special doktype class:
+            $specialDoktypesObj =& GeneralUtility::getUserObj('&tx_templavoila_mod1_specialdoktypes');
+            $specialDoktypesObj->init($this);
+            $doktype = $this->rootElementRecord['doktype'];
+
+            // if doktype is configured as editType render normal edit view
+            $docTypesToEdit = $this->modTSconfig['properties']['additionalDoktypesRenderToEditView'];
+            if ($docTypesToEdit && GeneralUtility::inList($docTypesToEdit, $doktype)) {
+                //Make sure it is editable by page module
+                $doktype = self::DOKTYPE_NORMAL_EDIT;
+            }
+
+            $methodName = 'renderDoktype_' . $doktype;
+            if (method_exists($specialDoktypesObj, $methodName)) {
+                $result = $specialDoktypesObj->$methodName($this->rootElementRecord);
+                if ($result !== false) {
+                    $content .= $result;
+                    if (static::getBackendUser()->isPSet($this->calcPerms, 'pages', 'edit')) {
+                        // Edit icon only if page can be modified by user
+                        $iconEdit = $this->moduleTemplate->getIconFactory()->getIcon('actions-document-open', Icon::SIZE_SMALL);
+                        $content .= '<br/><br/><strong>' . $this->link_edit($iconEdit . static::getLanguageService()->sL('LLL:EXT:lang/locallang_mod_web_list.xlf:editPage'), 'pages', $this->getId()) . '</strong>';
+                    }
+                    $render_editPageScreen = false; // Do not output editing code for special doctypes!
                 }
+            }
+        }
+
+        if ($render_editPageScreen) {
+            $editCurrentPageHTML = '';
+
+            // warn if page renders content from other page
+            if ($this->rootElementRecord['content_from_pid']) {
+                $contentPage = BackendUtility::getRecord('pages', (int)$this->rootElementRecord['content_from_pid']);
+                $title = BackendUtility::getRecordTitle('pages', $contentPage);
+                $linkToPid = 'index.php?id=' . (int)$this->rootElementRecord['content_from_pid'];
+                $link = '<a href="' . $linkToPid . '">' . htmlspecialchars($title) . ' (PID ' . (int)$this->rootElementRecord['content_from_pid'] . ')</a>';
+                /** @var FlashMessage $flashMessage */
+                $flashMessage = GeneralUtility::makeInstance(
+                    FlashMessage::class,
+                    '',
+                    sprintf(static::getLanguageService()->getLL('content_from_pid_title'), $link),
+                    FlashMessage::INFO
+                );
+                $editCurrentPageHTML = '';
+                $this->flashMessageService->getMessageQueueByIdentifier('ext.templavoila')->enqueue($flashMessage);
+            }
+            // Render "edit current page" (important to do before calling ->sideBarObj->render() - otherwise the translation tab is not rendered!
+            $content .= $this->render_editPageScreen();
+
+            if (GeneralUtility::_GP('ajaxUnlinkRecord')) {
+                $this->render_editPageScreen();
+                echo $this->render_sidebar();
+                exit;
             }
         }
 

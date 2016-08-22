@@ -89,7 +89,7 @@ abstract class AbstractModuleController extends AbstractModule
     public function hasAccess($flag = self::ACCESS_READ)
     {
         $pageinfo = BackendUtility::readPageAccess($this->getId(), static::getBackendUser()->getPagePermsClause($flag));
-        return is_array($pageinfo);
+        return is_array($pageinfo) && isset($pageinfo['uid']) && (int)$pageinfo['uid'] > 0;
     }
 
     /**
