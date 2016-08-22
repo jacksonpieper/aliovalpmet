@@ -93,6 +93,23 @@ abstract class AbstractModuleController extends AbstractModule
     }
 
     /**
+     * @param string $methodName
+     * @param ServerRequestInterface $request
+     * @param ResponseInterface $response
+     * @return ResponseInterface
+     */
+    public function forward($methodName, ServerRequestInterface $request, ResponseInterface $response)
+    {
+        if (!is_callable([$this, $methodName])) {
+            throw new \InvalidArgumentException(
+                'The method "' . $methodName . '" is not callable within "' . get_class($this) . '".',
+                1442736343
+            );
+        }
+        return $this->{$methodName}($request, $response);
+    }
+
+    /**
      * @param ServerRequest $request
      * @param Response $response
      *
