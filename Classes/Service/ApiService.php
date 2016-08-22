@@ -22,6 +22,7 @@ use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Backend\Utility\IconUtility;
 use TYPO3\CMS\Core\Database\RelationHandler;
 use TYPO3\CMS\Core\DataHandling\DataHandler;
+use TYPO3\CMS\Core\Log\LogManager;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
 
@@ -47,11 +48,6 @@ class ApiService
     protected $rootTable;
 
     /**
-     * @var bool
-     */
-    public $debug = false;
-
-    /**
      * @var array
      */
     protected $allSystemWebsiteLanguages = []; // ->loadWebsiteLanguages() will set this to content of sys_language
@@ -67,6 +63,11 @@ class ApiService
     protected $cachedModWebTSconfig = [];
 
     /**
+     * @var \TYPO3\CMS\Core\Log\Logger
+     */
+    private $logger;
+
+    /**
      * @param string $rootTable Usually the root table is "pages" but another table can be specified (eg. "tt_content")
      *
      * @return \Extension\Templavoila\Service\ApiService
@@ -74,6 +75,7 @@ class ApiService
     public function __construct($rootTable = 'pages')
     {
         $this->rootTable = $rootTable;
+        $this->logger = GeneralUtility::makeInstance(LogManager::class)->getLogger(__CLASS__);
     }
 
     /******************************************************
@@ -93,32 +95,24 @@ class ApiService
      */
     public function insertElement($destinationPointer, $elementRow)
     {
-        if ($this->debug) {
-            GeneralUtility::devLog('API: insertElement()', Templavoila::EXTKEY, 0, ['destinationPointer' => $destinationPointer, 'elementRow' => $elementRow]);
-        }
+        $this->logger->debug('API: insertElement()', ['destinationPointer' => $destinationPointer, 'elementRow' => $elementRow]);
 
         if (!$destinationPointer = $this->flexform_getValidPointer($destinationPointer)) {
-            if ($this->debug) {
-                GeneralUtility::devLog('API#insertElement: flexform_getValidPointer() failed', Templavoila::EXTKEY, 0);
-            }
+            $this->logger->error('API#insertElement: flexform_getValidPointer() failed');
 
             return false;
         }
 
         $newRecordUid = $this->insertElement_createRecord($destinationPointer, $elementRow);
         if ($newRecordUid === false) {
-            if ($this->debug) {
-                GeneralUtility::devLog('API#insertElement: insertElement_createRecord() failed', Templavoila::EXTKEY, 0);
-            }
+            $this->logger->error('API#insertElement: insertElement_createRecord() failed');
 
             return false;
         }
 
         $result = $this->insertElement_setElementReferences($destinationPointer, $newRecordUid);
         if ($result === false) {
-            if ($this->debug) {
-                GeneralUtility::devLog('API#insertElement: insertElement_setElementReferences() failed', Templavoila::EXTKEY, 0);
-            }
+            $this->logger->error('API#insertElement: insertElement_setElementReferences() failed');
 
             return false;
         }
@@ -136,9 +130,7 @@ class ApiService
      */
     public function insertElement_createRecord($destinationPointer, $row)
     {
-        if ($this->debug) {
-            GeneralUtility::devLog('API: insertElement_createRecord()', Templavoila::EXTKEY, 0, ['destinationPointer' => $destinationPointer, 'row' => $row]);
-        }
+        $this->logger->debug('API: insertElement_createRecord()', ['destinationPointer' => $destinationPointer, 'row' => $row]);
 
         $parentRecord = BackendUtility::getRecordWSOL($destinationPointer['table'], $destinationPointer['uid'], 'uid,pid,t3ver_oid,tx_templavoila_flex');
 
@@ -181,14 +173,12 @@ class ApiService
         $flagWasSet = $this->getTCEmainRunningFlag();
         $this->setTCEmainRunningFlag(true);
 
-        if ($this->debug) {
-            GeneralUtility::devLog('API: insertElement_createRecord()', Templavoila::EXTKEY, 0, ['dataArr' => $dataArr]);
-        }
+        $this->logger->debug('API: insertElement_createRecord()', ['dataArr' => $dataArr]);
 
         $tce->start($dataArr, []);
         $tce->process_datamap();
-        if ($this->debug && count($tce->errorLog)) {
-            GeneralUtility::devLog('API: insertElement_createRecord(): tcemain failed', Templavoila::EXTKEY, 0, ['errorLog' => $tce->errorLog]);
+        if (count($tce->errorLog)) {
+            $this->logger->error('API: insertElement_createRecord(): tcemain failed', ['errorLog' => $tce->errorLog]);
         }
         $newUid = $tce->substNEWwithIDs['NEW'];
         if (!$flagWasSet) {
@@ -209,9 +199,7 @@ class ApiService
      */
     public function insertElement_setElementReferences($destinationPointer, $uid)
     {
-        if ($this->debug) {
-            GeneralUtility::devLog('API: insertElement_setElementReferences()', Templavoila::EXTKEY, 0, ['destinationPointer' => $destinationPointer, 'uid' => $uid]);
-        }
+        $this->logger->debug('API: insertElement_setElementReferences()', ['destinationPointer' => $destinationPointer, 'uid' => $uid]);
 
         $parentRecord = BackendUtility::getRecordWSOL($destinationPointer['table'], $destinationPointer['uid'], 'uid,pid,tx_templavoila_flex');
         if (!is_array($parentRecord)) {
@@ -236,9 +224,7 @@ class ApiService
      */
     public function moveElement($sourcePointer, $destinationPointer)
     {
-        if ($this->debug) {
-            GeneralUtility::devLog('API: moveElement()', Templavoila::EXTKEY, 0, ['sourcePointer' => $sourcePointer, 'destinationPointer' => $destinationPointer]);
-        }
+        $this->logger->debug('API: moveElement()', ['sourcePointer' => $sourcePointer, 'destinationPointer' => $destinationPointer]);
 
         return $this->process('move', $sourcePointer, $destinationPointer);
     }
@@ -255,9 +241,7 @@ class ApiService
      */
     public function moveElement_setElementReferences($sourcePointer, $destinationPointer)
     {
-        if ($this->debug) {
-            GeneralUtility::devLog('API: moveElement_setElementReferences()', Templavoila::EXTKEY, 0, ['sourcePointer' => $sourcePointer, 'destinationPointer' => $destinationPointer]);
-        }
+        $this->logger->debug('API: moveElement_setElementReferences()', ['sourcePointer' => $sourcePointer, 'destinationPointer' => $destinationPointer]);
 
         return $this->process('move', $sourcePointer, $destinationPointer, true);
     }
@@ -275,9 +259,7 @@ class ApiService
      */
     public function copyElement($sourcePointer, $destinationPointer, $copySubElements = true)
     {
-        if ($this->debug) {
-            GeneralUtility::devLog('API: copyElement()', Templavoila::EXTKEY, 0, ['sourcePointer' => $sourcePointer, 'destinationPointer' => $destinationPointer, 'copySubElements' => $copySubElements]);
-        }
+        $this->logger->debug('API: copyElement()', ['sourcePointer' => $sourcePointer, 'destinationPointer' => $destinationPointer, 'copySubElements' => $copySubElements]);
 
         return $this->process($copySubElements ? 'copyrecursively' : 'copy', $sourcePointer, $destinationPointer);
     }
@@ -297,9 +279,7 @@ class ApiService
      */
     public function localizeElement($sourcePointer, $languageKey)
     {
-        if ($this->debug) {
-            GeneralUtility::devLog('API: localizeElement()', Templavoila::EXTKEY, 0, ['sourcePointer' => $sourcePointer, 'languageKey' => $languageKey]);
-        }
+        $this->logger->debug('API: localizeElement()', ['sourcePointer' => $sourcePointer, 'languageKey' => $languageKey]);
 
         $sourceElementRecord = $this->flexform_getRecordByPointer($sourcePointer);
         $parentPageRecord = BackendUtility::getRecordWSOL('pages', $sourceElementRecord['pid']);
@@ -309,9 +289,7 @@ class ApiService
             return false;
         }
         if ($rawPageDataStructureArr['meta']['langDisable'] == 1) {
-            if ($this->debug) {
-                GeneralUtility::devLog('API: localizeElement(): Cannot localize element because localization is disabled for the active page datastructure!', Templavoila::EXTKEY, 0);
-            }
+            $this->logger->error('API: localizeElement(): Cannot localize element because localization is disabled for the active page datastructure!');
 
             return false;
         }
@@ -339,9 +317,7 @@ class ApiService
      */
     public function referenceElement($sourcePointer, $destinationPointer)
     {
-        if ($this->debug) {
-            GeneralUtility::devLog('API: referenceElement()', Templavoila::EXTKEY, 0, ['sourcePointer' => $sourcePointer, 'destinationPointer' => $destinationPointer]);
-        }
+        $this->logger->debug('API: referenceElement()', ['sourcePointer' => $sourcePointer, 'destinationPointer' => $destinationPointer]);
 
         return $this->process('reference', $sourcePointer, $destinationPointer);
     }
@@ -360,9 +336,8 @@ class ApiService
      */
     public function referenceElementByUid($uid, $destinationPointer)
     {
-        if ($this->debug) {
-            GeneralUtility::devLog('API: referenceElementByUid()', Templavoila::EXTKEY, 0, ['uid' => $uid, 'destinationPointer' => $destinationPointer]);
-        }
+        $this->logger->debug('API: referenceElementByUid()', ['uid' => $uid, 'destinationPointer' => $destinationPointer]);
+
         $sourcePointer = [
             'table' => 'tt_content',
             'uid' => (int)$uid
@@ -380,9 +355,7 @@ class ApiService
      */
     public function unlinkElement($sourcePointer)
     {
-        if ($this->debug) {
-            GeneralUtility::devLog('API: unlinkElement()', Templavoila::EXTKEY, 0, ['sourcePointer' => $sourcePointer]);
-        }
+        $this->logger->debug('API: unlinkElement()', ['sourcePointer' => $sourcePointer]);
 
         return $this->process('unlink', $sourcePointer);
     }
@@ -397,9 +370,7 @@ class ApiService
      */
     public function deleteElement($sourcePointer)
     {
-        if ($this->debug) {
-            GeneralUtility::devLog('API: deleteElement()', Templavoila::EXTKEY, 0, ['sourcePointer' => $sourcePointer]);
-        }
+        $this->logger->debug('API: deleteElement()', ['sourcePointer' => $sourcePointer]);
 
         return $this->process('delete', $sourcePointer);
     }
@@ -431,9 +402,7 @@ class ApiService
         }
         $sourceParentRecord = BackendUtility::getRecordWSOL($sourcePointer['table'], $sourcePointer['uid'], 'uid,pid,tx_templavoila_flex');
         if (!is_array($sourceParentRecord)) {
-            if ($this->debug) {
-                GeneralUtility::devLog('process: Parent record of the element specified by source pointer does not exist!', 2, $sourcePointer);
-            }
+            $this->logger->error('process: Parent record of the element specified by source pointer does not exist!', ['sourcePointer' => $sourcePointer]);
 
             return false;
         }
@@ -446,15 +415,11 @@ class ApiService
             }
             $destinationParentRecord = BackendUtility::getRecordWSOL($destinationPointer['table'], $destinationPointer['uid'], 'uid,pid,tx_templavoila_flex');
             if (!is_array($destinationParentRecord)) {
-                if ($this->debug) {
-                    GeneralUtility::devLog('process: Parent record of the element specified by destination pointer does not exist!', 2, $destinationPointer);
-                }
+                $this->logger->error('process: Parent record of the element specified by destination pointer does not exist!', [$destinationPointer]);
 
                 return false;
             } elseif ($destinationParentRecord['pid'] < 0 && $destinationPointer['table'] != 'pages') {
-                if ($this->debug) {
-                    GeneralUtility::devLog('process: The destination pointer must always point to a live record, not an offline version!', 2, $destinationPointer);
-                }
+                $this->logger->error('process: The destination pointer must always point to a live record, not an offline version!', [$destinationPointer]);
 
                 return false;
             }
@@ -688,9 +653,7 @@ class ApiService
         if (is_array($languageRecords) && isset($languageRecords[0]['uid'])) {
             $destinationLanguageUid = $languageRecords[0]['uid'];
         } else {
-            if ($this->debug) {
-                GeneralUtility::devLog('API: process_localize(): Cannot localize element because sys_language record can not be found !', Templavoila::EXTKEY, 2);
-            }
+            $this->logger->error('API: process_localize(): Cannot localize element because sys_language record can not be found !');
 
             return false;
         }
@@ -808,17 +771,13 @@ class ApiService
         }
 
         if (!GeneralUtility::inList($this->rootTable . ',tt_content', $flexformPointer['table'])) {
-            if ($this->debug) {
-                GeneralUtility::devLog('flexform_getValidPointer: Table "' . $flexformPointer['table'] . '" is not in the list of allowed tables!', 'TemplaVoila API', 2, $this->rootTable . ',tt_content');
-            }
+            $this->logger->error('flexform_getValidPointer: Table "' . $flexformPointer['table'] . '" is not in the list of allowed tables!', [$this->rootTable . ',tt_content']);
 
             return false;
         }
 
         if (!$destinationRecord = BackendUtility::getRecordWSOL($flexformPointer['table'], $flexformPointer['uid'], 'uid,pid,tx_templavoila_flex')) {
-            if ($this->debug) {
-                GeneralUtility::devLog('flexform_getValidPointer: Pointer destination record not found!', 'TemplaVoila API', 2, $flexformPointer);
-            }
+            $this->logger->error('flexform_getValidPointer: Pointer destination record not found!', [$flexformPointer]);
 
             return false;
         }
@@ -826,16 +785,12 @@ class ApiService
         if ($flexformPointer['position'] > 0) {
             $elementReferencesArr = $this->flexform_getElementReferencesFromXML($destinationRecord['tx_templavoila_flex'], $flexformPointer);
             if (!isset($elementReferencesArr[$flexformPointer['position']]) && $flexformPointer['position'] != -1) {
-                if ($this->debug) {
-                    GeneralUtility::devLog('flexform_getValidPointer: The position in the specified flexform pointer does not exist!', 'TemplaVoila API', 2, $flexformPointer);
-                }
+                $this->logger->error('flexform_getValidPointer: The position in the specified flexform pointer does not exist!', [$flexformPointer]);
 
                 return false;
             }
             if (isset($flexformPointer['targetCheckUid']) && $elementReferencesArr[$flexformPointer['position']] != $flexformPointer['targetCheckUid']) {
-                if ($this->debug) {
-                    GeneralUtility::devLog('flexform_getValidPointer: The target record uid does not match the targetCheckUid!', 'TemplaVoila API', 2, [$flexformPointer, $elementReferencesArr]);
-                }
+                $this->logger->error('flexform_getValidPointer: The target record uid does not match the targetCheckUid!', [$flexformPointer, $elementReferencesArr]);
 
                 return false;
             }
@@ -991,9 +946,7 @@ class ApiService
         // Getting value of the field containing the relations:
         $flexformXMLArr = GeneralUtility::xml2array($flexformXML);
         if (!is_array($flexformXMLArr) && strlen($flexformXML) > 0) {
-            if ($this->debug) {
-                GeneralUtility::devLog('flexform_getReferencesToElementsFromXML: flexformXML seems to be no valid XML. Parser error message: ' . $flexformXMLArr, 'TemplaVoila API', 2, $flexformXML);
-            }
+            $this->logger->error('flexform_getReferencesToElementsFromXML: flexformXML seems to be no valid XML. Parser error message: ' . $flexformXMLArr, [$flexformXML]);
 
             return false;
         }
@@ -1214,9 +1167,7 @@ class ApiService
      */
     public function flexform_storeElementReferencesListInRecord($referencesArr, $destinationPointer)
     {
-        if ($this->debug) {
-            GeneralUtility::devLog('API: flexform_storeElementReferencesListInRecord()', Templavoila::EXTKEY, 0, ['referencesArr' => $referencesArr, 'destinationPointer' => $destinationPointer]);
-        }
+        $this->logger->debug('API: flexform_storeElementReferencesListInRecord()', ['referencesArr' => $referencesArr, 'destinationPointer' => $destinationPointer]);
 
         $dataArr = [];
         $uid = BackendUtility::wsMapId($destinationPointer['table'], $destinationPointer['uid']);
