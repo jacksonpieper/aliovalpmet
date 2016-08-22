@@ -34,7 +34,6 @@ use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Messaging\FlashMessageService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Fluid\View\StandaloneView;
 use TYPO3\CMS\Frontend\Page\PageRepository;
 
 /**
@@ -489,11 +488,6 @@ class MainController extends AbstractModuleController implements Configurable
             $pid = (int)$pageInfoArr['uid'];
         } else {
             $pid = $this->getId();
-        }
-
-        if (GeneralUtility::_GP('ajaxUnlinkRecord')) {
-            $unlinkDestinationPointer = $this->getApiService()->flexform_getPointerFromString(GeneralUtility::_GP('ajaxUnlinkRecord'));
-            $this->getApiService()->unlinkElement($unlinkDestinationPointer);
         }
 
         $this->calcPerms = $this->getCalcPerms($pid);
