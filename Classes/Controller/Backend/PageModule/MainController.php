@@ -16,6 +16,7 @@ namespace Extension\Templavoila\Controller\Backend\PageModule;
 
 use Extension\Templavoila\Controller\Backend\AbstractModuleController;
 use Extension\Templavoila\Controller\Backend\Configurable;
+use Extension\Templavoila\Controller\Backend\PageModule\Renderer\DoktypeRenderer;
 use Extension\Templavoila\Controller\Backend\PageModule\Renderer\OutlineRenderer;
 use Extension\Templavoila\Controller\Backend\PageModule\Renderer\SheetRenderer;
 use Extension\Templavoila\Controller\Backend\PageModule\Renderer\SidebarRenderer;
@@ -34,6 +35,7 @@ use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Messaging\FlashMessageService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Fluid\View\StandaloneView;
+use TYPO3\CMS\Frontend\Page\PageRepository;
 
 /**
  * Class Extension\Templavoila\Controller\Backend\PageModule\MainController
@@ -348,22 +350,54 @@ class MainController extends AbstractModuleController implements Configurable
         }
 
         $this->altRoot = GeneralUtility::_GP('altRoot');
+        $this->rootElementTable = is_array($this->altRoot) ? $this->altRoot['table'] : 'pages';
+        $this->rootElementUid = is_array($this->altRoot) ? $this->altRoot['uid'] : $this->getId();
+        $this->rootElementRecord = BackendUtility::getRecordWSOL($this->rootElementTable, $this->rootElementUid, '*');
         $this->clipboardObj = GeneralUtility::makeInstance(\tx_templavoila_mod1_clipboard::class, $this);
 
         $view = $this->initializeView('Backend/PageModule/Main');
 
-        $this->main($view);
+        $doktypeRenderer = new DoktypeRenderer($this);
+        $doktype = $this->getDoktype($this->rootElementRecord);
+
+        if (!$doktype !== PageRepository::DOKTYPE_DEFAULT && $doktypeRenderer->canRender($doktype)) {
+            $view->assign('content', $doktypeRenderer->render($doktype));
+        } else {
+            if ($this->modTSconfig['properties']['sideBarEnable']) {
+                $view->assign('sidebar', $this->render_sidebar());
+            }
+
+            $view->assign('content', $this->main());
+        }
+
         $record = BackendUtility::getRecordWSOL('pages', $this->getId());
 
         $view->assign('h1', $this->moduleTemplate->header($record['title']));
 
         $this->moduleTemplate->setTitle(static::getLanguageService()->getLL('title'));
+        $this->moduleTemplate->getPageRenderer()->loadRequireJsModule('TYPO3/CMS/Backend/ClickMenu');
         $this->moduleTemplate->getPageRenderer()->loadRequireJsModule('TYPO3/CMS/Backend/Modal');
         $this->moduleTemplate->getPageRenderer()->loadRequireJsModule('TYPO3/CMS/Templavoila/PageModule');
         $this->moduleTemplate->setContent($view->render());
 
         $response->getBody()->write($this->moduleTemplate->renderContent());
         return $response;
+    }
+
+    /**
+     * @param array $row
+     * @return int
+     */
+    private function getDoktype(array $row)
+    {
+        $doktype = $row['doktype'];
+        $docTypesToEdit = $this->modTSconfig['properties']['additionalDoktypesRenderToEditView'];
+        if ($docTypesToEdit && GeneralUtility::inList($docTypesToEdit, $doktype)) {
+            // Make sure it is editable by page module
+            $doktype = self::DOKTYPE_NORMAL_EDIT;
+        }
+
+        return (int) $doktype;
     }
 
     /**
@@ -443,7 +477,7 @@ class MainController extends AbstractModuleController implements Configurable
      * @throws \BadFunctionCallException
      * @throws \InvalidArgumentException
      */
-    public function main(StandaloneView $view)
+    public function main()
     {
         $content = '';
 
@@ -465,9 +499,6 @@ class MainController extends AbstractModuleController implements Configurable
         $this->calcPerms = $this->getCalcPerms($pid);
 
         // Define the root element record:
-        $this->rootElementTable = is_array($this->altRoot) ? $this->altRoot['table'] : 'pages';
-        $this->rootElementUid = is_array($this->altRoot) ? $this->altRoot['uid'] : $this->getId();
-        $this->rootElementRecord = BackendUtility::getRecordWSOL($this->rootElementTable, $this->rootElementUid, '*');
         if ($this->rootElementRecord['t3ver_oid'] && $this->rootElementRecord['pid'] < 0) {
             // typo3 lacks a proper API to properly detect Offline versions and extract Live Versions therefore this is done by hand
             if ($this->rootElementTable === 'pages') {
@@ -491,76 +522,31 @@ class MainController extends AbstractModuleController implements Configurable
 
         $this->handleIncomingCommands();
 
-        // Start creating HTML output
+        // warn if page renders content from other page
+        if ($this->rootElementRecord['content_from_pid']) {
+            $contentPage = BackendUtility::getRecord('pages', (int)$this->rootElementRecord['content_from_pid']);
+            $title = BackendUtility::getRecordTitle('pages', $contentPage);
+            $linkToPid = 'index.php?id=' . (int)$this->rootElementRecord['content_from_pid'];
+            $link = '<a href="' . $linkToPid . '">' . htmlspecialchars($title) . ' (PID ' . (int)$this->rootElementRecord['content_from_pid'] . ')</a>';
+            /** @var FlashMessage $flashMessage */
+            $flashMessage = GeneralUtility::makeInstance(
+                FlashMessage::class,
+                '',
+                sprintf(static::getLanguageService()->getLL('content_from_pid_title'), $link),
+                FlashMessage::INFO
+            );
+            $this->flashMessageService->getMessageQueueByIdentifier('ext.templavoila')->enqueue($flashMessage);
+        }
+        // Render "edit current page" (important to do before calling ->sideBarObj->render() - otherwise the translation tab is not rendered!
+        $content .= $this->render_editPageScreen();
 
-        $render_editPageScreen = true;
-
-        // Show message if the page is of a special doktype:
-        if ($this->rootElementTable === 'pages') {
-
-            // Initialize the special doktype class:
-            $specialDoktypesObj =& GeneralUtility::getUserObj('&tx_templavoila_mod1_specialdoktypes');
-            $specialDoktypesObj->init($this);
-            $doktype = $this->rootElementRecord['doktype'];
-
-            // if doktype is configured as editType render normal edit view
-            $docTypesToEdit = $this->modTSconfig['properties']['additionalDoktypesRenderToEditView'];
-            if ($docTypesToEdit && GeneralUtility::inList($docTypesToEdit, $doktype)) {
-                //Make sure it is editable by page module
-                $doktype = self::DOKTYPE_NORMAL_EDIT;
-            }
-
-            $methodName = 'renderDoktype_' . $doktype;
-            if (method_exists($specialDoktypesObj, $methodName)) {
-                $result = $specialDoktypesObj->$methodName($this->rootElementRecord);
-                if ($result !== false) {
-                    $content .= $result;
-                    if (static::getBackendUser()->isPSet($this->calcPerms, 'pages', 'edit')) {
-                        // Edit icon only if page can be modified by user
-                        $iconEdit = $this->moduleTemplate->getIconFactory()->getIcon('actions-document-open', Icon::SIZE_SMALL);
-                        $content .= '<br/><br/><strong>' . $this->link_edit($iconEdit . static::getLanguageService()->sL('LLL:EXT:lang/locallang_mod_web_list.xlf:editPage'), 'pages', $this->getId()) . '</strong>';
-                    }
-                    $render_editPageScreen = false; // Do not output editing code for special doctypes!
-                }
-            }
+        if (GeneralUtility::_GP('ajaxUnlinkRecord')) {
+            $this->render_editPageScreen();
+            echo $this->render_sidebar();
+            exit;
         }
 
-        if ($render_editPageScreen) {
-            $editCurrentPageHTML = '';
-
-            // warn if page renders content from other page
-            if ($this->rootElementRecord['content_from_pid']) {
-                $contentPage = BackendUtility::getRecord('pages', (int)$this->rootElementRecord['content_from_pid']);
-                $title = BackendUtility::getRecordTitle('pages', $contentPage);
-                $linkToPid = 'index.php?id=' . (int)$this->rootElementRecord['content_from_pid'];
-                $link = '<a href="' . $linkToPid . '">' . htmlspecialchars($title) . ' (PID ' . (int)$this->rootElementRecord['content_from_pid'] . ')</a>';
-                /** @var FlashMessage $flashMessage */
-                $flashMessage = GeneralUtility::makeInstance(
-                    FlashMessage::class,
-                    '',
-                    sprintf(static::getLanguageService()->getLL('content_from_pid_title'), $link),
-                    FlashMessage::INFO
-                );
-                $editCurrentPageHTML = '';
-                $this->flashMessageService->getMessageQueueByIdentifier('ext.templavoila')->enqueue($flashMessage);
-            }
-            // Render "edit current page" (important to do before calling ->sideBarObj->render() - otherwise the translation tab is not rendered!
-            $content .= $this->render_editPageScreen();
-
-            if (GeneralUtility::_GP('ajaxUnlinkRecord')) {
-                $this->render_editPageScreen();
-                echo $this->render_sidebar();
-                exit;
-            }
-        }
-
-        $view->assign('sidebar', 'disabled');
-        if ($this->modTSconfig['properties']['sideBarEnable']) {
-            $view->assign('sidebar', 'top');
-        }
-
-        $view->assign('sidebar', $this->render_sidebar());
-        $view->assign('content', $content);
+        return $content;
     }
 
     /*************************
