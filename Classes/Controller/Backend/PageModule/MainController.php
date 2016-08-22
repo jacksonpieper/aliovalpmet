@@ -1091,7 +1091,7 @@ class MainController extends AbstractModuleController implements Configurable
      */
     public function handleIncomingCommands()
     {
-        $possibleCommands = ['unlinkRecord', 'pasteRecord', 'makeLocalRecord', 'localizeElement', 'createNewPageTranslation', 'editPageLanguageOverlay'];
+        $possibleCommands = ['unlinkRecord', 'pasteRecord', 'makeLocalRecord', 'createNewPageTranslation', 'editPageLanguageOverlay'];
 
         $hooks = $this->hooks_prepareObjectsArray('handleIncomingCommands');
 
@@ -1141,11 +1141,6 @@ class MainController extends AbstractModuleController implements Configurable
                         $sourcePointer = $this->getApiService()->flexform_getPointerFromString($commandParameters);
                         $this->getApiService()->copyElement($sourcePointer, $sourcePointer);
                         $this->getApiService()->unlinkElement($sourcePointer);
-                        break;
-
-                    case 'localizeElement':
-                        $sourcePointer = $this->getApiService()->flexform_getPointerFromString(GeneralUtility::_GP('source'));
-                        $this->getApiService()->localizeElement($sourcePointer, $commandParameters);
                         break;
 
                     case 'createNewPageTranslation':

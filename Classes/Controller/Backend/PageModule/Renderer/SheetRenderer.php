@@ -762,7 +762,16 @@ class SheetRenderer implements Renderable
                                 // Copy for language:
                                 if ($this->controller->getLanguageParadigm() === 'free') {
                                     $sourcePointerString = $this->controller->getApiService()->flexform_getStringFromPointer($parentPointer);
-                                    $href = "document.location='index.php?" . $this->controller->link_getParameters() . '&source=' . rawurlencode($sourcePointerString) . '&localizeElement=' . $sLInfo['ISOcode'] . "'; return false;";
+
+                                    $href = BackendUtility::getModuleUrl(
+                                        'tv_mod_pagemodule_contentcontroller',
+                                        [
+                                            'action' => 'localize',
+                                            'returnUrl' => $this->controller->getReturnUrl(),
+                                            'record' => $sourcePointerString,
+                                            'language' => $sLInfo['ISOcode']
+                                        ]
+                                    );
                                 } else {
                                     $params = '&cmd[tt_content][' . $contentTreeArr['el']['uid'] . '][localize]=' . $sys_language_uid;
                                     $href = BackendUtility::getLinkToDataHandlerAction($params, GeneralUtility::getIndpEnv('REQUEST_URI') . '#c' . md5($this->controller->getApiService()->flexform_getStringFromPointer($parentPointer) . $contentTreeArr['el']['uid'] . $sys_language_uid)) . "'; return false;";

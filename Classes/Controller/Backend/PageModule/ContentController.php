@@ -134,6 +134,40 @@ class ContentController extends AbstractModule
         return $response->withHeader('Location', GeneralUtility::locationHeaderUrl($returnUrl));
     }
 
+    /**
+     * @param ServerRequest $request
+     * @param Response $response
+     */
+    public function localize(ServerRequest $request, Response $response)
+    {
+        $record = $request->getQueryParams()['record'];
+        $language = $request->getQueryParams()['language'];
+        $returnUrl = urldecode($request->getQueryParams()['returnUrl']);
+
+        $abort = false;
+        foreach ($this->hooks as $hook) {
+            if (method_exists($hook, 'handleIncomingCommands_preProcess')) {
+                $abort = $abort || (bool)$hook->handleIncomingCommands_preProcess($request, $response);
+            }
+        }
+
+        if ($abort) {
+            return $response->withHeader('Location', GeneralUtility::locationHeaderUrl($returnUrl));
+        }
+
+        $sourcePointer = $this->apiService->flexform_getPointerFromString($record);
+        $this->apiService->localizeElement($sourcePointer, $language);
+
+        foreach ($this->hooks as $hook) {
+            if (method_exists($hook, 'handleIncomingCommands_postProcess')) {
+                $hook->handleIncomingCommands_postProcess($request, $response);
+            }
+        }
+
+        return $response->withHeader('Location', GeneralUtility::locationHeaderUrl($returnUrl));
+    }
+
+    /**
      * Checks whether the datastructure for a new FCE contains the noEditOnCreation meta configuration
      *
      * @param int $dsUid uid of the datastructure we want to check
