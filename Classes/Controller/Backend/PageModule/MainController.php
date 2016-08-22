@@ -977,13 +977,21 @@ class MainController extends AbstractModuleController implements Configurable
      */
     public function link_unlink($label, $table, $uid, $realDelete = false, $foreignReferences = false, $elementPointer = '')
     {
-        $unlinkPointerString = (string)$this->getApiService()->flexform_getStringFromPointer($unlinkPointer);
-        $encodedUnlinkPointerString = rawurlencode($unlinkPointerString);
+        $unlinkPointerString = (string)$this->getApiService()->flexform_getStringFromPointer($elementPointer);
 
-        if ($realDelete) {
+        if ($realDelete && is_string($unlinkPointerString) && $unlinkPointerString !== '') {
             $LLlabel = $foreignReferences ? 'deleteRecordWithReferencesMsg' : 'deleteRecordMsg';
 
-            return '<a class="btn btn-default tpm-delete" href="index.php?' . $this->link_getParameters() . '&amp;deleteRecord=' . $encodedUnlinkPointerString . '" onclick="' . htmlspecialchars('return confirm(' . GeneralUtility::quoteJSvalue(static::getLanguageService()->getLL($LLlabel)) . ');') . '">' . $label . '</a>';
+            $url = BackendUtility::getModuleUrl(
+                'tv_mod_pagemodule_contentcontroller',
+                [
+                    'action' => 'delete',
+                    'returnUrl' => $this->getReturnUrl(),
+                    'record' => $unlinkPointerString
+                ]
+            );
+
+            return '<a class="btn btn-default t3js-modal-trigger tpm-unlink" data-severity="warning" data-title="Delete this record?" data-content="' . static::getLanguageService()->getLL($LLlabel) . '" data-button-close-text="Cancel" href="' . $url . '">' . $label . '</a>';
         } else {
             $url = BackendUtility::getModuleUrl(
                 'tce_db',
@@ -1083,7 +1091,7 @@ class MainController extends AbstractModuleController implements Configurable
      */
     public function handleIncomingCommands()
     {
-        $possibleCommands = ['unlinkRecord', 'deleteRecord', 'pasteRecord', 'makeLocalRecord', 'localizeElement', 'createNewPageTranslation', 'editPageLanguageOverlay'];
+        $possibleCommands = ['unlinkRecord', 'pasteRecord', 'makeLocalRecord', 'localizeElement', 'createNewPageTranslation', 'editPageLanguageOverlay'];
 
         $hooks = $this->hooks_prepareObjectsArray('handleIncomingCommands');
 
@@ -1107,11 +1115,6 @@ class MainController extends AbstractModuleController implements Configurable
                     case 'unlinkRecord':
                         $unlinkDestinationPointer = $this->getApiService()->flexform_getPointerFromString($commandParameters);
                         $this->getApiService()->unlinkElement($unlinkDestinationPointer);
-                        break;
-
-                    case 'deleteRecord':
-                        $deleteDestinationPointer = $this->getApiService()->flexform_getPointerFromString($commandParameters);
-                        $this->getApiService()->deleteElement($deleteDestinationPointer);
                         break;
 
                     case 'pasteRecord':
