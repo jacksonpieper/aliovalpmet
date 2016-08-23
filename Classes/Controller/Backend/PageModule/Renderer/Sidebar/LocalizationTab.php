@@ -105,7 +105,18 @@ class LocalizationTab implements Renderable
                 $optionsArr[] = '<option value="' . $url . '"' . ($this->controller->getSetting('language') === $languageArr['uid'] ? ' selected="selected"' : '') . '>' . htmlspecialchars($languageArr['title']) . '</option>';
 
                 // Link to editing of language header:
-                $availableTranslationsFlags .= '<a href="' . $this->controller->getReturnUrl(['editPageLanguageOverlay' => $languageArr['uid']]) . '">' . '<span style="margin-right:3px">' . $flagIcon . '</span></a>';
+
+                $href = BackendUtility::getModuleUrl(
+                    'tv_mod_pagemodule_pageoverlaycontroller',
+                    [
+                        'action' => 'edit',
+                        'pid' => $this->controller->getId(),
+                        'sys_language_uid' => (int) $languageArr['uid'],
+                        'returnUrl' => $this->controller->getReturnUrl()
+                    ]
+                );
+
+                $availableTranslationsFlags .= '<a href="' . $href . '">' . '<span style="margin-right:3px">' . $flagIcon . '</span></a>';
             }
         }
 

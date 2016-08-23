@@ -1091,7 +1091,7 @@ class MainController extends AbstractModuleController implements Configurable
      */
     public function handleIncomingCommands()
     {
-        $possibleCommands = ['unlinkRecord', 'pasteRecord', 'makeLocalRecord', 'editPageLanguageOverlay'];
+        $possibleCommands = ['unlinkRecord', 'pasteRecord', 'makeLocalRecord'];
 
         $hooks = $this->hooks_prepareObjectsArray('handleIncomingCommands');
 
@@ -1141,36 +1141,6 @@ class MainController extends AbstractModuleController implements Configurable
                         $sourcePointer = $this->getApiService()->flexform_getPointerFromString($commandParameters);
                         $this->getApiService()->copyElement($sourcePointer, $sourcePointer);
                         $this->getApiService()->unlinkElement($sourcePointer);
-                        break;
-
-                    case 'editPageLanguageOverlay':
-                        // Look for pages language overlay record for language:
-                        $sys_language_uid = (int)$commandParameters;
-                        $params = [];
-                        if ($sys_language_uid !== 0) {
-                            // Edit overlay record
-                            list($pLOrecord) = static::getDatabaseConnection()->exec_SELECTgetRows(
-                                '*',
-                                'pages_language_overlay',
-                                'pid=' . (int)$this->getId() . ' AND sys_language_uid=' . $sys_language_uid .
-                                BackendUtility::deleteClause('pages_language_overlay') .
-                                BackendUtility::versioningPlaceholderClause('pages_language_overlay')
-                            );
-                            if ($pLOrecord) {
-                                BackendUtility::workspaceOL('pages_language_overlay', $pLOrecord);
-                                if (is_array($pLOrecord)) {
-                                    $params['edit']['pages_language_overlay'][$pLOrecord['uid']] = 'edit';
-                                }
-                            }
-                        } else {
-                            // Edit default language (page properties)
-                            // No workspace overlay because we already on this page
-                            $params['edit']['pages'][(int)$this->getId()] = 'edit';
-                        }
-                        if (count($params) > 0) {
-                            $params['returnUrl'] = $this->getReturnUrl();
-                            $redirectLocation = BackendUtility::getModuleUrl('record_edit', $params);
-                        }
                         break;
                 }
 

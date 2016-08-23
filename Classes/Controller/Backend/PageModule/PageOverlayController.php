@@ -15,6 +15,7 @@
 namespace Extension\Templavoila\Controller\Backend\PageModule;
 
 use Extension\Templavoila\Templavoila;
+use Extension\Templavoila\Traits\DatabaseConnection;
 use TYPO3\CMS\Backend\Module\AbstractModule;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Http\Response;
@@ -26,6 +27,8 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  */
 class PageOverlayController extends AbstractModule
 {
+
+    use DatabaseConnection;
 
     /**
      * @var array
@@ -41,6 +44,7 @@ class PageOverlayController extends AbstractModule
     /**
      * @param ServerRequest $request
      * @param Response $response
+     * @return \TYPO3\CMS\Core\Http\Message
      */
     public function create(ServerRequest $request, Response $response)
     {
@@ -80,6 +84,69 @@ class PageOverlayController extends AbstractModule
         }
 
         $redirectLocation = BackendUtility::getModuleUrl('record_edit', $params);
+
+        foreach ($this->hooks as $hook) {
+            if (method_exists($hook, 'handleIncomingCommands_postProcess')) {
+                $hook->handleIncomingCommands_postProcess($request, $response);
+            }
+        }
+
+        return $response->withHeader('Location', GeneralUtility::locationHeaderUrl($redirectLocation));
+    }
+
+    /**
+     * @param ServerRequest $request
+     * @param Response $response
+     * @return \TYPO3\CMS\Core\Http\Message
+     */
+    public function edit(ServerRequest $request, Response $response)
+    {
+        $pid = (int)$request->getQueryParams()['pid'];
+        $sysLanguageUid = (int)$request->getQueryParams()['sys_language_uid'];
+        $returnUrl = urldecode($request->getQueryParams()['returnUrl']);
+
+        $abort = false;
+        foreach ($this->hooks as $hook) {
+            if (method_exists($hook, 'handleIncomingCommands_preProcess')) {
+                $abort = $abort || (bool)$hook->handleIncomingCommands_preProcess($request, $response);
+            }
+        }
+
+        if ($abort) {
+            return $response->withHeader('Location', GeneralUtility::locationHeaderUrl($returnUrl));
+        }
+
+        $params = [];
+        try {
+            if ($sysLanguageUid !== 0) {
+                $row = static::getDatabaseConnection()->exec_SELECTgetSingleRow(
+                    '*',
+                    'pages_language_overlay',
+                    'pid=' . $pid . ' AND sys_language_uid=' . $sysLanguageUid .
+                    BackendUtility::deleteClause('pages_language_overlay') .
+                    BackendUtility::versioningPlaceholderClause('pages_language_overlay')
+                );
+
+                if (!is_array($row)) {
+                    throw new \RuntimeException;
+                }
+
+                BackendUtility::workspaceOL('pages_language_overlay', $row);
+
+                if (!is_array($row)) {
+                    throw new \RuntimeException;
+                }
+
+                $params['edit']['pages_language_overlay'][$row['uid']] = 'edit';
+            } else {
+                $params['edit']['pages'][$pid] = 'edit';
+            }
+
+            $params['returnUrl'] = $returnUrl;
+            $redirectLocation = BackendUtility::getModuleUrl('record_edit', $params);
+        } catch (\Exception $e) {
+            $redirectLocation = $returnUrl;
+        }
 
         foreach ($this->hooks as $hook) {
             if (method_exists($hook, 'handleIncomingCommands_postProcess')) {
