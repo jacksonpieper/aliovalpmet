@@ -16,6 +16,7 @@ use Extension\Templavoila\Controller\Backend\PageModule\MainController;
 use Extension\Templavoila\Service\ApiService;
 use Extension\Templavoila\Traits\LanguageService;
 use TYPO3\CMS\Backend\Clipboard\Clipboard;
+use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
@@ -238,31 +239,41 @@ class tx_templavoila_mod1_clipboard
 
         $output = '';
         if (!in_array('pasteAfter', $this->controller->getBlindIcons())) {
-            $params = [
-                'pasteRecord' => $pasteMode,
-                'source' => $sourcePointerString,
-                'destination' => $destinationPointerString
-            ];
+            $url = BackendUtility::getModuleUrl(
+                'tv_mod_pagemodule_contentcontroller',
+                [
+                    'action' => 'paste',
+                    'mode' => $pasteMode,
+                    'source' => $sourcePointerString,
+                    'destination' => $destinationPointerString,
+                    'returnUrl' => $this->controller->getReturnUrl()
+                ]
+            );
 
             if (!$this->controller->modTSconfig['properties']['keepElementsInClipboard']) {
                 $params['CB']['removeAll'] = 'normal';
             }
 
-            $output .= '<a title="' . static::getLanguageService()->getLL('pasterecord') . '" class="btn btn-default btn-sm tpm-pasteAfter" href="' . $this->controller->getReturnUrl($params) . '">' . $pasteAfterIcon . '</a>';
+            $output .= '<a title="' . static::getLanguageService()->getLL('pasterecord') . '" class="btn btn-default btn-sm tpm-pasteAfter" href="' . $url . '">' . $pasteAfterIcon . '</a>';
         }
         // FCEs with sub elements have two different paste icons, normal elements only one:
         if ($pasteMode === 'copy' && $clipboardElementHasSubElements && !in_array('pasteSubRef', $this->controller->getBlindIcons())) {
-            $params = [
-                'pasteRecord' => 'copyref',
-                'source' => $sourcePointerString,
-                'destination' => $destinationPointerString
-            ];
+            $url = BackendUtility::getModuleUrl(
+                'tv_mod_pagemodule_contentcontroller',
+                [
+                    'action' => 'paste',
+                    'mode' => 'copyref',
+                    'source' => $sourcePointerString,
+                    'destination' => $destinationPointerString,
+                    'returnUrl' => $this->controller->getReturnUrl()
+                ]
+            );
 
             if (!$this->controller->modTSconfig['properties']['keepElementsInClipboard']) {
                 $params['CB']['removeAll'] = 'normal';
             }
 
-            $output .= '<a title="' . static::getLanguageService()->getLL('pastefce_andreferencesubs') . '" class="btn btn-default btn-sm tpm-pasteSubRef" href="' . $this->controller->getReturnUrl($params) . '">' . $pasteSubRefIcon . '</a>';
+            $output .= '<a title="' . static::getLanguageService()->getLL('pastefce_andreferencesubs') . '" class="btn btn-default btn-sm tpm-pasteSubRef" href="' . $url . '">' . $pasteSubRefIcon . '</a>';
         }
 
         return $output;

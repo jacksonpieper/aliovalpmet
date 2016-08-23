@@ -168,6 +168,52 @@ class ContentController extends AbstractModule
     }
 
     /**
+     * @param ServerRequest $request
+     * @param Response $response
+     */
+    public function paste(ServerRequest $request, Response $response)
+    {
+        $mode = urldecode($request->getQueryParams()['mode']);
+        $source = urldecode($request->getQueryParams()['source']);
+        $destination = urldecode($request->getQueryParams()['destination']);
+        $returnUrl = urldecode($request->getQueryParams()['returnUrl']);
+
+        $abort = false;
+        foreach ($this->hooks as $hook) {
+            if (method_exists($hook, 'handleIncomingCommands_preProcess')) {
+                $abort = $abort || (bool)$hook->handleIncomingCommands_preProcess($request, $response);
+            }
+        }
+
+        $sourcePointer = $this->apiService->flexform_getPointerFromString($source);
+        $destinationPointer = $this->apiService->flexform_getPointerFromString($destination);
+
+        switch ($mode) {
+            case 'copy' :
+                $this->apiService->copyElement($sourcePointer, $destinationPointer);
+                break;
+            case 'copyref':
+                $this->apiService->copyElement($sourcePointer, $destinationPointer, false);
+                break;
+            case 'cut':
+                $this->apiService->moveElement($sourcePointer, $destinationPointer);
+                break;
+            case 'ref':
+                list(, $uid) = explode(':', $source);
+                $this->apiService->referenceElementByUid($uid, $destinationPointer);
+                break;
+        }
+
+        foreach ($this->hooks as $hook) {
+            if (method_exists($hook, 'handleIncomingCommands_postProcess')) {
+                $hook->handleIncomingCommands_postProcess($request, $response);
+            }
+        }
+
+        return $response->withHeader('Location', GeneralUtility::locationHeaderUrl($returnUrl));
+    }
+
+    /**
      * Checks whether the datastructure for a new FCE contains the noEditOnCreation meta configuration
      *
      * @param int $dsUid uid of the datastructure we want to check

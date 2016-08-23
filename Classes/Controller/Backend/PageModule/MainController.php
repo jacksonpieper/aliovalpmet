@@ -1091,7 +1091,7 @@ class MainController extends AbstractModuleController implements Configurable
      */
     public function handleIncomingCommands()
     {
-        $possibleCommands = ['unlinkRecord', 'pasteRecord', 'makeLocalRecord'];
+        $possibleCommands = ['unlinkRecord', 'makeLocalRecord'];
 
         $hooks = $this->hooks_prepareObjectsArray('handleIncomingCommands');
 
@@ -1115,26 +1115,6 @@ class MainController extends AbstractModuleController implements Configurable
                     case 'unlinkRecord':
                         $unlinkDestinationPointer = $this->getApiService()->flexform_getPointerFromString($commandParameters);
                         $this->getApiService()->unlinkElement($unlinkDestinationPointer);
-                        break;
-
-                    case 'pasteRecord':
-                        $sourcePointer = $this->getApiService()->flexform_getPointerFromString(GeneralUtility::_GP('source'));
-                        $destinationPointer = $this->getApiService()->flexform_getPointerFromString(GeneralUtility::_GP('destination'));
-                        switch ($commandParameters) {
-                            case 'copy' :
-                                $this->getApiService()->copyElement($sourcePointer, $destinationPointer);
-                                break;
-                            case 'copyref':
-                                $this->getApiService()->copyElement($sourcePointer, $destinationPointer, false);
-                                break;
-                            case 'cut':
-                                $this->getApiService()->moveElement($sourcePointer, $destinationPointer);
-                                break;
-                            case 'ref':
-                                list(, $uid) = explode(':', GeneralUtility::_GP('source'));
-                                $this->getApiService()->referenceElementByUid($uid, $destinationPointer);
-                                break;
-                        }
                         break;
 
                     case 'makeLocalRecord':
