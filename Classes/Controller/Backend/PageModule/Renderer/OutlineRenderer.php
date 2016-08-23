@@ -317,7 +317,7 @@ class OutlineRenderer implements Renderable
                             $olrow = BackendUtility::getRecordWSOL('tt_content', $contentTreeArr['localizationInfo'][$sys_language_uid]['localization_uid']);
 
                             // Put together the records icon including content sensitive menu link wrapped around it:
-                            $recordIcon_l10n = $this->controller->getRecordStatHookValue('tt_content', $olrow['uid']) . $this->controller->getModuleTemplate()->getIconFactory()->getIconForRecord('tt_content', $olrow);
+                            $recordIcon_l10n = $this->getRecordStatHookValue('tt_content', $olrow['uid']) . $this->controller->getModuleTemplate()->getIconFactory()->getIconForRecord('tt_content', $olrow);
                             if (!MainController::isInTranslatorMode()) {
                                 $recordIcon_l10n = BackendUtility::wrapClickMenuOnIcon($recordIcon_l10n, 'tt_content', $olrow['uid'], 1, '&amp;callingScriptId=' . rawurlencode($this->doc->scriptID), 'new,copy,cut,pasteinto,pasteafter');
                             }
@@ -425,4 +425,25 @@ class OutlineRenderer implements Renderable
         }
     }
 
+    /**
+     * @param string $table
+     * @param int $id
+     *
+     * @return string
+     */
+    private function getRecordStatHookValue($table, $id)
+    {
+        // Call stats information hook
+        if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['GLOBAL']['recStatInfoHooks'])) {
+            $stat = '';
+            $_params = [$table, $id];
+            foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['GLOBAL']['recStatInfoHooks'] as $_funcRef) {
+                $stat .= GeneralUtility::callUserFunction($_funcRef, $_params, $this);
+            }
+
+            return $stat;
+        }
+
+        return '';
+    }
 }

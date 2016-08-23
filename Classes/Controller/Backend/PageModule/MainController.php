@@ -1188,28 +1188,6 @@ class MainController extends AbstractModuleController implements Configurable
     }
 
     /**
-     * @param string $table
-     * @param int $id
-     *
-     * @return string
-     */
-    public function getRecordStatHookValue($table, $id)
-    {
-        // Call stats information hook
-        if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['GLOBAL']['recStatInfoHooks'])) {
-            $stat = '';
-            $_params = [$table, $id];
-            foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['GLOBAL']['recStatInfoHooks'] as $_funcRef) {
-                $stat .= GeneralUtility::callUserFunction($_funcRef, $_params, $this);
-            }
-
-            return $stat;
-        }
-
-        return '';
-    }
-
-    /**
      * @param int $pid
      *
      * @return int
