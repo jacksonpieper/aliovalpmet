@@ -16,6 +16,8 @@ namespace Extension\Templavoila\Controller\Backend\PageModule;
 
 use Extension\Templavoila\Templavoila;
 use Extension\Templavoila\Traits\DatabaseConnection;
+use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Module\AbstractModule;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Http\Response;
@@ -42,16 +44,11 @@ class PageOverlayController extends AbstractModule
     }
 
     /**
-     * @param ServerRequest $request
-     * @param Response $response
-     * @return \TYPO3\CMS\Core\Http\Message
+     * @param ServerRequestInterface $request
+     * @param ResponseInterface $response
      */
-    public function create(ServerRequest $request, Response $response)
+    public function processRequest(ServerRequestInterface $request, ResponseInterface $response)
     {
-        $pid = (int)$request->getQueryParams()['pid'];
-        $sysLanguageUid = (int)$request->getQueryParams()['sys_language_uid'];
-        $table = $request->getQueryParams()['table'];
-        $doktype = $request->getQueryParams()['doktype'];
         $returnUrl = urldecode($request->getQueryParams()['returnUrl']);
 
         $abort = false;
@@ -64,6 +61,30 @@ class PageOverlayController extends AbstractModule
         if ($abort) {
             return $response->withHeader('Location', GeneralUtility::locationHeaderUrl($returnUrl));
         }
+
+        $response = parent::processRequest($request, $response);
+
+        foreach ($this->hooks as $hook) {
+            if (method_exists($hook, 'handleIncomingCommands_postProcess')) {
+                $hook->handleIncomingCommands_postProcess($request, $response);
+            }
+        }
+
+        return $response;
+    }
+
+    /**
+     * @param ServerRequest $request
+     * @param Response $response
+     * @return \TYPO3\CMS\Core\Http\Message
+     */
+    public function create(ServerRequest $request, Response $response)
+    {
+        $pid = (int)$request->getQueryParams()['pid'];
+        $sysLanguageUid = (int)$request->getQueryParams()['sys_language_uid'];
+        $table = $request->getQueryParams()['table'];
+        $doktype = $request->getQueryParams()['doktype'];
+        $returnUrl = urldecode($request->getQueryParams()['returnUrl']);
 
         $params = [
             'edit' => [
@@ -85,12 +106,6 @@ class PageOverlayController extends AbstractModule
 
         $redirectLocation = BackendUtility::getModuleUrl('record_edit', $params);
 
-        foreach ($this->hooks as $hook) {
-            if (method_exists($hook, 'handleIncomingCommands_postProcess')) {
-                $hook->handleIncomingCommands_postProcess($request, $response);
-            }
-        }
-
         return $response->withHeader('Location', GeneralUtility::locationHeaderUrl($redirectLocation));
     }
 
@@ -104,17 +119,6 @@ class PageOverlayController extends AbstractModule
         $pid = (int)$request->getQueryParams()['pid'];
         $sysLanguageUid = (int)$request->getQueryParams()['sys_language_uid'];
         $returnUrl = urldecode($request->getQueryParams()['returnUrl']);
-
-        $abort = false;
-        foreach ($this->hooks as $hook) {
-            if (method_exists($hook, 'handleIncomingCommands_preProcess')) {
-                $abort = $abort || (bool)$hook->handleIncomingCommands_preProcess($request, $response);
-            }
-        }
-
-        if ($abort) {
-            return $response->withHeader('Location', GeneralUtility::locationHeaderUrl($returnUrl));
-        }
 
         $params = [];
         try {
@@ -146,12 +150,6 @@ class PageOverlayController extends AbstractModule
             $redirectLocation = BackendUtility::getModuleUrl('record_edit', $params);
         } catch (\Exception $e) {
             $redirectLocation = $returnUrl;
-        }
-
-        foreach ($this->hooks as $hook) {
-            if (method_exists($hook, 'handleIncomingCommands_postProcess')) {
-                $hook->handleIncomingCommands_postProcess($request, $response);
-            }
         }
 
         return $response->withHeader('Location', GeneralUtility::locationHeaderUrl($redirectLocation));

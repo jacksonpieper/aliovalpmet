@@ -17,6 +17,8 @@ namespace Extension\Templavoila\Controller\Backend\PageModule;
 use Extension\Templavoila\Domain\Repository\TemplateRepository;
 use Extension\Templavoila\Service\ApiService;
 use Extension\Templavoila\Templavoila;
+use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Module\AbstractModule;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Http\Response;
@@ -54,15 +56,12 @@ class ContentController extends AbstractModule
     }
 
     /**
-     * @param ServerRequest $request
-     * @param Response $response
+     * @param ServerRequestInterface $request
+     * @param ResponseInterface $response
      */
-    public function create(ServerRequest $request, Response $response)
+    public function processRequest(ServerRequestInterface $request, ResponseInterface $response)
     {
-        $parentRecord = $request->getQueryParams()['parentRecord'];
         $returnUrl = urldecode($request->getQueryParams()['returnUrl']);
-        $defVals = GeneralUtility::_GP('defVals');
-        $newRow = is_array($defVals['tt_content']) ? $defVals['tt_content'] : [];
 
         $abort = false;
         foreach ($this->hooks as $hook) {
@@ -74,6 +73,28 @@ class ContentController extends AbstractModule
         if ($abort) {
             return $response->withHeader('Location', GeneralUtility::locationHeaderUrl($returnUrl));
         }
+
+        $response = parent::processRequest($request, $response);
+
+        foreach ($this->hooks as $hook) {
+            if (method_exists($hook, 'handleIncomingCommands_postProcess')) {
+                $hook->handleIncomingCommands_postProcess($request, $response);
+            }
+        }
+
+        return $response;
+    }
+
+    /**
+     * @param ServerRequest $request
+     * @param Response $response
+     */
+    public function create(ServerRequest $request, Response $response)
+    {
+        $parentRecord = $request->getQueryParams()['parentRecord'];
+        $returnUrl = urldecode($request->getQueryParams()['returnUrl']);
+        $defVals = GeneralUtility::_GP('defVals');
+        $newRow = is_array($defVals['tt_content']) ? $defVals['tt_content'] : [];
 
         $destinationPointer = $this->apiService->flexform_getPointerFromString($parentRecord);
         $newUid = $this->apiService->insertElement($destinationPointer, $newRow);
@@ -93,12 +114,6 @@ class ContentController extends AbstractModule
             );
         }
 
-        foreach ($this->hooks as $hook) {
-            if (method_exists($hook, 'handleIncomingCommands_postProcess')) {
-                $hook->handleIncomingCommands_postProcess($request, $response);
-            }
-        }
-
         return $response->withHeader('Location', GeneralUtility::locationHeaderUrl($redirectLocation));
     }
 
@@ -111,25 +126,8 @@ class ContentController extends AbstractModule
         $record = $request->getQueryParams()['record'];
         $returnUrl = urldecode($request->getQueryParams()['returnUrl']);
 
-        $abort = false;
-        foreach ($this->hooks as $hook) {
-            if (method_exists($hook, 'handleIncomingCommands_preProcess')) {
-                $abort = $abort || (bool)$hook->handleIncomingCommands_preProcess($request, $response);
-            }
-        }
-
-        if ($abort) {
-            return $response->withHeader('Location', GeneralUtility::locationHeaderUrl($returnUrl));
-        }
-
         $deleteDestinationPointer = $this->apiService->flexform_getPointerFromString($record);
         $this->apiService->deleteElement($deleteDestinationPointer);
-
-        foreach ($this->hooks as $hook) {
-            if (method_exists($hook, 'handleIncomingCommands_postProcess')) {
-                $hook->handleIncomingCommands_postProcess($request, $response);
-            }
-        }
 
         return $response->withHeader('Location', GeneralUtility::locationHeaderUrl($returnUrl));
     }
@@ -144,25 +142,8 @@ class ContentController extends AbstractModule
         $language = $request->getQueryParams()['language'];
         $returnUrl = urldecode($request->getQueryParams()['returnUrl']);
 
-        $abort = false;
-        foreach ($this->hooks as $hook) {
-            if (method_exists($hook, 'handleIncomingCommands_preProcess')) {
-                $abort = $abort || (bool)$hook->handleIncomingCommands_preProcess($request, $response);
-            }
-        }
-
-        if ($abort) {
-            return $response->withHeader('Location', GeneralUtility::locationHeaderUrl($returnUrl));
-        }
-
         $sourcePointer = $this->apiService->flexform_getPointerFromString($record);
         $this->apiService->localizeElement($sourcePointer, $language);
-
-        foreach ($this->hooks as $hook) {
-            if (method_exists($hook, 'handleIncomingCommands_postProcess')) {
-                $hook->handleIncomingCommands_postProcess($request, $response);
-            }
-        }
 
         return $response->withHeader('Location', GeneralUtility::locationHeaderUrl($returnUrl));
     }
@@ -177,13 +158,6 @@ class ContentController extends AbstractModule
         $source = urldecode($request->getQueryParams()['source']);
         $destination = urldecode($request->getQueryParams()['destination']);
         $returnUrl = urldecode($request->getQueryParams()['returnUrl']);
-
-        $abort = false;
-        foreach ($this->hooks as $hook) {
-            if (method_exists($hook, 'handleIncomingCommands_preProcess')) {
-                $abort = $abort || (bool)$hook->handleIncomingCommands_preProcess($request, $response);
-            }
-        }
 
         $sourcePointer = $this->apiService->flexform_getPointerFromString($source);
         $destinationPointer = $this->apiService->flexform_getPointerFromString($destination);
@@ -202,12 +176,6 @@ class ContentController extends AbstractModule
                 list(, $uid) = explode(':', $source);
                 $this->apiService->referenceElementByUid($uid, $destinationPointer);
                 break;
-        }
-
-        foreach ($this->hooks as $hook) {
-            if (method_exists($hook, 'handleIncomingCommands_postProcess')) {
-                $hook->handleIncomingCommands_postProcess($request, $response);
-            }
         }
 
         return $response->withHeader('Location', GeneralUtility::locationHeaderUrl($returnUrl));
