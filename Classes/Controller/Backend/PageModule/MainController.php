@@ -1091,7 +1091,7 @@ class MainController extends AbstractModuleController implements Configurable
      */
     public function handleIncomingCommands()
     {
-        $possibleCommands = ['unlinkRecord', 'makeLocalRecord'];
+        $possibleCommands = ['makeLocalRecord'];
 
         $hooks = $this->hooks_prepareObjectsArray('handleIncomingCommands');
 
@@ -1111,11 +1111,6 @@ class MainController extends AbstractModuleController implements Configurable
                 }
 
                 switch ($command) {
-
-                    case 'unlinkRecord':
-                        $unlinkDestinationPointer = $this->getApiService()->flexform_getPointerFromString($commandParameters);
-                        $this->getApiService()->unlinkElement($unlinkDestinationPointer);
-                        break;
 
                     case 'makeLocalRecord':
                         $sourcePointer = $this->getApiService()->flexform_getPointerFromString($commandParameters);

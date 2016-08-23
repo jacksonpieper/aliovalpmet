@@ -121,6 +121,21 @@ class ContentController extends AbstractModule
      * @param ServerRequest $request
      * @param Response $response
      */
+    public function unlink(ServerRequest $request, Response $response)
+    {
+        $record = $request->getQueryParams()['record'];
+        $returnUrl = urldecode($request->getQueryParams()['returnUrl']);
+
+        $unlinkDestinationPointer = $this->apiService->flexform_getPointerFromString($record);
+        $this->apiService->unlinkElement($unlinkDestinationPointer);
+
+        return $response->withHeader('Location', GeneralUtility::locationHeaderUrl($returnUrl));
+    }
+
+    /**
+     * @param ServerRequest $request
+     * @param Response $response
+     */
     public function delete(ServerRequest $request, Response $response)
     {
         $record = $request->getQueryParams()['record'];
