@@ -15,5 +15,10 @@ return [
         'path' => '/templavoila/pagemodule/content',
         'access' => 'public',
         'target' => Extension\Templavoila\Controller\Backend\PageModule\ContentController::class . '::processRequest'
+    ],
+    'tv_mod_pagemodule_pageoverlaycontroller' => [
+        'path' => '/templavoila/pagemodule/pageoverlay',
+        'access' => 'public',
+        'target' => Extension\Templavoila\Controller\Backend\PageModule\PageOverlayController::class . '::processRequest'
     ]
 ];

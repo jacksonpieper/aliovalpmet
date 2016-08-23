@@ -1091,7 +1091,7 @@ class MainController extends AbstractModuleController implements Configurable
      */
     public function handleIncomingCommands()
     {
-        $possibleCommands = ['unlinkRecord', 'pasteRecord', 'makeLocalRecord', 'createNewPageTranslation', 'editPageLanguageOverlay'];
+        $possibleCommands = ['unlinkRecord', 'pasteRecord', 'makeLocalRecord', 'editPageLanguageOverlay'];
 
         $hooks = $this->hooks_prepareObjectsArray('handleIncomingCommands');
 
@@ -1141,26 +1141,6 @@ class MainController extends AbstractModuleController implements Configurable
                         $sourcePointer = $this->getApiService()->flexform_getPointerFromString($commandParameters);
                         $this->getApiService()->copyElement($sourcePointer, $sourcePointer);
                         $this->getApiService()->unlinkElement($sourcePointer);
-                        break;
-
-                    case 'createNewPageTranslation':
-                        $redirectLocation = BackendUtility::getModuleUrl(
-                            'record_edit',
-                            [
-                                'edit' => [
-                                    'pages_language_overlay' => [
-                                        (int)GeneralUtility::_GP('pid') => 'new'
-                                    ]
-                                ],
-                                'overrideVals' => [
-                                    'pages_language_overlay' => [
-                                        'doktype' => (int)GeneralUtility::_GP('doktype'),
-                                        'sys_language_uid' => (int)$commandParameters
-                                    ]
-                                ],
-                                'returnUrl' => $this->getReturnUrl()
-                            ]
-                        );
                         break;
 
                     case 'editPageLanguageOverlay':

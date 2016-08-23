@@ -213,12 +213,19 @@ class LocalizationTab implements Renderable
         $optionsArr = ['<option value=""></option>'];
         foreach ($newLanguagesArr as $language) {
             if (!array_key_exists($language['uid'], $translatedLanguagesArr) && static::getBackendUser()->checkLanguageAccess($language['uid'])) {
-                $params = ['createNewPageTranslation' => $language['uid'], 'pid' => $this->controller->getId()];
-                if ($this->controller->getTable() === 'pages') {
-                    $params['doktype'] = $this->controller->getRecord()['doktype'];
-                }
 
-                $optionsArr[] = '<option name="createNewPageTranslation" value="' . $this->controller->getReturnUrl($params) . '">' . htmlspecialchars($language['title']) . '</option>';
+                $url = BackendUtility::getModuleUrl(
+                    'tv_mod_pagemodule_pageoverlaycontroller',
+                    [
+                        'action' => 'create',
+                        'pid' => $this->controller->getId(),
+                        'sys_language_uid' => (int)$language['uid'],
+                        'table' => $this->controller->getTable(),
+                        'doktype' => $this->controller->getRecord()['doktype'],
+                        'returnUrl' => $this->controller->getReturnUrl()
+                    ]
+                );
+                $optionsArr[] = '<option name="createNewPageTranslation" value="' . $url . '">' . htmlspecialchars($language['title']) . '</option>';
             }
         }
 
