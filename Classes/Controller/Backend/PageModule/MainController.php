@@ -509,8 +509,6 @@ class MainController extends AbstractModuleController implements Configurable
             }
         }
 
-        $this->handleIncomingCommands();
-
         // warn if page renders content from other page
         if ($this->rootElementRecord['content_from_pid']) {
             $contentPage = BackendUtility::getRecord('pages', (int)$this->rootElementRecord['content_from_pid']);
@@ -1021,7 +1019,16 @@ class MainController extends AbstractModuleController implements Configurable
      */
     public function link_makeLocal($label, $makeLocalPointer)
     {
-        return '<a class="tpm-makeLocal" href="index.php?' . $this->link_getParameters() . '&amp;makeLocalRecord=' . rawurlencode($this->getApiService()->flexform_getStringFromPointer($makeLocalPointer)) . '" onclick="' . htmlspecialchars('return confirm(' . GeneralUtility::quoteJSvalue(static::getLanguageService()->getLL('makeLocalMsg')) . ');') . '">' . $label . '</a>';
+        $url = BackendUtility::getModuleUrl(
+            'tv_mod_pagemodule_contentcontroller',
+            [
+                'action' => 'makeLocal',
+                'record' => $this->getApiService()->flexform_getStringFromPointer($makeLocalPointer),
+                'returnUrl' => $this->getReturnUrl()
+            ]
+        );
+
+        return '<a class="btn btn-default t3js-modal-trigger tpm-makeLocal" href="' . $url . '" data-severity="warning" data-title="Make local copy?" data-content="' . static::getLanguageService()->getLL('makeLocalMsg') . '" data-button-close-text="Cancel">' . $label . '</a>';
     }
 
     /**
@@ -1074,62 +1081,6 @@ class MainController extends AbstractModuleController implements Configurable
         $output .= '</span>';
 
         return $output;
-    }
-
-    /*************************************************
-     *
-     * Processing and structure functions (protected)
-     *
-     *************************************************/
-
-    /**
-     * Checks various GET / POST parameters for submitted commands and handles them accordingly.
-     * All commands will trigger a redirect by sending a location header after they work is done.
-     *
-     * Currently supported commands: 'createNewRecord', 'unlinkRecord', 'deleteRecord','pasteRecord',
-     * 'makeLocalRecord', 'localizeElement', 'createNewPageTranslation' and 'editPageLanguageOverlay'
-     */
-    public function handleIncomingCommands()
-    {
-        $possibleCommands = ['makeLocalRecord'];
-
-        $hooks = $this->hooks_prepareObjectsArray('handleIncomingCommands');
-
-        foreach ($possibleCommands as $command) {
-            if (null !== ($commandParameters = GeneralUtility::_GP($command))) {
-                $redirectLocation = $this->getReturnUrl();
-
-                $skipCurrentCommand = false;
-                foreach ($hooks as $hookObj) {
-                    if (method_exists($hookObj, 'handleIncomingCommands_preProcess')) {
-                        $skipCurrentCommand = $skipCurrentCommand || $hookObj->handleIncomingCommands_preProcess($command, $redirectLocation, $this);
-                    }
-                }
-
-                if ($skipCurrentCommand) {
-                    continue;
-                }
-
-                switch ($command) {
-
-                    case 'makeLocalRecord':
-                        $sourcePointer = $this->getApiService()->flexform_getPointerFromString($commandParameters);
-                        $this->getApiService()->copyElement($sourcePointer, $sourcePointer);
-                        $this->getApiService()->unlinkElement($sourcePointer);
-                        break;
-                }
-
-                foreach ($hooks as $hookObj) {
-                    if (method_exists($hookObj, 'handleIncomingCommands_postProcess')) {
-                        $hookObj->handleIncomingCommands_postProcess($command, $redirectLocation, $this);
-                    }
-                }
-            }
-        }
-
-        if (isset($redirectLocation)) {
-            header('Location: ' . GeneralUtility::locationHeaderUrl($redirectLocation));
-        }
     }
 
     /***********************************************
