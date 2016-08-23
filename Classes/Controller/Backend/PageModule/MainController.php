@@ -354,7 +354,7 @@ class MainController extends AbstractModuleController implements Configurable
         $this->rootElementRecord = BackendUtility::getRecordWSOL($this->rootElementTable, $this->rootElementUid, '*');
         $this->clipboardObj = GeneralUtility::makeInstance(\tx_templavoila_mod1_clipboard::class, $this);
 
-        $view = $this->initializeView('Backend/PageModule/Main');
+        $view = $this->initializeView('Backend/PageModule/Main/Index');
 
         $doktypeRenderer = new DoktypeRenderer($this);
         $doktype = $this->getDoktype($this->rootElementRecord);
@@ -366,7 +366,54 @@ class MainController extends AbstractModuleController implements Configurable
                 $view->assign('sidebar', $this->render_sidebar());
             }
 
-            $view->assign('content', $this->main());
+            $content = '';
+
+            // Access check! The page will show only if there is a valid page and if this page may be viewed by the user
+            if (is_array($this->altRoot)) {
+                // get PID of altRoot Element to get pageInfoArr
+                $altRootRecord = BackendUtility::getRecordWSOL($this->altRoot['table'], $this->altRoot['uid'], 'pid');
+                $pageInfoArr = BackendUtility::readPageAccess($altRootRecord['pid'], $this->perms_clause);
+                $pid = (int)$pageInfoArr['uid'];
+            } else {
+                $pid = $this->getId();
+            }
+
+            $this->calcPerms = $this->getCalcPerms($pid);
+
+            // Define the root element record:
+            if ($this->rootElementRecord['t3ver_oid'] && $this->rootElementRecord['pid'] < 0) {
+                // typo3 lacks a proper API to properly detect Offline versions and extract Live Versions therefore this is done by hand
+                if ($this->rootElementTable === 'pages') {
+                    $this->rootElementUid_pidForContent = $this->rootElementRecord['t3ver_oid'];
+                } else {
+                    throw new \RuntimeException('Further execution of code leads to PHP errors.', 1404750505);
+                }
+            } else {
+                // If pages use current UID, otherwhise you must use the PID to define the Page ID
+                if ($this->rootElementTable === 'pages') {
+                    $this->rootElementUid_pidForContent = $this->rootElementRecord['uid'];
+                } else {
+                    $this->rootElementUid_pidForContent = $this->rootElementRecord['pid'];
+                }
+            }
+
+            if ((int)$this->rootElementRecord['content_from_pid'] > 0) {
+                $contentPage = BackendUtility::getRecord('pages', (int)$this->rootElementRecord['content_from_pid']);
+                $title = BackendUtility::getRecordTitle('pages', $contentPage);
+                $linkToPid = 'index.php?id=' . (int)$this->rootElementRecord['content_from_pid'];
+                $link = htmlspecialchars($title) . ' (PID ' . (int)$this->rootElementRecord['content_from_pid'] . ')';
+                /** @var FlashMessage $flashMessage */
+                $flashMessage = new FlashMessage(
+                    sprintf(static::getLanguageService()->getLL('content_from_pid_title'), $link),
+                    null,
+                    FlashMessage::INFO
+                );
+                $this->flashMessageService->getMessageQueueByIdentifier('ext.templavoila')->enqueue($flashMessage);
+            }
+            // Render "edit current page" (important to do before calling ->sideBarObj->render() - otherwise the translation tab is not rendered!
+            $content .= $this->render_editPageScreen();
+
+            $view->assign('content', $content);
         }
 
         $record = BackendUtility::getRecordWSOL('pages', $this->getId());
@@ -460,80 +507,6 @@ class MainController extends AbstractModuleController implements Configurable
             $this->getModuleName(),
             $defaultParams
         );
-    }
-
-    /*******************************************
-     *
-     * Main functions
-     *
-     *******************************************/
-
-    /**
-     * Main function of the module.
-     *
-     * @throws RuntimeException
-     * @throws \TYPO3\CMS\Core\Exception
-     * @throws \BadFunctionCallException
-     * @throws \InvalidArgumentException
-     */
-    public function main()
-    {
-        $content = '';
-
-        // Access check! The page will show only if there is a valid page and if this page may be viewed by the user
-        if (is_array($this->altRoot)) {
-            // get PID of altRoot Element to get pageInfoArr
-            $altRootRecord = BackendUtility::getRecordWSOL($this->altRoot['table'], $this->altRoot['uid'], 'pid');
-            $pageInfoArr = BackendUtility::readPageAccess($altRootRecord['pid'], $this->perms_clause);
-            $pid = (int)$pageInfoArr['uid'];
-        } else {
-            $pid = $this->getId();
-        }
-
-        $this->calcPerms = $this->getCalcPerms($pid);
-
-        // Define the root element record:
-        if ($this->rootElementRecord['t3ver_oid'] && $this->rootElementRecord['pid'] < 0) {
-            // typo3 lacks a proper API to properly detect Offline versions and extract Live Versions therefore this is done by hand
-            if ($this->rootElementTable === 'pages') {
-                $this->rootElementUid_pidForContent = $this->rootElementRecord['t3ver_oid'];
-            } else {
-                throw new \RuntimeException('Further execution of code leads to PHP errors.', 1404750505);
-            }
-        } else {
-            // If pages use current UID, otherwhise you must use the PID to define the Page ID
-            if ($this->rootElementTable === 'pages') {
-                $this->rootElementUid_pidForContent = $this->rootElementRecord['uid'];
-            } else {
-                $this->rootElementUid_pidForContent = $this->rootElementRecord['pid'];
-            }
-        }
-
-        // warn if page renders content from other page
-        if ($this->rootElementRecord['content_from_pid']) {
-            $contentPage = BackendUtility::getRecord('pages', (int)$this->rootElementRecord['content_from_pid']);
-            $title = BackendUtility::getRecordTitle('pages', $contentPage);
-            $linkToPid = 'index.php?id=' . (int)$this->rootElementRecord['content_from_pid'];
-            $link = '<a href="' . $linkToPid . '">' . htmlspecialchars($title) . ' (PID ' . (int)$this->rootElementRecord['content_from_pid'] . ')</a>';
-            /** @var FlashMessage $flashMessage */
-            $flashMessage = GeneralUtility::makeInstance(
-                FlashMessage::class,
-                '',
-                sprintf(static::getLanguageService()->getLL('content_from_pid_title'), $link),
-                FlashMessage::INFO
-            );
-            $this->flashMessageService->getMessageQueueByIdentifier('ext.templavoila')->enqueue($flashMessage);
-        }
-        // Render "edit current page" (important to do before calling ->sideBarObj->render() - otherwise the translation tab is not rendered!
-        $content .= $this->render_editPageScreen();
-
-        if (GeneralUtility::_GP('ajaxUnlinkRecord')) {
-            $this->render_editPageScreen();
-            echo $this->render_sidebar();
-            exit;
-        }
-
-        return $content;
     }
 
     /*************************
