@@ -159,9 +159,9 @@ class StaticDataStructuresHandler
      * extension mode.
      *
      * @param array $params Parameters for itemProcFunc
-     * @param \TYPO3\CMS\Backend\Form\FormEngine $pObj Calling class
+     * @param TcaSelectItems $pObj Calling class
      */
-    public function templateObjectItemsProcFunc(array &$params, \TYPO3\CMS\Backend\Form\FormEngine &$pObj)
+    public function templateObjectItemsProcFunc(array &$params, TcaSelectItems $pObj)
     {
         $this->conf = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf'][\Extension\Templavoila\Templavoila::EXTKEY]);
 
@@ -177,9 +177,9 @@ class StaticDataStructuresHandler
      * storage folder of the current page/element.
      *
      * @param array $params Parameters for itemProcFunc
-     * @param \TYPO3\CMS\Backend\Form\FormEngine $pObj Calling class
+     * @param TcaSelectItems $pObj Calling class
      */
-    protected function templateObjectItemsProcFuncForCurrentDS(array &$params, \TYPO3\CMS\Backend\Form\FormEngine &$pObj)
+    protected function templateObjectItemsProcFuncForCurrentDS(array &$params, TcaSelectItems $pObj)
     {
         // Get DS
         $tsConfig = & $pObj->cachedTSconfig[$params['table'] . ':' . $params['row']['uid']];
@@ -224,9 +224,9 @@ class StaticDataStructuresHandler
      * storage folder of the current page/element.
      *
      * @param array $params Parameters for itemProcFunc
-     * @param \TYPO3\CMS\Backend\Form\FormEngine $pObj Calling class
+     * @param TcaSelectItems $pObj Calling class
      */
-    protected function templateObjectItemsProcFuncForAllDSes(array &$params, \TYPO3\CMS\Backend\Form\FormEngine &$pObj)
+    protected function templateObjectItemsProcFuncForAllDSes(array &$params, TcaSelectItems $pObj)
     {
         $storagePid = $this->getStoragePid($params, $pObj);
         $scope = $this->getScope($params);
@@ -277,11 +277,11 @@ class StaticDataStructuresHandler
      * to be called from the itemsProcFunc only!
      *
      * @param array $params Parameters as come to the itemsProcFunc
-     * @param \TYPO3\CMS\Backend\Form\FormEngine $pObj Calling object
+     * @param TcaSelectItems $pObj Calling object
      *
      * @return int Storage pid
      */
-    protected function getStoragePid(array &$params, \TYPO3\CMS\Backend\Form\FormEngine &$pObj)
+    protected function getStoragePid(array &$params, TcaSelectItems $pObj)
     {
         // Get default first
         $tsConfig = & $pObj->cachedTSconfig[$params['table'] . ':' . $params['row']['uid']];
