@@ -72,6 +72,32 @@ class TemplateRepository
     }
 
     /**
+     * Retrieve template objects which are related to a specific datastructure
+     *
+     * @param AbstractDataStructure $ds
+     *
+     * @return array
+     */
+    public function findByDataStructure(AbstractDataStructure $ds)
+    {
+        $toList = (array)static::getDatabaseConnection()->exec_SELECTgetRows(
+            'tx_templavoila_tmplobj.uid',
+            'tx_templavoila_tmplobj',
+            'tx_templavoila_tmplobj.datastructure=' . static::getDatabaseConnection()->fullQuoteStr($ds->getKey(), 'tx_templavoila_tmplobj')
+            . BackendUtility::deleteClause('tx_templavoila_tmplobj')
+            . ' AND pid!=-1 '
+            . BackendUtility::versioningPlaceholderClause('tx_templavoila_tmplobj')
+        );
+        $toCollection = [];
+        foreach ($toList as $toRec) {
+            $toCollection[] = $this->getTemplateByUid($toRec['uid']);
+        }
+        usort($toCollection, [$this, 'sortTemplates']);
+
+        return $toCollection;
+    }
+
+    /**
      * Retrieve template objects with a certain scope within the given storage folder
      *
      * @param int $storagePid

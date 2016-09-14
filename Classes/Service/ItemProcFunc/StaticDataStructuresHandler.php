@@ -228,7 +228,6 @@ class StaticDataStructuresHandler
      */
     protected function templateObjectItemsProcFuncForAllDSes(array &$params, TcaSelectItems $pObj)
     {
-        $storagePid = $this->getStoragePid($params, $pObj);
         $scope = $this->getScope($params);
 
         $removeDSItems = $this->getRemoveItems($params, substr($params['field'], 0, -2) . 'ds');
@@ -236,7 +235,7 @@ class StaticDataStructuresHandler
 
         $dsRepo = GeneralUtility::makeInstance(DataStructureRepository::class);
         $toRepo = GeneralUtility::makeInstance(TemplateRepository::class);
-        $dsList = $dsRepo->getDatastructuresByStoragePidAndScope($storagePid, $scope);
+        $dsList = $dsRepo->findByScope($scope);
 
         $params['items'] = [
             [
@@ -255,7 +254,7 @@ class StaticDataStructuresHandler
                 '--div--'
             ];
 
-            $toList = $toRepo->getTemplatesByDatastructure($dsObj, $storagePid);
+            $toList = $toRepo->findByDataStructure($dsObj);
             foreach ($toList as $toObj) {
                 /** @var \Extension\Templavoila\Domain\Model\Template $toObj */
                 if (!$toObj->hasParent() && $toObj->isPermittedForUser($params['row'], $removeTOItems)) {

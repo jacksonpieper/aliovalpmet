@@ -154,6 +154,44 @@ class DataStructureRepository
      *
      * @return array
      */
+    public function findByScope($scope)
+    {
+        $dscollection = [];
+        $confArr = self::getStaticDatastructureConfiguration();
+        if (count($confArr)) {
+            foreach ($confArr as $conf) {
+                if ($conf['scope'] == $scope) {
+                    $ds = $this->getDatastructureByUidOrFilename($conf['path']);
+                    $dscollection[] = $ds;
+                }
+            }
+        }
+
+        if (!self::isStaticDsEnabled()) {
+            $dsRows = (array)static::getDatabaseConnection()->exec_SELECTgetRows(
+                'uid',
+                'tx_templavoila_datastructure',
+                'scope=' . (int)$scope
+                . BackendUtility::deleteClause('tx_templavoila_datastructure')
+                . ' AND pid!=-1 '
+                . BackendUtility::versioningPlaceholderClause('tx_templavoila_datastructure')
+            );
+            foreach ($dsRows as $ds) {
+                $dscollection[] = $this->getDatastructureByUidOrFilename($ds['uid']);
+            }
+        }
+        usort($dscollection, [$this, 'sortDatastructures']);
+
+        return $dscollection;
+    }
+
+    /**
+     * Retrieve a collection (array) of tx_templavoila_datastructure objects
+     *
+     * @param int $scope
+     *
+     * @return array
+     */
     public function getDatastructuresByScope($scope)
     {
         $dscollection = [];
