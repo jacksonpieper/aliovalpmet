@@ -20,6 +20,7 @@ use Extension\Templavoila\Domain\Repository\DataStructureRepository;
 use Extension\Templavoila\Domain\Repository\TemplateRepository;
 use Extension\Templavoila\Traits\DatabaseConnection;
 use Extension\Templavoila\Traits\LanguageService;
+use TYPO3\CMS\Backend\Form\FormDataProvider\TcaSelectItems;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
@@ -55,9 +56,9 @@ class StaticDataStructuresHandler
      * Adds ALL available structures
      *
      * @param array &$params Array of items passed by reference.
-     * @param object &$pObj The parent object (\TYPO3\CMS\Backend\Form\FormEngine / \TYPO3\CMS\Backend\Form\DataPreprocessor depending on context)
+     * @param TcaSelectItems $pObj The parent object (\TYPO3\CMS\Backend\Form\FormEngine / \TYPO3\CMS\Backend\Form\DataPreprocessor depending on context)
      */
-    public function main(&$params, &$pObj)
+    public function main(&$params, TcaSelectItems $pObj)
     {
         $removeDSItems = $this->getRemoveItems($params, substr($params['field'], 0, -2) . 'ds');
 
