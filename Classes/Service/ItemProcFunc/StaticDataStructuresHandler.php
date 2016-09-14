@@ -282,9 +282,7 @@ class StaticDataStructuresHandler
      */
     protected function getStoragePid(array &$params, TcaSelectItems $pObj)
     {
-        // Get default first
-        $tsConfig = & $pObj->cachedTSconfig[$params['table'] . ':' . $params['row']['uid']];
-        $storagePid = (int)$tsConfig['_STORAGE_PID'];
+        $storagePid = 0;
 
         // Check for alternative storage folder
         $field = $params['table'] == 'pages' ? 'uid' : 'pid';
