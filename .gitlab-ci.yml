@@ -1,0 +1,19 @@
+before_script:
+  - bash Tests/Build/docker_install.sh > /dev/null
+  - php -v
+  - composer -V
+  - composer install --no-interaction --no-progress --prefer-dist
+
+test:5.6:
+  image: php:5.6-cli
+  script:
+  - composer require --no-interaction --no-progress --prefer-dist typo3/cms=~7.6
+  - git checkout composer.json
+  - TYPO3_PATH_WEB=$PWD/.Build/Web php .Build/bin/phpunit --colors -c .Build/vendor/typo3/cms/typo3/sysext/core/Build/UnitTests.xml Tests/Unit
+
+test:7.0:
+  image: php:7.0-cli
+  script:
+  - composer require --no-interaction --no-progress --prefer-dist typo3/cms=~7.6
+  - git checkout composer.json
+  - TYPO3_PATH_WEB=$PWD/.Build/Web php .Build/bin/phpunit --colors -c .Build/vendor/typo3/cms/typo3/sysext/core/Build/UnitTests.xml Tests/Unit
