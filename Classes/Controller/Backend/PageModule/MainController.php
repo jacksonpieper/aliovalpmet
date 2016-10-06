@@ -1243,16 +1243,10 @@ class MainController extends AbstractModuleController implements Configurable
      */
     public function getDefaultSettings()
     {
-        $this->translatedLanguagesArr = $this->getAvailableLanguages($this->getId());
-        $translatedLanguagesUids = [];
-        foreach ($this->translatedLanguagesArr as $languageRecord) {
-            $translatedLanguagesUids[$languageRecord['uid']] = $languageRecord['title'];
-        }
-
         return [
             'tt_content_showHidden' => 1,
-            'showOutline' => 1,
-            'language' => $translatedLanguagesUids,
+            'showOutline' => 0,
+            'language' => 0,
             'clip_parentPos' => '',
             'clip' => '',
             'langDisplayMode' => 'default',
