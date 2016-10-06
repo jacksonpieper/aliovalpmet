@@ -182,7 +182,7 @@ class OutlineRenderer implements Renderable
         }
 
         $titleBarLeftButtons = MainController::isInTranslatorMode() ? $recordIcon : BackendUtility::wrapClickMenuOnIcon($recordIcon, $contentTreeArr['el']['table'], $contentTreeArr['el']['uid'], 1, '&amp;callingScriptId=' . rawurlencode($this->doc->scriptID), 'new,copy,cut,pasteinto,pasteafter,delete');
-        $titleBarLeftButtons .= $this->controller->getRecordStatHookValue($contentTreeArr['el']['table'], $contentTreeArr['el']['uid']);
+        $titleBarLeftButtons .= $this->getRecordStatHookValue($contentTreeArr['el']['table'], $contentTreeArr['el']['uid']);
 
         $languageUid = 0;
         $titleBarRightButtons = '';
