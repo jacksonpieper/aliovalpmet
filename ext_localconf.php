@@ -88,3 +88,10 @@ $GLOBALS['TYPO3_CONF_VARS']['LOG']['Extension']['Templavoila']['Service']['ApiSe
         ]
     ]
 ];
+
+$GLOBALS['TYPO3_CONF_VARS']['SYS']['formEngine']['formDataGroup']['tcaDatabaseRecord'][\Extension\Templavoila\Form\FormDataProvider\BeforeTcaFlexPrepare::class] = [
+    'before' => [
+        TYPO3\CMS\Backend\Form\FormDataProvider\TcaFlexPrepare::class,
+    ],
+];
+
