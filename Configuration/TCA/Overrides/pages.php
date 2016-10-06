@@ -74,6 +74,7 @@ $tempColumns = [
     'tx_templavoila_flex' => [
         'exclude' => 1,
         'label' => 'LLL:EXT:templavoila/Resources/Private/Language/locallang_db.xlf:pages.tx_templavoila_flex',
+        'displayCond' => 'FIELD:tx_templavoila_ds:REQ:true',
         'config' => [
             'type' => 'flex',
             'ds_pointerField' => 'tx_templavoila_ds',
