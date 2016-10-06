@@ -305,9 +305,12 @@ class SheetRenderer implements Renderable
         }
 
         // Prepare the language icon:
-        $languageLabel = htmlspecialchars((string)$this->controller->getAllAvailableLanguages()[$contentTreeArr['el']['sys_language_uid']]['title']);
+        $languageLabel = htmlspecialchars((string)$this->controller->getAllAvailableLanguages()[(int)$contentTreeArr['el']['sys_language_uid']]['title']);
         if ($this->controller->getAllAvailableLanguages()[$languageUid]['flagIcon']) {
-            $languageIcon = \Extension\Templavoila\Utility\IconUtility::getFlagIconForLanguage($this->controller->getAllAvailableLanguages()[$languageUid]['flagIcon'], ['title' => $languageLabel, 'alt' => $languageLabel]);
+            $languageIcon = $this->controller->getModuleTemplate()->getIconFactory()->getIcon(
+                'flags-' . $this->controller->getAllAvailableLanguages()[$languageUid]['flagIcon'],
+                Icon::SIZE_SMALL
+            )->render();
         } else {
             $languageIcon = ($languageLabel && $languageUid ? '[' . $languageLabel . ']' : '');
         }

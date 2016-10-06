@@ -20,7 +20,6 @@ use Extension\Templavoila\Controller\Backend\PageModule\Renderer\SidebarRenderer
 use Extension\Templavoila\Traits\BackendUser;
 use Extension\Templavoila\Traits\DatabaseConnection;
 use Extension\Templavoila\Traits\LanguageService;
-use Extension\Templavoila\Utility\IconUtility;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -87,8 +86,11 @@ class NonUsedElementsTab implements Renderable
 
             // Prepare the language icon:
             $languageLabel = htmlspecialchars($this->controller->getAllAvailableLanguages()[$row['sys_language_uid']]['title']);
-            if ($this->controller->getAllAvailableLanguages()[$row['sys_language_uid']]['flagIcon']) {
-                $languageIcon = IconUtility::getFlagIconForLanguage($this->controller->getAllAvailableLanguages()[$row['sys_language_uid']]['flagIcon'], ['title' => $languageLabel, 'alt' => $languageLabel]);
+            if ($this->controller->getAllAvailableLanguages()[(int)$row['sys_language_uid']]['flagIcon']) {
+                $languageIcon = $this->controller->getModuleTemplate()->getIconFactory()->getIcon(
+                    'flags-' . $this->controller->getAllAvailableLanguages()[(int)$row['sys_language_uid']]['flagIcon'],
+                    Icon::SIZE_SMALL
+                )->render();
             } else {
                 $languageIcon = ($languageLabel && !$row['sys_language_uid'] ? '[' . $languageLabel . ']' : '');
             }
