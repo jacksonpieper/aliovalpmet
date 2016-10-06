@@ -25,6 +25,7 @@ use TYPO3\CMS\Backend\Template\ModuleTemplate;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Http\Response;
 use TYPO3\CMS\Core\Http\ServerRequest;
+use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Fluid\View\StandaloneView;
@@ -75,11 +76,15 @@ abstract class AbstractModuleController extends AbstractModule
         }
 
         if ($this instanceof Configurable) {
-            $this->settings = BackendUtility::getModuleData(
-                $this->getDefaultSettings(),
+            $defaultSettings = $this->getDefaultSettings();
+            $userSettings = BackendUtility::getModuleData(
+                $defaultSettings,
                 $request->getQueryParams()['SET'] ?: [],
                 $this->getModuleName()
             );
+
+            ArrayUtility::mergeRecursiveWithOverrule($defaultSettings, $userSettings);
+            $this->settings = $defaultSettings;
         }
 
         return parent::processRequest($request, $response);
