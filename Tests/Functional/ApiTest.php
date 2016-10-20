@@ -38,7 +38,6 @@ class ApiTest extends FunctionalTestCase
     protected $testExtensionsToLoad = [
         'typo3/sysext/version',
         'typo3/sysext/workspaces',
-        'typo3conf/ext/static_info_tables',
         'typo3conf/ext/templavoila'
     ];
 
@@ -74,7 +73,6 @@ class ApiTest extends FunctionalTestCase
             'sys_workspace',
             'tx_templavoila_datastructure',
             'tx_templavoila_tmplobj',
-            'static_languages',
         ];
 
         $fixtureRootPath = ORIGINAL_ROOT . 'typo3conf/ext/templavoila/Tests/Functional/Fixtures/';

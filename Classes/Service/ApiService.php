@@ -15,7 +15,6 @@ namespace Extension\Templavoila\Service;
  * The TYPO3 project - inspiring people to share!
  */
 
-use Extension\Templavoila\Templavoila;
 use Extension\Templavoila\Traits\DatabaseConnection;
 use Extension\Templavoila\Traits\LanguageService;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
@@ -150,12 +149,16 @@ class ApiService
         // If the destination is not the default language, try to set the old-style sys_language_uid field accordingly
         if ($destinationPointer['sLang'] != 'lDEF' || $destinationPointer['vLang'] != 'vDEF') {
             $languageKey = $destinationPointer['vLang'] != 'vDEF' ? $destinationPointer['vLang'] : $destinationPointer['sLang'];
-            $staticLanguageRows = BackendUtility::getRecordsByField('static_languages', 'lg_iso_2', substr($languageKey, 1));
-            if (isset($staticLanguageRows[0]['uid'])) {
-                $languageRecord = BackendUtility::getRecordRaw('sys_language', 'static_lang_isocode=' . (int)$staticLanguageRows[0]['uid']);
-                if (isset($languageRecord['uid'])) {
-                    $dataArr['tt_content']['NEW']['sys_language_uid'] = $languageRecord['uid'];
-                }
+            $languageRecord = BackendUtility::getRecordRaw(
+                'sys_language',
+                'language_isocode=' . static::getDatabaseConnection()->fullQuoteStr(
+                    strtolower(substr($languageKey, 1)),
+                    'sys_language'
+                )
+            );
+
+            if (isset($languageRecord['uid'])) {
+                $dataArr['tt_content']['NEW']['sys_language_uid'] = $languageRecord['uid'];
             }
         }
 
@@ -641,14 +644,8 @@ class ApiService
      */
     public function process_localize($sourceElementUid, $destinationPointer, $destinationReferencesArr)
     {
-
-        // Determine language record UID of the language we localize to:
-        $staticLanguageRows = BackendUtility::getRecordsByField('static_languages', 'lg_iso_2', $destinationPointer['_languageKey']);
-        if (is_array($staticLanguageRows) && isset($staticLanguageRows[0]['uid'])) {
-            $languageRecords = BackendUtility::getRecordsByField('sys_language', 'static_lang_isocode', $staticLanguageRows[0]['uid']);
-        } else {
-            $languageRecords = [];
-        }
+        $languageIsocode = trim(strtolower($destinationPointer['_languageKey']));
+        $languageRecords = (array)BackendUtility::getRecordsByField('sys_language', 'language_isocode', $languageIsocode);
 
         if (is_array($languageRecords) && isset($languageRecords[0]['uid'])) {
             $destinationLanguageUid = $languageRecords[0]['uid'];
@@ -1840,13 +1837,11 @@ class ApiService
 
         // Traverse and set ISO codes if found:
         foreach ($this->allSystemWebsiteLanguages['rows'] as $row) {
-            if ($row['static_lang_isocode']) {
-                $staticLangRow = BackendUtility::getRecord('static_languages', $row['static_lang_isocode'], 'lg_iso_2');
-                if ($staticLangRow['lg_iso_2']) {
-                    $this->allSystemWebsiteLanguages['rows'][$row['uid']]['_ISOcode'] = $staticLangRow['lg_iso_2'];
-                    $this->allSystemWebsiteLanguages['all_lKeys'][] = 'l' . $staticLangRow['lg_iso_2'];
-                    $this->allSystemWebsiteLanguages['all_vKeys'][] = 'v' . $staticLangRow['lg_iso_2'];
-                }
+            if ($row['language_isocode']) {
+                $languageIsocode = strtoupper($row['language_isocode']);
+                $this->allSystemWebsiteLanguages['rows'][$row['uid']]['_ISOcode'] = $languageIsocode;
+                $this->allSystemWebsiteLanguages['all_lKeys'][] = 'l' . $languageIsocode;
+                $this->allSystemWebsiteLanguages['all_vKeys'][] = 'v' . $languageIsocode;
             }
         }
     }

@@ -84,7 +84,7 @@ class LocalizationTab implements Renderable
     {
         $availableLanguagesArr = $this->controller->getPageTranslations();
         $availableTranslationsFlags = '';
-        $newLanguagesArr = $this->controller->getAvailableLanguages(0, true, false);
+        $newLanguagesArr = $this->controller->getAvailableLanguages(0, false);
         if (count($availableLanguagesArr) <= 1) {
             return false;
         }
@@ -215,7 +215,7 @@ class LocalizationTab implements Renderable
             return false;
         }
 
-        $newLanguagesArr = $this->controller->getAvailableLanguages(0, true, false);
+        $newLanguagesArr = $this->controller->getAvailableLanguages(0, false);
         if (count($newLanguagesArr) < 1) {
             return false;
         }

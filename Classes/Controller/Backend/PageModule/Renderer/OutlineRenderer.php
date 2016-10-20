@@ -70,9 +70,10 @@ class OutlineRenderer implements Renderable
         // Load possible website languages:
         $this->translatedLanguagesArr_isoCodes = [];
         foreach ($this->controller->getPageTranslations() as $langInfo) {
-            if ($langInfo['ISOcode']) {
-                $this->translatedLanguagesArr_isoCodes['all_lKeys'][] = 'l' . $langInfo['ISOcode'];
-                $this->translatedLanguagesArr_isoCodes['all_vKeys'][] = 'v' . $langInfo['ISOcode'];
+            if ($langInfo['language_isocode']) {
+                $languageIsocode = strtoupper($langInfo['language_isocode']);
+                $this->translatedLanguagesArr_isoCodes['all_lKeys'][] = 'l' . $languageIsocode;
+                $this->translatedLanguagesArr_isoCodes['all_vKeys'][] = 'v' . $languageIsocode;
             }
         }
 

@@ -772,7 +772,7 @@ class SheetRenderer implements Renderable
                                             'action' => 'localize',
                                             'returnUrl' => $this->controller->getReturnUrl(),
                                             'record' => $sourcePointerString,
-                                            'language' => $sLInfo['ISOcode']
+                                            'language' => strtoupper($sLInfo['language_isocode'])
                                         ]
                                     );
                                 } else {

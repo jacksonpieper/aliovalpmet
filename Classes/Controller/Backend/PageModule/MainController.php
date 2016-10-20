@@ -123,7 +123,7 @@ class MainController extends AbstractModuleController implements Configurable
     private $currentLanguageUid;
 
     /**
-     * Contains records of all available languages (not hidden, with ISOcode), including the default
+     * Contains records of all available languages (not hidden, with language_isocode), including the default
      * language and multiple languages. Used for displaying the flags for content elements, set in init().
      *
      * @var array
@@ -329,8 +329,8 @@ class MainController extends AbstractModuleController implements Configurable
         $this->perms_clause = static::getBackendUser()->getPagePermsClause(1);
         $this->versionId = GeneralUtility::_GP('versionId');
         // Fill array allAvailableLanguages and currently selected language (from language selector or from outside)
-        $this->allAvailableLanguages = $this->getAvailableLanguages(0, true, true, true);
-        $this->currentLanguageKey = $this->getAllAvailableLanguages()[$this->getSetting('language')]['ISOcode'];
+        $this->allAvailableLanguages = $this->getAvailableLanguages(0, true, true);
+        $this->currentLanguageKey = strtoupper($this->getAllAvailableLanguages()[$this->getSetting('language')]['language_isocode']);
         $this->currentLanguageUid = $this->getAllAvailableLanguages()[$this->getSetting('language')]['uid'];
 
         // If no translations exist for this page, set the current language to default (as there won't be a language selector)
@@ -1063,24 +1063,12 @@ class MainController extends AbstractModuleController implements Configurable
      ***********************************************/
 
     /**
-     * Returns an array of available languages (to use for FlexForms)
-     *
      * @param int $id If zero, the query will select all sys_language records from root level. If set to another value, the query will select all sys_language records that has a pages_language_overlay record on that page (and is not hidden, unless you are admin user)
-     * @param bool $onlyIsoCoded If set, only languages which are paired with a static_info_table / static_language record will be returned.
      * @param bool $setDefault If set, an array entry for a default language is set.
      * @param bool $setMulti If set, an array entry for "multiple languages" is added (uid -1)
-     *
      * @return array
      */
-    /**
-     * @param int $id If zero, the query will select all sys_language records from root level. If set to another value, the query will select all sys_language records that has a pages_language_overlay record on that page (and is not hidden, unless you are admin user)
-     * @param bool $onlyIsoCoded If set, only languages which are paired with a static_info_table / static_language record will be returned.
-     * @param bool $setDefault If set, an array entry for a default language is set.
-     * @param bool $setMulti If set, an array entry for "multiple languages" is added (uid -1)
-     *
-     * @return array
-     */
-    public function getAvailableLanguages($id = 0, $onlyIsoCoded = true, $setDefault = true, $setMulti = false)
+    public function getAvailableLanguages($id = 0, $setDefault = true, $setMulti = false)
     {
         $output = [];
 //        $excludeHidden = static::getBackendUser()->isAdmin() ? '1=1' : 'sys_language.hidden=0';
@@ -1095,7 +1083,7 @@ class MainController extends AbstractModuleController implements Configurable
             $output[0] = [
                 'uid' => 0,
                 'title' => strlen((string)$this->modSharedTSconfig['properties']['defaultLanguageLabel']) ? $this->modSharedTSconfig['properties']['defaultLanguageLabel'] : static::getLanguageService()->getLL('defaultLanguage'),
-                'ISOcode' => 'DEF',
+                'language_isocode' => 'DEF',
                 'flagIcon' => strlen((string)$this->modSharedTSconfig['properties']['defaultLanguageFlag']) ? $this->modSharedTSconfig['properties']['defaultLanguageFlag'] : null
             ];
         }
@@ -1104,7 +1092,7 @@ class MainController extends AbstractModuleController implements Configurable
             $output[-1] = [
                 'uid' => -1,
                 'title' => static::getLanguageService()->getLL('multipleLanguages'),
-                'ISOcode' => 'DEF',
+                'language_isocode' => 'DEF',
                 'flagIcon' => 'multiple',
             ];
         }
@@ -1134,18 +1122,8 @@ class MainController extends AbstractModuleController implements Configurable
             }
             $output[$row['uid']] = $row;
 
-            if ($row['static_lang_isocode']) {
-                $staticLangRow = BackendUtility::getRecord('static_languages', $row['static_lang_isocode'], 'lg_iso_2');
-                if ($staticLangRow['lg_iso_2']) {
-                    $output[$row['uid']]['ISOcode'] = $staticLangRow['lg_iso_2'];
-                }
-            }
             if (strlen($row['flag'])) {
                 $output[$row['uid']]['flagIcon'] = $row['flag'];
-            }
-
-            if ($onlyIsoCoded && !$output[$row['uid']]['ISOcode']) {
-                unset($output[$row['uid']]);
             }
 
             $disableLanguages = GeneralUtility::trimExplode(',', $this->modSharedTSconfig['properties']['disableLanguages'], 1);
