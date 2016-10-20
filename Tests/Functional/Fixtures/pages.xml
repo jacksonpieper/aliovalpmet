@@ -8,7 +8,7 @@
 		<cruser_id>1</cruser_id>
 		<title>*** t3unit templavoila testcase page ***</title>
 		<doktype>1</doktype>
-		<storage_pid>3</storage_pid>
+		<!--<storage_pid>3</storage_pid>-->
 		<tx_templavoila_ds>1</tx_templavoila_ds>
 		<tx_templavoila_to>1</tx_templavoila_to>
 	</pages>
@@ -20,7 +20,7 @@
 		<cruser_id>1</cruser_id>
 		<title>*** t3unit templavoila testcase page ***</title>
 		<doktype>1</doktype>
-		<storage_pid>3</storage_pid>
+		<!--<storage_pid>3</storage_pid>-->
 		<tx_templavoila_ds>2</tx_templavoila_ds>
 		<tx_templavoila_to>2</tx_templavoila_to>
 	</pages>
@@ -32,6 +32,6 @@
 		<cruser_id>1</cruser_id>
 		<title>*** t3unit templavoila testcase folder ***</title>
 		<doktype>255</doktype>
-		<storage_pid>0</storage_pid>
+		<!--<storage_pid>0</storage_pid>-->
 	</pages>
 </dataset>
