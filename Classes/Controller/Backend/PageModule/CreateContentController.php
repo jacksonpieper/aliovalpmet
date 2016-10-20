@@ -309,21 +309,18 @@ class CreateContentController extends AbstractModuleController
     {
         $returnElements = [];
 
-        // Flexible content elements:
-        $positionPid = $this->getId();
-        $storageFolderPID = $this->apiObj->getStorageFolderPid($positionPid);
-
         $templateRepository = GeneralUtility::makeInstance(TemplateRepository::class);
-        $templates = $templateRepository->getTemplatesByStoragePidAndScope($storageFolderPID, AbstractDataStructure::SCOPE_FCE);
+        $templates = $templateRepository->findByScope(AbstractDataStructure::SCOPE_FCE);
 
         foreach ($templates as $template) {
+            /** @var $template Template */
             if ($template->isPermittedForUser()) {
                 $tmpFilename = $template->getIcon();
                 $returnElements['fce.']['elements.']['fce_' . $template->getKey() . '.'] = [
                     'icon' => (@is_file(GeneralUtility::getFileAbsFileName(substr($tmpFilename, 3)))) ? $tmpFilename : ('../' . ExtensionManagementUtility::siteRelPath(Templavoila::EXTKEY) . 'Resources/Public/Image/default_previewicon.gif'),
                     'description' => $template->getDescription() ? htmlspecialchars($template->getDescription()) : static::getLanguageService()->getLL('template_nodescriptionavailable'),
                     'title' => $template->getLabel(),
-                    'params' => $this->getDsDefaultValues($template)
+                    'tt_content_defValues.' => $this->getDsDefaultValues($template)
                 ];
             }
         }
@@ -362,6 +359,8 @@ class CreateContentController extends AbstractModuleController
         // Traverse wizard items:
         foreach ($wizardItems as $key => $cfg) {
 
+            // todo: Remove support for old syntax:
+            // todo: -> replace params[defVals][tt_content] with tt_content_defValues
             // Exploding parameter string, if any (old style)
             if ($wizardItems[$key]['params']) {
                 // Explode GET vars recursively
@@ -422,18 +421,14 @@ class CreateContentController extends AbstractModuleController
         $dsStructure = $toObj->getLocalDataprotArray();
 
         $dsValues = [
-            'defVals' => [
-                'tt_content' => [
-                    'CType' => 'templavoila_pi1',
-                    'tx_templavoila_ds' => $toObj->getDatastructure()->getKey(),
-                    'tx_templavoila_to' => $toObj->getKey()
-                ]
-            ]
+            'CType' => 'templavoila_pi1',
+            'tx_templavoila_ds' => $toObj->getDatastructure()->getKey(),
+            'tx_templavoila_to' => $toObj->getKey()
         ];
 
         if (is_array($dsStructure) && is_array($dsStructure['meta']['default']['TCEForms'])) {
             foreach ($dsStructure['meta']['default']['TCEForms'] as $field => $value) {
-                $dsValues['defVals']['tt_content'][$field] = $value;
+                $dsValues[$field] = $value;
             }
         }
 

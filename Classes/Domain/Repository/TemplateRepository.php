@@ -118,6 +118,24 @@ class TemplateRepository
     }
 
     /**
+     * @param int $scope
+     *
+     * @return array
+     */
+    public function findByScope($scope)
+    {
+        $dsRepo = GeneralUtility::makeInstance(DataStructureRepository::class);
+        $dsList = $dsRepo->findByScope($scope);
+        $toCollection = [];
+        foreach ($dsList as $dsObj) {
+            $toCollection = array_merge($toCollection, $this->getTemplatesByDatastructure($dsObj));
+        }
+        usort($toCollection, [$this, 'sortTemplates']);
+
+        return $toCollection;
+    }
+
+    /**
      * Retrieve template objects which have a specific template as their parent
      *
      * @param Template $to
