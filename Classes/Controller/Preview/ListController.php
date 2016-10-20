@@ -24,7 +24,6 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  */
 class ListController extends TextController
 {
-
     use LanguageService;
 
     /**

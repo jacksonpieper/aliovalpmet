@@ -35,7 +35,6 @@ use TYPO3\CMS\Fluid\View\StandaloneView;
  */
 abstract class AbstractModuleController extends AbstractModule
 {
-
     const ACCESS_READ = 1;
 
     /**
@@ -161,7 +160,7 @@ abstract class AbstractModuleController extends AbstractModule
 
         return $queries;
     }
-    
+
     /**
      * @param $templateName
      *

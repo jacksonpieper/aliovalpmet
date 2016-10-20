@@ -32,7 +32,6 @@ use TYPO3\CMS\Core\Utility\MathUtility;
  */
 class StaticDataStructuresHandler
 {
-
     use DatabaseConnection;
     use LanguageService;
 
@@ -102,7 +101,7 @@ class StaticDataStructuresHandler
             $res = static::getDatabaseConnection()->exec_SELECTquery(
                 'title,uid,previewicon',
                 'tx_templavoila_tmplobj',
-                'tx_templavoila_tmplobj.pid=' . $storagePid . ' AND tx_templavoila_tmplobj.datastructure=' .  static::getDatabaseConnection()->fullQuoteStr($templateRef, 'tx_templavoila_tmplobj') . ' AND tx_templavoila_tmplobj.parent=0',
+                'tx_templavoila_tmplobj.pid=' . $storagePid . ' AND tx_templavoila_tmplobj.datastructure=' . static::getDatabaseConnection()->fullQuoteStr($templateRef, 'tx_templavoila_tmplobj') . ' AND tx_templavoila_tmplobj.parent=0',
                 '',
                 'tx_templavoila_tmplobj.title'
             );
@@ -126,7 +125,7 @@ class StaticDataStructuresHandler
      * @param array $params Parameters to the itemsProcFunc
      * @param \TYPO3\CMS\Backend\Form\FormEngine $pObj Calling object
      */
-    public function dataSourceItemsProcFunc(array &$params, \TYPO3\CMS\Backend\Form\FormEngine& $pObj)
+    public function dataSourceItemsProcFunc(array &$params, \TYPO3\CMS\Backend\Form\FormEngine & $pObj)
     {
         $storagePid = $this->getStoragePid($params, $pObj);
         $scope = $this->getScope($params);

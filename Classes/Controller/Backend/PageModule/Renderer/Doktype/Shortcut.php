@@ -27,7 +27,6 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  */
 class Shortcut implements Renderable
 {
-
     use LanguageService;
 
     /**
@@ -79,5 +78,4 @@ class Shortcut implements Renderable
 
         return $flashMessage->render() . $jumpToShortcutSourceLink;
     }
-
 }

@@ -113,5 +113,4 @@ class BeforeTcaFlexPrepare implements FormDataProviderInterface
 
         return $newStructure;
     }
-
 }

@@ -24,7 +24,6 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  */
 class Link implements Renderable
 {
-
     use LanguageService;
 
     /**
@@ -82,5 +81,4 @@ class Link implements Renderable
 
         return $flashMessage->render() . $urlInfo;
     }
-
 }

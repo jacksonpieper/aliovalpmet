@@ -28,7 +28,6 @@ use TYPO3\CMS\Fluid\View\StandaloneView;
  */
 class AdvancedFunctionsTab implements Renderable
 {
-
     use BackendUser;
 
     /**

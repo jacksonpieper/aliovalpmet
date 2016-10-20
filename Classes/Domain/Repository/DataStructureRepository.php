@@ -28,7 +28,6 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  */
 class DataStructureRepository
 {
-
     use DatabaseConnection;
 
     /**
@@ -358,5 +357,4 @@ class DataStructureRepository
     {
         return $this->getDatastructureCountForPid($pid);
     }
-
 }

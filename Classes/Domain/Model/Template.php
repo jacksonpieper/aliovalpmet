@@ -28,7 +28,6 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  */
 class Template
 {
-
     use BackendUser;
     use LanguageService;
 

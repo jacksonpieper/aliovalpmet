@@ -33,7 +33,6 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  */
 class ReferenceElementWizardController extends AbstractFunctionModule
 {
-
     use BackendUser;
     use DatabaseConnection;
     use LanguageService;

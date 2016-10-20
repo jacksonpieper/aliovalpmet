@@ -106,5 +106,4 @@ class DoktypeRenderer
         $object = new $this->doktypes[$itemKey]($this->row);
         return (string)$object->render();
     }
-
 }

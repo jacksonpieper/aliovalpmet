@@ -13,7 +13,6 @@
  */
 
 use Extension\Templavoila\Controller\Backend\PageModule\MainController;
-use Extension\Templavoila\Service\ApiService;
 use Extension\Templavoila\Traits\LanguageService;
 use TYPO3\CMS\Backend\Clipboard\Clipboard;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
@@ -25,7 +24,6 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  */
 class tx_templavoila_mod1_clipboard
 {
-
     use LanguageService;
 
     /**
@@ -57,7 +55,7 @@ class tx_templavoila_mod1_clipboard
 
         if (isset($CB['setFlexMode'])) {
             switch ($CB['setFlexMode']) {
-                case 'copy' :
+                case 'copy':
                     $this->clipboard->clipData['normal']['flexMode'] = 'copy';
                     break;
                 case 'cut':

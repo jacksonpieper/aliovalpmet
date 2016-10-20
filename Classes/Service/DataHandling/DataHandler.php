@@ -28,15 +28,12 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  *
  * @author Robert Lemke <robert@typo3.org>
  *
- * @package TYPO3
- * @subpackage templavoila
  */
 class DataHandler
 {
-
     use DatabaseConnection;
     use LanguageService;
-    
+
     /**
      * @var bool
      */
@@ -210,7 +207,7 @@ page.10.disableExplosivePreview = 1
         $templaVoilaAPI = GeneralUtility::makeInstance(ApiService::class);
 
         switch ($status) {
-            case 'new' :
+            case 'new':
                 if (!isset($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tx_templavoila_tcemain']['doNotInsertElementRefsToPage'])) {
                     $destinationFlexformPointer = false;
 
@@ -314,7 +311,7 @@ page.10.disableExplosivePreview = 1
         $templaVoilaAPI = GeneralUtility::makeInstance(ApiService::class);
 
         switch ($command) {
-            case 'delete' :
+            case 'delete':
                 $record = BackendUtility::getRecord('tt_content', $id);
                 // Check for FCE access
                 $params = [

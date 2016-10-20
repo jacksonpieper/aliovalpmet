@@ -32,10 +32,9 @@ use TYPO3\CMS\Core\Utility\MathUtility;
  */
 class ApiService
 {
-
     use DatabaseConnection;
     use LanguageService;
-    
+
     /**
      * @var bool
      */
@@ -188,7 +187,7 @@ class ApiService
             $this->setTCEmainRunningFlag(false);
         }
 
-        return ((int)$newUid ? (int)$newUid : false);
+        return (int)$newUid ? (int)$newUid : false;
     }
 
     /**
@@ -437,7 +436,7 @@ class ApiService
         }
 
         switch ($mode) {
-            case 'move' :
+            case 'move':
                 $result = $this->process_move($sourcePointer, $destinationPointer, $sourceReferencesArr, $destinationReferencesArr, $sourceParentRecord, $destinationParentRecord, $sourceElementRecord, $onlyHandleReferences);
                 break;
             case 'copy':
@@ -1457,7 +1456,7 @@ class ApiService
             $expandedDataStructureArr = $this->ds_getExpandedDataStructure($table, $row);
 
             switch ($table) {
-                case 'pages' :
+                case 'pages':
                     $currentTemplateObject = $this->getContentTree_fetchPageTemplateObject($row);
                     break;
                 case 'tt_content':
@@ -1628,10 +1627,10 @@ class ApiService
                     $subTree['el_list'][$counter] = $idStr;
                     $counter++;
                 } else {
-                    # ERROR: The element referenced was deleted! - or hidden :-)
+                    // ERROR: The element referenced was deleted! - or hidden :-)
                 }
             } else {
-                # ERROR: recursivity error!
+                // ERROR: recursivity error!
             }
         }
 

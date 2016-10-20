@@ -26,7 +26,6 @@ use Extension\Templavoila\Traits\LanguageService;
  */
 class Label
 {
-
     use LanguageService;
 
     /**

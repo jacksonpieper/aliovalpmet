@@ -23,7 +23,6 @@ use Extension\Templavoila\Traits\DatabaseConnection;
  */
 class SysLanguageRepository
 {
-
     use BackendUser;
     use DatabaseConnection;
 

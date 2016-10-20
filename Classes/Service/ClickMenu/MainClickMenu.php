@@ -15,8 +15,8 @@ namespace Extension\Templavoila\Service\ClickMenu;
  * The TYPO3 project - inspiring people to share!
  */
 
-use TYPO3\CMS\Backend\Utility\IconUtility;
 use Extension\Templavoila\Utility\GeneralUtility;
+use TYPO3\CMS\Backend\Utility\IconUtility;
 
 /**
  * Class which will add menu items to click menus for the extension TemplaVoila

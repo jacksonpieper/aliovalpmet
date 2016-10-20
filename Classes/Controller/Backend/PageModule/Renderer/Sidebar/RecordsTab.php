@@ -30,7 +30,6 @@ use TYPO3\CMS\Recordlist\RecordList\DatabaseRecordList;
  */
 class RecordsTab implements Renderable
 {
-
     use DatabaseConnection;
     use LanguageService;
     use BackendUser;
@@ -113,7 +112,7 @@ class RecordsTab implements Renderable
             $backpath = '../../../../typo3/';
             $params = '&edit[' . $this->table . '][' . $this->controller->getId() . ']=new';
             $content .= '&nbsp;&nbsp;';
-            $content .= '<a title="' . static::getLanguageService()->getLL('createnewrecord') .'" href="#" onclick="' . htmlspecialchars(BackendUtility::editOnClick($params, $backpath, -1)) . '">';
+            $content .= '<a title="' . static::getLanguageService()->getLL('createnewrecord') . '" href="#" onclick="' . htmlspecialchars(BackendUtility::editOnClick($params, $backpath, -1)) . '">';
             $content .= $this->controller->getModuleTemplate()->getIconFactory()->getIcon('actions-document-new', Icon::SIZE_SMALL);
             $content .= '</a>';
         }
@@ -152,7 +151,6 @@ class RecordsTab implements Renderable
 //            parent::start($this->pObj->rootElementUid_pidForContent,
 //                '', //$this->pObj->MOD_SETTINGS['recordsView_table'],
 //                (int)$this->pObj->MOD_SETTINGS['recordsView_start']);
-
 
             $this->dblist->start(
                 $this->controller->getPid(),

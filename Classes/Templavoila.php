@@ -36,8 +36,8 @@ final class Templavoila
     public static function getHooks($name)
     {
         $hookObjectsArr = [];
-        if (is_array($GLOBALS['TYPO3_CONF_VARS']['EXTCONF'][Templavoila::EXTKEY]['mod1'][$name])) {
-            foreach ($GLOBALS['TYPO3_CONF_VARS']['EXTCONF'][Templavoila::EXTKEY]['mod1'][$name] as $key => $classRef) {
+        if (is_array($GLOBALS['TYPO3_CONF_VARS']['EXTCONF'][self::EXTKEY]['mod1'][$name])) {
+            foreach ($GLOBALS['TYPO3_CONF_VARS']['EXTCONF'][self::EXTKEY]['mod1'][$name] as $key => $classRef) {
                 $hookObjectsArr[$key] = GeneralUtility::getUserObj($classRef);
             }
         }

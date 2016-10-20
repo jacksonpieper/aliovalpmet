@@ -29,7 +29,6 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  */
 class PageOverlayController extends AbstractModule
 {
-
     use DatabaseConnection;
 
     /**
@@ -154,5 +153,4 @@ class PageOverlayController extends AbstractModule
 
         return $response->withHeader('Location', GeneralUtility::locationHeaderUrl($redirectLocation));
     }
-
 }

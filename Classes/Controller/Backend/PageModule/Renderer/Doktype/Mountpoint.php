@@ -27,7 +27,6 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  */
 class Mountpoint implements Renderable
 {
-
     use LanguageService;
 
     /**
@@ -86,5 +85,4 @@ class Mountpoint implements Renderable
 
         return $flashMessage->render() . '<strong>' . $mountSourceLink . '</strong>';
     }
-
 }

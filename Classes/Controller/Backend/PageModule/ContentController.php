@@ -178,7 +178,7 @@ class ContentController extends AbstractModule
         $destinationPointer = $this->apiService->flexform_getPointerFromString($destination);
 
         switch ($mode) {
-            case 'copy' :
+            case 'copy':
                 $this->apiService->copyElement($sourcePointer, $destinationPointer);
                 break;
             case 'copyref':

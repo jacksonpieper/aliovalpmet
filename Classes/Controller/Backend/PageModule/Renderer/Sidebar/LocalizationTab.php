@@ -29,7 +29,6 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  */
 class LocalizationTab implements Renderable
 {
-
     use BackendUser;
     use LanguageService;
 
@@ -125,7 +124,7 @@ class LocalizationTab implements Renderable
                 <td width="20">
                     ' . BackendUtility::cshItem('_MOD_web_txtemplavoilaM1', 'selectlanguageversion') . '
                 </td><td width="200" style="vertical-align:middle;">
-                    ' .  static::getLanguageService()->getLL('selectlanguageversion', true) . ':
+                    ' . static::getLanguageService()->getLL('selectlanguageversion', true) . ':
                 </td>
                 <td style="vertical-align:middle;"><select onchange="document.location=this.options[this.selectedIndex].value">' . implode('', $optionsArr) . '</select></td>
             </tr>
@@ -134,9 +133,9 @@ class LocalizationTab implements Renderable
         if ($this->controller->getCurrentLanguageUid() >= 0 && (($this->controller->getLanguageMode() === 'disable') || ($this->controller->getLanguageParadigm() === 'bound'))) {
             $options = [];
 
-            $options[] = GeneralUtility::inList($this->controller->modTSconfig['properties']['disableDisplayMode'], 'default') ? '' : '<option value="' . $this->controller->getReturnUrl(['SET' => ['langDisplayMode' => 'default']]) .'"' . ($this->controller->getSetting('langDisplayMode') === '' ? ' selected="selected"' : '') . '>' .  static::getLanguageService()->sL('LLL:EXT:lang/locallang_general.xlf:LGL.default_value') . '</option>';
-            $options[] = GeneralUtility::inList($this->controller->modTSconfig['properties']['disableDisplayMode'], 'selectedLanguage') ? '' : '<option value="' . $this->controller->getReturnUrl(['SET' => ['langDisplayMode' => 'selectedLanguage']]) .'"' . ($this->controller->getSetting('langDisplayMode') === 'selectedLanguage' ? ' selected="selected"' : '') . '>' .  static::getLanguageService()->getLL('pageLocalizationDisplayMode_selectedLanguage') . '</option>';
-            $options[] = GeneralUtility::inList($this->controller->modTSconfig['properties']['disableDisplayMode'], 'onlyLocalized') ? '' : '<option value="' . $this->controller->getReturnUrl(['SET' => ['langDisplayMode' => 'onlyLocalized']]) .'"' . ($this->controller->getSetting('langDisplayMode') === 'onlyLocalized' ? ' selected="selected"' : '') . '>' .  static::getLanguageService()->getLL('pageLocalizationDisplayMode_onlyLocalized') . '</option>';
+            $options[] = GeneralUtility::inList($this->controller->modTSconfig['properties']['disableDisplayMode'], 'default') ? '' : '<option value="' . $this->controller->getReturnUrl(['SET' => ['langDisplayMode' => 'default']]) . '"' . ($this->controller->getSetting('langDisplayMode') === '' ? ' selected="selected"' : '') . '>' . static::getLanguageService()->sL('LLL:EXT:lang/locallang_general.xlf:LGL.default_value') . '</option>';
+            $options[] = GeneralUtility::inList($this->controller->modTSconfig['properties']['disableDisplayMode'], 'selectedLanguage') ? '' : '<option value="' . $this->controller->getReturnUrl(['SET' => ['langDisplayMode' => 'selectedLanguage']]) . '"' . ($this->controller->getSetting('langDisplayMode') === 'selectedLanguage' ? ' selected="selected"' : '') . '>' . static::getLanguageService()->getLL('pageLocalizationDisplayMode_selectedLanguage') . '</option>';
+            $options[] = GeneralUtility::inList($this->controller->modTSconfig['properties']['disableDisplayMode'], 'onlyLocalized') ? '' : '<option value="' . $this->controller->getReturnUrl(['SET' => ['langDisplayMode' => 'onlyLocalized']]) . '"' . ($this->controller->getSetting('langDisplayMode') === 'onlyLocalized' ? ' selected="selected"' : '') . '>' . static::getLanguageService()->getLL('pageLocalizationDisplayMode_onlyLocalized') . '</option>';
 
             if (count($options)) {
                 $output .= '
@@ -144,7 +143,7 @@ class LocalizationTab implements Renderable
                         <td width="20">
                             ' . BackendUtility::cshItem('_MOD_web_txtemplavoilaM1', 'pagelocalizationdisplaymode') . '
                         </td><td width="200" style="vertical-align:middle;">
-                            ' .  static::getLanguageService()->getLL('pageLocalizationDisplayMode', true) . ':
+                            ' . static::getLanguageService()->getLL('pageLocalizationDisplayMode', true) . ':
                         </td>
                         <td style="vertical-align:middle;">
                             <select onchange="document.location=this.options[this.selectedIndex].value">
@@ -162,9 +161,9 @@ class LocalizationTab implements Renderable
                     <td  width="20">
                         ' . BackendUtility::cshItem('_MOD_web_txtemplavoilaM1', 'pagelocalizationmode') . '
                     </td><td width="200" style="vertical-align:middle;">
-                        ' .  static::getLanguageService()->getLL('pageLocalizationMode', true) . ':
+                        ' . static::getLanguageService()->getLL('pageLocalizationMode', true) . ':
                     </td>
-                    <td style="vertical-align:middle;"><em>' .  static::getLanguageService()->getLL('pageLocalizationMode_' . $this->controller->getLanguageMode(), true) . ($this->controller->getLanguageParadigm() != 'free' ? (' / ' .  static::getLanguageService()->getLL('pageLocalizationParadigm_' . $this->controller->getLanguageParadigm())) : '') . '</em></td>
+                    <td style="vertical-align:middle;"><em>' . static::getLanguageService()->getLL('pageLocalizationMode_' . $this->controller->getLanguageMode(), true) . ($this->controller->getLanguageParadigm() != 'free' ? (' / ' . static::getLanguageService()->getLL('pageLocalizationParadigm_' . $this->controller->getLanguageParadigm())) : '') . '</em></td>
                 </tr>
             ';
         }
@@ -178,7 +177,7 @@ class LocalizationTab implements Renderable
                     <td  width="20">
                         ' . BackendUtility::cshItem('_MOD_web_txtemplavoilaM1', 'disablePageStructureInheritance') . '
                     </td><td width="200" style="vertical-align:middle;">
-                        ' .  static::getLanguageService()->getLL('pageLocalizationMode_inheritance.disableInheritance', true) . ':
+                        ' . static::getLanguageService()->getLL('pageLocalizationMode_inheritance.disableInheritance', true) . ':
                     </td>
                     <td style="vertical-align:middle;">
                         <input type="checkbox" onchange="document.location=' . $link . '" ' . ((bool)$this->controller->getSetting('disablePageStructureInheritance') ? ' checked="checked"' : '') . '/>
@@ -192,7 +191,7 @@ class LocalizationTab implements Renderable
                 <td  width="20">
                     ' . BackendUtility::cshItem('_MOD_web_txtemplavoilaM1', 'editlanguageversion') . '
                 </td><td width="200" style="vertical-align:middle;">
-                    ' .  static::getLanguageService()->getLL('editlanguageversion', true) . ':
+                    ' . static::getLanguageService()->getLL('editlanguageversion', true) . ':
                 </td>
                 <td style="vertical-align:middle;">
                     ' . $availableTranslationsFlags . '
@@ -224,7 +223,6 @@ class LocalizationTab implements Renderable
         $optionsArr = ['<option value=""></option>'];
         foreach ($newLanguagesArr as $language) {
             if (!array_key_exists($language['uid'], $translatedLanguagesArr) && static::getBackendUser()->checkLanguageAccess($language['uid'])) {
-
                 $url = BackendUtility::getModuleUrl(
                     'tv_mod_pagemodule_pageoverlaycontroller',
                     [
@@ -249,7 +247,7 @@ class LocalizationTab implements Renderable
                     <td width="20">
                         ' . BackendUtility::cshItem('_MOD_web_txtemplavoilaM1', 'createnewtranslation') . '
                     </td><td width="200" style="vertical-align:middle;">
-                        ' .  static::getLanguageService()->getLL('createnewtranslation', true) . ':
+                        ' . static::getLanguageService()->getLL('createnewtranslation', true) . ':
                     </td>
                     <td style="vertical-align:middle;"><select onChange="document.location=this.options[this.selectedIndex].value">' . implode('', $optionsArr) . '</select></td>
                 </tr>

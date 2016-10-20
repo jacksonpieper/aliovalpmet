@@ -23,10 +23,9 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  */
 class tx_templavoila_staticds_wizard
 {
-
     use DatabaseConnection;
     use LanguageService;
-    
+
     /**
      * Step for the wizard. Can be manipulated by internal function
      *

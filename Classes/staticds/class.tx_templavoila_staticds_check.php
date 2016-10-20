@@ -21,10 +21,9 @@ use TYPO3\CMS\Backend\Utility\BackendUtility;
  */
 class tx_templavoila_staticds_check
 {
-
     use DatabaseConnection;
     use LanguageService;
-    
+
     /**
      * Display message
      *

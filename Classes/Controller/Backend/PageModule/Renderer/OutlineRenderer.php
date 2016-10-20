@@ -29,7 +29,6 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  */
 class OutlineRenderer implements Renderable
 {
-
     use BackendUser;
     use LanguageService;
 
@@ -189,7 +188,7 @@ class OutlineRenderer implements Renderable
         $titleBarRightButtons = '';
         // Prepare table specific settings:
         switch ($contentTreeArr['el']['table']) {
-            case 'pages' :
+            case 'pages':
                 $iconEdit = $this->controller->getModuleTemplate()->getIconFactory()->getIcon('actions-document-open', Icon::SIZE_SMALL);
                 $titleBarLeftButtons .= MainController::isInTranslatorMode() ? '' : $this->controller->link_edit($iconEdit, $contentTreeArr['el']['table'], $contentTreeArr['el']['uid']);
                 $titleBarRightButtons = '';
@@ -199,7 +198,7 @@ class OutlineRenderer implements Renderable
                 $viewPageIcon = $this->controller->getModuleTemplate()->getIconFactory()->getIcon('actions-document-view', Icon::SIZE_SMALL);
                 $titleBarLeftButtons .= '<a href="#" ' . $viewPageOnClick . '>' . $viewPageIcon . '</a>';
                 break;
-            case 'tt_content' :
+            case 'tt_content':
                 $languageUid = $contentTreeArr['el']['sys_language_uid'];
 
                 if (!MainController::isInTranslatorMode()) {

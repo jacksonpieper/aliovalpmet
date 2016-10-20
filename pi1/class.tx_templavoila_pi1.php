@@ -13,6 +13,7 @@
  */
 
 use Extension\Templavoila\Templavoila;
+
 /**
  * Plugin 'Flexible Content' for the 'templavoila' extension.
  *

@@ -19,7 +19,6 @@ use Extension\Templavoila\Traits\BackendUser;
  */
 class ext_update
 {
-
     use BackendUser;
 
     /**

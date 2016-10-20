@@ -28,7 +28,6 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  */
 class SysFolder implements Renderable
 {
-
     use BackendUser;
     use LanguageService;
 
@@ -87,5 +86,4 @@ class SysFolder implements Renderable
 
         return static::getBackendUser()->check('modules', 'web_list');
     }
-
 }

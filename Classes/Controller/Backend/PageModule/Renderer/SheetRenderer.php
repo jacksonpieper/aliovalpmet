@@ -27,13 +27,11 @@ use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Messaging\FlashMessageService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
-
 /**
  * Class Extension\Templavoila\Controller\Backend\PageModule\Renderer\SheetRenderer
  */
 class SheetRenderer implements Renderable
 {
-
     use BackendUser;
     use LanguageService;
 
@@ -158,7 +156,7 @@ class SheetRenderer implements Renderable
                 $frContent = $this->render_framework_singleSheet($contentTreeArr, $languageKey, $sheetKey, $parentPointer, $parentDsMeta);
 
                 $parts[] = [
-                    'label' => ($contentTreeArr['meta'][$sheetKey]['title'] ? $contentTreeArr['meta'][$sheetKey]['title'] : $sheetKey), #.' ['.$this->containedElements[$this->containedElementsPointer].']',
+                    'label' => ($contentTreeArr['meta'][$sheetKey]['title'] ? $contentTreeArr['meta'][$sheetKey]['title'] : $sheetKey), //.' ['.$this->containedElements[$this->containedElementsPointer].']',
                     'description' => $contentTreeArr['meta'][$sheetKey]['description'],
                     'linkTitle' => $contentTreeArr['meta'][$sheetKey]['short'],
                     'content' => $frContent,
@@ -236,12 +234,12 @@ class SheetRenderer implements Renderable
         // Prepare table specific settings:
         switch ($contentTreeArr['el']['table']) {
 
-            case 'pages' :
+            case 'pages':
                 $elementTitlebarClass = 'tpm-titlebar-page';
                 $elementClass .= ' pagecontainer';
                 break;
 
-            case 'tt_content' :
+            case 'tt_content':
                 $this->controller->setCurrentElementParentPointer($parentPointer);
 
                 $elementTitlebarClass = $elementBelongsToCurrentPage ? 'tpm-titlebar' : 'tpm-titlebar-fromOtherPage';
@@ -812,7 +810,7 @@ class SheetRenderer implements Renderable
                     if ($l10nInfo && static::getBackendUser()->checkLanguageAccess($sys_language_uid)) {
                         $tRows[] = '
                             <tr class="bgColor4">
-                                <td width="1%">' . $flagLink_begin . $this->controller->getModuleTemplate()->getIconFactory()->getIcon('flags-'. $sLInfo['flagIcon'], Icon::SIZE_SMALL) . $flagLink_end . '</td>
+                                <td width="1%">' . $flagLink_begin . $this->controller->getModuleTemplate()->getIconFactory()->getIcon('flags-' . $sLInfo['flagIcon'], Icon::SIZE_SMALL) . $flagLink_end . '</td>
                                 <td width="99%">' . $l10nInfo . '</td>
                             </tr>';
                     }
@@ -1036,7 +1034,6 @@ class SheetRenderer implements Renderable
         return $output;
     }
 
-
     /**
      * @param string $table
      * @param int $id
@@ -1171,5 +1168,4 @@ class SheetRenderer implements Renderable
 
         return $disable;
     }
-
 }

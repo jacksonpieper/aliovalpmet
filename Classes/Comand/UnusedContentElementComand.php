@@ -17,9 +17,9 @@ namespace Extension\Templavoila\Comand;
 
 use Extension\Templavoila\Service\ApiService;
 use Extension\Templavoila\Traits\DatabaseConnection;
+use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\DataHandling\DataHandler;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
 use TYPO3\CMS\Lowlevel\CleanerCommand;
 
@@ -32,9 +32,8 @@ use TYPO3\CMS\Lowlevel\CleanerCommand;
  */
 class UnusedContentElementComand extends CleanerCommand
 {
-
     use DatabaseConnection;
-    
+
     /**
      * @var array
      */

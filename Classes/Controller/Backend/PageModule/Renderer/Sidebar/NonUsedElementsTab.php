@@ -29,7 +29,6 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  */
 class NonUsedElementsTab implements Renderable
 {
-
     use DatabaseConnection;
     use LanguageService;
     use BackendUser;

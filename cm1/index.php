@@ -2717,7 +2717,7 @@ class tx_templavoila_cm1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass
         $markupObj->pathPrefix = $path ? $path . '|' : '';
         $markupObj->onlyElements = $limitTags;
 
-#        $markupObj->setTagsFromXML($content);
+//        $markupObj->setTagsFromXML($content);
 
         $cParts = $markupObj->splitByPath($content, $path);
         if (is_array($cParts)) {
@@ -2856,7 +2856,7 @@ class tx_templavoila_cm1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass
                 'formName' => 'pageform',
                 'itemName' => $formElementName . '[]',
                 'params' => [
-#                    'type' => 'header',
+//                    'type' => 'header',
                     'type' => 'description',
                     'add' => 1,
                     'endSequence' => '46,32',

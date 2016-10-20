@@ -28,7 +28,6 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  */
 class TemplateRepository
 {
-
     use DatabaseConnection;
 
     /**
@@ -232,5 +231,4 @@ class TemplateRepository
     {
         return $this->getTemplateCountForPid($pid);
     }
-
 }

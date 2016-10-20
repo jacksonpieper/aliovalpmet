@@ -31,9 +31,8 @@ use TYPO3\CMS\Frontend\Page\PageGenerator;
  */
 class HtmlMarkup
 {
-
     use DatabaseConnection;
-    
+
     /**
      * @var array
      */
@@ -381,11 +380,11 @@ class HtmlMarkup
             list($pathInfo) = $this->splitPath($pathStr);
             $this->searchPaths[$pathInfo['path']] = $pathInfo;
 
-            # 21/1 2005: Commented out because the line below is commented in...
-            #$tagList.=','.$pathInfo['tagList'];
+            // 21/1 2005: Commented out because the line below is commented in...
+            //$tagList.=','.$pathInfo['tagList'];
         }
 
-        # 21/1 2005:  USING ALL TAGS (otherwise we may get those strange "lost" references - but I DON'T KNOW what may break because of this!!! It just seems that the taglist being used for the "search" should be the SAME as used for the MARKUP!
+        // 21/1 2005:  USING ALL TAGS (otherwise we may get those strange "lost" references - but I DON'T KNOW what may break because of this!!! It just seems that the taglist being used for the "search" should be the SAME as used for the MARKUP!
         $tagList = implode(',', array_keys($this->tags));
 
         list($tagsBlock, $tagsSolo) = $this->splitTagTypes($tagList);
@@ -641,7 +640,7 @@ class HtmlMarkup
                         if (is_array($editStruct[$key]['el']) && $currentMappingInfo['sub'][$key]) {
                             $currentMappingInfo['cArray'][$key] = $this->mergeFormDataIntoTemplateStructure($editStruct[$key]['el'], $currentMappingInfo['sub'][$key], '', $valueKey);
                         } else {
-                            # NO htmlspecialchars()'ing here ... it might be processed values that should be allowed to go through easily.
+                            // NO htmlspecialchars()'ing here ... it might be processed values that should be allowed to go through easily.
                             $currentMappingInfo['cArray'][$key] = $editStruct[$key][$valueKey];
                         }
                     } else {
@@ -1135,7 +1134,7 @@ class HtmlMarkup
                                 if ($key > 0) {
                                     $soloParts[$key - 1] .= chr(10) . $matches2[0][0];
                                 } else {
-                                    #$soloParts = array_merge(array(chr(10) . $matches2[0][0]), $soloParts);
+                                    //$soloParts = array_merge(array(chr(10) . $matches2[0][0]), $soloParts);
                                 }
                             }
                         }

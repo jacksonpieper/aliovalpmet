@@ -131,7 +131,7 @@ class FileController extends AbstractModuleController implements Configurable
         $markupObj->pathPrefix = $path ? $path . '|' : '';
         $markupObj->onlyElements = $limitTags;
 
-#        $markupObj->setTagsFromXML($content);
+//        $markupObj->setTagsFromXML($content);
 
         $cParts = $markupObj->splitByPath($content, $path);
         if (is_array($cParts)) {

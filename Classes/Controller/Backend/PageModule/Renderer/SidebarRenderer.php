@@ -31,7 +31,6 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  */
 class SidebarRenderer
 {
-
     use BackendUser;
     use LanguageService;
 

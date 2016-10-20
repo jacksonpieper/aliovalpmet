@@ -57,5 +57,4 @@ class AjaxController
         $response->getBody()->write(json_encode($data));
         return $response->withHeader('Content-Type', 'application/json; charset=utf-8');
     }
-
 }

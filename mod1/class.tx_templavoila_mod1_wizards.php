@@ -13,12 +13,10 @@
  * The TYPO3 project - inspiring people to share!
  */
 
-use Extension\Templavoila\Controller\Backend\AbstractModuleController;
 use Extension\Templavoila\Controller\Backend\PageModule\MainController;
 use Extension\Templavoila\Domain\Model\AbstractDataStructure;
 use Extension\Templavoila\Domain\Repository\DataStructureRepository;
 use Extension\Templavoila\Domain\Repository\TemplateRepository;
-use Extension\Templavoila\Service\ApiService;
 use Extension\Templavoila\Templavoila;
 use Extension\Templavoila\Traits\BackendUser;
 use Extension\Templavoila\Traits\LanguageService;
@@ -34,7 +32,6 @@ use TYPO3\CMS\Impexp\ImportExport;
  */
 class tx_templavoila_mod1_wizards
 {
-
     use BackendUser;
     use LanguageService;
 
@@ -460,7 +457,7 @@ class tx_templavoila_mod1_wizards
             }
         }
 
-        return (count($result) > 0 ? ' AND ' . $table . '.uid NOT IN (' . implode(',', $result) . ') ' : '');
+        return count($result) > 0 ? ' AND ' . $table . '.uid NOT IN (' . implode(',', $result) . ') ' : '';
     }
 
     /**

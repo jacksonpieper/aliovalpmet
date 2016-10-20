@@ -21,7 +21,6 @@ use Extension\Templavoila\Controller\Backend\PageModule\Renderer\OutlineRenderer
 use Extension\Templavoila\Controller\Backend\PageModule\Renderer\SheetRenderer;
 use Extension\Templavoila\Controller\Backend\PageModule\Renderer\SidebarRenderer;
 use Extension\Templavoila\Domain\Repository\SysLanguageRepository;
-use Extension\Templavoila\Domain\Repository\TemplateRepository;
 use Extension\Templavoila\Service\ApiService;
 use Extension\Templavoila\Templavoila;
 use Psr\Http\Message\ResponseInterface;
@@ -250,7 +249,8 @@ class MainController extends AbstractModuleController implements Configurable
         $this->sysLanguageRepository = GeneralUtility::makeInstance(SysLanguageRepository::class);
     }
 
-    private function initializeTsConfig() {
+    private function initializeTsConfig()
+    {
         $this->modTSconfig = BackendUtility::getModTSconfig($this->getId(), 'mod.' . $this->moduleName);
         if (!isset($this->modTSconfig['properties']['sideBarEnable'])) {
             $this->modTSconfig['properties']['sideBarEnable'] = 1;
@@ -1237,8 +1237,9 @@ class MainController extends AbstractModuleController implements Configurable
     /**
      * @return bool
      */
-    public static function isInTranslatorMode() {
-        return (!static::getBackendUser()->checkLanguageAccess(0) && !static::getBackendUser()->isAdmin());
+    public static function isInTranslatorMode()
+    {
+        return !static::getBackendUser()->checkLanguageAccess(0) && !static::getBackendUser()->isAdmin();
     }
 
     /**

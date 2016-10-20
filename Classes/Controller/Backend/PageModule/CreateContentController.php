@@ -91,7 +91,6 @@ class CreateContentController extends AbstractModuleController
         ;
         $this->moduleTemplate->getDocHeaderComponent()->getButtonBar()->addButton($backButton);
 
-
         if ($this->hasAccess()) {
             $view->assign('groupedWizardItems', $this->main());
         }
@@ -188,7 +187,6 @@ class CreateContentController extends AbstractModuleController
 
             $wizardItem['url'] = $newRecordLink;
             $wizardItem['icon'] = $this->moduleTemplate->getIconFactory()->getIcon($wizardItem['icon'], Icon::SIZE_DEFAULT);
-
 
             $groupedWizardItems[$groupKey]['items'][] = $wizardItem;
         }

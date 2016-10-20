@@ -26,7 +26,6 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  */
 class VersioningTab implements Renderable
 {
-
     use LanguageService;
 
     /**

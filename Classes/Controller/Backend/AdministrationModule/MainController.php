@@ -154,7 +154,7 @@ class MainController extends AbstractModuleController implements Configurable
     public function index(ServerRequest $request, Response $response)
     {
         if (!$this->hasAccess()) {
-            ;// todo handle this case
+            // todo handle this case
         }
 
         $countDS = $this->dataStructureRepository->countByPid($this->getId());
@@ -605,7 +605,7 @@ class MainController extends AbstractModuleController implements Configurable
         $dsRepo = GeneralUtility::makeInstance(DataStructureRepository::class);
         /** @var TemplateRepository $toRepo */
         $toRepo = GeneralUtility::makeInstance(TemplateRepository::class);
-        
+
         if ((bool)$this->getSetting('set_unusedDs')) {
             $dsList = $dsRepo->getDatastructuresByScope($scope);
         } else {
@@ -873,8 +873,6 @@ class MainController extends AbstractModuleController implements Configurable
         // Mapping status / link:
 //        $linkUrl = '../cm1/index.php?table=tx_templavoila_tmplobj&uid=' . $toObj->getKey() . '&_reload_from=1&id=' . $this->getId() . '&returnUrl=' . rawurlencode(GeneralUtility::getIndpEnv('REQUEST_URI'));
 
-
-
         $fileReference = GeneralUtility::getFileAbsFileName($toObj->getFileref());
         $combinedIdentifier = str_replace('fileadmin/', '1:', $toObj->getFileref());
 
@@ -886,7 +884,6 @@ class MainController extends AbstractModuleController implements Configurable
         if (is_array($fileRecord)) {
             $file = $fileRepository->findByUid($fileRecord['uid']);
         }
-
 
         $linkUrl = BackendUtility::getModuleUrl(
             'tv_contextmenu1',
