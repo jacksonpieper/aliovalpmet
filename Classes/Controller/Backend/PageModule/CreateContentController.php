@@ -186,7 +186,7 @@ class CreateContentController extends AbstractModuleController
             );
 
             $wizardItem['url'] = $newRecordLink;
-            $wizardItem['icon'] = $this->moduleTemplate->getIconFactory()->getIcon($wizardItem['icon'], Icon::SIZE_DEFAULT);
+            $wizardItem['icon'] = $this->moduleTemplate->getIconFactory()->getIcon($wizardItem['iconIdentifier'], Icon::SIZE_DEFAULT);
 
             $groupedWizardItems[$groupKey]['items'][] = $wizardItem;
         }
@@ -220,10 +220,7 @@ class CreateContentController extends AbstractModuleController
      */
     public function getWizardItems()
     {
-        $wizards = [];
-        if (is_array($this->config)) {
-            $wizards = $this->config['wizardItems.'];
-        }
+        $wizards = BackendUtility::getModTSconfig($this->getId(), 'mod.wizards.newContentElement.wizardItems')['properties'];
         $pluginWizards = $this->wizard_appendWizards($wizards['elements.']);
         $fceWizards = $this->wizard_renderFCEs();
         $appendWizards = array_merge((array) $fceWizards, (array) $pluginWizards);
