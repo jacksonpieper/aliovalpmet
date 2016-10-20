@@ -96,6 +96,7 @@ class CreateContentController extends AbstractModuleController
         }
 
         $view->assign('title', static::getLanguageService()->getLL('newContentElement'));
+        $view->assign('description', static::getLanguageService()->getLL('sel1'));
         $this->moduleTemplate->setContent($view->render());
         $response->getBody()->write($this->moduleTemplate->renderContent());
         return $response;
@@ -191,7 +192,30 @@ class CreateContentController extends AbstractModuleController
             $groupedWizardItems[$groupKey]['items'][] = $wizardItem;
         }
 
-        return $groupedWizardItems;
+        $index = 0;
+        $menuItems = [];
+        foreach ($groupedWizardItems as $groupedWizardItem) {
+            $menuItems[$index]['label'] = $groupedWizardItem['header'];
+            $menuItems[$index]['content'] = '';
+
+            foreach ($groupedWizardItem['items'] as $wizardItem) {
+                $menuItems[$index]['content'] .= '<div class="media">
+    <a href="' . $wizardItem['url'] . '">
+        <div class="media-left">
+            ' . (string)$wizardItem['icon'] . '
+        </div>
+        <div class="media-body">
+            <strong>' . $wizardItem['title'] . '</strong><br>
+            ' . $wizardItem['description'] . '
+        </div>
+    </a>
+</div>';
+            }
+
+            $index++;
+        }
+
+        return $this->getModuleTemplate()->getDynamicTabMenu($menuItems, 'TEMPLAVOILA:pagemodule:sidebar', 1, false, true, true);
     }
 
     /**
