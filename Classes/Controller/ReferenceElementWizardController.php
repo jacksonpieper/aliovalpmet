@@ -17,8 +17,6 @@ namespace Extension\Templavoila\Controller;
 
 use Extension\Templavoila\Service\ApiService;
 use Extension\Templavoila\Traits\BackendUser;
-use Extension\Templavoila\Traits\DatabaseConnection;
-use Extension\Templavoila\Traits\LanguageService;
 use TYPO3\CMS\Backend\Module\AbstractFunctionModule;
 use TYPO3\CMS\Backend\Tree\View\PageTreeView;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
@@ -34,8 +32,6 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 class ReferenceElementWizardController extends AbstractFunctionModule
 {
     use BackendUser;
-    use DatabaseConnection;
-    use LanguageService;
 
     /**
      * @var array
@@ -61,11 +57,11 @@ class ReferenceElementWizardController extends AbstractFunctionModule
     {
         return [
             'depth' => [
-                0 => static::getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:labels.depth_0'),
-                1 => static::getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:labels.depth_1'),
-                2 => static::getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:labels.depth_2'),
-                3 => static::getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:labels.depth_3'),
-                999 => static::getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:labels.depth_infi'),
+                0 => $this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:labels.depth_0'),
+                1 => $this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:labels.depth_1'),
+                2 => $this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:labels.depth_2'),
+                3 => $this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:labels.depth_3'),
+                999 => $this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:labels.depth_infi'),
             ]
         ];
     }
@@ -78,7 +74,7 @@ class ReferenceElementWizardController extends AbstractFunctionModule
     public function main()
     {
         $this->modSharedTSconfig = BackendUtility::getModTSconfig($this->pObj->id, 'mod.SHARED');
-        $this->allAvailableLanguages = $this->getAvailableLanguages(0, true, true, true);
+        $this->allAvailableLanguages = $this->getAvailableLanguages(0, true, true);
 
         $this->templavoilaAPIObj = GeneralUtility::makeInstance(ApiService::class);
 
@@ -216,13 +212,13 @@ class ReferenceElementWizardController extends AbstractFunctionModule
                     $translatedLanguagesArr = $this->getAvailableLanguages($pageUid);
                     foreach ($translatedLanguagesArr as $lUid => $lArr) {
                         if ($lUid >= 0) {
-                            $lDef[] = $langDisable ? 'lDEF' : ($langChildren ? 'lDEF' : 'l' . $lArr['ISOcode']);
-                            $vDef[] = $langDisable ? 'vDEF' : ($langChildren ? 'v' . $lArr['ISOcode'] : 'vDEF');
+                            $lDef[] = $langDisable ? 'lDEF' : ($langChildren ? 'lDEF' : 'l' . $lArr['language_isocode']);
+                            $vDef[] = $langDisable ? 'vDEF' : ($langChildren ? 'v' . $lArr['language_isocode'] : 'vDEF');
                         }
                     }
                 } elseif ($rLang = $this->allAvailableLanguages[$elementRecord[$langField]]) {
-                    $lDef[] = $langDisable ? 'lDEF' : ($langChildren ? 'lDEF' : 'l' . $rLang['ISOcode']);
-                    $vDef[] = $langDisable ? 'vDEF' : ($langChildren ? 'v' . $rLang['ISOcode'] : 'vDEF');
+                    $lDef[] = $langDisable ? 'lDEF' : ($langChildren ? 'lDEF' : 'l' . $rLang['language_isocode']);
+                    $vDef[] = $langDisable ? 'vDEF' : ($langChildren ? 'v' . $rLang['language_isocode'] : 'vDEF');
                 } else {
                     $lDef[] = 'lDEF';
                     $vDef[] = 'vDEF';
@@ -265,7 +261,7 @@ class ReferenceElementWizardController extends AbstractFunctionModule
         $dummyArr = [];
         $referencedElementsArr = $this->templavoilaAPIObj->flexform_getListOfSubElementUidsRecursively('pages', $pid, $dummyArr);
 
-        $res = static::getDatabaseConnection()->exec_SELECTquery(
+        $res = $this->getDatabaseConnection()->exec_SELECTquery(
             'uid, header, bodytext, sys_language_uid, colPos',
             'tt_content',
             'pid=' . (int)$pid .
@@ -279,10 +275,10 @@ class ReferenceElementWizardController extends AbstractFunctionModule
         );
 
         if ($res) {
-            while (($elementRecordArr = static::getDatabaseConnection()->sql_fetch_assoc($res)) !== false) {
+            while (($elementRecordArr = $this->getDatabaseConnection()->sql_fetch_assoc($res)) !== false) {
                 $elementRecordsArr[$elementRecordArr['uid']] = $elementRecordArr;
             }
-            static::getDatabaseConnection()->sql_free_result($res);
+            $this->getDatabaseConnection()->sql_free_result($res);
         }
 
         return $elementRecordsArr;
@@ -292,20 +288,18 @@ class ReferenceElementWizardController extends AbstractFunctionModule
      * Get available languages
      *
      * @param int $id
-     * @param bool $onlyIsoCoded
      * @param bool $setDefault
      * @param bool $setMulti
-     *
      * @return array
      */
-    protected function getAvailableLanguages($id = 0, $onlyIsoCoded = true, $setDefault = true, $setMulti = false)
+    protected function getAvailableLanguages($id = 0, $setDefault = true, $setMulti = false)
     {
         $output = [];
         $excludeHidden = static::getBackendUser()->isAdmin() ? '1' : 'sys_language.hidden=0';
 
         if ($id) {
             $excludeHidden .= ' AND pages_language_overlay.deleted=0';
-            $res = static::getDatabaseConnection()->exec_SELECTquery(
+            $res = $this->getDatabaseConnection()->exec_SELECTquery(
                 'DISTINCT sys_language.*',
                 'pages_language_overlay,sys_language',
                 'pages_language_overlay.sys_language_uid=sys_language.uid AND pages_language_overlay.pid=' . (int)$id . ' AND ' . $excludeHidden,
@@ -313,7 +307,7 @@ class ReferenceElementWizardController extends AbstractFunctionModule
                 'sys_language.title'
             );
         } else {
-            $res = static::getDatabaseConnection()->exec_SELECTquery(
+            $res = $this->getDatabaseConnection()->exec_SELECTquery(
                 'sys_language.*',
                 'sys_language',
                 $excludeHidden,
@@ -325,8 +319,8 @@ class ReferenceElementWizardController extends AbstractFunctionModule
         if ($setDefault) {
             $output[0] = [
                 'uid' => 0,
-                'title' => strlen($this->modSharedTSconfig['properties']['defaultLanguageLabel']) ? $this->modSharedTSconfig['properties']['defaultLanguageLabel'] : static::getLanguageService()->getLL('defaultLanguage'),
-                'ISOcode' => 'DEF',
+                'title' => strlen($this->modSharedTSconfig['properties']['defaultLanguageLabel']) ? $this->modSharedTSconfig['properties']['defaultLanguageLabel'] : $this->getLanguageService()->getLL('defaultLanguage'),
+                'language_isocode' => 'DEF',
                 'flagIcon' => strlen($this->modSharedTSconfig['properties']['defaultLanguageFlag']) ? $this->modSharedTSconfig['properties']['defaultLanguageFlag'] : null
             ];
         }
@@ -334,31 +328,26 @@ class ReferenceElementWizardController extends AbstractFunctionModule
         if ($setMulti) {
             $output[-1] = [
                 'uid' => -1,
-                'title' => static::getLanguageService()->getLL('multipleLanguages'),
-                'ISOcode' => 'DEF',
+                'title' => $this->getLanguageService()->getLL('multipleLanguages'),
+                'language_isocode' => 'DEF',
                 'flagIcon' => 'multiple',
             ];
         }
 
-        while (($row = static::getDatabaseConnection()->sql_fetch_assoc($res)) !== false) {
+        while (($row = $this->getDatabaseConnection()->sql_fetch_assoc($res)) !== false) {
+            /** @var $row array */
             BackendUtility::workspaceOL('sys_language', $row);
             $output[$row['uid']] = $row;
 
-            if ($row['static_lang_isocode']) {
-                $staticLangRow = BackendUtility::getRecord('static_languages', $row['static_lang_isocode'], 'lg_iso_2');
-                if ($staticLangRow['lg_iso_2']) {
-                    $output[$row['uid']]['ISOcode'] = $staticLangRow['lg_iso_2'];
-                }
+            if ($row['language_isocode']) {
+                $languageIsocode = strtoupper($row['language_isocode']);
+                $output[$row['uid']]['language_isocode'] = $languageIsocode;
             }
             if (strlen($row['flag'])) {
                 $output[$row['uid']]['flagIcon'] = $row['flag'];
             }
-
-            if ($onlyIsoCoded && !$output[$row['uid']]['ISOcode']) {
-                unset($output[$row['uid']]);
-            }
         }
-        static::getDatabaseConnection()->sql_free_result($res);
+        $this->getDatabaseConnection()->sql_free_result($res);
 
         return $output;
     }
