@@ -1,4 +1,7 @@
 <?php
+
+namespace Extension\Templavoila\Clipboard;
+
 /*
  * This file is part of the TYPO3 CMS project.
  *
@@ -14,20 +17,20 @@
 
 use Extension\Templavoila\Controller\Backend\PageModule\MainController;
 use Extension\Templavoila\Traits\LanguageService;
-use TYPO3\CMS\Backend\Clipboard\Clipboard;
+use TYPO3\CMS\Backend\Clipboard\Clipboard as CoreClipboard;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
- * Class tx_templavoila_mod1_clipboard
+ * Class Clipboard
  */
-class tx_templavoila_mod1_clipboard
+class Clipboard
 {
     use LanguageService;
 
     /**
-     * @var Clipboard
+     * @var CoreClipboard
      */
     private $clipboard;
 
@@ -45,7 +48,7 @@ class tx_templavoila_mod1_clipboard
         $this->controller = $controller;
 
         // Initialize the t3lib clipboard:
-        $this->clipboard = GeneralUtility::makeInstance(Clipboard::class);
+        $this->clipboard = GeneralUtility::makeInstance(CoreClipboard::class);
         $this->clipboard->initializeClipboard();
         $this->clipboard->lockToNormal();
 

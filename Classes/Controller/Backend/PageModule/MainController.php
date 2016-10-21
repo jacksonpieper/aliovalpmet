@@ -14,6 +14,7 @@
 
 namespace Extension\Templavoila\Controller\Backend\PageModule;
 
+use Extension\Templavoila\Clipboard\Clipboard;
 use Extension\Templavoila\Controller\Backend\AbstractModuleController;
 use Extension\Templavoila\Controller\Backend\Configurable;
 use Extension\Templavoila\Controller\Backend\PageModule\Renderer\DoktypeRenderer;
@@ -162,7 +163,7 @@ class MainController extends AbstractModuleController implements Configurable
     /**
      * Instance of clipboard class
      *
-     * @var \tx_templavoila_mod1_clipboard
+     * @var Clipboard
      */
     private $clipboardObj;
 
@@ -352,7 +353,7 @@ class MainController extends AbstractModuleController implements Configurable
         $this->rootElementTable = is_array($this->altRoot) ? $this->altRoot['table'] : 'pages';
         $this->rootElementUid = is_array($this->altRoot) ? $this->altRoot['uid'] : $this->getId();
         $this->rootElementRecord = BackendUtility::getRecordWSOL($this->rootElementTable, $this->rootElementUid, '*');
-        $this->clipboardObj = GeneralUtility::makeInstance(\tx_templavoila_mod1_clipboard::class, $this);
+        $this->clipboardObj = new Clipboard($this);
 
         $view = $this->initializeView('Backend/PageModule/Main/Index');
 
