@@ -13,11 +13,12 @@
  * The TYPO3 project - inspiring people to share!
  */
 
+namespace Extension\Templavoila;
+
 use Extension\Templavoila\Controller\Backend\PageModule\MainController;
 use Extension\Templavoila\Domain\Model\AbstractDataStructure;
 use Extension\Templavoila\Domain\Repository\DataStructureRepository;
 use Extension\Templavoila\Domain\Repository\TemplateRepository;
-use Extension\Templavoila\Templavoila;
 use Extension\Templavoila\Traits\BackendUser;
 use Extension\Templavoila\Traits\LanguageService;
 use TYPO3\CMS\Backend\Template\DocumentTemplate;
@@ -28,9 +29,9 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Impexp\ImportExport;
 
 /**
- * Class tx_templavoila_mod1_wizards
+ * Class Extension\Templavoila\Wizards
  */
-class tx_templavoila_mod1_wizards
+class Wizards
 {
     use BackendUser;
     use LanguageService;

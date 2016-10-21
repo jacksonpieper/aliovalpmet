@@ -24,6 +24,7 @@ use Extension\Templavoila\Controller\Backend\PageModule\Renderer\SidebarRenderer
 use Extension\Templavoila\Domain\Repository\SysLanguageRepository;
 use Extension\Templavoila\Service\ApiService;
 use Extension\Templavoila\Templavoila;
+use Extension\Templavoila\Wizards;
 use Psr\Http\Message\ResponseInterface;
 use TYPO3\CMS\Backend\Template\Components\ButtonBar;
 use TYPO3\CMS\Backend\Template\DocumentTemplate;
@@ -461,7 +462,7 @@ class MainController extends AbstractModuleController implements Configurable
         $cmd = GeneralUtility::_GP('cmd');
 
         if ($cmd === 'crPage') { // create a new page
-            $wizardsObj = GeneralUtility::makeInstance(\tx_templavoila_mod1_wizards::class, $this);
+            $wizardsObj = GeneralUtility::makeInstance(Wizards::class, $this);
             $content .= $wizardsObj->renderWizard_createNewPage(GeneralUtility::_GP('positionPid'));
         } else {
             if (!isset($pageInfoArr['uid'])) {
