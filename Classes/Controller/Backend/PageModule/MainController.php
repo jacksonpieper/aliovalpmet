@@ -242,7 +242,7 @@ class MainController extends AbstractModuleController implements Configurable
     {
         parent::__construct();
         static::getLanguageService()->includeLLFile('EXT:lang/locallang_core.xlf');
-        static::getLanguageService()->includeLLFile('EXT:templavoila/mod1/locallang.xlf');
+        static::getLanguageService()->includeLLFile('EXT:templavoila/Resources/Private/Language/PageModule/MainController/locallang.xlf');
 
         $this->extConf = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf'][Templavoila::EXTKEY]);
 

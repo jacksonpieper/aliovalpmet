@@ -108,7 +108,7 @@ class CreateContentController extends AbstractModuleController
     public function init(array $params = [])
     {
         static::getLanguageService()->includeLLFile('EXT:lang/locallang_misc.xlf');
-        static::getLanguageService()->includeLLFile('EXT:templavoila/mod1/locallang_db_new_content_el.xlf');
+        static::getLanguageService()->includeLLFile('EXT:templavoila/Resources/Private/Language/PageModule/CreateContentController/locallang.xlf');
 
         $this->parentRecord = $params['parentRecord'];
         $this->altRoot = $params['altRoot'];
