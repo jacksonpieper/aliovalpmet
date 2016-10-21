@@ -147,3 +147,8 @@ $iconRegistry->registerIcon(
         'name' => 'unlink'
     ]
 );
+
+\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::registerAjaxHandler(
+    'TemplaVoila::PageModule::moveRecord',
+    \Extension\Templavoila\Controller\Backend\PageModule\AjaxController::class . '->moveRecord'
+);

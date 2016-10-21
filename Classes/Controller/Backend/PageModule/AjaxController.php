@@ -57,4 +57,25 @@ class AjaxController
         $response->getBody()->write(json_encode($data));
         return $response->withHeader('Content-Type', 'application/json; charset=utf-8');
     }
+
+    /**
+     * @param array $params
+     */
+    public function moveRecord(array $params = [])
+    {
+        /** @var ServerRequest $request */
+        $request = $params['request'];
+
+        $source = $request->getQueryParams()['source'];
+        $destination = $request->getQueryParams()['destination'];
+
+        if ($source === null || $destination === null) {
+            return;
+        }
+
+        $sourcePointer = $this->apiService->flexform_getPointerFromString($source);
+        $destinationPointer = $this->apiService->flexform_getPointerFromString($destination);
+
+        $this->apiService->moveElement($sourcePointer, $destinationPointer);
+    }
 }

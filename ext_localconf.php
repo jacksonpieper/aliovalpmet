@@ -75,9 +75,6 @@ $GLOBALS['TYPO3_CONF_VARS']['EXTCONF'][$_EXTKEY]['mod1']['renderPreviewContent']
 $GLOBALS['TYPO3_CONF_VARS']['EXTCONF'][$_EXTKEY]['mod1']['renderPreviewContent']['div'] = 'EXT:templavoila/Classes/Controller/Preview/NullController.php:&Extension\Templavoila\Controller\Preview\NullController';
 $GLOBALS['TYPO3_CONF_VARS']['EXTCONF'][$_EXTKEY]['mod1']['renderPreviewContent']['templavoila_pi1'] = 'EXT:templavoila/Classes/Controller/Preview/NullController.php:&Extension\Templavoila\Controller\Preview\NullController';
 
-$GLOBALS['TYPO3_CONF_VARS']['BE']['AJAX']['tx_templavoila_mod1_ajax::moveRecord'] =
-    'EXT:templavoila/mod1/class.tx_templavoila_mod1_ajax.php:tx_templavoila_mod1_ajax->moveRecord';
-
 $GLOBALS['TYPO3_CONF_VARS']['BE']['AJAX']['tx_templavoila_cm1_ajax::getDisplayFileContent'] =
     'EXT:templavoila/cm1/class.tx_templavoila_cm1_ajax.php:tx_templavoila_cm1_ajax->getDisplayFileContent';
 
