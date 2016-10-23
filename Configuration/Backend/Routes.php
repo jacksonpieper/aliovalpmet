@@ -11,6 +11,11 @@ return [
         'access' => 'public',
         'target' => \Extension\Templavoila\Controller\Backend\Module\Administration\FileController::class . '::processRequest'
     ],
+    'tv_mod_xmlcontroller' => [
+        'path' => '/templavoila/xml/show',
+        'access' => 'public',
+        'target' => \Extension\Templavoila\Controller\Backend\XmlController::class . '::processRequest'
+    ],
     'tv_mod_pagemodule_contentcontroller' => [
         'path' => '/templavoila/pagemodule/content',
         'access' => 'public',

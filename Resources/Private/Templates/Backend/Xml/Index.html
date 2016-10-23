@@ -1,0 +1,27 @@
+{namespace tv=Extension\Templavoila\ViewHelpers}
+<f:if condition="{currentXmlIsClean}">
+    <f:then>
+        <tv:highlightXml xml="{currentXml}" />
+    </f:then>
+    <f:else>
+
+        <div class="panel panel-default">
+            <div class="panel-heading">{tv:ll( index:'current')}</div>
+            <div class="panel-body"><tv:highlightXml xml="{currentXml}" /></div>
+        </div>
+
+        <div class="panel panel-default">
+            <div class="panel-heading">{tv:ll( index:'clean')}</div>
+            <div class="panel-body"><tv:highlightXml xml="{cleanXml}" /></div>
+        </div>
+
+        <div class="panel panel-default">
+            <div class="panel-heading">{tv:ll( index:'diff')}</div>
+            <div class="panel-body">
+                {diff->f:format.raw()}
+            </div>
+        </div>
+
+        <a href="{cleanActionUrl}" class="btn btn-primary">{tv:ll( index:'cleanUp')}</a>
+    </f:else>
+</f:if>

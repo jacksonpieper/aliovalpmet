@@ -126,13 +126,21 @@ class OutlineRenderer implements Renderable
                         $recRow = BackendUtility::getRecordWSOL($entry['table'], $entry['uid']);
                     }
 
+                    $xmlUrl = BackendUtility::getModuleUrl(
+                        'tv_mod_xmlcontroller',
+                        [
+                            'uid' => $entry['uid'],
+                            'table' => $entry['table'],
+                            'field_flex' => 'tx_templavoila_flex'
+                        ]
+                    );
+
                     // Render status:
-                    $xmlUrl = '../cm2/index.php?viewRec[table]=' . $entry['table'] . '&viewRec[uid]=' . $entry['uid'] . '&viewRec[field_flex]=tx_templavoila_flex';
                     if (md5($recRow['tx_templavoila_flex']) !== md5($newXML)) {
-                        $status = $this->controller->getModuleTemplate()->icons(1) . '<a href="' . htmlspecialchars($xmlUrl) . '">' . static::getLanguageService()->getLL('outline_status_dirty', 1) . '</a><br/>';
+                        $status = $this->controller->getModuleTemplate()->icons(1) . '<a href="' . $xmlUrl . '">' . static::getLanguageService()->getLL('outline_status_dirty', 1) . '</a><br/>';
                         $xmlCleanCandidates = true;
                     } else {
-                        $status = $this->controller->getModuleTemplate()->icons(-1) . '<a href="' . htmlspecialchars($xmlUrl) . '">' . static::getLanguageService()->getLL('outline_status_clean', 1) . '</a><br/>';
+                        $status = $this->controller->getModuleTemplate()->icons(-1) . '<a href="' . $xmlUrl . '">' . static::getLanguageService()->getLL('outline_status_clean', 1) . '</a><br/>';
                     }
                 }
             }

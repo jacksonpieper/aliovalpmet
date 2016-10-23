@@ -16,6 +16,7 @@ namespace Extension\Templavoila\Service\ClickMenu;
  */
 
 use Extension\Templavoila\Utility\GeneralUtility;
+use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Backend\Utility\IconUtility;
 
 /**
@@ -95,10 +96,14 @@ class MainClickMenu
 
             // Adding link for "View: Flexform XML" (admin only):
             if (GeneralUtility::getBackendUser()->isAdmin() && $isTVelement) {
-                $url = $extensionRelativePath . 'cm2/index.php?' .
-                    '&viewRec[table]=' . rawurlencode($table) .
-                    '&viewRec[uid]=' . $uid .
-                    '&viewRec[field_flex]=tx_templavoila_flex';
+                $url = BackendUtility::getModuleUrl(
+                    'tv_mod_xmlcontroller',
+                    [
+                        'uid' => $uid,
+                        'table' => $table,
+                        'field_flex' => 'tx_templavoila_flex'
+                    ]
+                );
 
                 $localItems[] = $backRef->linkItem(
                     GeneralUtility::getLanguageService()->getLLL('cm1_viewflexformxml', $LL, true),
