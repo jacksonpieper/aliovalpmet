@@ -119,7 +119,7 @@ class MainController extends AbstractModuleController implements Configurable
     {
         parent::__construct();
 
-        static::getLanguageService()->includeLLFile('EXT:templavoila/mod2/locallang.xlf');
+        static::getLanguageService()->includeLLFile('EXT:templavoila/Resources/Private/Language/AdministrationModule/MainController/locallang.xlf');
         $this->dataStructureRepository = GeneralUtility::makeInstance(DataStructureRepository::class);
         $this->templateRepository = GeneralUtility::makeInstance(TemplateRepository::class);
     }
@@ -303,7 +303,7 @@ class MainController extends AbstractModuleController implements Configurable
             // Draw the header.
 
             // Add custom styles
-            $this->doc->styleSheetFile2 = ExtensionManagementUtility::extRelPath(Templavoila::EXTKEY) . 'mod2/styles.css';
+            $this->doc->styleSheetFile2 = ExtensionManagementUtility::extRelPath(Templavoila::EXTKEY) . 'Resources/Public/StyleSheet/AdministrationModule.css';
 
             // Adding classic jumpToUrl function, needed for the function menu.
             // Also, the id in the parent frameset is configured.
@@ -2188,7 +2188,7 @@ class MainController extends AbstractModuleController implements Configurable
                 if (isset($this->modTSconfig['properties']['newTvSiteFile'])) {
                     $inFile = GeneralUtility::getFileAbsFileName($this->modTSconfig['properties']['newTVsiteTemplate']);
                 } else {
-                    $inFile = ExtensionManagementUtility::extPath(Templavoila::EXTKEY) . 'mod2/new_tv_site.xml';
+                    $inFile = ExtensionManagementUtility::extPath(Templavoila::EXTKEY) . 'Resources/Private/new_tv_site.xml';
                 }
                 if (@is_file($inFile) && $import->loadFile($inFile, 1)) {
                     $import->importData($this->importPageUid);
@@ -2259,7 +2259,7 @@ class MainController extends AbstractModuleController implements Configurable
             $outputString .= static::getLanguageService()->getLL('newsitewizard_step3ready') . '
                 <br/>
                 <br/>
-                <img src="mapbody_animation.gif" style="border: 2px black solid;" alt=""><br/>
+                <img src="' . ExtensionManagementUtility::extPath(Templavoila::EXTKEY, 'Resources/Public/Image/mapbody_animation.gif') . '" style="border: 2px black solid;" alt=""><br/>
                 <br/>
                 <br/><input type="submit" value="' . static::getLanguageService()->getLL('newsitewizard_startmapping', true) . '" onclick="' . htmlspecialchars('document.location=\'' . $url . '\'; return false;') . '" />
             ';
@@ -2277,7 +2277,7 @@ class MainController extends AbstractModuleController implements Configurable
         $url = '../cm1/index.php?table=tx_templavoila_tmplobj&uid=' . $this->wizardData['templateObjectId'] . '&SET[selectHeaderContent]=1&_reload_from=1&id=' . $this->getId() . '&returnUrl=' . rawurlencode('../mod2/index.php?SET[wiz_step]=5');
         $outputString = static::getLanguageService()->getLL('newsitewizard_headerinclude') . '
             <br/>
-            <img src="maphead_animation.gif" style="border: 2px black solid;" alt=""><br/>
+            <img src="' . ExtensionManagementUtility::extPath(Templavoila::EXTKEY, 'Resources/Public/Image/maphead_animation.gif') . '" style="border: 2px black solid;" alt=""><br/>
             <br/>
             <br/><input type="submit" value="' . static::getLanguageService()->getLL('newsitewizard_headerselect') . '" onclick="' . htmlspecialchars('document.location=\'' . $url . '\'; return false;') . '" />
             ';

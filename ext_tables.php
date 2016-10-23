@@ -38,7 +38,7 @@ if (TYPO3_MODE === 'BE') {
             'access' => 'group,user',
             'routeTarget' => \Extension\Templavoila\Controller\Backend\AdministrationModule\MainController::class . '::processRequest',
             'labels' => [
-                'll_ref' => 'LLL:EXT:templavoila/mod2/locallang_mod.xlf',
+                'll_ref' => 'LLL:EXT:templavoila/Resources/Private/Language/AdministrationModule/locallang_mod.xlf',
                 'tabs_images' => [
                     'tab' => 'EXT:templavoila/Resources/Public/Icon/Modules/AdministrationModuleIcon.png'
                 ]
