@@ -106,15 +106,6 @@ if (TYPO3_MODE === 'BE') {
 \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::allowTableOnStandardPages('tx_templavoila_datastructure');
 \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::allowTableOnStandardPages('tx_templavoila_tmplobj');
 
-\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addPlugin(
-    [
-        'LLL:EXT:templavoila/Resources/Private/Language/locallang_db.xlf:tt_content.CType_pi1',
-        $_EXTKEY . '_pi1',
-        'EXT:' . $_EXTKEY . '/Resources/Public/Icon/icon_fce_ce.png'
-    ],
-    'CType'
-);
-
 // complex condition to make sure the icons are available during frontend editing...
 if (
     TYPO3_MODE === 'BE' ||

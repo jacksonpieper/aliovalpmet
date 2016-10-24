@@ -107,3 +107,41 @@ if ($_EXTCONF['enable.']['selectDataStructure']) {
     'templavoila_pi1',
     'after:subheader'
 );
+
+call_user_func(function () {
+    $groupLabel = 'LLL:EXT:templavoila/Resources/Private/Language/locallang_db.xlf:tt_content.CType.div.templavoila';
+
+    $additionalCTypeItem = [
+        'LLL:EXT:templavoila/Resources/Private/Language/locallang_db.xlf:tt_content.CType_pi1',
+        'templavoila_pi1',
+        'templavoila-type-fce'
+    ];
+
+    $existingCTypeItems = (array)$GLOBALS['TCA']['tt_content']['columns']['CType']['config']['items'];
+    $groupFound = false;
+    $groupPosition = false;
+    foreach ($existingCTypeItems as $position => $item) {
+        if ($item[0] === $groupLabel) {
+            $groupFound = true;
+            $groupPosition = $position;
+            break;
+        }
+    }
+
+    if ($groupFound && $groupPosition) {
+        // add the new CType item below CType
+        array_splice($GLOBALS['TCA']['tt_content']['columns']['CType']['config']['items'], $groupPosition, 0, [0 => $additionalCTypeItem]);
+    } else {
+        // nothing found, add two items (group + new CType) at the bottom of the list
+        \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addTcaSelectItem(
+            'tt_content',
+            'CType',
+            [$groupLabel, '--div--']
+        );
+        \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addTcaSelectItem(
+            'tt_content',
+            'CType',
+            $additionalCTypeItem
+        );
+    }
+});

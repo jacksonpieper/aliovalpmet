@@ -78,6 +78,9 @@
 			<trans-unit id="tt_content.tx_templavoila_flex" xml:space="preserve">
 				<source>Content:</source>
 			</trans-unit>
+			<trans-unit id="tt_content.CType.div.templavoila" xml:space="preserve">
+				<source>TemplaVoilà</source>
+			</trans-unit>
 			<trans-unit id="tt_content.CType_pi1" xml:space="preserve">
 				<source>Flexible Content</source>
 			</trans-unit>
