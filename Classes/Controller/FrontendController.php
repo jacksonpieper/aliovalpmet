@@ -1,4 +1,7 @@
 <?php
+
+namespace Extension\Templavoila\Controller;
+
 /*
  * This file is part of the TYPO3 CMS project.
  *
@@ -20,7 +23,7 @@ use Extension\Templavoila\Templavoila;
  * @author Kasper Skaarhoj <kasper@typo3.com>
  * @coauthor Robert Lemke <robert@typo3.org>
  */
-class tx_templavoila_pi1 extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
+class FrontendController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
 {
 
     /**
@@ -87,7 +90,7 @@ class tx_templavoila_pi1 extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
      *    table = fe_users
      *    renderObj = USER
      *    renderObj {
-     * userFunc = tx_templavoila_pi1->main_record
+     * userFunc = tx_templavoila_pi1->renderRecord
      * ds = 2
      * to = 4
      * table = fe_users
@@ -112,7 +115,7 @@ class tx_templavoila_pi1 extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
      * @todo Create TS element with this functionality?
      * @todo Support sheet selector?
      */
-    public function main_record($content, $conf)
+    public function renderRecord($content, $conf)
     {
         $this->initVars($conf);
 
@@ -134,7 +137,7 @@ class tx_templavoila_pi1 extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
                 try {
                     $dsObj = $dsRepo->getDatastructureByUidOrFilename($data['tx_templavoila_ds']);
                     $DS = $dsObj->getDataprotArray();
-                } catch (InvalidArgumentException $e) {
+                } catch (\InvalidArgumentException $e) {
                     $DS = null;
                 }
                 if (is_array($DS)) {
@@ -167,7 +170,7 @@ class tx_templavoila_pi1 extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
      *
      * @return string HTML content for the Page Template elements.
      */
-    public function main_page($content, $conf)
+    public function renderPage($content, $conf)
     {
         $this->initVars($conf);
 
@@ -251,7 +254,7 @@ class tx_templavoila_pi1 extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
             /** @var \Extension\Templavoila\Domain\Model\DataStructure $dsObj */
             $dsObj = $dsRepo->getDatastructureByUidOrFilename($row['tx_templavoila_ds']);
             $DS = $dsObj->getDataprotArray();
-        } catch (InvalidArgumentException $e) {
+        } catch (\InvalidArgumentException $e) {
             $DS = null;
         }
 
@@ -878,7 +881,7 @@ class tx_templavoila_pi1 extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
      *
      * @return string rendered section index
      */
-    public function tvSectionIndex($content, $conf)
+    public function renderSectionIndex($content, $conf)
     {
         $ceField = $this->cObj->stdWrap($conf['indexField'], $conf['indexField.']);
         $pids = isset($conf['select.']['pidInList.'])

@@ -11,7 +11,7 @@
 		},
 		"classmap": [
 			"cm1/",
-			"pi1/"
+			"Compatibility/"
 		]
 	},
 	"repositories": [

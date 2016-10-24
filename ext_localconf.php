@@ -1,17 +1,32 @@
 <?php
 
 defined('TYPO3_MODE') or die();
+/** @var string $_EXTKEY */
 
 // unserializing the configuration so we can use it here:
 $_EXTCONF = unserialize($_EXTCONF);
 
 // Adding the two plugins TypoScript:
-\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addPItoST43(
+\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addTypoScript(
     $_EXTKEY,
-    'pi1/class.tx_templavoila_pi1.php',
-    '_pi1',
-    'CType',
-    1
+    'setup',
+    '# Setting ' . $_EXTKEY . ' plugin TypoScript
+plugin.tx_' . $_EXTKEY . '_pi1 = USER
+plugin.tx_' . $_EXTKEY . '_pi1 {
+    userFunc = ' . \Extension\Templavoila\Controller\FrontendController::class . '->main
+}'
+);
+
+\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addTypoScript(
+    $_EXTKEY,
+    'setup',
+    '# Setting ' . $_EXTKEY . ' plugin TypoScript
+tt_content.' . $_EXTKEY . '_pi1' . ' = COA
+tt_content.' . $_EXTKEY . '_pi1' . ' {
+    10 =< lib.stdheader
+    20 =< plugin.tx_' . $_EXTKEY . '_pi1' . '
+}',
+    'defaultContentRendering'
 );
 
 $tvSetup = ['plugin.tx_templavoila_pi1.disableExplosivePreview = 1'];
