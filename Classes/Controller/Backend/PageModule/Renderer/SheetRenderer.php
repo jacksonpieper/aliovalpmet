@@ -19,6 +19,7 @@ use Extension\Templavoila\Domain\Model\Template;
 use Extension\Templavoila\Domain\Repository\TemplateRepository;
 use Extension\Templavoila\Traits\BackendUser;
 use Extension\Templavoila\Traits\LanguageService;
+use Extension\Templavoila\Utility\PermissionUtility;
 use TYPO3\CMS\Backend\Template\DocumentTemplate;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Backend\Utility\IconUtility;
@@ -199,7 +200,7 @@ class SheetRenderer implements Renderable
                 }
             }
         }
-        $calcPerms = $this->controller->getCalcPerms($pid);
+        $calcPerms = PermissionUtility::getCompiledPermissions($pid);
 
         $canEditElement = static::getBackendUser()->isPSet($calcPerms, 'pages', 'editcontent');
         $canEditContent = static::getBackendUser()->isPSet($this->controller->calcPerms, 'pages', 'editcontent');

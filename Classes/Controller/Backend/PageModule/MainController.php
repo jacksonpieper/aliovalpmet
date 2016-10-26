@@ -24,6 +24,7 @@ use Extension\Templavoila\Controller\Backend\PageModule\Renderer\SidebarRenderer
 use Extension\Templavoila\Domain\Repository\SysLanguageRepository;
 use Extension\Templavoila\Service\ApiService;
 use Extension\Templavoila\Templavoila;
+use Extension\Templavoila\Utility\PermissionUtility;
 use Extension\Templavoila\Wizards;
 use Psr\Http\Message\ResponseInterface;
 use TYPO3\CMS\Backend\Template\Components\ButtonBar;
@@ -193,11 +194,6 @@ class MainController extends AbstractModuleController implements Configurable
      * @var int
      */
     private $previewTitleMaxLen = 50;
-
-    /**
-     * @var array
-     */
-    private static $calcPermCache = [];
 
     /**
      * @var FlashMessageService
@@ -380,7 +376,7 @@ class MainController extends AbstractModuleController implements Configurable
                 $pid = $this->getId();
             }
 
-            $this->calcPerms = $this->getCalcPerms($pid);
+            $this->calcPerms = PermissionUtility::getCompiledPermissions($pid);
 
             // Define the root element record:
             if ($this->rootElementRecord['t3ver_oid'] && $this->rootElementRecord['pid'] < 0) {
@@ -663,17 +659,17 @@ class MainController extends AbstractModuleController implements Configurable
         }
 
         // We show a warning if the user may edit the pagecontent and is not permitted to edit the "content" fields at the same time
-        if (!static::getBackendUser()->isAdmin() && $this->modTSconfig['properties']['enableContentAccessWarning']) {
-            if (!($this->hasBasicEditRights())) {
-                /** @var FlashMessage $message */
-                $message = GeneralUtility::makeInstance(
-                    FlashMessage::class,
-                    static::getLanguageService()->getLL('missing_edit_right_detail'),
-                    static::getLanguageService()->getLL('missing_edit_right'),
-                    FlashMessage::INFO
-                );
-                $this->flashMessageService->getMessageQueueByIdentifier('ext.templavoila')->enqueue($message);
-            }
+        if (!PermissionUtility::hasBasicEditRights($this->rootElementTable, $this->rootElementRecord)
+            && $this->modTSconfig['properties']['enableContentAccessWarning']
+        ) {
+            /** @var FlashMessage $message */
+            $message = GeneralUtility::makeInstance(
+                FlashMessage::class,
+                static::getLanguageService()->getLL('missing_edit_right_detail'),
+                static::getLanguageService()->getLL('missing_edit_right'),
+                FlashMessage::INFO
+            );
+            $this->flashMessageService->getMessageQueueByIdentifier('ext.templavoila')->enqueue($message);
         }
 
         // Display the content as outline or the nested page structure:
@@ -752,7 +748,7 @@ class MainController extends AbstractModuleController implements Configurable
         if ($label) {
             $class = $linkClass ? $linkClass : 'tpm-edit';
             $pid = $table === 'pages' ? $uid : $usePid;
-            $calcPerms = $pid === 0 ? $this->calcPerms : $this->getCalcPerms($pid);
+            $calcPerms = $pid === 0 ? $this->calcPerms : PermissionUtility::getCompiledPermissions($pid);
 
             if (($table === 'pages' && ($calcPerms & 2) ||
                     $table !== 'pages' && ($calcPerms & 16)) &&
@@ -817,7 +813,7 @@ class MainController extends AbstractModuleController implements Configurable
     {
         if ($label) {
             $pid = $table === 'pages' ? $uid : $usePid;
-            $calcPerms = $pid === 0 ? $this->calcPerms : $this->getCalcPerms($pid);
+            $calcPerms = $pid === 0 ? $this->calcPerms : PermissionUtility::getCompiledPermissions($pid);
 
             if (($table === 'pages' && ($calcPerms & 2) ||
                     $table !== 'pages' && ($calcPerms & 16)) &&
@@ -1168,57 +1164,6 @@ class MainController extends AbstractModuleController implements Configurable
     }
 
     /**
-     * @param int $pid
-     *
-     * @return int
-     */
-    public function getCalcPerms($pid)
-    {
-        if (!isset(static::$calcPermCache[$pid])) {
-            $row = BackendUtility::getRecordWSOL('pages', $pid);
-            $calcPerms = static::getBackendUser()->calcPerms($row);
-            if (!$this->hasBasicEditRights('pages', $row)) {
-                // unsetting the "edit content" right - which is 16
-                $calcPerms = $calcPerms & ~16;
-            }
-            static::$calcPermCache[$pid] = $calcPerms;
-        }
-
-        return static::$calcPermCache[$pid];
-    }
-
-    /**
-     * @param string $table
-     * @param array $record
-     *
-     * @return bool
-     */
-    protected function hasBasicEditRights($table = null, array $record = null)
-    {
-        if ($table === null) {
-            $table = $this->rootElementTable;
-        }
-
-        if (empty($record)) {
-            $record = $this->rootElementRecord;
-        }
-
-        if (static::getBackendUser()->isAdmin()) {
-            $hasEditRights = true;
-        } else {
-            $id = $record[($table === 'pages' ? 'uid' : 'pid')];
-            $pageRecord = BackendUtility::getRecordWSOL('pages', $id);
-
-            $mayEditPage = static::getBackendUser()->doesUserHaveAccess($pageRecord, 16);
-            $mayModifyTable = GeneralUtility::inList(static::getBackendUser()->groupData['tables_modify'], $table);
-            $mayEditContentField = GeneralUtility::inList(static::getBackendUser()->groupData['non_exclude_fields'], $table . ':tx_templavoila_flex');
-            $hasEditRights = $mayEditPage && $mayModifyTable && $mayEditContentField;
-        }
-
-        return $hasEditRights;
-    }
-
-    /**
      * @return array
      */
     public function getDefaultSettings()
@@ -1364,7 +1309,7 @@ class MainController extends AbstractModuleController implements Configurable
      */
     public function getPid()
     {
-        return $this->rootElementUid_pidForContent;
+        return (int)$this->rootElementUid_pidForContent;
     }
 
     /**
