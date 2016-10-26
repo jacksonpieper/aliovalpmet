@@ -494,128 +494,128 @@ class SheetRenderer implements Renderable
                 continue;
             }
 
-                $fieldContent = $fieldValuesContent[$vKey];
+            $fieldContent = $fieldValuesContent[$vKey];
 
-                $cellContent = '';
+            $cellContent = '';
 
-                // Create flexform pointer pointing to "before the first sub element":
-                $subElementPointer = [
-                    'table' => $elementContentTreeArr['el']['table'],
-                    'uid' => $elementContentTreeArr['el']['uid'],
-                    'sheet' => $sheet,
-                    'sLang' => $lKey,
-                    'field' => $fieldID,
-                    'vLang' => $vKey,
-                    'position' => 0
-                ];
+            // Create flexform pointer pointing to "before the first sub element":
+            $subElementPointer = [
+                'table' => $elementContentTreeArr['el']['table'],
+                'uid' => $elementContentTreeArr['el']['uid'],
+                'sheet' => $sheet,
+                'sLang' => $lKey,
+                'field' => $fieldID,
+                'vLang' => $vKey,
+                'position' => 0
+            ];
 
-                $maxItemsReached = false;
-                if (isset($elementContentTreeArr['previewData']['sheets'][$sheet][$fieldID]['TCEforms']['config']['maxitems'])) {
-                    $maxCnt = (int)$elementContentTreeArr['previewData']['sheets'][$sheet][$fieldID]['TCEforms']['config']['maxitems'];
-                    $maxItemsReached = is_array($fieldContent['el_list']) && count($fieldContent['el_list']) >= $maxCnt;
+            $maxItemsReached = false;
+            if (isset($elementContentTreeArr['previewData']['sheets'][$sheet][$fieldID]['TCEforms']['config']['maxitems'])) {
+                $maxCnt = (int)$elementContentTreeArr['previewData']['sheets'][$sheet][$fieldID]['TCEforms']['config']['maxitems'];
+                $maxItemsReached = is_array($fieldContent['el_list']) && count($fieldContent['el_list']) >= $maxCnt;
 
-                    if ($maxItemsReached) {
-                        /** @var FlashMessage $flashMessage */
-                        $flashMessage = GeneralUtility::makeInstance(
-                            FlashMessage::class,
-                            '',
-                            sprintf(
-                                static::getLanguageService()->getLL('maximal_content_elements'),
-                                $maxCnt,
-                                $elementContentTreeArr['previewData']['sheets'][$sheet][$fieldID]['tx_templavoila']['title']
-                            ),
-                            FlashMessage::INFO
-                        );
-                        $this->flashMessageService->getMessageQueueByIdentifier('ext.templavoila')->enqueue($flashMessage);
-                    }
+                if ($maxItemsReached) {
+                    /** @var FlashMessage $flashMessage */
+                    $flashMessage = GeneralUtility::makeInstance(
+                        FlashMessage::class,
+                        '',
+                        sprintf(
+                            static::getLanguageService()->getLL('maximal_content_elements'),
+                            $maxCnt,
+                            $elementContentTreeArr['previewData']['sheets'][$sheet][$fieldID]['tx_templavoila']['title']
+                        ),
+                        FlashMessage::INFO
+                    );
+                    $this->flashMessageService->getMessageQueueByIdentifier('ext.templavoila')->enqueue($flashMessage);
                 }
+            }
 
-                $canCreateNew = $canEditContent && !$maxItemsReached;
+            $canCreateNew = $canEditContent && !$maxItemsReached;
 
-                $canDragDrop = !$maxItemsReached && $canEditContent &&
-                    $elementContentTreeArr['previewData']['sheets'][$sheet][$fieldID]['tx_templavoila']['enableDragDrop'] !== '0' &&
-                    $this->controller->modTSconfig['properties']['enableDragDrop'] !== '0';
+            $canDragDrop = !$maxItemsReached && $canEditContent &&
+                $elementContentTreeArr['previewData']['sheets'][$sheet][$fieldID]['tx_templavoila']['enableDragDrop'] !== '0' &&
+                $this->controller->modTSconfig['properties']['enableDragDrop'] !== '0';
 
-                if (!MainController::isInTranslatorMode() && $canCreateNew) {
-                    $cellContent .= $this->controller->link_bottomControls($subElementPointer, $canCreateNew);
-                }
+            if (!MainController::isInTranslatorMode() && $canCreateNew) {
+                $cellContent .= $this->controller->link_bottomControls($subElementPointer, $canCreateNew);
+            }
 
-                // Render the list of elements (and possibly call itself recursively if needed):
-                if (is_array($fieldContent['el_list'])) {
-                    foreach ($fieldContent['el_list'] as $position => $subElementKey) {
-                        $subElementArr = $fieldContent['el'][$subElementKey];
+            // Render the list of elements (and possibly call itself recursively if needed):
+            if (is_array($fieldContent['el_list'])) {
+                foreach ($fieldContent['el_list'] as $position => $subElementKey) {
+                    $subElementArr = $fieldContent['el'][$subElementKey];
 
-                        if ((!$subElementArr['el']['isHidden'] || $this->controller->getSetting('tt_content_showHidden') !== '0') && $this->displayElement($subElementArr)) {
+                    if ((!$subElementArr['el']['isHidden'] || $this->controller->getSetting('tt_content_showHidden') !== '0') && $this->displayElement($subElementArr)) {
 
-                            // When "onlyLocalized" display mode is set and an alternative language gets displayed
-                            if (($this->controller->getSetting('langDisplayMode') === 'onlyLocalized') && $this->controller->getCurrentLanguageUid() > 0) {
+                        // When "onlyLocalized" display mode is set and an alternative language gets displayed
+                        if (($this->controller->getSetting('langDisplayMode') === 'onlyLocalized') && $this->controller->getCurrentLanguageUid() > 0) {
 
-                                // Default language element. Subsitute displayed element with localized element
-                                if (($subElementArr['el']['sys_language_uid'] === 0) && is_array($subElementArr['localizationInfo'][$this->controller->getCurrentLanguageUid()]) && ($localizedUid = $subElementArr['localizationInfo'][$this->controller->getCurrentLanguageUid()]['localization_uid'])) {
-                                    $localizedRecord = BackendUtility::getRecordWSOL('tt_content', $localizedUid, '*');
-                                    $tree = $this->controller->getApiService()->getContentTree('tt_content', $localizedRecord);
-                                    $subElementArr = $tree['tree'];
-                                }
+                            // Default language element. Subsitute displayed element with localized element
+                            if (($subElementArr['el']['sys_language_uid'] === 0) && is_array($subElementArr['localizationInfo'][$this->controller->getCurrentLanguageUid()]) && ($localizedUid = $subElementArr['localizationInfo'][$this->controller->getCurrentLanguageUid()]['localization_uid'])) {
+                                $localizedRecord = BackendUtility::getRecordWSOL('tt_content', $localizedUid, '*');
+                                $tree = $this->controller->getApiService()->getContentTree('tt_content', $localizedRecord);
+                                $subElementArr = $tree['tree'];
                             }
-                            $this->containedElements[$this->containedElementsPointer]++;
-
-                            // Modify the flexform pointer so it points to the position of the curren sub element:
-                            $subElementPointer['position'] = $position;
-
-                            if (!MainController::isInTranslatorMode()) {
-                                $cellContent .= '<div' . ($canDragDrop ? ' class="sortableItem tpm-element t3-page-ce inactive"' : ' class="tpm-element t3-page-ce inactive"') . ' id="' . $this->addSortableItem($this->controller->getApiService()->flexform_getStringFromPointer($subElementPointer), $canDragDrop) . '">';
-                            }
-
-                            $cellContent .= $this->render_framework_allSheets($subElementArr, $languageKey, $subElementPointer, $elementContentTreeArr['ds_meta']);
-
-                            if (!MainController::isInTranslatorMode() && $canCreateNew) {
-                                $cellContent .= $this->controller->link_bottomControls($subElementPointer, $canCreateNew);
-                            }
-
-                            if (!MainController::isInTranslatorMode()) {
-                                $cellContent .= '</div>';
-                            }
-                        } else {
-                            // Modify the flexform pointer so it points to the position of the curren sub element:
-                            $subElementPointer['position'] = $position;
-
-                            $cellId = $this->addSortableItem($this->controller->getApiService()->flexform_getStringFromPointer($subElementPointer), $canDragDrop);
-                            $cellFragment = '<div' . ($canDragDrop ? ' class="sortableItem tpm-element"' : ' class="tpm-element"') . ' id="' . $cellId . '"></div>';
-
-                            $cellContent .= $cellFragment;
                         }
+                        $this->containedElements[$this->containedElementsPointer]++;
+
+                        // Modify the flexform pointer so it points to the position of the curren sub element:
+                        $subElementPointer['position'] = $position;
+
+                        if (!MainController::isInTranslatorMode()) {
+                            $cellContent .= '<div' . ($canDragDrop ? ' class="sortableItem tpm-element t3-page-ce inactive"' : ' class="tpm-element t3-page-ce inactive"') . ' id="' . $this->addSortableItem($this->controller->getApiService()->flexform_getStringFromPointer($subElementPointer), $canDragDrop) . '">';
+                        }
+
+                        $cellContent .= $this->render_framework_allSheets($subElementArr, $languageKey, $subElementPointer, $elementContentTreeArr['ds_meta']);
+
+                        if (!MainController::isInTranslatorMode() && $canCreateNew) {
+                            $cellContent .= $this->controller->link_bottomControls($subElementPointer, $canCreateNew);
+                        }
+
+                        if (!MainController::isInTranslatorMode()) {
+                            $cellContent .= '</div>';
+                        }
+                    } else {
+                        // Modify the flexform pointer so it points to the position of the curren sub element:
+                        $subElementPointer['position'] = $position;
+
+                        $cellId = $this->addSortableItem($this->controller->getApiService()->flexform_getStringFromPointer($subElementPointer), $canDragDrop);
+                        $cellFragment = '<div' . ($canDragDrop ? ' class="sortableItem tpm-element"' : ' class="tpm-element"') . ' id="' . $cellId . '"></div>';
+
+                        $cellContent .= $cellFragment;
                     }
                 }
+            }
 
-                $tmpArr = $subElementPointer;
-                unset($tmpArr['position']);
-                $cellId = $this->addSortableItem($this->controller->getApiService()->flexform_getStringFromPointer($tmpArr), $canDragDrop);
-                $cellIdStr = ' id="' . $cellId . '"';
-                if ($canDragDrop) {
-                    $this->sortableContainers[] = $cellId;
-                }
+            $tmpArr = $subElementPointer;
+            unset($tmpArr['position']);
+            $cellId = $this->addSortableItem($this->controller->getApiService()->flexform_getStringFromPointer($tmpArr), $canDragDrop);
+            $cellIdStr = ' id="' . $cellId . '"';
+            if ($canDragDrop) {
+                $this->sortableContainers[] = $cellId;
+            }
 
-                // Add cell content to registers:
-                if ($flagRenderBeLayout === true) {
-                    $beTemplateCell = '<table width="100%" class="beTemplateCell">
-                    <tr>
-                        <td class="bgColor6 tpm-title-cell">' . static::getLanguageService()->sL($fieldContent['meta']['title'], 1) . '</td>
-                    </tr>
-                    <tr>
-                        <td ' . $cellIdStr . ' class="tpm-content-cell t3-page-ce-wrapper">' . $cellContent . '</td>
-                    </tr>
-                    </table>';
-                    $beTemplate = str_replace('###' . $fieldID . '###', $beTemplateCell, $beTemplate);
-                } else {
-                    $width = round(100 / count($elementContentTreeArr['sub'][$sheet][$lKey]));
-                    $cells[] = [
-                        'id' => $cellId,
-                        'idStr' => $cellIdStr,
-                        'title' => static::getLanguageService()->sL($fieldContent['meta']['title'], 1),
-                        'width' => $width,
-                        'content' => $cellContent
-                    ];
-                }
+            // Add cell content to registers:
+            if ($flagRenderBeLayout === true) {
+                $beTemplateCell = '<table width="100%" class="beTemplateCell">
+                <tr>
+                    <td class="bgColor6 tpm-title-cell">' . static::getLanguageService()->sL($fieldContent['meta']['title'], 1) . '</td>
+                </tr>
+                <tr>
+                    <td ' . $cellIdStr . ' class="tpm-content-cell t3-page-ce-wrapper">' . $cellContent . '</td>
+                </tr>
+                </table>';
+                $beTemplate = str_replace('###' . $fieldID . '###', $beTemplateCell, $beTemplate);
+            } else {
+                $width = round(100 / count($elementContentTreeArr['sub'][$sheet][$lKey]));
+                $cells[] = [
+                    'id' => $cellId,
+                    'idStr' => $cellIdStr,
+                    'title' => static::getLanguageService()->sL($fieldContent['meta']['title'], 1),
+                    'width' => $width,
+                    'content' => $cellContent
+                ];
+            }
         }
 
         if ($flagRenderBeLayout) {
