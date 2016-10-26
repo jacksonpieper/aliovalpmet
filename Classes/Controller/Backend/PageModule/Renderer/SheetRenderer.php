@@ -479,12 +479,21 @@ class SheetRenderer implements Renderable
             } catch (\Exception $e) {
             }
 
-            if (is_array($fieldValuesContent[$vKey]) && (
-                    $elementContentTreeArr['previewData']['sheets'][$sheet][$fieldID]['isMapped'] ||
-                    $elementContentTreeArr['previewData']['sheets'][$sheet][$fieldID]['type'] === 'no_map'
-                ) &&
-                $elementContentTreeArr['previewData']['sheets'][$sheet][$fieldID]['tx_templavoila']['preview'] !== 'disable'
-            ) {
+            if (!is_array($fieldValuesContent[$vKey])) {
+                continue;
+            }
+
+            if (isset($fieldValuesContent['tx_templavoila']['preview'])
+                && $fieldValuesContent['tx_templavoila']['preview'] === 'disable') {
+                continue;
+            }
+
+            if (($elementContentTreeArr['previewData']['sheets'][$sheet][$fieldID]['isMapped']
+                || $elementContentTreeArr['previewData']['sheets'][$sheet][$fieldID]['type'] === 'no_map'
+                ) === false) {
+                continue;
+            }
+
                 $fieldContent = $fieldValuesContent[$vKey];
 
                 $cellContent = '';
@@ -607,7 +616,6 @@ class SheetRenderer implements Renderable
                         'content' => $cellContent
                     ];
                 }
-            }
         }
 
         if ($flagRenderBeLayout) {
