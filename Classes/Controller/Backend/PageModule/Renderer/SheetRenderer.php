@@ -537,7 +537,7 @@ class SheetRenderer implements Renderable
                 $elementContentTreeArr['previewData']['sheets'][$sheet][$fieldID]['tx_templavoila']['enableDragDrop'] !== '0' &&
                 $this->controller->modTSconfig['properties']['enableDragDrop'] !== '0';
 
-            if (!MainController::isInTranslatorMode() && $canCreateNew) {
+            if (!PermissionUtility::isInTranslatorMode() && $canCreateNew) {
                 $cellContent .= $this->controller->link_bottomControls($subElementPointer, $canCreateNew);
             }
 
@@ -563,17 +563,17 @@ class SheetRenderer implements Renderable
                         // Modify the flexform pointer so it points to the position of the curren sub element:
                         $subElementPointer['position'] = $position;
 
-                        if (!MainController::isInTranslatorMode()) {
+                        if (!PermissionUtility::isInTranslatorMode()) {
                             $cellContent .= '<div' . ($canDragDrop ? ' class="sortableItem tpm-element t3-page-ce inactive"' : ' class="tpm-element t3-page-ce inactive"') . ' id="' . $this->addSortableItem($this->controller->getApiService()->flexform_getStringFromPointer($subElementPointer), $canDragDrop) . '">';
                         }
 
                         $cellContent .= $this->render_framework_allSheets($subElementArr, $languageKey, $subElementPointer, $elementContentTreeArr['ds_meta']);
 
-                        if (!MainController::isInTranslatorMode() && $canCreateNew) {
+                        if (!PermissionUtility::isInTranslatorMode() && $canCreateNew) {
                             $cellContent .= $this->controller->link_bottomControls($subElementPointer, $canCreateNew);
                         }
 
-                        if (!MainController::isInTranslatorMode()) {
+                        if (!PermissionUtility::isInTranslatorMode()) {
                             $cellContent .= '</div>';
                         }
                     } else {
@@ -725,7 +725,7 @@ class SheetRenderer implements Renderable
 
                             // Put together the records icon including content sensitive menu link wrapped around it:
                             $recordIcon_l10n = $this->controller->getModuleTemplate()->getIconFactory()->getIconForRecord('tt_content', $localizedRecordInfo['row'], Icon::SIZE_SMALL);
-                            if (!MainController::isInTranslatorMode()) {
+                            if (!PermissionUtility::isInTranslatorMode()) {
                                 $recordIcon_l10n = BackendUtility::wrapClickMenuOnIcon($recordIcon_l10n, 'tt_content', $localizedRecordInfo['uid'], 1, '&amp;callingScriptId=' . rawurlencode($this->doc->scriptID), 'new,copy,cut,pasteinto,pasteafter');
                             }
                             $l10nInfo =
@@ -738,7 +738,7 @@ class SheetRenderer implements Renderable
                             $l10nInfo .= '<br/>' . $localizedRecordInfo['content'];
 
                             list($flagLink_begin, $flagLink_end) = explode('|*|', $this->controller->link_edit('|*|', 'tt_content', $localizedRecordInfo['uid'], true));
-                            if (MainController::isInTranslatorMode()) {
+                            if (PermissionUtility::isInTranslatorMode()) {
                                 $l10nInfo .= '<br/>' . $flagLink_begin . '<em>' . static::getLanguageService()->getLL('clickToEditTranslation') . '</em>' . $flagLink_end;
                             }
 

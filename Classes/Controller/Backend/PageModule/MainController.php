@@ -1182,14 +1182,6 @@ class MainController extends AbstractModuleController implements Configurable
     }
 
     /**
-     * @return bool
-     */
-    public static function isInTranslatorMode()
-    {
-        return !static::getBackendUser()->checkLanguageAccess(0) && !static::getBackendUser()->isAdmin();
-    }
-
-    /**
      * @return \tx_templavoila_mod1_clipboard
      */
     public function getClipboard()

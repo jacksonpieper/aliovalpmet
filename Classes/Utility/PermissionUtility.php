@@ -73,6 +73,14 @@ final class PermissionUtility
         return $mayEditPage && $mayModifyTable && $mayEditContentField;
     }
 
+    /**
+     * @return bool
+     */
+    public static function isInTranslatorMode()
+    {
+        return !static::getBackendUser()->checkLanguageAccess(0) && !static::getBackendUser()->isAdmin();
+    }
+
     private function __construct()
     {
         // deliberately private

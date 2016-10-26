@@ -17,6 +17,7 @@ namespace Extension\Templavoila\Controller\Backend\PageModule\Renderer;
 use Extension\Templavoila\Controller\Backend\PageModule\MainController;
 use Extension\Templavoila\Traits\BackendUser;
 use Extension\Templavoila\Traits\LanguageService;
+use Extension\Templavoila\Utility\PermissionUtility;
 use TYPO3\CMS\Backend\Template\DocumentTemplate;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Configuration\FlexForm\FlexFormTools;
@@ -189,7 +190,7 @@ class OutlineRenderer implements Renderable
             $recordIcon = $contentTreeArr['el']['iconTag'];
         }
 
-        $titleBarLeftButtons = MainController::isInTranslatorMode() ? $recordIcon : BackendUtility::wrapClickMenuOnIcon($recordIcon, $contentTreeArr['el']['table'], $contentTreeArr['el']['uid'], 1, '&amp;callingScriptId=' . rawurlencode($this->doc->scriptID), 'new,copy,cut,pasteinto,pasteafter,delete');
+        $titleBarLeftButtons = PermissionUtility::isInTranslatorMode() ? $recordIcon : BackendUtility::wrapClickMenuOnIcon($recordIcon, $contentTreeArr['el']['table'], $contentTreeArr['el']['uid'], 1, '&amp;callingScriptId=' . rawurlencode($this->doc->scriptID), 'new,copy,cut,pasteinto,pasteafter,delete');
         $titleBarLeftButtons .= $this->getRecordStatHookValue($contentTreeArr['el']['table'], $contentTreeArr['el']['uid']);
 
         $languageUid = 0;
@@ -198,7 +199,7 @@ class OutlineRenderer implements Renderable
         switch ($contentTreeArr['el']['table']) {
             case 'pages':
                 $iconEdit = $this->controller->getModuleTemplate()->getIconFactory()->getIcon('actions-document-open', Icon::SIZE_SMALL);
-                $titleBarLeftButtons .= MainController::isInTranslatorMode() ? '' : $this->controller->link_edit($iconEdit, $contentTreeArr['el']['table'], $contentTreeArr['el']['uid']);
+                $titleBarLeftButtons .= PermissionUtility::isInTranslatorMode() ? '' : $this->controller->link_edit($iconEdit, $contentTreeArr['el']['table'], $contentTreeArr['el']['uid']);
                 $titleBarRightButtons = '';
 
                 $addGetVars = ($this->controller->getCurrentLanguageUid() ? '&L=' . $this->controller->getCurrentLanguageUid() : '');
@@ -209,7 +210,7 @@ class OutlineRenderer implements Renderable
             case 'tt_content':
                 $languageUid = $contentTreeArr['el']['sys_language_uid'];
 
-                if (!MainController::isInTranslatorMode()) {
+                if (!PermissionUtility::isInTranslatorMode()) {
                     // Create CE specific buttons:
                     $iconMakeLocal = $this->controller->getModuleTemplate()->getIconFactory()->getIcon('extensions-templavoila-makelocalcopy', Icon::SIZE_SMALL);
                     $linkMakeLocal = !$elementBelongsToCurrentPage ? $this->controller->link_makeLocal($iconMakeLocal, $parentPointer) : '';
@@ -326,7 +327,7 @@ class OutlineRenderer implements Renderable
 
                             // Put together the records icon including content sensitive menu link wrapped around it:
                             $recordIcon_l10n = $this->getRecordStatHookValue('tt_content', $olrow['uid']) . $this->controller->getModuleTemplate()->getIconFactory()->getIconForRecord('tt_content', $olrow);
-                            if (!MainController::isInTranslatorMode()) {
+                            if (!PermissionUtility::isInTranslatorMode()) {
                                 $recordIcon_l10n = BackendUtility::wrapClickMenuOnIcon($recordIcon_l10n, 'tt_content', $olrow['uid'], 1, '&amp;callingScriptId=' . rawurlencode($this->doc->scriptID), 'new,copy,cut,pasteinto,pasteafter');
                             }
 
@@ -386,7 +387,7 @@ class OutlineRenderer implements Renderable
                                 'position' => 0
                             ];
 
-                            if (!MainController::isInTranslatorMode()) {
+                            if (!PermissionUtility::isInTranslatorMode()) {
                                 // "New" and "Paste" icon:
                                 $newIcon = $this->controller->getModuleTemplate()->getIconFactory()->getIcon('actions-document-new', Icon::SIZE_SMALL);
                                 $controls = $this->controller->link_new($newIcon, $subElementPointer);
@@ -415,7 +416,7 @@ class OutlineRenderer implements Renderable
                                         // Modify the flexform pointer so it points to the position of the curren sub element:
                                         $subElementPointer['position'] = $position;
 
-                                        if (!MainController::isInTranslatorMode()) {
+                                        if (!PermissionUtility::isInTranslatorMode()) {
                                             // "New" and "Paste" icon:
                                             $newIcon = $this->controller->getModuleTemplate()->getIconFactory()->getIcon('actions-document-new', Icon::SIZE_SMALL);
                                             $controls = $this->controller->link_new($newIcon, $subElementPointer);
