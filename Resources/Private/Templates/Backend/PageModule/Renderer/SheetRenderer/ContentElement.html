@@ -1,0 +1,46 @@
+{namespace core = TYPO3\CMS\Core\ViewHelpers}
+<!-- ContentElement.html -->
+<!-- ⇩ -->
+<div class="t3-page-ce sortableItem inactive tpm-element">
+    <div class="t3-page-ce-dragitem" id="{hash}">
+        <div class="t3-page-ce-header t3-page-ce-header-draggable t3js-page-ce-draghandle ui-sortable-handle tpm-titlebar">
+            <div class="t3-page-ce-header-icons-right">
+                <div class="btn-toolbar">
+                    <div class="btn-group btn-group-sm" role="group">
+                        {titleBarRightButtons->f:format.raw()}
+                    </div>
+                </div>
+            </div>
+            <div class="t3-page-ce-header-icons-left">
+                {titleBarLeftButtons->f:format.raw()}
+                <f:if condition="{languageFlagIconIdentifier}">
+                    <span title="{languageLabel}">
+                        <core:icon identifier="{languageFlagIconIdentifier}" />
+                    </span>
+                </f:if>
+            </div>
+        </div>
+        <div id="ContentElementBody" class="t3-page-ce-body">
+            <div class="t3-page-ce-body-inner">
+                <f:if condition="{warnings}">
+                    <div class="tpm-warnings">{warnings->f:format.raw()}</div>
+                </f:if>
+                <!-- Content -->
+                <!-- ⇩ -->
+                {content->f:format.raw()}
+                <!-- ⇧ -->
+                <!-- Content -->
+                <div class="tpm-preview">{previewContent->f:format.raw()}</div>
+                {localizationInfoTable->f:format.raw()}
+            </div>
+        </div>
+        <div id="ContentElementFooter" class="t3js-page-new-ce t3-page-ce-wrapper-new-ce">
+            {bottomControls->f:format.raw()}
+        </div>
+    </div>
+    <f:if condition="{isSortable}">
+        <div class="t3-page-ce-dropzone-available t3js-page-ce-dropzone-available"></div>
+    </f:if>
+</div>
+<!-- ⇧ -->
+<!-- ContentElement.html -->

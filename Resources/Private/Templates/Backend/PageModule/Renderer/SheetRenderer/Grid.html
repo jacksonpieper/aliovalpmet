@@ -1,0 +1,27 @@
+<!-- Grid.html -->
+<!-- ⇩ -->
+<div class="t3-grid-container">
+    <table border="0" cellspacing="0" cellpadding="0" width="100%" class="t3-page-columns t3-grid-table t3js-page-columns">
+        <colgroup>
+            <f:for each="{columns}" as="column">
+                <col style="width:{column.relativeWidth}%">
+            </f:for>
+        </colgroup>
+        <tbody>
+        <tr>
+            <f:for each="{columns}" as="column">
+            <td valign="top" data-colpos="1" data-language-uid="0" class="t3js-page-lang-column-0 t3js-page-column t3-grid-cell t3-page-column t3-page-column-1">
+                <div class="t3-page-column-header">
+                    <div class="t3-page-column-header-label">{column.title}</div>
+                </div>
+                <div data-colpos="1" data-language-uid="0" class="t3js-sortable t3js-sortable-lang t3js-sortable-lang-0 t3-page-ce-wrapper t3-page-ce-empty ui-sortable">
+                    {column.content->f:format.raw()}
+                </div>
+            </td>
+            </f:for>
+        </tr>
+        </tbody>
+    </table>
+</div>
+<!-- ⇧ -->
+<!-- Grid.html -->
