@@ -16,7 +16,6 @@ namespace Schnitzler\Templavoila\Controller\Backend\PageModule\Renderer\Sidebar;
 
 use Schnitzler\Templavoila\Controller\Backend\PageModule\MainController;
 use Schnitzler\Templavoila\Controller\Backend\PageModule\Renderer\Renderable;
-use Schnitzler\Templavoila\Controller\Backend\PageModule\Renderer\SidebarRenderer;
 use Schnitzler\Templavoila\Templavoila;
 use Schnitzler\Templavoila\Traits\BackendUser;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
@@ -42,8 +41,6 @@ class AdvancedFunctionsTab implements Renderable
     private $view;
 
     /**
-     * @return SidebarRenderer
-     *
      * @throws \UnexpectedValueException
      * @throws \InvalidArgumentException
      *

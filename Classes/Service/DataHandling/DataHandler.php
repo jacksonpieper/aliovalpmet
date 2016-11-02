@@ -46,9 +46,6 @@ class DataHandler
      */
     protected $extConf = [];
 
-    /**
-     * @return \Schnitzler\Templavoila\Service\DataHandling\DataHandler
-     */
     public function __construct()
     {
         $this->extConf = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf'][Templavoila::EXTKEY]);

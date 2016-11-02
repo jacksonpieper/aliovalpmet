@@ -16,7 +16,6 @@ namespace Schnitzler\Templavoila\Controller\Backend\PageModule\Renderer\Sidebar;
 
 use Schnitzler\Templavoila\Controller\Backend\PageModule\MainController;
 use Schnitzler\Templavoila\Controller\Backend\PageModule\Renderer\Renderable;
-use Schnitzler\Templavoila\Controller\Backend\PageModule\Renderer\SidebarRenderer;
 use Schnitzler\Templavoila\Traits\LanguageService;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -34,8 +33,6 @@ class HeaderFieldsTab implements Renderable
     private $controller;
 
     /**
-     * @return SidebarRenderer
-     *
      * @throws \UnexpectedValueException
      * @throws \InvalidArgumentException
      *

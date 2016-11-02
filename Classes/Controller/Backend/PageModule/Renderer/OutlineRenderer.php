@@ -55,8 +55,6 @@ class OutlineRenderer implements Renderable
     private $doc;
 
     /**
-     * @return OutlineRenderer
-     *
      * @param MainController $controller
      */
     public function __construct(MainController $controller, array $contentTree)
@@ -308,8 +306,6 @@ class OutlineRenderer implements Renderable
      * @param array $contentTreeArr Part of the contentTreeArr for the element
      * @param array $entries Entries accumulated in this array (passed by reference)
      * @param int $indentLevel Indentation level
-     *
-     * @return string HTML
      *
      * @see render_framework_singleSheet()
      */

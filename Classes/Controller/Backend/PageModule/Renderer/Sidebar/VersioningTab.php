@@ -16,7 +16,6 @@ namespace Schnitzler\Templavoila\Controller\Backend\PageModule\Renderer\Sidebar;
 
 use Schnitzler\Templavoila\Controller\Backend\PageModule\MainController;
 use Schnitzler\Templavoila\Controller\Backend\PageModule\Renderer\Renderable;
-use Schnitzler\Templavoila\Controller\Backend\PageModule\Renderer\SidebarRenderer;
 use Schnitzler\Templavoila\Traits\LanguageService;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -34,8 +33,6 @@ class VersioningTab implements Renderable
     private $controller;
 
     /**
-     * @return SidebarRenderer
-     *
      * @param MainController $controller
      */
     public function __construct(MainController $controller)

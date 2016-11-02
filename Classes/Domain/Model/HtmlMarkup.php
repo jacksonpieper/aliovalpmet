@@ -286,9 +286,6 @@ class HtmlMarkup
      */
     public $searchPaths = [];
 
-    /**
-     * @return HtmlMarkup
-     */
     public function __construct()
     {
         // kept for compatibility reasons since references to this->tags are still present

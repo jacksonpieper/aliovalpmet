@@ -59,9 +59,6 @@ class UnusedContentElementComand extends CleanerCommand
      */
     protected $excludePageIdList = [];
 
-    /**
-     * @return \Schnitzler\Templavoila\Comand\UnusedContentElementComand
-     */
     public function __construct()
     {
         parent::__construct();

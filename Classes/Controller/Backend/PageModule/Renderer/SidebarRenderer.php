@@ -45,8 +45,6 @@ class SidebarRenderer
     private $sideBarItems = [];
 
     /**
-     * @return SidebarRenderer
-     *
      * @param MainController $controller
      */
     public function __construct(MainController $controller)

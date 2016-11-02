@@ -67,8 +67,6 @@ class ApiService
 
     /**
      * @param string $rootTable Usually the root table is "pages" but another table can be specified (eg. "tt_content")
-     *
-     * @return \Schnitzler\Templavoila\Service\ApiService
      */
     public function __construct($rootTable = 'pages')
     {

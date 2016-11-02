@@ -132,8 +132,6 @@ class SheetRenderer implements Renderable
     private $templateRepository;
 
     /**
-     * @return SheetRenderer
-     *
      * @param MainController $controller
      * @param array $contentTree
      */

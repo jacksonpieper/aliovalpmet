@@ -16,7 +16,6 @@ namespace Schnitzler\Templavoila\Controller\Backend\PageModule\Renderer\Sidebar;
 
 use Schnitzler\Templavoila\Controller\Backend\PageModule\MainController;
 use Schnitzler\Templavoila\Controller\Backend\PageModule\Renderer\Renderable;
-use Schnitzler\Templavoila\Controller\Backend\PageModule\Renderer\SidebarRenderer;
 use Schnitzler\Templavoila\Traits\BackendUser;
 use Schnitzler\Templavoila\Traits\DatabaseConnection;
 use Schnitzler\Templavoila\Traits\LanguageService;
@@ -57,8 +56,6 @@ class RecordsTab implements Renderable
     /**
      * @param MainController $controller
      * @param array $tables
-     *
-     * @return SidebarRenderer
      */
     public function __construct(MainController $controller, array $tables)
     {
