@@ -1183,7 +1183,7 @@ class MainController extends AbstractModuleController implements Configurable
     }
 
     /**
-     * @return \tx_templavoila_mod1_clipboard
+     * @return Clipboard
      */
     public function getClipboard()
     {
