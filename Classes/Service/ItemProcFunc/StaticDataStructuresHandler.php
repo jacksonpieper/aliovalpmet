@@ -126,7 +126,7 @@ class StaticDataStructuresHandler
      * @param array $params Parameters to the itemsProcFunc
      * @param \TYPO3\CMS\Backend\Form\FormEngine $pObj Calling object
      */
-    public function dataSourceItemsProcFunc(array &$params, \TYPO3\CMS\Backend\Form\FormEngine & $pObj)
+    public function dataSourceItemsProcFunc(array &$params, \TYPO3\CMS\Backend\Form\FormEngine $pObj)
     {
         $storagePid = $this->getStoragePid($params, $pObj);
         $scope = $this->getScope($params);

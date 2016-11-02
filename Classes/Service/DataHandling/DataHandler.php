@@ -70,7 +70,7 @@ class DataHandler
      * @param string $id The records id (if any)
      * @param \TYPO3\CMS\Core\DataHandling\DataHandler $reference Reference to the parent object (TCEmain)
      */
-    public function processDatamap_preProcessFieldArray(array &$incomingFieldArray, $table, $id, \TYPO3\CMS\Core\DataHandling\DataHandler &$reference)
+    public function processDatamap_preProcessFieldArray(array &$incomingFieldArray, $table, $id, \TYPO3\CMS\Core\DataHandling\DataHandler $reference)
     {
         if ($this->debug) {
             GeneralUtility::devLog('processDatamap_preProcessFieldArray', Templavoila::EXTKEY, 0, [$incomingFieldArray, $table, $id]);
@@ -543,7 +543,7 @@ page.10.disableExplosivePreview = 1
      * @param array &$incomingFieldArray Array with fields
      * @param BackendUserAuthentication &$beUser Current backend user for this operation
      */
-    protected function updateDataSourceFromTemplateObject($table, array &$incomingFieldArray, BackendUserAuthentication &$beUser)
+    protected function updateDataSourceFromTemplateObject($table, array &$incomingFieldArray, BackendUserAuthentication $beUser)
     {
         if (($table == 'pages' || $table == 'tt_content') &&
             isset($incomingFieldArray['tx_templavoila_to'])
@@ -564,7 +564,7 @@ page.10.disableExplosivePreview = 1
      * @param string $toField Template object field name in the $incomingFieldArray
      * @param BackendUserAuthentication $beUser Current backend user for this operation
      */
-    protected function updateDataSourceFieldFromTemplateObjectField(array &$incomingFieldArray, $dsField, $toField, BackendUserAuthentication &$beUser)
+    protected function updateDataSourceFieldFromTemplateObjectField(array &$incomingFieldArray, $dsField, $toField, BackendUserAuthentication $beUser)
     {
         $toId = $incomingFieldArray[$toField];
         if ((int)$toId == 0) {
