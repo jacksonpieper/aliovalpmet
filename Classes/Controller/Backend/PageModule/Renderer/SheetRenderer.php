@@ -27,7 +27,6 @@ use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Backend\Utility\IconUtility;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
-use TYPO3\CMS\Core\Messaging\FlashMessageService;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Fluid\View\StandaloneView;
@@ -96,11 +95,6 @@ class SheetRenderer implements Renderable
     private $visibleContentHookObjects = [];
 
     /**
-     * @var FlashMessageService
-     */
-    private $flashMessageService;
-
-    /**
      * @var bool
      */
     private static $visibleContentHookObjectsPrepared = false;
@@ -118,7 +112,6 @@ class SheetRenderer implements Renderable
     {
         $this->controller = $controller;
         $this->contentTree = $contentTree;
-        $this->flashMessageService = GeneralUtility::makeInstance(FlashMessageService::class);
         $this->templateRepository = GeneralUtility::makeInstance(TemplateRepository::class);
     }
 
@@ -533,14 +526,11 @@ class SheetRenderer implements Renderable
                 $vKey = $sheet->getValueKey(false);
             } else {
                 if (!static::getBackendUser()->isAdmin()) {
-                    /** @var FlashMessage $flashMessage */
-                    $flashMessage = GeneralUtility::makeInstance(
-                        FlashMessage::class,
+                    $this->controller->getModuleTemplate()->addFlashMessage(
                         static::getLanguageService()->getLL('page_structure_inherited_detail'),
                         static::getLanguageService()->getLL('page_structure_inherited'),
                         FlashMessage::INFO
                     );
-                    $this->flashMessageService->getMessageQueueByIdentifier('ext.templavoila')->enqueue($flashMessage);
                 }
             }
         }

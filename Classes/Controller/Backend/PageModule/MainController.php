@@ -34,7 +34,6 @@ use TYPO3\CMS\Core\Http\Response;
 use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
-use TYPO3\CMS\Core\Messaging\FlashMessageService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Frontend\Page\PageRepository;
 
@@ -196,11 +195,6 @@ class MainController extends AbstractModuleController implements Configurable
     private $previewTitleMaxLen = 50;
 
     /**
-     * @var FlashMessageService
-     */
-    private $flashMessageService;
-
-    /**
      * Used for edit link of content elements
      *
      * @var array
@@ -243,7 +237,6 @@ class MainController extends AbstractModuleController implements Configurable
         $this->extConf = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf'][Templavoila::EXTKEY]);
 
         $this->doc = GeneralUtility::makeInstance(DocumentTemplate::class);
-        $this->flashMessageService = GeneralUtility::makeInstance(FlashMessageService::class);
         $this->sysLanguageRepository = GeneralUtility::makeInstance(SysLanguageRepository::class);
     }
 
@@ -400,13 +393,11 @@ class MainController extends AbstractModuleController implements Configurable
                 $title = BackendUtility::getRecordTitle('pages', $contentPage);
                 $linkToPid = 'index.php?id=' . (int)$this->rootElementRecord['content_from_pid'];
                 $link = htmlspecialchars($title) . ' (PID ' . (int)$this->rootElementRecord['content_from_pid'] . ')';
-                /** @var FlashMessage $flashMessage */
-                $flashMessage = new FlashMessage(
+                $this->moduleTemplate->addFlashMessage(
                     sprintf(static::getLanguageService()->getLL('content_from_pid_title'), $link),
                     null,
                     FlashMessage::INFO
                 );
-                $this->flashMessageService->getMessageQueueByIdentifier('ext.templavoila')->enqueue($flashMessage);
             }
             // Render "edit current page" (important to do before calling ->sideBarObj->render() - otherwise the translation tab is not rendered!
             $content .= $this->render_editPageScreen();
@@ -463,21 +454,17 @@ class MainController extends AbstractModuleController implements Configurable
             $content .= $wizardsObj->renderWizard_createNewPage(GeneralUtility::_GP('positionPid'));
         } else {
             if (!isset($pageInfoArr['uid'])) {
-                $flashMessage = GeneralUtility::makeInstance(
-                    FlashMessage::class,
+                $this->moduleTemplate->addFlashMessage(
                     static::getLanguageService()->getLL('page_not_found'),
                     static::getLanguageService()->getLL('title'),
                     FlashMessage::INFO
                 );
-                $content .= $flashMessage->render();
             } else {
-                $flashMessage = GeneralUtility::makeInstance(
-                    FlashMessage::class,
+                $this->moduleTemplate->addFlashMessage(
                     static::getLanguageService()->getLL('default_introduction'),
                     static::getLanguageService()->getLL('title'),
                     FlashMessage::INFO
                 );
-                $content .= $flashMessage->render();
             }
         }
 
@@ -664,13 +651,11 @@ class MainController extends AbstractModuleController implements Configurable
             && $this->modTSconfig['properties']['enableContentAccessWarning']
         ) {
             /** @var FlashMessage $message */
-            $message = GeneralUtility::makeInstance(
-                FlashMessage::class,
+            $this->getModuleTemplate()->addFlashMessage(
                 static::getLanguageService()->getLL('missing_edit_right_detail'),
                 static::getLanguageService()->getLL('missing_edit_right'),
                 FlashMessage::INFO
             );
-            $this->flashMessageService->getMessageQueueByIdentifier('ext.templavoila')->enqueue($message);
         }
 
         // Display the content as outline or the nested page structure:
