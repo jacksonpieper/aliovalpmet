@@ -246,17 +246,15 @@ class SheetRenderer implements Renderable
             if ((!$element['el']['isHidden'] || $this->controller->getSetting('tt_content_showHidden') !== '0') && $this->displayElement($element)) {
 
                 // When "onlyLocalized" display mode is set and an alternative language gets displayed
-                if (($this->controller->getSetting('langDisplayMode') === 'onlyLocalized') && $this->controller->getCurrentLanguageUid() > 0) {
-
-                    // Default language element. Subsitute displayed element with localized element
-                    if (((int)$element['el']['sys_language_uid'] === 0)
-                        && is_array($element['localizationInfo'][$this->controller->getCurrentLanguageUid()])
-                        && ($localizedUid = $element['localizationInfo'][$this->controller->getCurrentLanguageUid()]['localization_uid'])
-                    ) {
-                        $localizedRecord = BackendUtility::getRecordWSOL('tt_content', $localizedUid, '*');
-                        $tree = $this->controller->getApiService()->getContentTree('tt_content', $localizedRecord);
-                        $element = $tree['tree'];
-                    }
+                if ((int)$element['el']['sys_language_uid'] === 0
+                    && $this->controller->getSetting('langDisplayMode') === 'onlyLocalized'
+                    && $this->controller->getCurrentLanguageUid() > 0
+                    && is_array($element['localizationInfo'][$this->controller->getCurrentLanguageUid()])
+                    && ($localizedUid = $element['localizationInfo'][$this->controller->getCurrentLanguageUid()]['localization_uid'])
+                ) {
+                    $localizedRecord = BackendUtility::getRecordWSOL('tt_content', $localizedUid, '*');
+                    $tree = $this->controller->getApiService()->getContentTree('tt_content', $localizedRecord);
+                    $element = $tree['tree'];
                 }
                 $this->containedElements[$this->containedElementsPointer]++;
 

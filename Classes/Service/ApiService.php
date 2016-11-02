@@ -1288,12 +1288,11 @@ class ApiService
             // Traverse the data structure and search for oldStyleColumnNumber configurations:
             if (is_array($dataStructureArr)) {
                 foreach ($dataStructureArr as $sheetDataStructureArr) {
-                    if (is_array($sheetDataStructureArr['ROOT']['el'])) {
-                        if (is_array($sheetDataStructureArr['ROOT']['el'][$fieldName])) {
-                            if (isset($sheetDataStructureArr['ROOT']['el'][$fieldName]['tx_templavoila']['oldStyleColumnNumber'])) {
-                                return (int)$sheetDataStructureArr['ROOT']['el'][$fieldName]['tx_templavoila']['oldStyleColumnNumber'];
-                            }
-                        }
+                    if (is_array($sheetDataStructureArr['ROOT']['el'])
+                        && is_array($sheetDataStructureArr['ROOT']['el'][$fieldName])
+                        && isset($sheetDataStructureArr['ROOT']['el'][$fieldName]['tx_templavoila']['oldStyleColumnNumber'])
+                    ) {
+                        return (int)$sheetDataStructureArr['ROOT']['el'][$fieldName]['tx_templavoila']['oldStyleColumnNumber'];
                     }
                 }
             }

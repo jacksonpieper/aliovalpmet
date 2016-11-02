@@ -572,14 +572,14 @@ class FrontendController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
                     $cObj->setCurrentVal($dataValues[$key][$valueKey]);
 
                     // Render localized labels for 'select' elements:
-                    if ($DSelements[$key]['TCEforms']['config']['type'] == 'select') {
-                        if (substr($dataValues[$key][$valueKey], 0, 4) == 'LLL:') {
-                            $tempLangVal = $GLOBALS['TSFE']->sL($dataValues[$key][$valueKey]);
-                            if ($tempLangVal != '') {
-                                $dataValues[$key][$valueKey] = $tempLangVal;
-                            }
-                            unset($tempLangVal);
+                    if ($DSelements[$key]['TCEforms']['config']['type'] == 'select'
+                        && substr($dataValues[$key][$valueKey], 0, 4) == 'LLL:'
+                    ) {
+                        $tempLangVal = $GLOBALS['TSFE']->sL($dataValues[$key][$valueKey]);
+                        if ($tempLangVal != '') {
+                            $dataValues[$key][$valueKey] = $tempLangVal;
                         }
+                        unset($tempLangVal);
                     }
 
                     // TypoScript / TypoScriptObjPath:

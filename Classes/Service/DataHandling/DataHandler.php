@@ -169,15 +169,19 @@ class DataHandler
                 }
             }
         } else {
-            if ($table == 'sys_template' && $status == 'new') {
-                if (isset($fieldArray['root']) && $fieldArray['root'] === 1 && isset($fieldArray['clear']) && $fieldArray['clear'] === 3) {
-                    $fieldArray['config'] = '
+            if ($table == 'sys_template'
+                && $status == 'new'
+                && isset($fieldArray['root'])
+                && $fieldArray['root'] === 1
+                && isset($fieldArray['clear'])
+                && $fieldArray['clear'] === 3
+            ) {
+                $fieldArray['config'] = '
 page = PAGE
 page.10 = USER
 page.10.userFunc = Schnitzler\Templavoila\Controller\FrontendController->renderPage
 page.10.disableExplosivePreview = 1
                 ';
-                }
             }
         }
     }
