@@ -14,6 +14,7 @@
 
 namespace Schnitzler\Templavoila\Controller\Backend\AdministrationModule;
 
+use Psr\Http\Message\ResponseInterface;
 use Schnitzler\Templavoila\Controller\Backend\AbstractModuleController;
 use Schnitzler\Templavoila\Controller\Backend\Configurable;
 use Schnitzler\Templavoila\Domain\Model\AbstractDataStructure;
@@ -21,7 +22,6 @@ use Schnitzler\Templavoila\Domain\Repository\DataStructureRepository;
 use Schnitzler\Templavoila\Domain\Repository\TemplateRepository;
 use Schnitzler\Templavoila\Service\SyntaxHighlightingService;
 use Schnitzler\Templavoila\Templavoila;
-use Psr\Http\Message\ResponseInterface;
 use TYPO3\CMS\Backend\Template\DocumentTemplate;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Backend\Utility\IconUtility;

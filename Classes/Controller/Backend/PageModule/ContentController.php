@@ -14,11 +14,11 @@
 
 namespace Schnitzler\Templavoila\Controller\Backend\PageModule;
 
+use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\ServerRequestInterface;
 use Schnitzler\Templavoila\Domain\Repository\TemplateRepository;
 use Schnitzler\Templavoila\Service\ApiService;
 use Schnitzler\Templavoila\Templavoila;
-use Psr\Http\Message\ResponseInterface;
-use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Module\AbstractModule;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Http\Response;

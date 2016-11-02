@@ -14,10 +14,10 @@
 
 namespace Schnitzler\Templavoila\Controller\Backend\PageModule;
 
-use Schnitzler\Templavoila\Templavoila;
-use Schnitzler\Templavoila\Traits\DatabaseConnection;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
+use Schnitzler\Templavoila\Templavoila;
+use Schnitzler\Templavoila\Traits\DatabaseConnection;
 use TYPO3\CMS\Backend\Module\AbstractModule;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Http\Response;

@@ -14,10 +14,10 @@
 
 namespace Schnitzler\Templavoila\Controller\Backend\Module\Administration;
 
+use Psr\Http\Message\ResponseInterface;
 use Schnitzler\Templavoila\Controller\Backend\AbstractModuleController;
 use Schnitzler\Templavoila\Controller\Backend\Configurable;
 use Schnitzler\Templavoila\Domain\Model\HtmlMarkup;
-use Psr\Http\Message\ResponseInterface;
 use TYPO3\CMS\Core\Html\HtmlParser;
 use TYPO3\CMS\Core\Http\Response;
 use TYPO3\CMS\Core\Http\ServerRequest;

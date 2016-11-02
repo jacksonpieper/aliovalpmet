@@ -15,8 +15,8 @@ namespace Schnitzler\Templavoila\ViewHelpers;
  * The TYPO3 project - inspiring people to share!
  */
 
-use Schnitzler\Templavoila\Service\SyntaxHighlightingService;
 use InvalidArgumentException;
+use Schnitzler\Templavoila\Service\SyntaxHighlightingService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface;
 use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;

@@ -14,6 +14,7 @@
 
 namespace Schnitzler\Templavoila\Controller\Backend\PageModule;
 
+use Psr\Http\Message\ResponseInterface;
 use Schnitzler\Templavoila\Clipboard\Clipboard;
 use Schnitzler\Templavoila\Controller\Backend\AbstractModuleController;
 use Schnitzler\Templavoila\Controller\Backend\Configurable;
@@ -26,7 +27,6 @@ use Schnitzler\Templavoila\Service\ApiService;
 use Schnitzler\Templavoila\Templavoila;
 use Schnitzler\Templavoila\Utility\PermissionUtility;
 use Schnitzler\Templavoila\Wizards;
-use Psr\Http\Message\ResponseInterface;
 use TYPO3\CMS\Backend\Template\Components\ButtonBar;
 use TYPO3\CMS\Backend\Template\DocumentTemplate;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
