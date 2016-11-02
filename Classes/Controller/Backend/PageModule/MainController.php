@@ -224,6 +224,7 @@ class MainController extends AbstractModuleController implements Configurable
     {
         parent::__construct();
         static::getLanguageService()->includeLLFile('EXT:lang/locallang_core.xlf');
+        static::getLanguageService()->includeLLFile('EXT:lang/locallang_mod_web_list.xlf');
         static::getLanguageService()->includeLLFile('EXT:templavoila/Resources/Private/Language/PageModule/MainController/locallang.xlf');
 
         $this->extConf = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf'][Templavoila::EXTKEY]);
@@ -244,14 +245,14 @@ class MainController extends AbstractModuleController implements Configurable
     private function initializeButtons()
     {
         $documentViewButton = $this->moduleTemplate->getDocHeaderComponent()->getButtonBar()->makeLinkButton()
-            ->setTitle('title')
+            ->setTitle(static::getLanguageService()->getLL('labels.showPage'))
             ->setHref('#')
             ->setOnClick(BackendUtility::viewOnClick($this->getId()))
             ->setIcon($this->moduleTemplate->getIconFactory()->getIcon('actions-document-view', Icon::SIZE_SMALL))
         ;
 
         $pageOpenButton = $this->moduleTemplate->getDocHeaderComponent()->getButtonBar()->makeLinkButton()
-            ->setTitle('Edit page properties')
+            ->setTitle(static::getLanguageService()->getLL('editPage'))
             ->setHref(BackendUtility::getModuleUrl(
                 'record_edit',
                 [
