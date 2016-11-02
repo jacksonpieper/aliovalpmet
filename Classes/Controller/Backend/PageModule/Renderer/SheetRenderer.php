@@ -17,13 +17,12 @@ namespace Schnitzler\Templavoila\Controller\Backend\PageModule\Renderer;
 use Schnitzler\Templavoila\Controller\Backend\PageModule\MainController;
 use Schnitzler\Templavoila\Controller\Backend\PageModule\Renderer\SheetRenderer\Column;
 use Schnitzler\Templavoila\Controller\Backend\PageModule\Renderer\SheetRenderer\Sheet;
-use Schnitzler\Templavoila\Domain\Model\Template;
 use Schnitzler\Templavoila\Domain\Repository\TemplateRepository;
 use Schnitzler\Templavoila\Templavoila;
 use Schnitzler\Templavoila\Traits\BackendUser;
 use Schnitzler\Templavoila\Traits\LanguageService;
 use Schnitzler\Templavoila\Utility\PermissionUtility;
-use TYPO3\CMS\Backend\Template\DocumentTemplate;
+use TYPO3\CMS\Backend\Template\ModuleTemplate;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Backend\Utility\IconUtility;
 use TYPO3\CMS\Core\Imaging\Icon;
@@ -62,11 +61,6 @@ class SheetRenderer implements Renderable
     private $contentTree = [];
 
     /**
-     * @var DocumentTemplate
-     */
-    private $doc;
-
-    /**
      * @var array
      */
     private $renderPreviewObjects = [];
@@ -87,24 +81,9 @@ class SheetRenderer implements Renderable
     private $renderPreviewDataObjects = [];
 
     /**
-     * @var array
-     */
-    private $allItems = [];
-
-    /**
-     * @var array
-     */
-    private $sortableItems = [];
-
-    /**
      * @var int
      */
     private $previewTitleMaxLen = 50;
-
-    /**
-     * @var array
-     */
-    private $sortableContainers = [];
 
     /**
      * @var array
@@ -139,7 +118,6 @@ class SheetRenderer implements Renderable
     {
         $this->controller = $controller;
         $this->contentTree = $contentTree;
-        $this->doc = $controller->doc;
         $this->flashMessageService = GeneralUtility::makeInstance(FlashMessageService::class);
         $this->templateRepository = GeneralUtility::makeInstance(TemplateRepository::class);
     }
@@ -454,11 +432,11 @@ class SheetRenderer implements Renderable
         $warnings = '';
 
         if (!$this->controller->modTSconfig['properties']['disableReferencedElementNotification'] && !$elementBelongsToCurrentPage) {
-            $warnings .=  $this->doc->icons(1) . ' <em>' . htmlspecialchars(sprintf(static::getLanguageService()->getLL('info_elementfromotherpage'), $sheet->getUid(), $sheet->getPid())) . '</em><br />';
+            $warnings .= $this->controller->getModuleTemplate()->icons(ModuleTemplate::STATUS_ICON_NOTIFICATION) . ' <em>' . htmlspecialchars(sprintf(static::getLanguageService()->getLL('info_elementfromotherpage'), $sheet->getUid(), $sheet->getPid())) . '</em><br />';
         }
 
         if (!$this->controller->modTSconfig['properties']['disableElementMoreThanOnceWarning'] && $this->controller->getElementRegister()[$sheet->getUid()] > 1 && $this->controller->getLanguageParadigm() !== 'free') {
-            $warnings .= $this->doc->icons(2) . ' <em>' . htmlspecialchars(sprintf(static::getLanguageService()->getLL('warning_elementusedmorethanonce'), $this->controller->getElementRegister()[$sheet->getUid()], $sheet->getUid())) . '</em><br />';
+            $warnings .= $this->controller->getModuleTemplate()->icons(ModuleTemplate::STATUS_ICON_WARNING) . ' <em>' . htmlspecialchars(sprintf(static::getLanguageService()->getLL('warning_elementusedmorethanonce'), $this->controller->getElementRegister()[$sheet->getUid()], $sheet->getUid())) . '</em><br />';
         }
 
         // Displaying warning for container content (in default sheet - a limitation) elements if localization is enabled:
@@ -472,9 +450,9 @@ class SheetRenderer implements Renderable
             if ($sheet->hasLocalizableChildren()
                 && !$this->controller->modTSconfig['properties']['disableContainerElementLocalizationWarning_warningOnly']
             ) {
-                $warnings .= $this->doc->icons(2) . ' <em>' . static::getLanguageService()->getLL('warning_containerInheritance') . '</em><br />';
+                $warnings .= $this->controller->getModuleTemplate()->icons(ModuleTemplate::STATUS_ICON_WARNING) . ' <em>' . static::getLanguageService()->getLL('warning_containerInheritance') . '</em><br />';
             } else {
-                $warnings .= $this->doc->icons(3) . ' <em>' . static::getLanguageService()->getLL('warning_containerSeparate') . '</em><br />';
+                $warnings .= $this->controller->getModuleTemplate()->icons(ModuleTemplate::STATUS_ICON_ERROR) . ' <em>' . static::getLanguageService()->getLL('warning_containerSeparate') . '</em><br />';
             }
         }
 
@@ -688,7 +666,7 @@ class SheetRenderer implements Renderable
                             // Put together the records icon including content sensitive menu link wrapped around it:
                             $recordIcon_l10n = $this->controller->getModuleTemplate()->getIconFactory()->getIconForRecord('tt_content', $localizedRecordInfo['row'], Icon::SIZE_SMALL);
                             if (!PermissionUtility::isInTranslatorMode()) {
-                                $recordIcon_l10n = BackendUtility::wrapClickMenuOnIcon($recordIcon_l10n, 'tt_content', $localizedRecordInfo['uid'], 1, '&amp;callingScriptId=' . rawurlencode($this->doc->scriptID), 'new,copy,cut,pasteinto,pasteafter');
+                                $recordIcon_l10n = BackendUtility::wrapClickMenuOnIcon($recordIcon_l10n, 'tt_content', $localizedRecordInfo['uid'], 1, '', 'new,copy,cut,pasteinto,pasteafter');
                             }
                             $l10nInfo =
                                 '<a name="c' . md5($this->controller->getApiService()->flexform_getStringFromPointer($this->controller->getCurrentElementParentPointer()) . $localizedRecordInfo['row']['uid']) . '"></a>' .
@@ -799,25 +777,6 @@ class SheetRenderer implements Renderable
         }
 
         return $output;
-    }
-
-    /**
-     * Adds a flexPointer to the stack of sortable items for drag&drop
-     *
-     * @param string $pointerStr the sourcePointer for the referenced element
-     * @param bool $addToSortables determine wether the element should be used for drag and drop
-     *
-     * @return string the key for the related html-element
-     */
-    protected function addSortableItem($pointerStr, $addToSortables = true)
-    {
-        $key = 'item' . md5($pointerStr);
-        if ($addToSortables) {
-            $this->sortableItems[$key] = $pointerStr;
-        }
-        $this->allItems[$key] = $pointerStr;
-
-        return $key;
     }
 
     /**
