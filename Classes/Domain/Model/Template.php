@@ -399,7 +399,7 @@ class Template
     public function getBeLayout()
     {
         if ($this->row['belayout']) {
-            $beLayout = GeneralUtility::getURL(GeneralUtility::getFileAbsFileName($this->row['belayout']));
+            $beLayout = GeneralUtility::getUrl(GeneralUtility::getFileAbsFileName($this->row['belayout']));
         } else {
             $beLayout = $this->getDatastructure()->getBeLayout();
         }

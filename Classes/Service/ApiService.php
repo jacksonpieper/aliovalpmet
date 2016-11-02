@@ -1655,7 +1655,7 @@ class ApiService
 
             // Finding translations of this record and select overlay record:
             $fakeElementRow = ['uid' => $contentTreeArr['el']['uid'], 'pid' => $contentTreeArr['el']['pid']];
-            BackendUtility::fixVersioningPID('tt_content', $fakeElementRow);
+            BackendUtility::fixVersioningPid('tt_content', $fakeElementRow);
 
             $res = static::getDatabaseConnection()->exec_SELECTquery(
                 '*',

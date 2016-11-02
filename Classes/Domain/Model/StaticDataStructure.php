@@ -182,7 +182,7 @@ class StaticDataStructure extends AbstractDataStructure
         $beLayout = false;
         $file = substr(GeneralUtility::getFileAbsFileName($this->filename), 0, -3) . 'html';
         if (file_exists($file)) {
-            $beLayout = GeneralUtility::getURL($file);
+            $beLayout = GeneralUtility::getUrl($file);
         }
 
         return $beLayout;

@@ -157,7 +157,7 @@ class FrontendController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
             $values['data']['sDEF'][$lKey][$k][$vKey] = $v;
         }
         $ff = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\Configuration\FlexForm\FlexFormTools::class);
-        $data['tx_templavoila_flex'] = $ff->flexArray2xml($values);
+        $data['tx_templavoila_flex'] = $ff->flexArray2Xml($values);
 
         return $this->renderElement($data, $conf['table']);
     }
