@@ -261,4 +261,36 @@ class Sheet
     {
         return $this->sheetKey;
     }
+
+    /**
+     * @param bool $isLocalizable
+     * @return string
+     */
+    public function getLanguageKey($isLocalizable = null)
+    {
+        $isLocalizable = is_bool($isLocalizable) ? $isLocalizable : $this->isLocalizable();
+
+        $key = 'lDEF';
+        if ($isLocalizable && !$this->hasLocalizableChildren()) {
+            $key = 'l' . $this->column->getLanguageKey();
+        }
+
+        return $key;
+    }
+
+    /**
+     * @param bool $isLocalizable
+     * @return string
+     */
+    public function getValueKey($isLocalizable = null)
+    {
+        $isLocalizable = is_bool($isLocalizable) ? $isLocalizable : $this->isLocalizable();
+
+        $key = 'vDEF';
+        if ($isLocalizable && $this->hasLocalizableChildren()) {
+            $key = 'v' . $this->column->getLanguageKey();
+        }
+
+        return $key;
+    }
 }

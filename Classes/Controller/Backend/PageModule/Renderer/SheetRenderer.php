@@ -151,7 +151,12 @@ class SheetRenderer implements Renderable
      */
     public function render()
     {
-        return $this->renderPageSheet($this->contentTree, $this->controller->getCurrentLanguageKey(), [], []);
+        $sheet = new Sheet(
+            new Column([], [], $this->controller->getCurrentLanguageKey()),
+            $this->contentTree,
+            'sDEF'
+        );
+        return $this->renderPageSheet($sheet, [], []);
     }
 
     /**
@@ -195,29 +200,31 @@ class SheetRenderer implements Renderable
     }
 
     /**
-     * @param array $contentTreeArr
-     * @param string $languageKey
+     * @param Sheet $sheet
      * @param array $parentPointer
      * @param array $parentDsMeta
      */
-    public function renderPageSheet(array $contentTreeArr, $languageKey, $parentPointer = [], $parentDsMeta = [])
+    public function renderPageSheet(Sheet $sheet, $parentPointer = [], $parentDsMeta = [])
     {
-        $sheet = 'sDEF';
+        $contentTreeArr = $sheet->getRawData();
 
-        $langChildren = (int)$contentTreeArr['ds_meta']['langChildren'];
-        $langDisable = (int)$contentTreeArr['ds_meta']['langDisable'];
+        $lKey = $sheet->getLanguageKey();
+        $vKey = $sheet->getValueKey();
+        $sheetKey = $sheet->getSheetKey();
 
-        $lKey = $this->determineFlexLanguageKey($langDisable, $langChildren, $languageKey);
-        $vKey = $this->determineFlexValueKey($langDisable, $langChildren, $languageKey);
-        $uid = isset($contentTreeArr['el']['TO']) ? (int)$contentTreeArr['el']['TO'] : $this->controller->getRecord()['uid'];
-        $template = $this->templateRepository->getTemplateByUid($uid);
+        $templateUid = $sheet->getTemplateUid() > 0
+            ? $sheet->getTemplateUid()
+            : $this->controller->getRecord()['uid'];
+        $template = $this->templateRepository->getTemplateByUid($templateUid);
 
         $columns = [];
         $columnsCount = 0;
-        foreach ($contentTreeArr['sub'][$sheet][$lKey] as $fieldID => $fieldValuesContent) {
+
+        foreach ($sheet->getSheets($sheetKey)[$lKey] as $fieldID => $fieldValuesContent) {
+            $previewDataSheets = $sheet->getPreviewDataSheets($sheet->getSheetKey());
             try {
                 $newValue = $template->getLocalDataprotValueByXpath('//' . $fieldID . '/tx_templavoila/preview');
-                $contentTreeArr['previewData']['sheets'][$sheet][$fieldID]['tx_templavoila']['preview'] = $newValue;
+                $previewDataSheets[$fieldID]['tx_templavoila']['preview'] = $newValue;
             } catch (\Exception $e) {
                 // ignore
             }
@@ -233,8 +240,8 @@ class SheetRenderer implements Renderable
             }
 
             if ((
-                    $contentTreeArr['previewData']['sheets'][$sheet][$fieldID]['isMapped']
-                    || $contentTreeArr['previewData']['sheets'][$sheet][$fieldID]['type'] === 'no_map'
+                    $previewDataSheets[$fieldID]['isMapped']
+                    || $previewDataSheets[$fieldID]['type'] === 'no_map'
                 ) === false
             ) {
                 continue;
@@ -242,14 +249,14 @@ class SheetRenderer implements Renderable
 
             $column = new SheetRenderer\Column(
                 $fieldValuesContent[$vKey],
-                $contentTreeArr['previewData']['sheets'][$sheet][$fieldID],
-                $languageKey
+                $previewDataSheets[$fieldID],
+                $sheet->getColumn()->getLanguageKey()
             );
 
             $subElementPointer = [
-                'table' => $contentTreeArr['el']['table'],
-                'uid' => $contentTreeArr['el']['uid'],
-                'sheet' => $sheet,
+                'table' => $sheet->getTable(),
+                'uid' => $sheet->getUid(),
+                'sheet' => $sheet->getSheetKey(),
                 'sLang' => $lKey,
                 'field' => $fieldID,
                 'vLang' => $vKey,
@@ -604,12 +611,12 @@ class SheetRenderer implements Renderable
         $langChildren = $sheet->hasLocalizableChildren();
         $langDisable = !$sheet->isLocalizable();
 
-        $lKey = $this->determineFlexLanguageKey($langDisable, $langChildren, $sheet->getColumn()->getLanguageKey());
-        $vKey = $this->determineFlexValueKey($langDisable, $langChildren, $sheet->getColumn()->getLanguageKey());
+        $lKey = $sheet->getLanguageKey();
+        $vKey = $sheet->getValueKey();
         if ($sheet->getTable() === 'pages' && !$langDisable && $langChildren) {
             if ($this->disablePageStructureInheritance($elementContentTreeArr, $sheet->getSheetKey(), $lKey, $vKey)) {
-                $lKey = $this->determineFlexLanguageKey(1, $langChildren, $sheet->getColumn()->getLanguageKey());
-                $vKey = $this->determineFlexValueKey(1, $langChildren, $sheet->getColumn()->getLanguageKey());
+                $lKey = $sheet->getLanguageKey(false);
+                $vKey = $sheet->getValueKey(false);
             } else {
                 if (!static::getBackendUser()->isAdmin()) {
                     /** @var FlashMessage $flashMessage */
@@ -898,8 +905,8 @@ class SheetRenderer implements Renderable
         $previewContent = count($row) > 0 && $sheet->getTable() === 'tt_content' ? $this->render_previewContent($row) : '';
 
             // Define l/v keys for current language:
-            $lKey = !$sheet->isLocalizable() ? 'lDEF' : ($sheet->hasLocalizableChildren() ? 'lDEF' : 'l' . $sheet->getColumn()->getLanguageKey());
-            $vKey = !$sheet->isLocalizable() ? 'vDEF' : ($sheet->hasLocalizableChildren() ? 'v' . $sheet->getColumn()->getLanguageKey() : 'vDEF');
+            $lKey = $sheet->getLanguageKey();
+            $vKey = $sheet->getValueKey();
 
             foreach ($sheet->getPreviewDataSheets($sheet->getSheetKey()) as $fieldData) {
                 if (isset($fieldData['tx_templavoila']['preview']) && $fieldData['tx_templavoila']['preview'] === 'disable') {
@@ -1127,30 +1134,6 @@ class SheetRenderer implements Renderable
         }
 
         return $displayElement;
-    }
-
-    /**
-     * @param string $langDisable
-     * @param string $langChildren
-     * @param string $languageKey
-     *
-     * @return string
-     */
-    protected function determineFlexLanguageKey($langDisable, $langChildren, $languageKey)
-    {
-        return $langDisable ? 'lDEF' : ($langChildren ? 'lDEF' : 'l' . $languageKey);
-    }
-
-    /**
-     * @param bool $langDisable
-     * @param string $langChildren
-     * @param string $languageKey
-     *
-     * @return string
-     */
-    protected function determineFlexValueKey($langDisable, $langChildren, $languageKey)
-    {
-        return $langDisable ? 'vDEF' : ($langChildren ? 'v' . $languageKey : 'vDEF');
     }
 
     /**
