@@ -1108,7 +1108,7 @@ class SheetRenderer implements Renderable
     public function displayElement($subElementArr)
     {
         // Don't display when "selectedLanguage" is choosen
-        $displayElement = !$this->controller->getSetting('langDisplayMode');
+        $displayElement = $this->controller->getSetting('langDisplayMode') === 'selectedLanguage' ? 0 : 1;
         // Set to true when current language is not an alteranative (in this case display all elements)
         $displayElement |= ($this->controller->getCurrentLanguageUid() <= 0);
         // When language of CE is ALL or default display it.
