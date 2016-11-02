@@ -147,6 +147,19 @@ class SheetRenderer implements Renderable
     }
 
     /**
+     * Renders the whole content element tree:
+     *
+     * > renderGrid
+     *   > renderColumn
+     *   > renderColumn
+     *     > renderSheets
+     *       > renderSheet
+     *         > renderGrid
+     *           > renderColumn
+     *           > ...
+     *   > renderColumn
+     *   > ...
+     *
      * @return string
      */
     public function render()
@@ -156,7 +169,10 @@ class SheetRenderer implements Renderable
             $this->contentTree,
             'sDEF'
         );
-        return $this->renderPageSheet($sheet, [], []);
+
+        $pid = $sheet->getTable() === 'pages' ? $sheet->getUid() : $sheet->getPid();
+
+        return $this->renderGrid($sheet, PermissionUtility::getCompiledPermissions($pid));
     }
 
     /**
@@ -197,92 +213,6 @@ class SheetRenderer implements Renderable
         } else {
             return $this->renderSheet(new Sheet($column, $contentTreeArr, 'sDEF'), $parentPointer, $parentDsMeta);
         }
-    }
-
-    /**
-     * @param Sheet $sheet
-     * @param array $parentPointer
-     * @param array $parentDsMeta
-     */
-    public function renderPageSheet(Sheet $sheet, $parentPointer = [], $parentDsMeta = [])
-    {
-        $contentTreeArr = $sheet->getRawData();
-
-        $lKey = $sheet->getLanguageKey();
-        $vKey = $sheet->getValueKey();
-        $sheetKey = $sheet->getSheetKey();
-
-        $templateUid = $sheet->getTemplateUid() > 0
-            ? $sheet->getTemplateUid()
-            : $this->controller->getRecord()['uid'];
-        $template = $this->templateRepository->getTemplateByUid($templateUid);
-
-        $columns = [];
-        $columnsCount = 0;
-
-        foreach ($sheet->getSheets($sheetKey)[$lKey] as $fieldID => $fieldValuesContent) {
-            $previewDataSheets = $sheet->getPreviewDataSheets($sheet->getSheetKey());
-            try {
-                $newValue = $template->getLocalDataprotValueByXpath('//' . $fieldID . '/tx_templavoila/preview');
-                $previewDataSheets[$fieldID]['tx_templavoila']['preview'] = $newValue;
-            } catch (\Exception $e) {
-                // ignore
-            }
-
-            if (!is_array($fieldValuesContent[$vKey])) {
-                continue;
-            }
-
-            if (isset($fieldValuesContent['tx_templavoila']['preview'])
-                && $fieldValuesContent['tx_templavoila']['preview'] === 'disable'
-            ) {
-                continue;
-            }
-
-            if ((
-                    $previewDataSheets[$fieldID]['isMapped']
-                    || $previewDataSheets[$fieldID]['type'] === 'no_map'
-                ) === false
-            ) {
-                continue;
-            }
-
-            $column = new SheetRenderer\Column(
-                $fieldValuesContent[$vKey],
-                $previewDataSheets[$fieldID],
-                $sheet->getColumn()->getLanguageKey()
-            );
-
-            $subElementPointer = [
-                'table' => $sheet->getTable(),
-                'uid' => $sheet->getUid(),
-                'sheet' => $sheet->getSheetKey(),
-                'sLang' => $lKey,
-                'field' => $fieldID,
-                'vLang' => $vKey,
-                'position' => 0
-            ];
-
-            $columns[] = [
-                'title' => $column->getTitle(),
-                'content' => $this->renderColumn($column, $subElementPointer, $contentTreeArr['ds_meta'])
-            ];
-            $columnsCount++;
-        }
-
-        foreach ($columns as &$column) {
-            $column['relativeWidth'] = 100 / $columnsCount;
-        }
-        unset($column);
-
-        $contentElementView = GeneralUtility::makeInstance(StandaloneView::class);
-        $contentElementView->setLayoutRootPaths([ExtensionManagementUtility::extPath(Templavoila::EXTKEY, 'Resources/Private/Layouts/')]);
-        $contentElementView->setTemplateRootPaths([ExtensionManagementUtility::extPath(Templavoila::EXTKEY, 'Resources/Private/Templates/')]);
-        $contentElementView->setPartialRootPaths([ExtensionManagementUtility::extPath(Templavoila::EXTKEY, 'Resources/Private/Partials/')]);
-        $contentElementView->setTemplate('Backend/PageModule/Renderer/SheetRenderer/Grid');
-        $contentElementView->assign('columns', $columns);
-
-        return $contentElementView->render();
     }
 
     /**
@@ -572,7 +502,7 @@ class SheetRenderer implements Renderable
             'titleBarLeftButtons' => $this->getTitleBarLeftIcons($sheet),
             'titleBarRightButtons' => $this->getTitleBarRightIcons($sheet, $elementBelongsToCurrentPage, $parentPointer),
             'warnings' => $warnings,
-            'content' => $this->render_framework_subElements($sheet, PermissionUtility::getCompiledPermissions($pid)),
+            'content' => $this->renderGrid($sheet, PermissionUtility::getCompiledPermissions($pid)),
             'previewContent' => $previewContent,
             'localizationInfoTable' => $this->render_localizationInfoTable($sheet, $parentPointer, $parentDsMeta),
             'isSortable' => !PermissionUtility::isInTranslatorMode() && $canDragDrop,
@@ -599,7 +529,7 @@ class SheetRenderer implements Renderable
      *
      * @see renderSheets(), renderSheet()
      */
-    public function render_framework_subElements(Sheet $sheet, $calcPerms = 0)
+    public function renderGrid(Sheet $sheet, $calcPerms = 0)
     {
         $elementContentTreeArr = $sheet->getRawData();
 
