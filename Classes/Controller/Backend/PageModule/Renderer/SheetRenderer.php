@@ -303,7 +303,7 @@ class SheetRenderer implements Renderable
                 if (($this->controller->getSetting('langDisplayMode') === 'onlyLocalized') && $this->controller->getCurrentLanguageUid() > 0) {
 
                     // Default language element. Subsitute displayed element with localized element
-                    if (($element['el']['sys_language_uid'] === 0)
+                    if (((int)$element['el']['sys_language_uid'] === 0)
                         && is_array($element['localizationInfo'][$this->controller->getCurrentLanguageUid()])
                         && ($localizedUid = $element['localizationInfo'][$this->controller->getCurrentLanguageUid()]['localization_uid'])
                     ) {
