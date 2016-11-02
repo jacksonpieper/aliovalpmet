@@ -73,9 +73,6 @@ class AjaxController
             return;
         }
 
-        $sourcePointer = $this->apiService->flexform_getPointerFromString($source);
-        $destinationPointer = $this->apiService->flexform_getPointerFromString($destination);
-
-        $this->apiService->moveElement($sourcePointer, $destinationPointer);
+        $this->apiService->moveElement($source, $destination);
     }
 }

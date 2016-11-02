@@ -422,6 +422,7 @@ class MainController extends AbstractModuleController implements Configurable
         $this->moduleTemplate->getPageRenderer()->loadRequireJsModule('TYPO3/CMS/Backend/ClickMenu');
         $this->moduleTemplate->getPageRenderer()->loadRequireJsModule('TYPO3/CMS/Backend/Modal');
         $this->moduleTemplate->getPageRenderer()->loadRequireJsModule('TYPO3/CMS/Templavoila/PageModule');
+        $this->moduleTemplate->getPageRenderer()->addInlineSetting('PageModule', 'popupUrl', BackendUtility::getModuleUrl('wizard_element_browser'));
         $this->moduleTemplate->setContent($view->render());
 
         $response->getBody()->write($this->moduleTemplate->renderContent());

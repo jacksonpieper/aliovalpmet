@@ -15,7 +15,7 @@
  * Module: TYPO3/CMS/Templavoila/PageModule
  * @exports TYPO3/CMS/Templavoila/PageModule
  */
-define(['jquery'], function ($) {
+define(['jquery', 'TYPO3/CMS/Templavoila/PageModule/DragDrop'], function ($, DragDrop) {
 
     $('document').ready(function () {
         

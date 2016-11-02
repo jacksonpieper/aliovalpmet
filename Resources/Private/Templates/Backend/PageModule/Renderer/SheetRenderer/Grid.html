@@ -10,11 +10,11 @@
         <tbody>
         <tr>
             <f:for each="{columns}" as="column">
-            <td valign="top" data-colpos="1" data-language-uid="0" class="t3js-page-lang-column-0 t3js-page-column t3-grid-cell t3-page-column t3-page-column-1">
+            <td valign="top" class="t3-grid-cell t3-page-column">
                 <div class="t3-page-column-header">
                     <div class="t3-page-column-header-label">{column.title}</div>
                 </div>
-                <div data-colpos="1" data-language-uid="0" class="t3js-sortable t3js-sortable-lang t3js-sortable-lang-0 t3-page-ce-wrapper t3-page-ce-empty ui-sortable">
+                <div class="t3-page-ce-wrapper sortable">
                     {column.content->f:format.raw()}
                 </div>
             </td>

@@ -229,7 +229,16 @@ class SheetRenderer implements Renderable
             && !$column->hasMaxItemsReached();
 
         if ($canCreateNew && !PermissionUtility::isInTranslatorMode()) {
-            $content .= '<div class="t3-page-ce t3js-page-ce">' . $this->controller->link_bottomControls($parentPointer, $canCreateNew) . '</div>';
+            $content .= '<div 
+                class="t3-page-ce t3js-page-ce" 
+                data-table="' . $parentPointer['table'] . '" 
+                data-uid="' . (int)$parentPointer['uid'] . '" 
+                data-sheet="' . $parentPointer['sheet'] . '" 
+                data-sLang="' . $parentPointer['sLang'] . '" 
+                data-field="' . $parentPointer['field'] . '" 
+                data-vLang="' . $parentPointer['vLang'] . '" 
+                data-position="' . (int)$parentPointer['position'] . '"
+            >' . $this->controller->link_bottomControls($parentPointer, $canCreateNew) . '</div>';
             // todo: this belongs into the fluid template
         }
 
@@ -507,6 +516,7 @@ class SheetRenderer implements Renderable
             'localizationInfoTable' => $this->render_localizationInfoTable($sheet, $parentPointer, $parentDsMeta),
             'isSortable' => !PermissionUtility::isInTranslatorMode() && $canDragDrop,
             'bottomControls' => $canCreateNew && !PermissionUtility::isInTranslatorMode() ? $this->controller->link_bottomControls($parentPointer, $canCreateNew) : '',
+            'pointer' => $parentPointer,
         ]);
 
         return $contentElementView->render();
