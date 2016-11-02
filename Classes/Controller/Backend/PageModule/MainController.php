@@ -12,20 +12,20 @@
  * The TYPO3 project - inspiring people to share!
  */
 
-namespace Extension\Templavoila\Controller\Backend\PageModule;
+namespace Schnitzler\Templavoila\Controller\Backend\PageModule;
 
-use Extension\Templavoila\Clipboard\Clipboard;
-use Extension\Templavoila\Controller\Backend\AbstractModuleController;
-use Extension\Templavoila\Controller\Backend\Configurable;
-use Extension\Templavoila\Controller\Backend\PageModule\Renderer\DoktypeRenderer;
-use Extension\Templavoila\Controller\Backend\PageModule\Renderer\OutlineRenderer;
-use Extension\Templavoila\Controller\Backend\PageModule\Renderer\SheetRenderer;
-use Extension\Templavoila\Controller\Backend\PageModule\Renderer\SidebarRenderer;
-use Extension\Templavoila\Domain\Repository\SysLanguageRepository;
-use Extension\Templavoila\Service\ApiService;
-use Extension\Templavoila\Templavoila;
-use Extension\Templavoila\Utility\PermissionUtility;
-use Extension\Templavoila\Wizards;
+use Schnitzler\Templavoila\Clipboard\Clipboard;
+use Schnitzler\Templavoila\Controller\Backend\AbstractModuleController;
+use Schnitzler\Templavoila\Controller\Backend\Configurable;
+use Schnitzler\Templavoila\Controller\Backend\PageModule\Renderer\DoktypeRenderer;
+use Schnitzler\Templavoila\Controller\Backend\PageModule\Renderer\OutlineRenderer;
+use Schnitzler\Templavoila\Controller\Backend\PageModule\Renderer\SheetRenderer;
+use Schnitzler\Templavoila\Controller\Backend\PageModule\Renderer\SidebarRenderer;
+use Schnitzler\Templavoila\Domain\Repository\SysLanguageRepository;
+use Schnitzler\Templavoila\Service\ApiService;
+use Schnitzler\Templavoila\Templavoila;
+use Schnitzler\Templavoila\Utility\PermissionUtility;
+use Schnitzler\Templavoila\Wizards;
 use Psr\Http\Message\ResponseInterface;
 use TYPO3\CMS\Backend\Template\Components\ButtonBar;
 use TYPO3\CMS\Backend\Template\DocumentTemplate;
@@ -39,7 +39,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Frontend\Page\PageRepository;
 
 /**
- * Class Extension\Templavoila\Controller\Backend\PageModule\MainController
+ * Class Schnitzler\Templavoila\Controller\Backend\PageModule\MainController
  */
 class MainController extends AbstractModuleController implements Configurable
 {

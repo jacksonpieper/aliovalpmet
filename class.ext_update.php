@@ -12,7 +12,7 @@
  * The TYPO3 project - inspiring people to share!
  */
 
-use Extension\Templavoila\Traits\BackendUser;
+use Schnitzler\Templavoila\Traits\BackendUser;
 
 /**
  * Update wizard for the extension manager

@@ -1,6 +1,6 @@
 <?php
 
-namespace Extension\Templavoila\Domain\Model;
+namespace Schnitzler\Templavoila\Domain\Model;
 
 /*
  * This file is part of the TYPO3 CMS project.
@@ -15,8 +15,8 @@ namespace Extension\Templavoila\Domain\Model;
  * The TYPO3 project - inspiring people to share!
  */
 
-use Extension\Templavoila\Domain\Repository\DataStructureRepository;
-use Extension\Templavoila\Traits\DatabaseConnection;
+use Schnitzler\Templavoila\Domain\Repository\DataStructureRepository;
+use Schnitzler\Templavoila\Traits\DatabaseConnection;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 

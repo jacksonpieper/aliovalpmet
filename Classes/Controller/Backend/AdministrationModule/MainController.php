@@ -12,15 +12,15 @@
  * The TYPO3 project - inspiring people to share!
  */
 
-namespace Extension\Templavoila\Controller\Backend\AdministrationModule;
+namespace Schnitzler\Templavoila\Controller\Backend\AdministrationModule;
 
-use Extension\Templavoila\Controller\Backend\AbstractModuleController;
-use Extension\Templavoila\Controller\Backend\Configurable;
-use Extension\Templavoila\Domain\Model\AbstractDataStructure;
-use Extension\Templavoila\Domain\Repository\DataStructureRepository;
-use Extension\Templavoila\Domain\Repository\TemplateRepository;
-use Extension\Templavoila\Service\SyntaxHighlightingService;
-use Extension\Templavoila\Templavoila;
+use Schnitzler\Templavoila\Controller\Backend\AbstractModuleController;
+use Schnitzler\Templavoila\Controller\Backend\Configurable;
+use Schnitzler\Templavoila\Domain\Model\AbstractDataStructure;
+use Schnitzler\Templavoila\Domain\Repository\DataStructureRepository;
+use Schnitzler\Templavoila\Domain\Repository\TemplateRepository;
+use Schnitzler\Templavoila\Service\SyntaxHighlightingService;
+use Schnitzler\Templavoila\Templavoila;
 use Psr\Http\Message\ResponseInterface;
 use TYPO3\CMS\Backend\Template\DocumentTemplate;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
@@ -39,7 +39,7 @@ use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
- * Class Extension\Templavoila\Controller\Backend\AdministrationModule\MainController
+ * Class Schnitzler\Templavoila\Controller\Backend\AdministrationModule\MainController
  */
 class MainController extends AbstractModuleController implements Configurable
 {
@@ -546,7 +546,7 @@ class MainController extends AbstractModuleController implements Configurable
 //        $toRepo = GeneralUtility::makeInstance(TemplateRepository::class);
 //        $toList = $toRepo->getAll($this->getId());
 //        foreach ($toList as $toObj) {
-//            /** @var \Extension\Templavoila\Domain\Model\Template $toObj */
+//            /** @var \Schnitzler\Templavoila\Domain\Model\Template $toObj */
 //            if (!in_array($toObj->getKey(), $toIdArray)) {
 //                $rTODres = $this->renderTODisplay($toObj, -1, 1);
 //                $lostTOs .= $rTODres['HTML'];
@@ -634,7 +634,7 @@ class MainController extends AbstractModuleController implements Configurable
                 $newTitle = $dsObj->getLabel() . ' [TEMPLATE]';
                 if (count($toList)) {
                     foreach ($toList as $toObj) {
-                        /* @var \Extension\Templavoila\Domain\Model\Template $toObj */
+                        /* @var \Schnitzler\Templavoila\Domain\Model\Template $toObj */
                         $toIdArray[] = $toObj->getKey();
                         if ($toObj->hasParentTemplate()) {
                             continue;
@@ -835,7 +835,7 @@ class MainController extends AbstractModuleController implements Configurable
     /**
      * Render display of a Template Object
      *
-     * @param \Extension\Templavoila\Domain\Model\Template $toObj Template Object record to render
+     * @param \Schnitzler\Templavoila\Domain\Model\Template $toObj Template Object record to render
      * @param int $scope Scope of DS
      * @param int $children If set, the function is asked to render children to template objects (and should not call it self recursively again).
      *
@@ -1076,7 +1076,7 @@ class MainController extends AbstractModuleController implements Configurable
     /**
      * Creates listings of pages / content elements where template objects are used.
      *
-     * @param \Extension\Templavoila\Domain\Model\Template $toObj Template Object record
+     * @param \Schnitzler\Templavoila\Domain\Model\Template $toObj Template Object record
      * @param int $scope Scope value. 1) page,  2) content elements
      *
      * @return string HTML table listing usages.

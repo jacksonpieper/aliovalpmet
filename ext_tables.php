@@ -6,7 +6,7 @@ if (TYPO3_MODE === 'BE') {
 
     // Adding click menu item:
     $GLOBALS['TBE_MODULES_EXT']['xMOD_alt_clickmenu']['extendCMclasses'][] = [
-        'name' => 'Extension\\Templavoila\\Service\\ClickMenu\\MainClickMenu',
+        'name' => 'Schnitzler\\Templavoila\\Service\\ClickMenu\\MainClickMenu',
     ];
 
     // Adding backend modules:
@@ -18,7 +18,7 @@ if (TYPO3_MODE === 'BE') {
         [
             'name' => 'web_txtemplavoilaM1',
             'access' => 'group,user',
-            'routeTarget' => \Extension\Templavoila\Controller\Backend\PageModule\MainController::class . '::processRequest',
+            'routeTarget' => \Schnitzler\Templavoila\Controller\Backend\PageModule\MainController::class . '::processRequest',
             'labels' => [
                 'll_ref' => 'LLL:EXT:templavoila/Resources/Private/Language/PageModule/locallang_mod.xlf',
                 'tabs_images' => [
@@ -36,7 +36,7 @@ if (TYPO3_MODE === 'BE') {
         [
             'name' => 'web_txtemplavoilaM2',
             'access' => 'group,user',
-            'routeTarget' => \Extension\Templavoila\Controller\Backend\AdministrationModule\MainController::class . '::processRequest',
+            'routeTarget' => \Schnitzler\Templavoila\Controller\Backend\AdministrationModule\MainController::class . '::processRequest',
             'labels' => [
                 'll_ref' => 'LLL:EXT:templavoila/Resources/Private/Language/AdministrationModule/locallang_mod.xlf',
                 'tabs_images' => [
@@ -90,13 +90,13 @@ if (TYPO3_MODE === 'BE') {
 
     \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::insertModuleFunction(
         'web_func',
-        'Extension\\Templavoila\\Controller\\ReferenceElementWizardController',
+        'Schnitzler\\Templavoila\\Controller\\ReferenceElementWizardController',
         null,
         'LLL:EXT:templavoila/Resources/Private/Language/locallang.xlf:wiz_refElements'
     );
     \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::insertModuleFunction(
         'web_func',
-        'Extension\\Templavoila\\Controller\\RenameFieldInPageFlexWizardController',
+        'Schnitzler\\Templavoila\\Controller\\RenameFieldInPageFlexWizardController',
         null,
         'LLL:EXT:templavoila/Resources/Private/Language/locallang.xlf:wiz_renameFieldsInPage'
     );
@@ -141,5 +141,5 @@ $iconRegistry->registerIcon(
 
 \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::registerAjaxHandler(
     'TemplaVoila::PageModule::moveRecord',
-    \Extension\Templavoila\Controller\Backend\PageModule\AjaxController::class . '->moveRecord'
+    \Schnitzler\Templavoila\Controller\Backend\PageModule\AjaxController::class . '->moveRecord'
 );

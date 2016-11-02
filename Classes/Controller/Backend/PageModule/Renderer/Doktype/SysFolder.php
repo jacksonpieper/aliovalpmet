@@ -12,11 +12,11 @@
  * The TYPO3 project - inspiring people to share!
  */
 
-namespace Extension\Templavoila\Controller\Backend\PageModule\Renderer\Doktype;
+namespace Schnitzler\Templavoila\Controller\Backend\PageModule\Renderer\Doktype;
 
-use Extension\Templavoila\Controller\Backend\PageModule\Renderer\Renderable;
-use Extension\Templavoila\Traits\BackendUser;
-use Extension\Templavoila\Traits\LanguageService;
+use Schnitzler\Templavoila\Controller\Backend\PageModule\Renderer\Renderable;
+use Schnitzler\Templavoila\Traits\BackendUser;
+use Schnitzler\Templavoila\Traits\LanguageService;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
@@ -24,7 +24,7 @@ use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
- * Class Extension\Templavoila\Controller\Backend\PageModule\Renderer\Doktype\SysFolder
+ * Class Schnitzler\Templavoila\Controller\Backend\PageModule\Renderer\Doktype\SysFolder
  */
 class SysFolder implements Renderable
 {

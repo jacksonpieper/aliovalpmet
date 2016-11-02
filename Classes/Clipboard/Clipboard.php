@@ -1,6 +1,6 @@
 <?php
 
-namespace Extension\Templavoila\Clipboard;
+namespace Schnitzler\Templavoila\Clipboard;
 
 /*
  * This file is part of the TYPO3 CMS project.
@@ -15,8 +15,8 @@ namespace Extension\Templavoila\Clipboard;
  * The TYPO3 project - inspiring people to share!
  */
 
-use Extension\Templavoila\Controller\Backend\PageModule\MainController;
-use Extension\Templavoila\Traits\LanguageService;
+use Schnitzler\Templavoila\Controller\Backend\PageModule\MainController;
+use Schnitzler\Templavoila\Traits\LanguageService;
 use TYPO3\CMS\Backend\Clipboard\Clipboard as CoreClipboard;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Imaging\Icon;

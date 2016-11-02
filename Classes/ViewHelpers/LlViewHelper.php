@@ -1,6 +1,6 @@
 <?php
 
-namespace Extension\Templavoila\ViewHelpers;
+namespace Schnitzler\Templavoila\ViewHelpers;
 
 /*
  * This file is part of the TYPO3 CMS project.
@@ -24,7 +24,7 @@ use TYPO3\CMS\Fluid\Core\ViewHelper\Facets\CompilableInterface;
 use TYPO3\CMS\Lang\LanguageService;
 
 /**
- * Class Extension\Templavoila\ViewHelpers\LlViewHelper
+ * Class Schnitzler\Templavoila\ViewHelpers\LlViewHelper
  */
 class LlViewHelper extends AbstractViewHelper implements CompilableInterface
 {

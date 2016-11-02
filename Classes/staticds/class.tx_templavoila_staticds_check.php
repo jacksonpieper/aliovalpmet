@@ -12,8 +12,8 @@
  * The TYPO3 project - inspiring people to share!
  */
 
-use Extension\Templavoila\Traits\DatabaseConnection;
-use Extension\Templavoila\Traits\LanguageService;
+use Schnitzler\Templavoila\Traits\DatabaseConnection;
+use Schnitzler\Templavoila\Traits\LanguageService;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 
 /**
@@ -41,7 +41,7 @@ class tx_templavoila_staticds_check
         $link = BackendUtility::getModuleUrl(
             'tools_ExtensionmanagerExtensionmanager',
             [
-                'tx_extensionmanager_tools_extensionmanagerextensionmanager[extensionKey]' => \Extension\Templavoila\Templavoila::EXTKEY,
+                'tx_extensionmanager_tools_extensionmanagerextensionmanager[extensionKey]' => \Schnitzler\Templavoila\Templavoila::EXTKEY,
                 'tx_extensionmanager_tools_extensionmanagerextensionmanager[action]' => 'show',
                 'tx_extensionmanager_tools_extensionmanagerextensionmanager[controller]' => 'UpdateScript'
             ]
@@ -68,7 +68,7 @@ class tx_templavoila_staticds_check
      */
     protected function staticDsIsEnabled()
     {
-        $conf = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf'][\Extension\Templavoila\Templavoila::EXTKEY]);
+        $conf = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf'][\Schnitzler\Templavoila\Templavoila::EXTKEY]);
         return (bool)$conf['staticDS.']['enable'];
     }
 

@@ -1,6 +1,6 @@
 <?php
 
-namespace Extension\Templavoila\Domain\Model;
+namespace Schnitzler\Templavoila\Domain\Model;
 
 /*
  * This file is part of the TYPO3 CMS project.

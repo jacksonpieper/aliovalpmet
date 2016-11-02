@@ -1,6 +1,6 @@
 <?php
 
-namespace Extension\Templavoila\Utility;
+namespace Schnitzler\Templavoila\Utility;
 
 /*
  * This file is part of the TYPO3 CMS project.

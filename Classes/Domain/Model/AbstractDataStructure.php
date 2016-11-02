@@ -1,6 +1,6 @@
 <?php
 
-namespace Extension\Templavoila\Domain\Model;
+namespace Schnitzler\Templavoila\Domain\Model;
 
 /*
  * This file is part of the TYPO3 CMS project.
@@ -15,7 +15,7 @@ namespace Extension\Templavoila\Domain\Model;
  * The TYPO3 project - inspiring people to share!
  */
 
-use Extension\Templavoila\Traits\LanguageService;
+use Schnitzler\Templavoila\Traits\LanguageService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**

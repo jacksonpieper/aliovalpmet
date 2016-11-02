@@ -12,17 +12,17 @@
  * The TYPO3 project - inspiring people to share!
  */
 
-namespace Extension\Templavoila\Controller\Backend\PageModule\Renderer;
+namespace Schnitzler\Templavoila\Controller\Backend\PageModule\Renderer;
 
-use Extension\Templavoila\Controller\Backend\PageModule\MainController;
-use Extension\Templavoila\Controller\Backend\PageModule\Renderer\SheetRenderer\Column;
-use Extension\Templavoila\Controller\Backend\PageModule\Renderer\SheetRenderer\Sheet;
-use Extension\Templavoila\Domain\Model\Template;
-use Extension\Templavoila\Domain\Repository\TemplateRepository;
-use Extension\Templavoila\Templavoila;
-use Extension\Templavoila\Traits\BackendUser;
-use Extension\Templavoila\Traits\LanguageService;
-use Extension\Templavoila\Utility\PermissionUtility;
+use Schnitzler\Templavoila\Controller\Backend\PageModule\MainController;
+use Schnitzler\Templavoila\Controller\Backend\PageModule\Renderer\SheetRenderer\Column;
+use Schnitzler\Templavoila\Controller\Backend\PageModule\Renderer\SheetRenderer\Sheet;
+use Schnitzler\Templavoila\Domain\Model\Template;
+use Schnitzler\Templavoila\Domain\Repository\TemplateRepository;
+use Schnitzler\Templavoila\Templavoila;
+use Schnitzler\Templavoila\Traits\BackendUser;
+use Schnitzler\Templavoila\Traits\LanguageService;
+use Schnitzler\Templavoila\Utility\PermissionUtility;
 use TYPO3\CMS\Backend\Template\DocumentTemplate;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Backend\Utility\IconUtility;
@@ -34,7 +34,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Fluid\View\StandaloneView;
 
 /**
- * Class Extension\Templavoila\Controller\Backend\PageModule\Renderer\SheetRenderer
+ * Class Schnitzler\Templavoila\Controller\Backend\PageModule\Renderer\SheetRenderer
  */
 class SheetRenderer implements Renderable
 {
@@ -414,7 +414,7 @@ class SheetRenderer implements Renderable
             $linkHide = !in_array('hide', $this->controller->getBlindIcons()) ? $this->controller->icon_hide($sheetData) : '';
 
             if ($canEditContent && $this->controller->modTSconfig['properties']['enableDeleteIconForLocalElements'] && $elementBelongsToCurrentPage) {
-                $hasForeignReferences = \Extension\Templavoila\Utility\GeneralUtility::hasElementForeignReferences($sheetData, $pid);
+                $hasForeignReferences = \Schnitzler\Templavoila\Utility\GeneralUtility::hasElementForeignReferences($sheetData, $pid);
                 $iconDelete = $this->controller->getModuleTemplate()->getIconFactory()->getIcon('actions-edit-delete', Icon::SIZE_SMALL);
                 $linkDelete = !in_array('delete', $this->controller->getBlindIcons()) ? $this->controller->link_unlink($iconDelete, $parentPointer, true, $hasForeignReferences, $elementPointer) : '';
             } else {

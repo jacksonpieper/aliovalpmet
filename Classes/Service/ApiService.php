@@ -1,6 +1,6 @@
 <?php
 
-namespace Extension\Templavoila\Service;
+namespace Schnitzler\Templavoila\Service;
 
 /*
  * This file is part of the TYPO3 CMS project.
@@ -15,8 +15,8 @@ namespace Extension\Templavoila\Service;
  * The TYPO3 project - inspiring people to share!
  */
 
-use Extension\Templavoila\Traits\DatabaseConnection;
-use Extension\Templavoila\Traits\LanguageService;
+use Schnitzler\Templavoila\Traits\DatabaseConnection;
+use Schnitzler\Templavoila\Traits\LanguageService;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Backend\Utility\IconUtility;
 use TYPO3\CMS\Core\Database\RelationHandler;
@@ -68,7 +68,7 @@ class ApiService
     /**
      * @param string $rootTable Usually the root table is "pages" but another table can be specified (eg. "tt_content")
      *
-     * @return \Extension\Templavoila\Service\ApiService
+     * @return \Schnitzler\Templavoila\Service\ApiService
      */
     public function __construct($rootTable = 'pages')
     {

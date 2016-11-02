@@ -12,11 +12,11 @@
  * The TYPO3 project - inspiring people to share!
  */
 
-namespace Extension\Templavoila\Controller\Backend\Module\Administration;
+namespace Schnitzler\Templavoila\Controller\Backend\Module\Administration;
 
-use Extension\Templavoila\Controller\Backend\AbstractModuleController;
-use Extension\Templavoila\Controller\Backend\Configurable;
-use Extension\Templavoila\Domain\Model\HtmlMarkup;
+use Schnitzler\Templavoila\Controller\Backend\AbstractModuleController;
+use Schnitzler\Templavoila\Controller\Backend\Configurable;
+use Schnitzler\Templavoila\Domain\Model\HtmlMarkup;
 use Psr\Http\Message\ResponseInterface;
 use TYPO3\CMS\Core\Html\HtmlParser;
 use TYPO3\CMS\Core\Http\Response;
@@ -26,7 +26,7 @@ use TYPO3\CMS\Core\Resource\FileRepository;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
- * Class Extension\Templavoila\Controller\Backend\Module\Administration\FileController
+ * Class Schnitzler\Templavoila\Controller\Backend\Module\Administration\FileController
  */
 class FileController extends AbstractModuleController implements Configurable
 {

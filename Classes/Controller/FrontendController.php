@@ -1,6 +1,6 @@
 <?php
 
-namespace Extension\Templavoila\Controller;
+namespace Schnitzler\Templavoila\Controller;
 
 /*
  * This file is part of the TYPO3 CMS project.
@@ -15,7 +15,7 @@ namespace Extension\Templavoila\Controller;
  * The TYPO3 project - inspiring people to share!
  */
 
-use Extension\Templavoila\Templavoila;
+use Schnitzler\Templavoila\Templavoila;
 
 /**
  * Plugin 'Flexible Content' for the 'templavoila' extension.
@@ -55,7 +55,7 @@ class FrontendController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
     /**
      * Markup object
      *
-     * @var \Extension\Templavoila\Domain\Model\HtmlMarkup
+     * @var \Schnitzler\Templavoila\Domain\Model\HtmlMarkup
      */
     public $markupObj;
 
@@ -126,8 +126,8 @@ class FrontendController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
         $data['tx_templavoila_ds'] = $conf['ds'];
         $data['tx_templavoila_to'] = $conf['to'];
 
-        /** @var \Extension\Templavoila\Domain\Repository\DataStructureRepository $dsRepo */
-        $dsRepo = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\Extension\Templavoila\Domain\Repository\DataStructureRepository::class);
+        /** @var \Schnitzler\Templavoila\Domain\Repository\DataStructureRepository $dsRepo */
+        $dsRepo = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\Schnitzler\Templavoila\Domain\Repository\DataStructureRepository::class);
 
         // prepare fake flexform
         $values = [];
@@ -249,9 +249,9 @@ class FrontendController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
             }
         }
 
-        $dsRepo = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\Extension\Templavoila\Domain\Repository\DataStructureRepository::class);
+        $dsRepo = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\Schnitzler\Templavoila\Domain\Repository\DataStructureRepository::class);
         try {
-            /** @var \Extension\Templavoila\Domain\Model\DataStructure $dsObj */
+            /** @var \Schnitzler\Templavoila\Domain\Model\DataStructure $dsObj */
             $dsObj = $dsRepo->getDatastructureByUidOrFilename($row['tx_templavoila_ds']);
             $DS = $dsObj->getDataprotArray();
         } catch (\InvalidArgumentException $e) {
@@ -293,7 +293,7 @@ class FrontendController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
             }
 
             // Init mark up object.
-            $this->markupObj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\Extension\Templavoila\Domain\Model\HtmlMarkup::class);
+            $this->markupObj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\Schnitzler\Templavoila\Domain\Model\HtmlMarkup::class);
             $this->markupObj->htmlParse = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\Html\HtmlParser::class);
 
             // Get template record:
@@ -390,7 +390,7 @@ class FrontendController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
 
                         // Visual identification aids:
 
-                        $feedit = is_object(\Extension\Templavoila\Utility\GeneralUtility::getBackendUser()) && method_exists(\Extension\Templavoila\Utility\GeneralUtility::getBackendUser(), 'isFrontendEditingActive') && \Extension\Templavoila\Utility\GeneralUtility::getBackendUser()->isFrontendEditingActive();
+                        $feedit = is_object(\Schnitzler\Templavoila\Utility\GeneralUtility::getBackendUser()) && method_exists(\Schnitzler\Templavoila\Utility\GeneralUtility::getBackendUser(), 'isFrontendEditingActive') && \Schnitzler\Templavoila\Utility\GeneralUtility::getBackendUser()->isFrontendEditingActive();
 
                         if ($GLOBALS['TSFE']->fePreview && $GLOBALS['TSFE']->beUserLogin && !$GLOBALS['TSFE']->workspacePreview && !$this->conf['disableExplosivePreview'] && !$feedit) {
                             throw new \RuntimeException('Further execution of code leads to PHP errors.', 1404750505);

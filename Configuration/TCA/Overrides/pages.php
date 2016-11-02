@@ -12,7 +12,7 @@ $tempColumns = [
                 ['', 0],
             ],
             'allowNonIdValues' => 1,
-            'itemsProcFunc' => 'Extension\Templavoila\Service\ItemProcFunc\StaticDataStructuresHandler->dataSourceItemsProcFunc',
+            'itemsProcFunc' => 'Schnitzler\Templavoila\Service\ItemProcFunc\StaticDataStructuresHandler->dataSourceItemsProcFunc',
             'size' => 1,
             'minitems' => 0,
             'maxitems' => 1,
@@ -29,7 +29,7 @@ $tempColumns = [
             'items' => [
                 ['', 0],
             ],
-            'itemsProcFunc' => 'Extension\Templavoila\Service\ItemProcFunc\StaticDataStructuresHandler->templateObjectItemsProcFunc',
+            'itemsProcFunc' => 'Schnitzler\Templavoila\Service\ItemProcFunc\StaticDataStructuresHandler->templateObjectItemsProcFunc',
             'size' => 1,
             'minitems' => 0,
             'maxitems' => 1,
@@ -46,7 +46,7 @@ $tempColumns = [
                 ['', 0],
             ],
             'allowNonIdValues' => 1,
-            'itemsProcFunc' => 'Extension\Templavoila\Service\ItemProcFunc\StaticDataStructuresHandler->dataSourceItemsProcFunc',
+            'itemsProcFunc' => 'Schnitzler\Templavoila\Service\ItemProcFunc\StaticDataStructuresHandler->dataSourceItemsProcFunc',
             'size' => 1,
             'minitems' => 0,
             'maxitems' => 1,
@@ -63,7 +63,7 @@ $tempColumns = [
             'items' => [
                 ['', 0],
             ],
-            'itemsProcFunc' => 'Extension\Templavoila\Service\ItemProcFunc\StaticDataStructuresHandler->templateObjectItemsProcFunc',
+            'itemsProcFunc' => 'Schnitzler\Templavoila\Service\ItemProcFunc\StaticDataStructuresHandler->templateObjectItemsProcFunc',
             'size' => 1,
             'minitems' => 0,
             'maxitems' => 1,
@@ -86,7 +86,7 @@ $tempColumns = [
 ];
 \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addTCAcolumns('pages', $tempColumns);
 
-$_EXTCONF = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf'][\Extension\Templavoila\Templavoila::EXTKEY]);
+$_EXTCONF = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf'][\Schnitzler\Templavoila\Templavoila::EXTKEY]);
 if ($_EXTCONF['enable.']['selectDataStructure']) {
     \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addToAllTCAtypes(
         'pages',

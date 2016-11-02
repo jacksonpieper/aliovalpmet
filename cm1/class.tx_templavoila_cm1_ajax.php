@@ -26,7 +26,7 @@ class tx_templavoila_cm1_ajax
      */
     public function getDisplayFileContent($params, &$ajaxObj)
     {
-        $session = \Extension\Templavoila\Utility\GeneralUtility::getBackendUser()->getSessionData(\TYPO3\CMS\Core\Utility\GeneralUtility::_GP('key'));
+        $session = \Schnitzler\Templavoila\Utility\GeneralUtility::getBackendUser()->getSessionData(\TYPO3\CMS\Core\Utility\GeneralUtility::_GP('key'));
         echo \TYPO3\CMS\Core\Utility\GeneralUtility::getUrl(\TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName($session['displayFile']));
     }
 }

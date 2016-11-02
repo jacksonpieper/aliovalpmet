@@ -1,6 +1,6 @@
 <?php
 
-namespace Extension\Templavoila\Domain\Model;
+namespace Schnitzler\Templavoila\Domain\Model;
 
 /*
  * This file is part of the TYPO3 CMS project.
@@ -15,9 +15,9 @@ namespace Extension\Templavoila\Domain\Model;
  * The TYPO3 project - inspiring people to share!
  */
 
-use Extension\Templavoila\Domain\Repository\DataStructureRepository;
-use Extension\Templavoila\Traits\BackendUser;
-use Extension\Templavoila\Traits\LanguageService;
+use Schnitzler\Templavoila\Domain\Repository\DataStructureRepository;
+use Schnitzler\Templavoila\Traits\BackendUser;
+use Schnitzler\Templavoila\Traits\LanguageService;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
@@ -293,7 +293,7 @@ class Template
             }
         }
         $permission = true;
-        $denyItems = \Extension\Templavoila\Utility\GeneralUtility::getDenyListForUser();
+        $denyItems = \Schnitzler\Templavoila\Utility\GeneralUtility::getDenyListForUser();
 
         if (isset($parentRow['tx_templavoila_to'])) {
             $currentSetting = $parentRow['tx_templavoila_to'];

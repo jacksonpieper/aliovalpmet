@@ -12,11 +12,11 @@
  * The TYPO3 project - inspiring people to share!
  */
 
-namespace Extension\Templavoila\Controller\Backend\PageModule;
+namespace Schnitzler\Templavoila\Controller\Backend\PageModule;
 
-use Extension\Templavoila\Domain\Repository\TemplateRepository;
-use Extension\Templavoila\Service\ApiService;
-use Extension\Templavoila\Templavoila;
+use Schnitzler\Templavoila\Domain\Repository\TemplateRepository;
+use Schnitzler\Templavoila\Service\ApiService;
+use Schnitzler\Templavoila\Templavoila;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Module\AbstractModule;
@@ -26,7 +26,7 @@ use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
- * Class Extension\Templavoila\Controller\Backend\PageModule\ContentController
+ * Class Schnitzler\Templavoila\Controller\Backend\PageModule\ContentController
  */
 class ContentController extends AbstractModule
 {

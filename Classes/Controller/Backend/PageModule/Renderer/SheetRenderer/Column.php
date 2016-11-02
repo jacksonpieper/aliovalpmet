@@ -12,12 +12,12 @@
  * The TYPO3 project - inspiring people to share!
  */
 
-namespace Extension\Templavoila\Controller\Backend\PageModule\Renderer\SheetRenderer;
+namespace Schnitzler\Templavoila\Controller\Backend\PageModule\Renderer\SheetRenderer;
 
-use Extension\Templavoila\Traits\LanguageService;
+use Schnitzler\Templavoila\Traits\LanguageService;
 
 /**
- * Class Extension\Templavoila\Controller\Backend\PageModule\Renderer\SheetRenderer\Column
+ * Class Schnitzler\Templavoila\Controller\Backend\PageModule\Renderer\SheetRenderer\Column
  */
 class Column implements \Countable, \Iterator
 {

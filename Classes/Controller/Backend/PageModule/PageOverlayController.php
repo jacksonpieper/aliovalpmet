@@ -12,10 +12,10 @@
  * The TYPO3 project - inspiring people to share!
  */
 
-namespace Extension\Templavoila\Controller\Backend\PageModule;
+namespace Schnitzler\Templavoila\Controller\Backend\PageModule;
 
-use Extension\Templavoila\Templavoila;
-use Extension\Templavoila\Traits\DatabaseConnection;
+use Schnitzler\Templavoila\Templavoila;
+use Schnitzler\Templavoila\Traits\DatabaseConnection;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Module\AbstractModule;
@@ -25,7 +25,7 @@ use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
- * Class Extension\Templavoila\Controller\Backend\PageModule\PageOverlayController
+ * Class Schnitzler\Templavoila\Controller\Backend\PageModule\PageOverlayController
  */
 class PageOverlayController extends AbstractModule
 {

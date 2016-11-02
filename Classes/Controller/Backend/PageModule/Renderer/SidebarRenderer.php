@@ -12,22 +12,22 @@
  * The TYPO3 project - inspiring people to share!
  */
 
-namespace Extension\Templavoila\Controller\Backend\PageModule\Renderer;
+namespace Schnitzler\Templavoila\Controller\Backend\PageModule\Renderer;
 
-use Extension\Templavoila\Controller\Backend\PageModule\MainController;
-use Extension\Templavoila\Controller\Backend\PageModule\Renderer\Sidebar\AdvancedFunctionsTab;
-use Extension\Templavoila\Controller\Backend\PageModule\Renderer\Sidebar\HeaderFieldsTab;
-use Extension\Templavoila\Controller\Backend\PageModule\Renderer\Sidebar\LocalizationTab;
-use Extension\Templavoila\Controller\Backend\PageModule\Renderer\Sidebar\NonUsedElementsTab;
-use Extension\Templavoila\Controller\Backend\PageModule\Renderer\Sidebar\RecordsTab;
-use Extension\Templavoila\Controller\Backend\PageModule\Renderer\Sidebar\VersioningTab;
-use Extension\Templavoila\Traits\BackendUser;
-use Extension\Templavoila\Traits\LanguageService;
+use Schnitzler\Templavoila\Controller\Backend\PageModule\MainController;
+use Schnitzler\Templavoila\Controller\Backend\PageModule\Renderer\Sidebar\AdvancedFunctionsTab;
+use Schnitzler\Templavoila\Controller\Backend\PageModule\Renderer\Sidebar\HeaderFieldsTab;
+use Schnitzler\Templavoila\Controller\Backend\PageModule\Renderer\Sidebar\LocalizationTab;
+use Schnitzler\Templavoila\Controller\Backend\PageModule\Renderer\Sidebar\NonUsedElementsTab;
+use Schnitzler\Templavoila\Controller\Backend\PageModule\Renderer\Sidebar\RecordsTab;
+use Schnitzler\Templavoila\Controller\Backend\PageModule\Renderer\Sidebar\VersioningTab;
+use Schnitzler\Templavoila\Traits\BackendUser;
+use Schnitzler\Templavoila\Traits\LanguageService;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
- * Class Extension\Templavoila\Controller\Backend\PageModule\Renderer\SidebarRenderer
+ * Class Schnitzler\Templavoila\Controller\Backend\PageModule\Renderer\SidebarRenderer
  */
 class SidebarRenderer
 {

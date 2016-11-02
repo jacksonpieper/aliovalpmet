@@ -12,10 +12,10 @@
  * The TYPO3 project - inspiring people to share!
  */
 
-namespace Extension\Templavoila\Controller\Backend\PageModule\Renderer;
+namespace Schnitzler\Templavoila\Controller\Backend\PageModule\Renderer;
 
 /**
- * Interface Extension\Templavoila\Controller\Backend\PageModule\Renderer\Renderable
+ * Interface Schnitzler\Templavoila\Controller\Backend\PageModule\Renderer\Renderable
  */
 interface Renderable
 {

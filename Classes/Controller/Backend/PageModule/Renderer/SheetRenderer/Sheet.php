@@ -12,10 +12,10 @@
  * The TYPO3 project - inspiring people to share!
  */
 
-namespace Extension\Templavoila\Controller\Backend\PageModule\Renderer\SheetRenderer;
+namespace Schnitzler\Templavoila\Controller\Backend\PageModule\Renderer\SheetRenderer;
 
 /**
- * Class Extension\Templavoila\Controller\Backend\PageModule\Renderer\SheetRenderer\Sheet
+ * Class Schnitzler\Templavoila\Controller\Backend\PageModule\Renderer\SheetRenderer\Sheet
  */
 class Sheet
 {

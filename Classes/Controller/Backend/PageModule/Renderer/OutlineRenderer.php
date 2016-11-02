@@ -12,12 +12,12 @@
  * The TYPO3 project - inspiring people to share!
  */
 
-namespace Extension\Templavoila\Controller\Backend\PageModule\Renderer;
+namespace Schnitzler\Templavoila\Controller\Backend\PageModule\Renderer;
 
-use Extension\Templavoila\Controller\Backend\PageModule\MainController;
-use Extension\Templavoila\Traits\BackendUser;
-use Extension\Templavoila\Traits\LanguageService;
-use Extension\Templavoila\Utility\PermissionUtility;
+use Schnitzler\Templavoila\Controller\Backend\PageModule\MainController;
+use Schnitzler\Templavoila\Traits\BackendUser;
+use Schnitzler\Templavoila\Traits\LanguageService;
+use Schnitzler\Templavoila\Utility\PermissionUtility;
 use TYPO3\CMS\Backend\Template\DocumentTemplate;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Configuration\FlexForm\FlexFormTools;
@@ -26,7 +26,7 @@ use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
- * Class Extension\Templavoila\Controller\Backend\PageModule\Renderer\OutlineRenderer
+ * Class Schnitzler\Templavoila\Controller\Backend\PageModule\Renderer\OutlineRenderer
  */
 class OutlineRenderer implements Renderable
 {
@@ -224,7 +224,7 @@ class OutlineRenderer implements Renderable
                         $linkUnlink = '';
                     }
                     if ($this->controller->modTSconfig['properties']['enableDeleteIconForLocalElements'] && $elementBelongsToCurrentPage) {
-                        $hasForeignReferences = \Extension\Templavoila\Utility\GeneralUtility::hasElementForeignReferences($contentTreeArr['el'], $contentTreeArr['el']['pid']);
+                        $hasForeignReferences = \Schnitzler\Templavoila\Utility\GeneralUtility::hasElementForeignReferences($contentTreeArr['el'], $contentTreeArr['el']['pid']);
                         $iconDelete = $this->controller->getModuleTemplate()->getIconFactory()->getIcon('actions-edit-delete', Icon::SIZE_SMALL);
                         $linkDelete = $this->controller->link_unlink($iconDelete, $parentPointer['table'], $contentTreeArr['el']['uid'], true, $hasForeignReferences);
                     } else {
@@ -243,7 +243,7 @@ class OutlineRenderer implements Renderable
         if ($languageUid > 0) {
             $languageLabel = htmlspecialchars($this->controller->getAllAvailableLanguages()[$languageUid]['title']);
             if ($this->controller->getAllAvailableLanguages()[$languageUid]['flagIcon']) {
-                $languageIcon = \Extension\Templavoila\Utility\IconUtility::getFlagIconForLanguage($this->controller->getAllAvailableLanguages()[$languageUid]['flagIcon'], ['title' => $languageLabel, 'alt' => $languageLabel]);
+                $languageIcon = \Schnitzler\Templavoila\Utility\IconUtility::getFlagIconForLanguage($this->controller->getAllAvailableLanguages()[$languageUid]['flagIcon'], ['title' => $languageLabel, 'alt' => $languageLabel]);
             } else {
                 $languageIcon = '[' . $languageLabel . ']';
             }
@@ -340,7 +340,7 @@ class OutlineRenderer implements Renderable
                                 'title' => BackendUtility::getRecordTitle('tt_content', $olrow),
                                 'table' => 'tt_content',
                                 'uid' => $olrow['uid'],
-                                'flag' => $flagLink_begin . \Extension\Templavoila\Utility\IconUtility::getFlagIconForLanguage($sLInfo['flagIcon'], ['title' => $sLInfo['title'], 'alt' => $sLInfo['title']]) . $flagLink_end,
+                                'flag' => $flagLink_begin . \Schnitzler\Templavoila\Utility\IconUtility::getFlagIconForLanguage($sLInfo['flagIcon'], ['title' => $sLInfo['title'], 'alt' => $sLInfo['title']]) . $flagLink_end,
                                 'isNewVersion' => $olrow['_ORIG_uid'] ? true : false,
                             ];
                             break;

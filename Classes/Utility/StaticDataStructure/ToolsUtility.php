@@ -1,6 +1,6 @@
 <?php
 
-namespace Extension\Templavoila\Utility\StaticDataStructure;
+namespace Schnitzler\Templavoila\Utility\StaticDataStructure;
 
 /*
  * This file is part of the TYPO3 CMS project.
@@ -15,7 +15,7 @@ namespace Extension\Templavoila\Utility\StaticDataStructure;
  * The TYPO3 project - inspiring people to share!
  */
 
-use Extension\Templavoila\Domain\Model\AbstractDataStructure;
+use Schnitzler\Templavoila\Domain\Model\AbstractDataStructure;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -56,7 +56,7 @@ class ToolsUtility
                     $staticDataStructure['scope'] = AbstractDataStructure::SCOPE_PAGE;
                 }
 
-                $GLOBALS['TYPO3_CONF_VARS']['EXTCONF'][\Extension\Templavoila\Templavoila::EXTKEY]['staticDataStructures'][] = $staticDataStructure;
+                $GLOBALS['TYPO3_CONF_VARS']['EXTCONF'][\Schnitzler\Templavoila\Templavoila::EXTKEY]['staticDataStructures'][] = $staticDataStructure;
             }
         }
     }

@@ -1,6 +1,6 @@
 <?php
 
-namespace Extension\Templavoila\Domain\Repository;
+namespace Schnitzler\Templavoila\Domain\Repository;
 
 /*
  * This file is part of the TYPO3 CMS project.
@@ -15,9 +15,9 @@ namespace Extension\Templavoila\Domain\Repository;
  * The TYPO3 project - inspiring people to share!
  */
 
-use Extension\Templavoila\Templavoila;
-use Extension\Templavoila\Traits\DatabaseConnection;
-use Extension\Templavoila\Utility\StaticDataStructure\ToolsUtility;
+use Schnitzler\Templavoila\Templavoila;
+use Schnitzler\Templavoila\Traits\DatabaseConnection;
+use Schnitzler\Templavoila\Utility\StaticDataStructure\ToolsUtility;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
@@ -42,16 +42,16 @@ class DataStructureRepository
      *
      * @throws \InvalidArgumentException
      *
-     * @return \Extension\Templavoila\Domain\Model\AbstractDataStructure
+     * @return \Schnitzler\Templavoila\Domain\Model\AbstractDataStructure
      */
     public function getDatastructureByUidOrFilename($uidOrFile)
     {
         if ((int)$uidOrFile > 0) {
-            $className = 'Extension\\Templavoila\\Domain\\Model\\DataStructure';
+            $className = 'Schnitzler\\Templavoila\\Domain\\Model\\DataStructure';
         } else {
             if (($staticKey = $this->validateStaticDS($uidOrFile)) !== false) {
                 $uidOrFile = $staticKey;
-                $className = 'Extension\\Templavoila\\Domain\\Model\\StaticDataStructure';
+                $className = 'Schnitzler\\Templavoila\\Domain\\Model\\StaticDataStructure';
             } else {
                 throw new \InvalidArgumentException(
                     'Argument was supposed to be either a uid or a filename',
@@ -321,8 +321,8 @@ class DataStructureRepository
     /**
      * Sorts datastructure alphabetically
      *
-     * @param \Extension\Templavoila\Domain\Model\AbstractDataStructure $obj1
-     * @param \Extension\Templavoila\Domain\Model\AbstractDataStructure $obj2
+     * @param \Schnitzler\Templavoila\Domain\Model\AbstractDataStructure $obj1
+     * @param \Schnitzler\Templavoila\Domain\Model\AbstractDataStructure $obj2
      *
      * @return int Result of the comparison (see strcmp())
      *

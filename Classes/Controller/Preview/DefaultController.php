@@ -1,6 +1,6 @@
 <?php
 
-namespace Extension\Templavoila\Controller\Preview;
+namespace Schnitzler\Templavoila\Controller\Preview;
 
 /*
  * This file is part of the TYPO3 CMS project.
@@ -15,7 +15,7 @@ namespace Extension\Templavoila\Controller\Preview;
  * The TYPO3 project - inspiring people to share!
  */
 
-use Extension\Templavoila\Utility\GeneralUtility;
+use Schnitzler\Templavoila\Utility\GeneralUtility;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 
 /**

@@ -12,14 +12,14 @@
  * The TYPO3 project - inspiring people to share!
  */
 
-namespace Extension\Templavoila\Controller\Backend\PageModule;
+namespace Schnitzler\Templavoila\Controller\Backend\PageModule;
 
-use Extension\Templavoila\Controller\Backend\AbstractModuleController;
-use Extension\Templavoila\Domain\Model\AbstractDataStructure;
-use Extension\Templavoila\Domain\Model\Template;
-use Extension\Templavoila\Domain\Repository\TemplateRepository;
-use Extension\Templavoila\Service\ApiService;
-use Extension\Templavoila\Templavoila;
+use Schnitzler\Templavoila\Controller\Backend\AbstractModuleController;
+use Schnitzler\Templavoila\Domain\Model\AbstractDataStructure;
+use Schnitzler\Templavoila\Domain\Model\Template;
+use Schnitzler\Templavoila\Domain\Repository\TemplateRepository;
+use Schnitzler\Templavoila\Service\ApiService;
+use Schnitzler\Templavoila\Templavoila;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Backend\Wizard\NewContentElementWizardHookInterface;
 use TYPO3\CMS\Core\Http\Response;
@@ -30,7 +30,7 @@ use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
- * Class Extension\Templavoila\Controller\Backend\Module\CreateContentController
+ * Class Schnitzler\Templavoila\Controller\Backend\Module\CreateContentController
  */
 class CreateContentController extends AbstractModuleController
 {

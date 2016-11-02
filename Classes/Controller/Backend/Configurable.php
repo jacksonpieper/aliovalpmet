@@ -12,10 +12,10 @@
  * The TYPO3 project - inspiring people to share!
  */
 
-namespace Extension\Templavoila\Controller\Backend;
+namespace Schnitzler\Templavoila\Controller\Backend;
 
 /**
- * Interface Extension\Templavoila\Controller\Backend\Configurable
+ * Interface Schnitzler\Templavoila\Controller\Backend\Configurable
  */
 interface Configurable
 {

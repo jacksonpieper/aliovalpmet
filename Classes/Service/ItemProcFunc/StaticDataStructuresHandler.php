@@ -1,6 +1,6 @@
 <?php
 
-namespace Extension\Templavoila\Service\ItemProcFunc;
+namespace Schnitzler\Templavoila\Service\ItemProcFunc;
 
 /*
  * This file is part of the TYPO3 CMS project.
@@ -15,11 +15,11 @@ namespace Extension\Templavoila\Service\ItemProcFunc;
  * The TYPO3 project - inspiring people to share!
  */
 
-use Extension\Templavoila\Domain\Model\AbstractDataStructure;
-use Extension\Templavoila\Domain\Repository\DataStructureRepository;
-use Extension\Templavoila\Domain\Repository\TemplateRepository;
-use Extension\Templavoila\Traits\DatabaseConnection;
-use Extension\Templavoila\Traits\LanguageService;
+use Schnitzler\Templavoila\Domain\Model\AbstractDataStructure;
+use Schnitzler\Templavoila\Domain\Repository\DataStructureRepository;
+use Schnitzler\Templavoila\Domain\Repository\TemplateRepository;
+use Schnitzler\Templavoila\Traits\DatabaseConnection;
+use Schnitzler\Templavoila\Traits\LanguageService;
 use TYPO3\CMS\Backend\Form\FormDataProvider\TcaSelectItems;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -162,7 +162,7 @@ class StaticDataStructuresHandler
      */
     public function templateObjectItemsProcFunc(array &$params, TcaSelectItems $pObj)
     {
-        $this->conf = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf'][\Extension\Templavoila\Templavoila::EXTKEY]);
+        $this->conf = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf'][\Schnitzler\Templavoila\Templavoila::EXTKEY]);
 
         if ($this->conf['enable.']['selectDataStructure']) {
             $this->templateObjectItemsProcFuncForCurrentDS($params, $pObj);
@@ -203,7 +203,7 @@ class StaticDataStructuresHandler
             if (strlen($dataSource)) {
                 $toList = $toRepo->getTemplatesByDatastructure($ds, $storagePid);
                 foreach ($toList as $toObj) {
-                    /** @var \Extension\Templavoila\Domain\Model\Template $toObj */
+                    /** @var \Schnitzler\Templavoila\Domain\Model\Template $toObj */
                     if (!$toObj->hasParent() && $toObj->isPermittedForUser($params['table'], $removeTOItems)) {
                         $params['items'][] = [
                             $toObj->getLabel(),
@@ -255,7 +255,7 @@ class StaticDataStructuresHandler
 
             $toList = $toRepo->findByDataStructure($dsObj);
             foreach ($toList as $toObj) {
-                /** @var \Extension\Templavoila\Domain\Model\Template $toObj */
+                /** @var \Schnitzler\Templavoila\Domain\Model\Template $toObj */
                 if (!$toObj->hasParent() && $toObj->isPermittedForUser($params['row'], $removeTOItems)) {
                     $curDS[] = [
                         $toObj->getLabel(),

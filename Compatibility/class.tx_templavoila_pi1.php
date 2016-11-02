@@ -1,6 +1,6 @@
 <?php
 
-use Extension\Templavoila\Controller\FrontendController;
+use Schnitzler\Templavoila\Controller\FrontendController;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -18,7 +18,7 @@ class tx_templavoila_pi1 extends FrontendController
      */
     public function main_page($content, $conf)
     {
-        GeneralUtility::deprecationLog('"userFunc = tx_templavoila_pi1->main_page" is deprecated, use "userFunc = Extension\Templavoila\Controller\FrontendController->renderPage" instead');
+        GeneralUtility::deprecationLog('"userFunc = tx_templavoila_pi1->main_page" is deprecated, use "userFunc = Schnitzler\Templavoila\Controller\FrontendController->renderPage" instead');
         return parent::renderPage($content, $conf);
     }
 
@@ -32,7 +32,7 @@ class tx_templavoila_pi1 extends FrontendController
      */
     public function main_record($content, $conf)
     {
-        GeneralUtility::deprecationLog('"userFunc = tx_templavoila_pi1->main_record" is deprecated, use "userFunc = Extension\Templavoila\Controller\FrontendController->renderRecord" instead');
+        GeneralUtility::deprecationLog('"userFunc = tx_templavoila_pi1->main_record" is deprecated, use "userFunc = Schnitzler\Templavoila\Controller\FrontendController->renderRecord" instead');
         return parent::renderRecord($content, $conf);
     }
 
@@ -46,7 +46,7 @@ class tx_templavoila_pi1 extends FrontendController
      */
     public function tvSectionIndex($content, $conf)
     {
-        GeneralUtility::deprecationLog('"userFunc = tx_templavoila_pi1->tvSectionIndex" is deprecated, use "userFunc = Extension\Templavoila\Controller\FrontendController->renderSectionIndex" instead');
+        GeneralUtility::deprecationLog('"userFunc = tx_templavoila_pi1->tvSectionIndex" is deprecated, use "userFunc = Schnitzler\Templavoila\Controller\FrontendController->renderSectionIndex" instead');
         return parent::renderSectionIndex($content, $conf);
     }
 }

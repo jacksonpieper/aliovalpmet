@@ -1,6 +1,6 @@
 <?php
 
-namespace Extension\Templavoila\Utility;
+namespace Schnitzler\Templavoila\Utility;
 
 /*
  * This file is part of the TYPO3 CMS project.
@@ -15,13 +15,13 @@ namespace Extension\Templavoila\Utility;
  * The TYPO3 project - inspiring people to share!
  */
 
-use Extension\Templavoila\Traits\BackendUser;
+use Schnitzler\Templavoila\Traits\BackendUser;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Type\Bitmask\Permission;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
- * Class Extension\Templavoila\Utility\PermissionUtility
+ * Class Schnitzler\Templavoila\Utility\PermissionUtility
  */
 final class PermissionUtility
 {

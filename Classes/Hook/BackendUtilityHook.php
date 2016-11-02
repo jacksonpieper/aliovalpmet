@@ -1,5 +1,5 @@
 <?php
-namespace Extension\Templavoila\Hook;
+namespace Schnitzler\Templavoila\Hook;
 
 /*
  * This file is part of the TYPO3 CMS project.
@@ -15,7 +15,7 @@ namespace Extension\Templavoila\Hook;
  */
 
 /**
- * Class Extension\Templavoila\Hook\BackendUtilityHook
+ * Class Schnitzler\Templavoila\Hook\BackendUtilityHook
  */
 class BackendUtilityHook
 {

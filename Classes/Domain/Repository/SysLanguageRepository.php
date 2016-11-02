@@ -13,13 +13,13 @@
  * The TYPO3 project - inspiring people to share!
  */
 
-namespace Extension\Templavoila\Domain\Repository;
+namespace Schnitzler\Templavoila\Domain\Repository;
 
-use Extension\Templavoila\Traits\BackendUser;
-use Extension\Templavoila\Traits\DatabaseConnection;
+use Schnitzler\Templavoila\Traits\BackendUser;
+use Schnitzler\Templavoila\Traits\DatabaseConnection;
 
 /**
- * Class Extension\Templavoila\Domain\Repository\SysLanguageRepository
+ * Class Schnitzler\Templavoila\Domain\Repository\SysLanguageRepository
  */
 class SysLanguageRepository
 {

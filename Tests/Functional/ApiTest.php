@@ -1,6 +1,6 @@
 <?php
 
-namespace Extension\Templavoila\Tests\Functional;
+namespace Schnitzler\Templavoila\Tests\Functional;
 
 /*
  * This file is part of the TYPO3 CMS project.
@@ -15,7 +15,7 @@ namespace Extension\Templavoila\Tests\Functional;
  * The TYPO3 project - inspiring people to share!
  */
 
-use Extension\Templavoila\Service\ApiService;
+use Schnitzler\Templavoila\Service\ApiService;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Core\Bootstrap;
 use TYPO3\CMS\Core\Tests\FunctionalTestCase;

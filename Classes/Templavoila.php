@@ -13,12 +13,12 @@
  * The TYPO3 project - inspiring people to share!
  */
 
-namespace Extension\Templavoila;
+namespace Schnitzler\Templavoila;
 
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
- * Class Extension\Templavoila\Templavoila
+ * Class Schnitzler\Templavoila\Templavoila
  */
 final class Templavoila
 {

@@ -5,7 +5,7 @@ Deprecation: Deprecate tx_templavoila_pi1
 Description
 ===========
 
-The class tx_templavoila_pi1 is deprecated and replaced by \Extension\Templavoila\Controller\FrontendController.
+The class tx_templavoila_pi1 is deprecated and replaced by \Schnitzler\Templavoila\Controller\FrontendController.
 
 
 Impact
@@ -23,14 +23,14 @@ All.
 Migration
 =========
 
-Replace `tx_templavoila_pi1` with `\Extension\Templavoila\Controller\FrontendController`.
+Replace `tx_templavoila_pi1` with `\Schnitzler\Templavoila\Controller\FrontendController`.
 
 Example:
 .. code-block:: typoscript
 
 	page = PAGE
 	page.10 = USER
-	page.10.userFunc = Extension\Templavoila\Controller\FrontendController->renderPage
+	page.10.userFunc = Schnitzler\Templavoila\Controller\FrontendController->renderPage
 
 Further replace the following method calls:
 

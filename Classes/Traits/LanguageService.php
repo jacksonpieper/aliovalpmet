@@ -1,6 +1,6 @@
 <?php
 
-namespace Extension\Templavoila\Traits;
+namespace Schnitzler\Templavoila\Traits;
 
 /*
  * This file is part of the TYPO3 CMS project.
@@ -16,7 +16,7 @@ namespace Extension\Templavoila\Traits;
  */
 
 /**
- * Trait Extension\Templavoila\Traits\LanguageService
+ * Trait Schnitzler\Templavoila\Traits\LanguageService
  */
 trait LanguageService
 {

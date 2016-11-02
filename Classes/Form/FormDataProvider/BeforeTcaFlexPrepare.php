@@ -1,5 +1,5 @@
 <?php
-namespace Extension\Templavoila\Form\FormDataProvider;
+namespace Schnitzler\Templavoila\Form\FormDataProvider;
 
 /*
  * This file is part of the TYPO3 CMS project.
@@ -16,7 +16,7 @@ namespace Extension\Templavoila\Form\FormDataProvider;
 use TYPO3\CMS\Backend\Form\FormDataProviderInterface;
 
 /**
- * Class Extension\Templavoila\Form\FormDataProvider\BeforeTcaFlexPrepare
+ * Class Schnitzler\Templavoila\Form\FormDataProvider\BeforeTcaFlexPrepare
  */
 class BeforeTcaFlexPrepare implements FormDataProviderInterface
 {

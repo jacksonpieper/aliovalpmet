@@ -1,6 +1,6 @@
 <?php
 
-namespace Extension\Templavoila\Service\DataHandling;
+namespace Schnitzler\Templavoila\Service\DataHandling;
 
 /*
  * This file is part of the TYPO3 CMS project.
@@ -15,10 +15,10 @@ namespace Extension\Templavoila\Service\DataHandling;
  * The TYPO3 project - inspiring people to share!
  */
 
-use Extension\Templavoila\Service\ApiService;
-use Extension\Templavoila\Templavoila;
-use Extension\Templavoila\Traits\DatabaseConnection;
-use Extension\Templavoila\Traits\LanguageService;
+use Schnitzler\Templavoila\Service\ApiService;
+use Schnitzler\Templavoila\Templavoila;
+use Schnitzler\Templavoila\Traits\DatabaseConnection;
+use Schnitzler\Templavoila\Traits\LanguageService;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -47,7 +47,7 @@ class DataHandler
     protected $extConf = [];
 
     /**
-     * @return \Extension\Templavoila\Service\DataHandling\DataHandler
+     * @return \Schnitzler\Templavoila\Service\DataHandling\DataHandler
      */
     public function __construct()
     {
@@ -163,7 +163,7 @@ class DataHandler
                     'row' => $row,
                 ];
                 $ref = null;
-                if (!GeneralUtility::callUserFunction('EXT:templavoila/Classes/Service/UserFunc/Access.php:&Extension\Templavoila\Service\UserFunc\Access->recordEditAccessInternals', $params, $ref)) {
+                if (!GeneralUtility::callUserFunction('EXT:templavoila/Classes/Service/UserFunc/Access.php:&Schnitzler\Templavoila\Service\UserFunc\Access->recordEditAccessInternals', $params, $ref)) {
                     $reference->newlog(sprintf(static::getLanguageService()->getLL($status != 'new' ? 'access_noModifyAccess' : 'access_noCrateAccess'), $table, $id), 1);
                     $fieldArray = null;
                 }
@@ -174,7 +174,7 @@ class DataHandler
                     $fieldArray['config'] = '
 page = PAGE
 page.10 = USER
-page.10.userFunc = Extension\Templavoila\Controller\FrontendController->renderPage
+page.10.userFunc = Schnitzler\Templavoila\Controller\FrontendController->renderPage
 page.10.disableExplosivePreview = 1
                 ';
                 }
@@ -268,7 +268,7 @@ page.10.disableExplosivePreview = 1
                 'table' => $table,
                 'uid' => $id
             ];
-            $references = \Extension\Templavoila\Utility\GeneralUtility::getElementForeignReferences($element, $fieldArray['pid']);
+            $references = \Schnitzler\Templavoila\Utility\GeneralUtility::getElementForeignReferences($element, $fieldArray['pid']);
             if (is_array($references) && is_array($references['pages'])) {
                 foreach ($references['pages'] as $pageUid => $__) {
                     $reference->clear_cacheCmd($pageUid);
@@ -319,7 +319,7 @@ page.10.disableExplosivePreview = 1
                     'row' => $record,
                 ];
                 $ref = null;
-                if (!GeneralUtility::callUserFunction('EXT:templavoila/Classes/Service/UserFunc/Access.php:&Extension\Templavoila\Service\UserFunc\Access->recordEditAccessInternals', $params, $ref)) {
+                if (!GeneralUtility::callUserFunction('EXT:templavoila/Classes/Service/UserFunc/Access.php:&Schnitzler\Templavoila\Service\UserFunc\Access->recordEditAccessInternals', $params, $ref)) {
                     $reference->newlog(sprintf(static::getLanguageService()->getLL('access_noModifyAccess'), $table, $id), 1);
                     $command = ''; // Do not delete! A hack but there is no other way to prevent deletion...
                 } else {

@@ -1,6 +1,6 @@
 <?php
 
-namespace Extension\Templavoila\Controller;
+namespace Schnitzler\Templavoila\Controller;
 
 /*
  * This file is part of the TYPO3 CMS project.
@@ -15,8 +15,8 @@ namespace Extension\Templavoila\Controller;
  * The TYPO3 project - inspiring people to share!
  */
 
-use Extension\Templavoila\Domain\Repository\DataStructureRepository;
-use Extension\Templavoila\Utility\GeneralUtility;
+use Schnitzler\Templavoila\Domain\Repository\DataStructureRepository;
+use Schnitzler\Templavoila\Utility\GeneralUtility;
 use TYPO3\CMS\Backend\Module\AbstractFunctionModule;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
@@ -252,7 +252,7 @@ class RenameFieldInPageFlexWizardController extends AbstractFunctionModule
         $dsList = $this->getKnownPageDS();
         $return = [];
         foreach ($dsList as $ds) {
-            /* @var $ds \Extension\Templavoila\Domain\Model\AbstractDataStructure */
+            /* @var $ds \Schnitzler\Templavoila\Domain\Model\AbstractDataStructure */
             $return[$ds->getLabel()] = [];
             $t = $ds->getDataprotArray();
             foreach (array_keys($t['ROOT']['el']) as $field) {

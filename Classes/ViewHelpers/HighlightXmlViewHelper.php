@@ -1,6 +1,6 @@
 <?php
 
-namespace Extension\Templavoila\ViewHelpers;
+namespace Schnitzler\Templavoila\ViewHelpers;
 
 /*
  * This file is part of the TYPO3 CMS project.
@@ -15,7 +15,7 @@ namespace Extension\Templavoila\ViewHelpers;
  * The TYPO3 project - inspiring people to share!
  */
 
-use Extension\Templavoila\Service\SyntaxHighlightingService;
+use Schnitzler\Templavoila\Service\SyntaxHighlightingService;
 use InvalidArgumentException;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface;
@@ -24,7 +24,7 @@ use TYPO3\CMS\Fluid\Core\ViewHelper\Exception\InvalidVariableException;
 use TYPO3\CMS\Fluid\Core\ViewHelper\Facets\CompilableInterface;
 
 /**
- * Class Extension\Templavoila\ViewHelpers\HighlightXmlViewHelper
+ * Class Schnitzler\Templavoila\ViewHelpers\HighlightXmlViewHelper
  */
 class HighlightXmlViewHelper extends AbstractViewHelper implements CompilableInterface
 {

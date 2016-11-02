@@ -1,6 +1,6 @@
 <?php
 
-namespace Extension\Templavoila\Service\ClickMenu;
+namespace Schnitzler\Templavoila\Service\ClickMenu;
 
 /*
  * This file is part of the TYPO3 CMS project.
@@ -15,7 +15,7 @@ namespace Extension\Templavoila\Service\ClickMenu;
  * The TYPO3 project - inspiring people to share!
  */
 
-use Extension\Templavoila\Utility\GeneralUtility;
+use Schnitzler\Templavoila\Utility\GeneralUtility;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Backend\Utility\IconUtility;
 
@@ -41,7 +41,7 @@ class MainClickMenu
     public function main(&$backRef, $menuItems, $table, $uid)
     {
         $localItems = [];
-        $extensionRelativePath = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath(\Extension\Templavoila\Templavoila::EXTKEY);
+        $extensionRelativePath = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath(\Schnitzler\Templavoila\Templavoila::EXTKEY);
         if (!$backRef->cmLevel) {
             $LL = GeneralUtility::getLanguageService()->includeLLFile(
                 'EXT:templavoila/Resources/Private/Language/locallang.xlf',
@@ -50,9 +50,9 @@ class MainClickMenu
 
             // Adding link for Mapping tool:
             if (
-                \Extension\Templavoila\Domain\Model\File::is_file($table)
+                \Schnitzler\Templavoila\Domain\Model\File::is_file($table)
                 && GeneralUtility::getBackendUser()->isAdmin()
-                && \Extension\Templavoila\Domain\Model\File::is_xmlFile($table)
+                && \Schnitzler\Templavoila\Domain\Model\File::is_xmlFile($table)
             ) {
                 $url = $extensionRelativePath . 'cm1/index.php?file=' . rawurlencode($table);
                 $localItems[] = $backRef->linkItem(

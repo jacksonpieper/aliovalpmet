@@ -12,18 +12,18 @@
  * The TYPO3 project - inspiring people to share!
  */
 
-namespace Extension\Templavoila\Controller\Backend\PageModule\Renderer;
+namespace Schnitzler\Templavoila\Controller\Backend\PageModule\Renderer;
 
-use Extension\Templavoila\Controller\Backend\PageModule\MainController;
-use Extension\Templavoila\Controller\Backend\PageModule\Renderer\Doktype\Link;
-use Extension\Templavoila\Controller\Backend\PageModule\Renderer\Doktype\Mountpoint;
-use Extension\Templavoila\Controller\Backend\PageModule\Renderer\Doktype\Shortcut;
-use Extension\Templavoila\Controller\Backend\PageModule\Renderer\Doktype\SysFolder;
+use Schnitzler\Templavoila\Controller\Backend\PageModule\MainController;
+use Schnitzler\Templavoila\Controller\Backend\PageModule\Renderer\Doktype\Link;
+use Schnitzler\Templavoila\Controller\Backend\PageModule\Renderer\Doktype\Mountpoint;
+use Schnitzler\Templavoila\Controller\Backend\PageModule\Renderer\Doktype\Shortcut;
+use Schnitzler\Templavoila\Controller\Backend\PageModule\Renderer\Doktype\SysFolder;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Frontend\Page\PageRepository;
 
 /**
- * Class Extension\Templavoila\Controller\Backend\PageModule\Renderer\DoktypeRenderer
+ * Class Schnitzler\Templavoila\Controller\Backend\PageModule\Renderer\DoktypeRenderer
  */
 class DoktypeRenderer
 {

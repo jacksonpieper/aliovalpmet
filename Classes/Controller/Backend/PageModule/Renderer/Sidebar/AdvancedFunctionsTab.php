@@ -12,19 +12,19 @@
  * The TYPO3 project - inspiring people to share!
  */
 
-namespace Extension\Templavoila\Controller\Backend\PageModule\Renderer\Sidebar;
+namespace Schnitzler\Templavoila\Controller\Backend\PageModule\Renderer\Sidebar;
 
-use Extension\Templavoila\Controller\Backend\PageModule\MainController;
-use Extension\Templavoila\Controller\Backend\PageModule\Renderer\Renderable;
-use Extension\Templavoila\Controller\Backend\PageModule\Renderer\SidebarRenderer;
-use Extension\Templavoila\Traits\BackendUser;
+use Schnitzler\Templavoila\Controller\Backend\PageModule\MainController;
+use Schnitzler\Templavoila\Controller\Backend\PageModule\Renderer\Renderable;
+use Schnitzler\Templavoila\Controller\Backend\PageModule\Renderer\SidebarRenderer;
+use Schnitzler\Templavoila\Traits\BackendUser;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Fluid\Core\ViewHelper\TagBuilder;
 use TYPO3\CMS\Fluid\View\StandaloneView;
 
 /**
- * Class Extension\Templavoila\Controller\Backend\PageModule\Renderer\Sidebar\AdvancedFunctionsTab
+ * Class Schnitzler\Templavoila\Controller\Backend\PageModule\Renderer\Sidebar\AdvancedFunctionsTab
  */
 class AdvancedFunctionsTab implements Renderable
 {
@@ -52,7 +52,7 @@ class AdvancedFunctionsTab implements Renderable
     {
         $this->controller = $controller;
         $this->view = new StandaloneView;
-        $this->view->setTemplatePathAndFilename(ExtensionManagementUtility::extPath(\Extension\Templavoila\Templavoila::EXTKEY, 'Resources/Private/Templates/Backend/PageModule/Renderer/AdvancedFunctionsTab.html')); // todo: make configurable
+        $this->view->setTemplatePathAndFilename(ExtensionManagementUtility::extPath(\Schnitzler\Templavoila\Templavoila::EXTKEY, 'Resources/Private/Templates/Backend/PageModule/Renderer/AdvancedFunctionsTab.html')); // todo: make configurable
     }
 
     /**

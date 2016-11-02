@@ -1,6 +1,6 @@
 <?php
 
-namespace Extension\Templavoila\Service;
+namespace Schnitzler\Templavoila\Service;
 
 /*
  * This file is part of the TYPO3 CMS project.

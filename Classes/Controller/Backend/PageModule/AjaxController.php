@@ -12,15 +12,15 @@
  * The TYPO3 project - inspiring people to share!
  */
 
-namespace Extension\Templavoila\Controller\Backend\PageModule;
+namespace Schnitzler\Templavoila\Controller\Backend\PageModule;
 
-use Extension\Templavoila\Service\ApiService;
+use Schnitzler\Templavoila\Service\ApiService;
 use TYPO3\CMS\Core\Http\Response;
 use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
- * Class Extension\Templavoila\Controller\Backend\PageModule\AjaxController
+ * Class Schnitzler\Templavoila\Controller\Backend\PageModule\AjaxController
  */
 class AjaxController
 {

@@ -1,6 +1,6 @@
 <?php
 
-namespace Extension\Templavoila\Controller\Preview;
+namespace Schnitzler\Templavoila\Controller\Preview;
 
 /*
  * This file is part of the TYPO3 CMS project.

@@ -4,14 +4,14 @@ return [
     'ctrl' => [
         'title' => 'LLL:EXT:templavoila/Resources/Private/Language/locallang_db.xlf:tx_templavoila_tmplobj',
         'label' => 'title',
-        'label_userFunc' => 'EXT:templavoila/Classes/Service/UserFunc/Label.php:&Extension\Templavoila\Service\UserFunc\Label->getLabel',
+        'label_userFunc' => 'EXT:templavoila/Classes/Service/UserFunc/Label.php:&Schnitzler\Templavoila\Service\UserFunc\Label->getLabel',
         'tstamp' => 'tstamp',
         'crdate' => 'crdate',
         'cruser_id' => 'cruser_id',
         'sortby' => 'sorting',
         'default_sortby' => 'ORDER BY title',
         'delete' => 'deleted',
-        'iconfile' => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath(\Extension\Templavoila\Templavoila::EXTKEY) . 'Resources/Public/Icon/icon_to.gif',
+        'iconfile' => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath(\Schnitzler\Templavoila\Templavoila::EXTKEY) . 'Resources/Public/Icon/icon_to.gif',
         'selicon_field' => 'previewicon',
         'selicon_field_path' => 'uploads/tx_templavoila',
         'type' => 'parent', // kept to make sure the user is force to reload the form
@@ -72,7 +72,7 @@ return [
                 'size' => 1,
                 'minitems' => 0,
                 'maxitems' => 1,
-                'itemsProcFunc' => \Extension\Templavoila\Service\ItemProcFunc\StaticDataStructuresHandler::class . '->main',
+                'itemsProcFunc' => \Schnitzler\Templavoila\Service\ItemProcFunc\StaticDataStructuresHandler::class . '->main',
                 'allowNonIdValues' => 1,
                 'suppress_icons' => 'ONLY_SELECTED',
                 'wizards' => [

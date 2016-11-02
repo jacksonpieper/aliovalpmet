@@ -12,7 +12,7 @@
  * The TYPO3 project - inspiring people to share!
  */
 
-namespace Extension\Templavoila\Controller\Backend;
+namespace Schnitzler\Templavoila\Controller\Backend;
 
 use Psr\Http\Message\ResponseInterface;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
@@ -25,7 +25,7 @@ use TYPO3\CMS\Core\Utility\DiffUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
- * Class Extension\Templavoila\Controller\Backend\PageModule\XmlController
+ * Class Schnitzler\Templavoila\Controller\Backend\PageModule\XmlController
  */
 class XmlController extends AbstractModuleController
 {

@@ -12,20 +12,20 @@
  * The TYPO3 project - inspiring people to share!
  */
 
-namespace Extension\Templavoila\Controller\Backend\PageModule\Renderer\Sidebar;
+namespace Schnitzler\Templavoila\Controller\Backend\PageModule\Renderer\Sidebar;
 
-use Extension\Templavoila\Controller\Backend\PageModule\MainController;
-use Extension\Templavoila\Controller\Backend\PageModule\Renderer\Renderable;
-use Extension\Templavoila\Controller\Backend\PageModule\Renderer\SidebarRenderer;
-use Extension\Templavoila\Traits\BackendUser;
-use Extension\Templavoila\Traits\LanguageService;
+use Schnitzler\Templavoila\Controller\Backend\PageModule\MainController;
+use Schnitzler\Templavoila\Controller\Backend\PageModule\Renderer\Renderable;
+use Schnitzler\Templavoila\Controller\Backend\PageModule\Renderer\SidebarRenderer;
+use Schnitzler\Templavoila\Traits\BackendUser;
+use Schnitzler\Templavoila\Traits\LanguageService;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Type\Icon\IconState;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
- * Class Extension\Templavoila\Controller\Backend\PageModule\Renderer\Sidebar\LocalizationTab
+ * Class Schnitzler\Templavoila\Controller\Backend\PageModule\Renderer\Sidebar\LocalizationTab
  */
 class LocalizationTab implements Renderable
 {

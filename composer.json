@@ -1,5 +1,5 @@
 {
-	"name": "templavoila/templavoila",
+	"name": "schnitzler/templavoila",
 	"type": "typo3-cms-extension",
 	"description": "One of many availabe template engines for TYPO3 CMS",
 	"homepage": "http://forge.typo3.org/projects/extension-templavoila/",
@@ -7,7 +7,7 @@
 	"version": "2.0.4",
 	"autoload": {
 		"psr-4": {
-			"Extension\\Templavoila\\": "Classes/"
+			"Schnitzler\\Templavoila\\": "Classes/"
 		},
 		"classmap": [
 			"cm1/",

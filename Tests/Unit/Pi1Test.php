@@ -1,6 +1,6 @@
 <?php
 
-namespace Extension\Templavoila\Tests\Unit;
+namespace Schnitzler\Templavoila\Tests\Unit;
 
 /**
  * This file is part of the TYPO3 CMS project.

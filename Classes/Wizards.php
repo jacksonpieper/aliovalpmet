@@ -13,14 +13,14 @@
  * The TYPO3 project - inspiring people to share!
  */
 
-namespace Extension\Templavoila;
+namespace Schnitzler\Templavoila;
 
-use Extension\Templavoila\Controller\Backend\PageModule\MainController;
-use Extension\Templavoila\Domain\Model\AbstractDataStructure;
-use Extension\Templavoila\Domain\Repository\DataStructureRepository;
-use Extension\Templavoila\Domain\Repository\TemplateRepository;
-use Extension\Templavoila\Traits\BackendUser;
-use Extension\Templavoila\Traits\LanguageService;
+use Schnitzler\Templavoila\Controller\Backend\PageModule\MainController;
+use Schnitzler\Templavoila\Domain\Model\AbstractDataStructure;
+use Schnitzler\Templavoila\Domain\Repository\DataStructureRepository;
+use Schnitzler\Templavoila\Domain\Repository\TemplateRepository;
+use Schnitzler\Templavoila\Traits\BackendUser;
+use Schnitzler\Templavoila\Traits\LanguageService;
 use TYPO3\CMS\Backend\Template\DocumentTemplate;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\DataHandling\DataHandler;
@@ -29,7 +29,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Impexp\ImportExport;
 
 /**
- * Class Extension\Templavoila\Wizards
+ * Class Schnitzler\Templavoila\Wizards
  */
 class Wizards
 {
@@ -293,7 +293,7 @@ class Wizards
 
                     $toList = $toRepo->getTemplatesByDatastructure($dsObj, $storageFolderPID);
                     foreach ($toList as $toObj) {
-                        /** @var \Extension\Templavoila\Domain\Model\Template $toObj */
+                        /** @var \Schnitzler\Templavoila\Domain\Model\Template $toObj */
                         if ($toObj->getKey() === $defaultTO['uid'] ||
                             !$toObj->isPermittedForUser() ||
                             GeneralUtility::inList($disallowedDesignTemplateItems, $toObj->getKey())

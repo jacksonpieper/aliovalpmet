@@ -12,12 +12,12 @@
  * The TYPO3 project - inspiring people to share!
  */
 
-namespace Extension\Templavoila\Controller\Backend;
+namespace Schnitzler\Templavoila\Controller\Backend;
 
-use Extension\Templavoila\Templavoila;
-use Extension\Templavoila\Traits\BackendUser;
-use Extension\Templavoila\Traits\DatabaseConnection;
-use Extension\Templavoila\Traits\LanguageService;
+use Schnitzler\Templavoila\Templavoila;
+use Schnitzler\Templavoila\Traits\BackendUser;
+use Schnitzler\Templavoila\Traits\DatabaseConnection;
+use Schnitzler\Templavoila\Traits\LanguageService;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Module\AbstractModule;
@@ -31,7 +31,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Fluid\View\StandaloneView;
 
 /**
- * Class Extension\Templavoila\Controller\Backend\AbstractModuleController
+ * Class Schnitzler\Templavoila\Controller\Backend\AbstractModuleController
  */
 abstract class AbstractModuleController extends AbstractModule
 {

@@ -13,7 +13,7 @@ $tempColumns = [
                 ['', 0],
             ],
             'allowNonIdValues' => 1,
-            'itemsProcFunc' => 'Extension\Templavoila\Service\ItemProcFunc\StaticDataStructuresHandler->dataSourceItemsProcFunc',
+            'itemsProcFunc' => 'Schnitzler\Templavoila\Service\ItemProcFunc\StaticDataStructuresHandler->dataSourceItemsProcFunc',
             'size' => 1,
             'minitems' => 0,
             'maxitems' => 1,
@@ -29,7 +29,7 @@ $tempColumns = [
             'items' => [
                 ['', 0],
             ],
-            'itemsProcFunc' => 'Extension\Templavoila\Service\ItemProcFunc\StaticDataStructuresHandler->templateObjectItemsProcFunc',
+            'itemsProcFunc' => 'Schnitzler\Templavoila\Service\ItemProcFunc\StaticDataStructuresHandler->templateObjectItemsProcFunc',
             'size' => 1,
             'minitems' => 0,
             'maxitems' => 1,
@@ -55,7 +55,7 @@ $tempColumns = [
             'items' => [
                 ['', 0],
             ],
-            'itemsProcFunc' => 'Extension\Templavoila\Service\ItemProcFunc\StaticDataStructuresHandler->pi_templates',
+            'itemsProcFunc' => 'Schnitzler\Templavoila\Service\ItemProcFunc\StaticDataStructuresHandler->pi_templates',
             'size' => 1,
             'minitems' => 0,
             'maxitems' => 1,
@@ -65,7 +65,7 @@ $tempColumns = [
 ];
 \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addTCAcolumns('tt_content', $tempColumns);
 
-$GLOBALS['TCA']['tt_content']['ctrl']['typeicons']['templavoila_pi1'] = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath(\Extension\Templavoila\Templavoila::EXTKEY) . '/Resources/Public/Icon/icon_fce_ce.png';
+$GLOBALS['TCA']['tt_content']['ctrl']['typeicons']['templavoila_pi1'] = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath(\Schnitzler\Templavoila\Templavoila::EXTKEY) . '/Resources/Public/Icon/icon_fce_ce.png';
 $GLOBALS['TCA']['tt_content']['ctrl']['typeicon_classes']['templavoila_pi1'] = 'extensions-templavoila-type-fce';
 
 $GLOBALS['TCA']['tt_content']['types']['templavoila_pi1']['showitem'] =
@@ -78,7 +78,7 @@ $GLOBALS['TCA']['tt_content']['types']['templavoila_pi1']['showitem'] =
     . '--palette--;LLL:EXT:cms/locallang_ttc.xlf:palette.frames;frames,'
     . '--div--;LLL:EXT:cms/locallang_ttc.xlf:tabs.extended';
 
-$_EXTCONF = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf'][\Extension\Templavoila\Templavoila::EXTKEY]);
+$_EXTCONF = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf'][\Schnitzler\Templavoila\Templavoila::EXTKEY]);
 if ($_EXTCONF['enable.']['selectDataStructure']) {
     if ($GLOBALS['TCA']['tt_content']['ctrl']['requestUpdate'] !== '') {
         $GLOBALS['TCA']['tt_content']['ctrl']['requestUpdate'] .= ',';
