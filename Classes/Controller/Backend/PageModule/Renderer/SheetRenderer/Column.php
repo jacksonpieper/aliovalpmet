@@ -54,18 +54,32 @@ class Column implements \Countable, \Iterator
     private $keys = [];
 
     /**
+     * @var array
+     */
+    private $languageKey = [];
+
+    /**
      * @param array $configuration
      */
-    public function __construct(array $elements, array $configuration)
+    public function __construct(array $elements, array $configuration, $languageKey)
     {
         $title = isset($configuration['tx_templavoila']['title']) ? (string)$configuration['tx_templavoila']['title'] : '';
         $this->elements = $elements;
         $this->title = strlen($title) > 0 ? $title : $this->title;
         $this->keys = isset($elements['el_list']) ? array_keys($elements['el_list']) : [];
+        $this->languageKey = $languageKey;
         $this->rewind();
 
         $this->setMaxItemsReached($configuration);
         $this->setDragAndDropAllowed($configuration);
+    }
+
+    /**
+     * @return array
+     */
+    public function getLanguageKey()
+    {
+        return $this->languageKey;
     }
 
     /**

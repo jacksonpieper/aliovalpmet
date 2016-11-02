@@ -16,6 +16,7 @@ namespace Extension\Templavoila\Controller\Backend\PageModule\Renderer;
 
 use Extension\Templavoila\Controller\Backend\PageModule\MainController;
 use Extension\Templavoila\Controller\Backend\PageModule\Renderer\SheetRenderer\Column;
+use Extension\Templavoila\Controller\Backend\PageModule\Renderer\SheetRenderer\Sheet;
 use Extension\Templavoila\Domain\Model\Template;
 use Extension\Templavoila\Domain\Repository\TemplateRepository;
 use Extension\Templavoila\Templavoila;
@@ -164,9 +165,9 @@ class SheetRenderer implements Renderable
      *
      * @return string HTML
      *
-     * @see render_framework_singleSheet()
+     * @see renderSheet()
      */
-    public function render_framework_allSheets(Column $column, $contentTreeArr, $languageKey = 'DEF', $parentPointer = [], $parentDsMeta = [])
+    public function renderSheets(Column $column, $contentTreeArr, $parentPointer = [], $parentDsMeta = [])
     {
         // If more than one sheet is available, render a dynamic sheet tab menu, otherwise just render the single sheet framework
         if (is_array($contentTreeArr['sub']) && (count($contentTreeArr['sub']) > 1 || !isset($contentTreeArr['sub']['sDEF']))) {
@@ -174,7 +175,8 @@ class SheetRenderer implements Renderable
             foreach (array_keys($contentTreeArr['sub']) as $sheetKey) {
                 $this->containedElementsPointer++;
                 $this->containedElements[$this->containedElementsPointer] = 0;
-                $frContent = $this->render_framework_singleSheet($column, $contentTreeArr, $languageKey, $sheetKey, $parentPointer, $parentDsMeta);
+
+                $frContent = $this->renderSheet(new Sheet($column, $contentTreeArr, $sheetKey), $parentPointer, $parentDsMeta);
 
                 $parts[] = [
                     'label' => ($contentTreeArr['meta'][$sheetKey]['title'] ? $contentTreeArr['meta'][$sheetKey]['title'] : $sheetKey), //.' ['.$this->containedElements[$this->containedElementsPointer].']',
@@ -188,7 +190,7 @@ class SheetRenderer implements Renderable
 
             return $this->controller->getModuleTemplate()->getDynamicTabMenu($parts, 'TEMPLAVOILA:pagemodule:' . $this->controller->getApiService()->flexform_getStringFromPointer($parentPointer));
         } else {
-            return $this->render_framework_singleSheet($column, $contentTreeArr, $languageKey, 'sDEF', $parentPointer, $parentDsMeta);
+            return $this->renderSheet(new Sheet($column, $contentTreeArr, 'sDEF'), $parentPointer, $parentDsMeta);
         }
     }
 
@@ -240,7 +242,8 @@ class SheetRenderer implements Renderable
 
             $column = new SheetRenderer\Column(
                 $fieldValuesContent[$vKey],
-                $contentTreeArr['previewData']['sheets'][$sheet][$fieldID]
+                $contentTreeArr['previewData']['sheets'][$sheet][$fieldID],
+                $languageKey
             );
 
             $subElementPointer = [
@@ -255,7 +258,7 @@ class SheetRenderer implements Renderable
 
             $columns[] = [
                 'title' => $column->getTitle(),
-                'content' => $this->renderColumn($column, $languageKey, $subElementPointer, $contentTreeArr['ds_meta'])
+                'content' => $this->renderColumn($column, $subElementPointer, $contentTreeArr['ds_meta'])
             ];
             $columnsCount++;
         }
@@ -277,11 +280,10 @@ class SheetRenderer implements Renderable
 
     /**
      * @param Column $column
-     * @param string $languageKey
      * @param array $parentPointer
      * @param array $parentDsMeta
      */
-    public function renderColumn(Column $column, $languageKey, array $parentPointer, array $parentDsMeta)
+    public function renderColumn(Column $column, array $parentPointer, array $parentDsMeta)
     {
         $content = '';
 
@@ -315,7 +317,7 @@ class SheetRenderer implements Renderable
                 // Modify the flexform pointer so it points to the position of the curren sub element:
                 $parentPointer['position'] = $position;
 
-                $content .= $this->render_framework_allSheets($column, $element, $languageKey, $parentPointer, $parentDsMeta);
+                $content .= $this->renderSheets($column, $element, $parentPointer, $parentDsMeta);
             } else {
                 // Modify the flexform pointer so it points to the position of the curren sub element:
                 $parentPointer['position'] = $position;
@@ -323,20 +325,6 @@ class SheetRenderer implements Renderable
         }
 
         return $content;
-    }
-
-    /**
-     * @param array $element
-     * @return int
-     */
-    private function getSysLanguageUidOfElement(array $element)
-    {
-        $sysLanguageUid = 0;
-        if (isset($element['el']['sys_language_uid'])) {
-            $sysLanguageUid = (int) $element['el']['sys_language_uid'];
-        }
-
-        return $sysLanguageUid;
     }
 
     /**
@@ -374,18 +362,20 @@ class SheetRenderer implements Renderable
     }
 
     /**
-     * @param array $element
+     * @param Sheet $sheet
      */
-    private function getTitleBarLeftIcons(array $element)
+    private function getTitleBarLeftIcons(Sheet $sheet)
     {
-        $uid = (int)$element['el']['uid'];
-        $pid = (int)$element['el']['pid'];
-        $table = $element['el']['table'];
+        $uid = $sheet->getUid();
+        $pid = $sheet->getPid();
+        $table = $sheet->getTable();
 
-        if (isset($element['el']['iconTag'])) {
-            $recordIcon = $element['el']['iconTag'];
+        $sheetData = $sheet->getRawData();
+
+        if (isset($sheetData['el']['iconTag'])) {
+            $recordIcon = $sheetData['el']['iconTag'];
         } else {
-            $recordIcon = '<img' . IconUtility::skinImg('', $element['el']['icon'], '') . ' border="0" title="' . htmlspecialchars('[' . $table . ':' . $uid . ']') . '" alt="" />';
+            $recordIcon = '<img' . IconUtility::skinImg('', $sheetData['el']['icon'], '') . ' border="0" title="' . htmlspecialchars('[' . $table . ':' . $uid . ']') . '" alt="" />';
         }
 
         $wrapClickMenuOnIcon = !PermissionUtility::isInTranslatorMode();
@@ -433,19 +423,21 @@ class SheetRenderer implements Renderable
     }
 
     /**
-     * @param array $element
+     * @param array $data
      * @param bool $elementBelongsToCurrentPage
      * @param array $parentPointer
      */
-    public function getTitleBarRightIcons(array $element, $elementBelongsToCurrentPage, array $parentPointer = [])
+    public function getTitleBarRightIcons(Sheet $sheet, $elementBelongsToCurrentPage, array $parentPointer = [])
     {
-        $uid = (int)$element['el']['uid'];
-        $pid = (int)$element['el']['pid'];
-        $table = $element['el']['table'];
+        $uid = $sheet->getUid();
+        $pid = $sheet->getPid();
+        $table = $sheet->getTable();
+
+        $sheetData = $sheet->getRawData()['el'];
 
         $canEditElement = static::getBackendUser()->isPSet(PermissionUtility::getCompiledPermissions($pid), 'pages', 'editcontent');
         $canEditContent = static::getBackendUser()->isPSet($this->controller->calcPerms, 'pages', 'editcontent');
-        $internalAccess = static::getBackendUser()->recordEditAccessInternals('tt_content', $element['previewData']['fullRow']);
+        $internalAccess = static::getBackendUser()->recordEditAccessInternals('tt_content', $sheet->getPreviewDataRow());
         $elementPointer = $table . ':' . $uid;
         $linkCopy = $this->controller->getClipboard()->element_getSelectButtons($parentPointer, 'copy,ref');
 
@@ -455,10 +447,10 @@ class SheetRenderer implements Renderable
             $linkCut = $this->controller->getClipboard()->element_getSelectButtons($parentPointer, 'cut');
             if ($this->controller->modTSconfig['properties']['enableDeleteIconForLocalElements'] < 2 ||
                 !$elementBelongsToCurrentPage ||
-                $this->controller->getElementRegister()[$element['el']['uid']] > 1
+                $this->controller->getElementRegister()[$uid] > 1
             ) {
                 $iconUnlink = $this->controller->getModuleTemplate()->getIconFactory()->getIcon('tx-tv-unlink', Icon::SIZE_SMALL);
-                $linkUnlink = !in_array('unlink', $this->controller->getBlindIcons()) ? $this->controller->link_unlink($iconUnlink, 'tt_content', $element['el']['uid'], false, false, $elementPointer) : '';
+                $linkUnlink = !in_array('unlink', $this->controller->getBlindIcons()) ? $this->controller->link_unlink($iconUnlink, 'tt_content', $uid, false, false, $elementPointer) : '';
             } else {
                 $linkUnlink = '';
             }
@@ -469,14 +461,14 @@ class SheetRenderer implements Renderable
         if ($canEditElement && $internalAccess) {
             if (($elementBelongsToCurrentPage || $this->controller->modTSconfig['properties']['enableEditIconForRefElements']) && !in_array('edit', $this->controller->getBlindIcons())) {
                 $iconEdit = $this->controller->getModuleTemplate()->getIconFactory()->getIcon('actions-document-open', Icon::SIZE_SMALL);
-                $linkEdit = $this->controller->link_edit($iconEdit, $element['el']['table'], $element['el']['uid'], false, $element['el']['pid'], 'btn btn-default');
+                $linkEdit = $this->controller->link_edit($iconEdit, $table, $uid, false, $pid, 'btn btn-default');
             } else {
                 $linkEdit = '';
             }
-            $linkHide = !in_array('hide', $this->controller->getBlindIcons()) ? $this->controller->icon_hide($element['el']) : '';
+            $linkHide = !in_array('hide', $this->controller->getBlindIcons()) ? $this->controller->icon_hide($sheetData) : '';
 
             if ($canEditContent && $this->controller->modTSconfig['properties']['enableDeleteIconForLocalElements'] && $elementBelongsToCurrentPage) {
-                $hasForeignReferences = \Extension\Templavoila\Utility\GeneralUtility::hasElementForeignReferences($element['el'], $element['el']['pid']);
+                $hasForeignReferences = \Extension\Templavoila\Utility\GeneralUtility::hasElementForeignReferences($sheetData, $pid);
                 $iconDelete = $this->controller->getModuleTemplate()->getIconFactory()->getIcon('actions-edit-delete', Icon::SIZE_SMALL);
                 $linkDelete = !in_array('delete', $this->controller->getBlindIcons()) ? $this->controller->link_unlink($iconDelete, $parentPointer, true, $hasForeignReferences, $elementPointer) : '';
             } else {
@@ -492,30 +484,25 @@ class SheetRenderer implements Renderable
     /**
      * Renders the display framework of a single sheet. Calls itself recursively
      *
-     * @param Column $column
+     * @param Sheet $sheet
      * @param array $contentTreeArr DataStructure info array (the whole tree)
-     * @param string $languageKey Language key for the display
-     * @param string $sheet The sheet key of the sheet which should be rendered
      * @param array $parentPointer Flexform pointer to parent element
      * @param array $parentDsMeta Meta array from parent DS (passing information about parent containers localization mode)
      *
      * @return string HTML
      *
-     * @see render_framework_singleSheet()
+     * @see renderSheet()
      */
-    public function render_framework_singleSheet(Column $column, $contentTreeArr, $languageKey, $sheet, $parentPointer = [], $parentDsMeta = [])
+    public function renderSheet(Sheet $sheet, $parentPointer = [], $parentDsMeta = [])
     {
-        $elementBelongsToCurrentPage = false;
-        $pid = $contentTreeArr['el']['table'] === 'pages' ? $contentTreeArr['el']['uid'] : $contentTreeArr['el']['pid'];
-        if ((int)$contentTreeArr['el']['pid'] === $this->controller->getPid()) {
-            $elementBelongsToCurrentPage = true;
-        } else {
-            if ($contentTreeArr['el']['_ORIG_uid']) {
-                $record = BackendUtility::getMovePlaceholder('tt_content', $contentTreeArr['el']['uid']);
-                if (is_array($record) && $record['t3ver_move_id'] === $contentTreeArr['el']['uid']) {
-                    $elementBelongsToCurrentPage = $this->controller->getPid() === $record['pid'];
-                    $pid = $record['pid'];
-                }
+        $pid = $sheet->getTable() === 'pages' ? $sheet->getUid() : $sheet->getPid();
+        $elementBelongsToCurrentPage = $sheet->belongsToPage($this->controller->getPid());
+
+        if (!$elementBelongsToCurrentPage && $sheet->getOriginalUid() > 0) {
+            $record = BackendUtility::getMovePlaceholder('tt_content', $sheet->getUid());
+            if (is_array($record) && (int)$record['t3ver_move_id'] === $sheet->getUid()) {
+                $elementBelongsToCurrentPage = $this->controller->getPid() === (int)$record['pid'];
+                $pid = (int)$record['pid'];
             }
         }
 
@@ -525,42 +512,45 @@ class SheetRenderer implements Renderable
         $warnings = '';
 
         if (!$this->controller->modTSconfig['properties']['disableReferencedElementNotification'] && !$elementBelongsToCurrentPage) {
-            $warnings .=  $this->doc->icons(1) . ' <em>' . htmlspecialchars(sprintf(static::getLanguageService()->getLL('info_elementfromotherpage'), $contentTreeArr['el']['uid'], $contentTreeArr['el']['pid'])) . '</em><br />';
+            $warnings .=  $this->doc->icons(1) . ' <em>' . htmlspecialchars(sprintf(static::getLanguageService()->getLL('info_elementfromotherpage'), $sheet->getUid(), $sheet->getPid())) . '</em><br />';
         }
 
-        if (!$this->controller->modTSconfig['properties']['disableElementMoreThanOnceWarning'] && $this->controller->getElementRegister()[$contentTreeArr['el']['uid']] > 1 && $this->controller->getLanguageParadigm() !== 'free') {
-            $warnings .= $this->doc->icons(2) . ' <em>' . htmlspecialchars(sprintf(static::getLanguageService()->getLL('warning_elementusedmorethanonce'), $this->controller->getElementRegister()[$contentTreeArr['el']['uid']], $contentTreeArr['el']['uid'])) . '</em><br />';
+        if (!$this->controller->modTSconfig['properties']['disableElementMoreThanOnceWarning'] && $this->controller->getElementRegister()[$sheet->getUid()] > 1 && $this->controller->getLanguageParadigm() !== 'free') {
+            $warnings .= $this->doc->icons(2) . ' <em>' . htmlspecialchars(sprintf(static::getLanguageService()->getLL('warning_elementusedmorethanonce'), $this->controller->getElementRegister()[$sheet->getUid()], $sheet->getUid())) . '</em><br />';
         }
 
         // Displaying warning for container content (in default sheet - a limitation) elements if localization is enabled:
-        $isContainerEl = count($contentTreeArr['sub']['sDEF']);
-        if (!$this->controller->modTSconfig['properties']['disableContainerElementLocalizationWarning'] && $this->controller->getLanguageParadigm() !== 'free' && $isContainerEl && $contentTreeArr['el']['table'] === 'tt_content' && $contentTreeArr['el']['CType'] === 'templavoila_pi1' && !$contentTreeArr['ds_meta']['langDisable']) {
-            if ($contentTreeArr['ds_meta']['langChildren']) {
-                if (!$this->controller->modTSconfig['properties']['disableContainerElementLocalizationWarning_warningOnly']) {
-                    $warnings .= $this->doc->icons(2) . ' <em>' . static::getLanguageService()->getLL('warning_containerInheritance') . '</em><br />';
-                }
+        if (
+            !$this->controller->modTSconfig['properties']['disableContainerElementLocalizationWarning']
+            && $this->controller->getLanguageParadigm() !== 'free'
+            && $sheet->isContainerElement()
+            && $sheet->isFlexibleContentElement()
+            && $sheet->isLocalizable()
+        ) {
+            if ($sheet->hasLocalizableChildren()
+                && !$this->controller->modTSconfig['properties']['disableContainerElementLocalizationWarning_warningOnly']
+            ) {
+                $warnings .= $this->doc->icons(2) . ' <em>' . static::getLanguageService()->getLL('warning_containerInheritance') . '</em><br />';
             } else {
                 $warnings .= $this->doc->icons(3) . ' <em>' . static::getLanguageService()->getLL('warning_containerSeparate') . '</em><br />';
             }
         }
 
         // Preview made:
-        $previewContent = $contentTreeArr['ds_meta']['disableDataPreview'] ? '&nbsp;' : $this->render_previewData($contentTreeArr['previewData'], $contentTreeArr['el'], $contentTreeArr['ds_meta'], $languageKey, $sheet);
+        $previewContent = $this->render_previewData($sheet);
 
         // Wrap workspace notification colors:
-        if ($contentTreeArr['el']['_ORIG_uid']) {
+        if ($sheet->getOriginalUid() > 0) {
             $previewContent = '<div class="ver-element">' . ($previewContent ? $previewContent : '<em>[New version]</em>') . '</div>';
         }
 
         $canEditContent = static::getBackendUser()->isPSet($this->controller->calcPerms, 'pages', 'editcontent');
         $canCreateNew = $canEditContent
-            && !$column->hasMaxItemsReached();
+            && !$sheet->getColumn()->hasMaxItemsReached();
 
         $canDragDrop = $canEditContent
-            && $column->isDragAndDropAllowed()
+            && $sheet->getColumn()->isDragAndDropAllowed()
             && (string)$this->controller->modTSconfig['properties']['enableDragDrop'] !== '0';
-
-        $languageUid = $this->getSysLanguageUidOfElement($contentTreeArr);
 
         $contentElementView = GeneralUtility::makeInstance(StandaloneView::class);
         $contentElementView->setLayoutRootPaths([ExtensionManagementUtility::extPath(Templavoila::EXTKEY, 'Resources/Private/Layouts/')]);
@@ -568,16 +558,16 @@ class SheetRenderer implements Renderable
         $contentElementView->setPartialRootPaths([ExtensionManagementUtility::extPath(Templavoila::EXTKEY, 'Resources/Private/Partials/')]);
         $contentElementView->setTemplate('Backend/PageModule/Renderer/SheetRenderer/ContentElement');
         $contentElementView->assignMultiple([
-            'languageLabel' => $this->getLanguageLabel($languageUid),
-            'languageFlagIconIdentifier' => $this->getLanguageFlagIconIdentifier($languageUid),
+            'languageLabel' => $this->getLanguageLabel($sheet->getSysLanguageUid()),
+            'languageFlagIconIdentifier' => $this->getLanguageFlagIconIdentifier($sheet->getSysLanguageUid()),
             'isInTranslatorMode' => PermissionUtility::isInTranslatorMode(),
-            'hash' => md5($this->controller->getApiService()->flexform_getStringFromPointer($this->controller->getCurrentElementParentPointer()) . $contentTreeArr['el']['uid']),
-            'titleBarLeftButtons' => $this->getTitleBarLeftIcons($contentTreeArr),
-            'titleBarRightButtons' => $this->getTitleBarRightIcons($contentTreeArr, $elementBelongsToCurrentPage, $parentPointer),
+            'hash' => md5($this->controller->getApiService()->flexform_getStringFromPointer($this->controller->getCurrentElementParentPointer()) . $sheet->getUid()),
+            'titleBarLeftButtons' => $this->getTitleBarLeftIcons($sheet),
+            'titleBarRightButtons' => $this->getTitleBarRightIcons($sheet, $elementBelongsToCurrentPage, $parentPointer),
             'warnings' => $warnings,
-            'content' => $this->render_framework_subElements($contentTreeArr, $languageKey, $sheet, PermissionUtility::getCompiledPermissions($pid)),
+            'content' => $this->render_framework_subElements($sheet, PermissionUtility::getCompiledPermissions($pid)),
             'previewContent' => $previewContent,
-            'localizationInfoTable' => $this->render_localizationInfoTable($contentTreeArr, $parentPointer, $parentDsMeta),
+            'localizationInfoTable' => $this->render_localizationInfoTable($sheet, $parentPointer, $parentDsMeta),
             'isSortable' => !PermissionUtility::isInTranslatorMode() && $canDragDrop,
             'bottomControls' => $canCreateNew && !PermissionUtility::isInTranslatorMode() ? $this->controller->link_bottomControls($parentPointer, $canCreateNew) : '',
         ]);
@@ -593,33 +583,33 @@ class SheetRenderer implements Renderable
      *
      * Calls render_framework_allSheets() and therefore generates a recursion.
      *
-     * @param array $elementContentTreeArr Content tree starting with the element which possibly has sub elements
-     * @param string $languageKey Language key for current display
-     * @param string $sheet Key of the sheet we want to render
+     * @param Sheet $sheet
      * @param int $calcPerms Defined the access rights for the enclosing parent
      *
      * @throws RuntimeException
      *
      * @return string HTML output (a table) of the sub elements and some "insert new" and "paste" buttons
      *
-     * @see render_framework_allSheets(), render_framework_singleSheet()
+     * @see renderSheets(), renderSheet()
      */
-    public function render_framework_subElements($elementContentTreeArr, $languageKey, $sheet, $calcPerms = 0)
+    public function render_framework_subElements(Sheet $sheet, $calcPerms = 0)
     {
+        $elementContentTreeArr = $sheet->getRawData();
+
         $beTemplate = '';
 
         $canEditContent = static::getBackendUser()->isPSet($calcPerms, 'pages', 'editcontent');
 
         // Define l/v keys for current language:
-        $langChildren = (int)$elementContentTreeArr['ds_meta']['langChildren'];
-        $langDisable = (int)$elementContentTreeArr['ds_meta']['langDisable'];
+        $langChildren = $sheet->hasLocalizableChildren();
+        $langDisable = !$sheet->isLocalizable();
 
-        $lKey = $this->determineFlexLanguageKey($langDisable, $langChildren, $languageKey);
-        $vKey = $this->determineFlexValueKey($langDisable, $langChildren, $languageKey);
-        if ($elementContentTreeArr['el']['table'] === 'pages' && $langDisable !== 1 && $langChildren === 1) {
-            if ($this->disablePageStructureInheritance($elementContentTreeArr, $sheet, $lKey, $vKey)) {
-                $lKey = $this->determineFlexLanguageKey(1, $langChildren, $languageKey);
-                $vKey = $this->determineFlexValueKey(1, $langChildren, $languageKey);
+        $lKey = $this->determineFlexLanguageKey($langDisable, $langChildren, $sheet->getColumn()->getLanguageKey());
+        $vKey = $this->determineFlexValueKey($langDisable, $langChildren, $sheet->getColumn()->getLanguageKey());
+        if ($sheet->getTable() === 'pages' && !$langDisable && $langChildren) {
+            if ($this->disablePageStructureInheritance($elementContentTreeArr, $sheet->getSheetKey(), $lKey, $vKey)) {
+                $lKey = $this->determineFlexLanguageKey(1, $langChildren, $sheet->getColumn()->getLanguageKey());
+                $vKey = $this->determineFlexValueKey(1, $langChildren, $sheet->getColumn()->getLanguageKey());
             } else {
                 if (!static::getBackendUser()->isAdmin()) {
                     /** @var FlashMessage $flashMessage */
@@ -634,19 +624,27 @@ class SheetRenderer implements Renderable
             }
         }
 
-        if (!is_array($elementContentTreeArr['sub'][$sheet]) || !is_array($elementContentTreeArr['sub'][$sheet][$lKey])) {
+        $sheets = $sheet->getSheets($sheet->getSheetKey());
+        if (count($sheets) === 0
+            || !isset($sheets[$lKey])
+            || !is_array($sheets[$lKey])
+        ) {
             return '';
         }
 
-        $uid = isset($contentTreeArr['el']['TO']) ? (int)$contentTreeArr['el']['TO'] : $this->controller->getRecord()['uid'];
-        $template = $this->templateRepository->getTemplateByUid($uid);
+        $templateUid = $sheet->getTemplateUid() > 0
+            ? $sheet->getTemplateUid()
+            : $this->controller->getRecord()['uid'];
+        $template = $this->templateRepository->getTemplateByUid($templateUid);
 
         $columns = [];
         $columnsCount = 0;
-        foreach ($elementContentTreeArr['sub'][$sheet][$lKey] as $fieldID => $fieldValuesContent) {
+
+        foreach ($sheets[$lKey] as $fieldID => $fieldValuesContent) {
+            $previewDataSheets = $sheet->getPreviewDataSheets($sheet->getSheetKey());
             try {
                 $newValue = $template->getLocalDataprotValueByXpath('//' . $fieldID . '/tx_templavoila/preview');
-                $elementContentTreeArr['previewData']['sheets'][$sheet][$fieldID]['tx_templavoila']['preview'] = $newValue;
+                $previewDataSheets[$fieldID]['tx_templavoila']['preview'] = $newValue;
             } catch (\Exception $e) {
                 // ignore
             }
@@ -660,22 +658,23 @@ class SheetRenderer implements Renderable
                 continue;
             }
 
-            if (($elementContentTreeArr['previewData']['sheets'][$sheet][$fieldID]['isMapped']
-                || $elementContentTreeArr['previewData']['sheets'][$sheet][$fieldID]['type'] === 'no_map'
+            if (($previewDataSheets[$fieldID]['isMapped']
+                || $previewDataSheets[$fieldID]['type'] === 'no_map'
                 ) === false) {
                 continue;
             }
 
             $column = new SheetRenderer\Column(
                 $fieldValuesContent[$vKey],
-                $elementContentTreeArr['previewData']['sheets'][$sheet][$fieldID]
+                $previewDataSheets[$fieldID],
+                $sheet->getColumn()->getLanguageKey()
             );
 
             // Create flexform pointer pointing to "before the first sub element":
             $subElementPointer = [
-                'table' => $elementContentTreeArr['el']['table'],
-                'uid' => $elementContentTreeArr['el']['uid'],
-                'sheet' => $sheet,
+                'table' => $sheet->getTable(),
+                'uid' => $sheet->getUid(),
+                'sheet' => $sheet->getSheetKey(),
                 'sLang' => $lKey,
                 'field' => $fieldID,
                 'vLang' => $vKey,
@@ -684,7 +683,7 @@ class SheetRenderer implements Renderable
 
             $columns[] = [
                 'title' => $column->getTitle(),
-                'content' => $this->renderColumn($column, $languageKey, $subElementPointer, $elementContentTreeArr['ds_meta'])
+                'content' => $this->renderColumn($column, $subElementPointer, $elementContentTreeArr['ds_meta'])
             ];
             $columnsCount++;
         }
@@ -707,19 +706,21 @@ class SheetRenderer implements Renderable
     /**
      * Renders a little table containing previews of translated version of the current content element.
      *
-     * @param array $contentTreeArr Part of the contentTreeArr for the element
+     * @param Sheet $sheet
      * @param string $parentPointer Flexform pointer pointing to the current element (from the parent's perspective)
      * @param array $parentDsMeta Meta array from parent DS (passing information about parent containers localization mode)
      *
      * @return string HTML
      *
-     * @see render_framework_singleSheet()
+     * @see renderSheet()
      */
-    public function render_localizationInfoTable($contentTreeArr, $parentPointer, $parentDsMeta = [])
+    public function render_localizationInfoTable(Sheet $sheet, $parentPointer, $parentDsMeta = [])
     {
+        $localizationInfo = $sheet->getRawData()['localizationInfo'];
+
         // LOCALIZATION information for content elements (non Flexible Content Elements)
         $output = '';
-        if ($contentTreeArr['el']['table'] === 'tt_content' && $contentTreeArr['el']['sys_language_uid'] <= 0) {
+        if ($sheet->getTable() === 'tt_content' && $sheet->getSysLanguageUid() <= 0) {
 
             // Traverse the available languages of the page (not default and [All])
             $tRows = [];
@@ -731,9 +732,9 @@ class SheetRenderer implements Renderable
                     $l10nInfo = '';
                     $flagLink_begin = $flagLink_end = '';
 
-                    switch ((string) $contentTreeArr['localizationInfo'][$sys_language_uid]['mode']) {
+                    switch ((string) $localizationInfo[$sys_language_uid]['mode']) {
                         case 'exists':
-                            $olrow = BackendUtility::getRecordWSOL('tt_content', $contentTreeArr['localizationInfo'][$sys_language_uid]['localization_uid']);
+                            $olrow = BackendUtility::getRecordWSOL('tt_content', $localizationInfo[$sys_language_uid]['localization_uid']);
 
                             $localizedRecordInfo = [
                                 'uid' => $olrow['uid'],
@@ -767,9 +768,9 @@ class SheetRenderer implements Renderable
 
                             $this->global_localization_status[$sys_language_uid][] = [
                                 'status' => 'exist',
-                                'parent_uid' => $contentTreeArr['el']['uid'],
+                                'parent_uid' => $sheet->getUid(),
                                 'localized_uid' => $localizedRecordInfo['row']['uid'],
-                                'sys_language' => $contentTreeArr['el']['sys_language_uid']
+                                'sys_language' => $sheet->getSysLanguageUid()
                             ];
                             break;
                         case 'localize':
@@ -785,7 +786,7 @@ class SheetRenderer implements Renderable
                             }
 
                             // Assuming that only elements which have the default language set are candidates for localization. In case the language is [ALL] then it is assumed that the element should stay "international".
-                            if ((int) $contentTreeArr['el']['sys_language_uid'] === 0 && $showLocalizationLinks) {
+                            if ($sheet->getSysLanguageUid() === 0 && $showLocalizationLinks) {
 
                                 // Copy for language:
                                 if ($this->controller->getLanguageParadigm() === 'free') {
@@ -801,8 +802,8 @@ class SheetRenderer implements Renderable
                                         ]
                                     );
                                 } else {
-                                    $params = '&cmd[tt_content][' . $contentTreeArr['el']['uid'] . '][localize]=' . $sys_language_uid;
-                                    $href = BackendUtility::getLinkToDataHandlerAction($params, GeneralUtility::getIndpEnv('REQUEST_URI') . '#c' . md5($this->controller->getApiService()->flexform_getStringFromPointer($parentPointer) . $contentTreeArr['el']['uid'] . $sys_language_uid)) . "'; return false;";
+                                    $params = '&cmd[tt_content][' . $sheet->getUid() . '][localize]=' . $sys_language_uid;
+                                    $href = BackendUtility::getLinkToDataHandlerAction($params, GeneralUtility::getIndpEnv('REQUEST_URI') . '#c' . md5($this->controller->getApiService()->flexform_getStringFromPointer($parentPointer) . $sheet->getUid() . $sys_language_uid)) . "'; return false;";
                                 }
 
                                 $linkLabel = static::getLanguageService()->getLL('createcopyfortranslation', true) . ' (' . htmlspecialchars($sLInfo['title']) . ')';
@@ -814,8 +815,8 @@ class SheetRenderer implements Renderable
 
                                 $this->global_localization_status[$sys_language_uid][] = [
                                     'status' => 'localize',
-                                    'parent_uid' => $contentTreeArr['el']['uid'],
-                                    'sys_language' => $contentTreeArr['el']['sys_language_uid']
+                                    'parent_uid' => $sheet->getUid(),
+                                    'sys_language' => $sheet->getSysLanguageUid()
                                 ];
                             }
                             break;
@@ -823,12 +824,12 @@ class SheetRenderer implements Renderable
                             // Here we want to show the "Localized FlexForm" information (and link to edit record) _only_ if there are other fields than group-fields for content elements: It only makes sense for a translator to deal with the record if that is the case.
                             // Change of strategy (27/11): Because there does not have to be content fields; could be in sections or arrays and if thats the case you still want to localize them! There has to be another way...
                             // if (count($contentTreeArr['contentFields']['sDEF']))    {
-                            list($flagLink_begin, $flagLink_end) = explode('|*|', $this->controller->link_edit('|*|', 'tt_content', $contentTreeArr['el']['uid'], true));
+                            list($flagLink_begin, $flagLink_end) = explode('|*|', $this->controller->link_edit('|*|', 'tt_content', $sheet->getUid(), true));
                             $l10nInfo = $flagLink_begin . '<em>[' . static::getLanguageService()->getLL('performTranslation') . ']</em>' . $flagLink_end;
                             $this->global_localization_status[$sys_language_uid][] = [
                                 'status' => 'flex',
-                                'parent_uid' => $contentTreeArr['el']['uid'],
-                                'sys_language' => $contentTreeArr['el']['sys_language_uid']
+                                'parent_uid' => $sheet->getUid(),
+                                'sys_language' => $sheet->getSysLanguageUid()
                             ];
                             // }
                             break;
@@ -879,31 +880,28 @@ class SheetRenderer implements Renderable
     /**
      * Rendering the preview of content for Page module.
      *
-     * @param array $previewData Array with data from which a preview can be rendered.
-     * @param array $elData Element data
-     * @param array $ds_meta Data Structure Meta data
-     * @param string $languageKey Current language key (so localized content can be shown)
-     * @param string $sheet Sheet key
+     * @param Sheet $sheet
      *
      * @return string HTML content
      */
-    public function render_previewData($previewData, $elData, $ds_meta, $languageKey, $sheet)
+    public function render_previewData(Sheet $sheet)
     {
-        $this->currentElementBelongsToCurrentPage = $elData['table'] === 'pages' || $elData['pid'] === $this->controller->getPid();
+        if ($sheet->isPreviewDisabled()) {
+            return '&nbsp;';
+        }
+
+        $row = $sheet->getPreviewDataRow();
+
+        $this->currentElementBelongsToCurrentPage = $sheet->getTable() === 'pages' || $sheet->getPid() === $this->controller->getPid();
 
         // General preview of the row:
-        $previewContent = is_array($previewData['fullRow']) && $elData['table'] === 'tt_content' ? $this->render_previewContent($previewData['fullRow']) : '';
-
-        // Preview of FlexForm content if any:
-        if (is_array($previewData['sheets'][$sheet])) {
+        $previewContent = count($row) > 0 && $sheet->getTable() === 'tt_content' ? $this->render_previewContent($row) : '';
 
             // Define l/v keys for current language:
-            $langChildren = (int)$ds_meta['langChildren'];
-            $langDisable = (int)$ds_meta['langDisable'];
-            $lKey = $langDisable ? 'lDEF' : ($langChildren ? 'lDEF' : 'l' . $languageKey);
-            $vKey = $langDisable ? 'vDEF' : ($langChildren ? 'v' . $languageKey : 'vDEF');
+            $lKey = !$sheet->isLocalizable() ? 'lDEF' : ($sheet->hasLocalizableChildren() ? 'lDEF' : 'l' . $sheet->getColumn()->getLanguageKey());
+            $vKey = !$sheet->isLocalizable() ? 'vDEF' : ($sheet->hasLocalizableChildren() ? 'v' . $sheet->getColumn()->getLanguageKey() : 'vDEF');
 
-            foreach ($previewData['sheets'][$sheet] as $fieldData) {
+            foreach ($sheet->getPreviewDataSheets($sheet->getSheetKey()) as $fieldData) {
                 if (isset($fieldData['tx_templavoila']['preview']) && $fieldData['tx_templavoila']['preview'] === 'disable') {
                     continue;
                 }
@@ -913,8 +911,8 @@ class SheetRenderer implements Renderable
 
                 if ($fieldData['type'] === 'array') { // Making preview for array/section parts of a FlexForm structure:;
                     if (is_array($fieldData['childElements'][$lKey])) {
-                        $subData = $this->render_previewSubData($fieldData['childElements'][$lKey], $elData['table'], $previewData['fullRow']['uid'], $vKey);
-                        $previewContent .= $this->controller->link_edit($subData, $elData['table'], $previewData['fullRow']['uid']);
+                        $subData = $this->render_previewSubData($fieldData['childElements'][$lKey], $sheet->getTable(), $row['uid'], $vKey);
+                        $previewContent .= $this->controller->link_edit($subData, $sheet->getTable(), $row['uid']);
                     } else {
                         // no child elements found here
                     }
@@ -933,18 +931,17 @@ class SheetRenderer implements Renderable
                             if (isset($this->renderPreviewDataObjects[$TCEformsConfiguration['allowed']])
                                 && method_exists($this->renderPreviewDataObjects[$TCEformsConfiguration['allowed']], 'render_previewData_typeDb')
                             ) {
-                                $previewContent .= $this->renderPreviewDataObjects[$TCEformsConfiguration['allowed']]->render_previewData_typeDb($fieldValue, $fieldData, $previewData['fullRow']['uid'], $elData['table'], $this);
+                                $previewContent .= $this->renderPreviewDataObjects[$TCEformsConfiguration['allowed']]->render_previewData_typeDb($fieldValue, $fieldData, $row['uid'], $sheet->getTable(), $this);
                             }
                         }
                     } else {
                         if ($TCEformsConfiguration['type'] !== '') {
                             // Render for everything else:
-                            $previewContent .= '<strong>' . $TCEformsLabel . '</strong> ' . (!$fieldValue ? '' : $this->controller->link_edit(htmlspecialchars(GeneralUtility::fixed_lgd_cs(strip_tags($fieldValue), 200)), $elData['table'], $previewData['fullRow']['uid'])) . '<br />';
+                            $previewContent .= '<strong>' . $TCEformsLabel . '</strong> ' . (!$fieldValue ? '' : $this->controller->link_edit(htmlspecialchars(GeneralUtility::fixed_lgd_cs(strip_tags($fieldValue), 200)), $sheet->getTable(), $row['uid'])) . '<br />';
                         }
                     }
                 }
             }
-        }
 
         return $previewContent;
     }
