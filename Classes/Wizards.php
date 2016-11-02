@@ -57,7 +57,7 @@ class Wizards
     public function __construct(MainController $controller)
     {
         $this->controller = $controller;
-        $this->doc = $this->controller->doc;
+        $this->doc = GeneralUtility::makeInstance(DocumentTemplate::class);
     }
 
     /********************************************

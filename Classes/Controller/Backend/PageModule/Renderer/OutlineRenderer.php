@@ -19,7 +19,6 @@ use Schnitzler\Templavoila\Traits\BackendUser;
 use Schnitzler\Templavoila\Traits\LanguageService;
 use Schnitzler\Templavoila\Utility\IconUtility;
 use Schnitzler\Templavoila\Utility\PermissionUtility;
-use TYPO3\CMS\Backend\Template\DocumentTemplate;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Configuration\FlexForm\FlexFormTools;
 use TYPO3\CMS\Core\DataHandling\DataHandler;
@@ -50,18 +49,12 @@ class OutlineRenderer implements Renderable
     private $translatedLanguagesArr_isoCodes;
 
     /**
-     * @var DocumentTemplate
-     */
-    private $doc;
-
-    /**
      * @param MainController $controller
      */
     public function __construct(MainController $controller, array $contentTree)
     {
         $this->controller = $controller;
         $this->contentTree = $contentTree;
-        $this->doc = $controller->doc;
     }
 
     public function render()
@@ -189,7 +182,7 @@ class OutlineRenderer implements Renderable
             $recordIcon = $contentTreeArr['el']['iconTag'];
         }
 
-        $titleBarLeftButtons = PermissionUtility::isInTranslatorMode() ? $recordIcon : BackendUtility::wrapClickMenuOnIcon($recordIcon, $contentTreeArr['el']['table'], $contentTreeArr['el']['uid'], 1, '&amp;callingScriptId=' . rawurlencode($this->doc->scriptID), 'new,copy,cut,pasteinto,pasteafter,delete');
+        $titleBarLeftButtons = PermissionUtility::isInTranslatorMode() ? $recordIcon : BackendUtility::wrapClickMenuOnIcon($recordIcon, $contentTreeArr['el']['table'], $contentTreeArr['el']['uid'], 1, '', 'new,copy,cut,pasteinto,pasteafter,delete');
         $titleBarLeftButtons .= $this->getRecordStatHookValue($contentTreeArr['el']['table'], $contentTreeArr['el']['uid']);
 
         $languageUid = 0;
@@ -325,7 +318,7 @@ class OutlineRenderer implements Renderable
                             // Put together the records icon including content sensitive menu link wrapped around it:
                             $recordIcon_l10n = $this->getRecordStatHookValue('tt_content', $olrow['uid']) . $this->controller->getModuleTemplate()->getIconFactory()->getIconForRecord('tt_content', $olrow);
                             if (!PermissionUtility::isInTranslatorMode()) {
-                                $recordIcon_l10n = BackendUtility::wrapClickMenuOnIcon($recordIcon_l10n, 'tt_content', $olrow['uid'], 1, '&amp;callingScriptId=' . rawurlencode($this->doc->scriptID), 'new,copy,cut,pasteinto,pasteafter');
+                                $recordIcon_l10n = BackendUtility::wrapClickMenuOnIcon($recordIcon_l10n, 'tt_content', $olrow['uid'], 1, '', 'new,copy,cut,pasteinto,pasteafter');
                             }
 
                             list($flagLink_begin, $flagLink_end) = explode('|*|', $this->controller->link_edit('|*|', 'tt_content', $olrow['uid'], true));

@@ -95,7 +95,7 @@ class NonUsedElementsTab implements Renderable
             $cutButton = '';
 //            $cutButton = $this->element_getSelectButtons($elementPointerString, 'ref'); // todo: implement
             $recordIcon = $this->controller->getModuleTemplate()->getIconFactory()->getIconForRecord('tt_content', $row, Icon::SIZE_SMALL);
-            $recordButton = $this->controller->doc->wrapClickMenuOnIcon($recordIcon, 'tt_content', $row['uid'], 1, '&callingScriptId=' . rawurlencode($this->controller->doc->scriptID), 'new,copy,cut,pasteinto,pasteafter,delete');
+            $recordButton = BackendUtility::wrapClickMenuOnIcon($recordIcon, 'tt_content', $row['uid'], 1, '', 'new,copy,cut,pasteinto,pasteafter,delete');
 
             if (static::getBackendUser()->workspace) {
                 $wsRow = BackendUtility::getRecordWSOL('tt_content', $row['uid']);
@@ -129,7 +129,7 @@ class NonUsedElementsTab implements Renderable
                 foreach ($this->deleteUids as $deleteUid) {
                     $params .= '&cmd[tt_content][' . $deleteUid . '][delete]=1';
                 }
-                $deleteAll = '<a title="' . static::getLanguageService()->getLL('rendernonusedelements_deleteall') . '" href="#" onclick="' . htmlspecialchars('jumpToUrl(\'' . $this->controller->doc->issueCommand($params, -1) . '\');') . '">' .
+                $deleteAll = '<a title="' . static::getLanguageService()->getLL('rendernonusedelements_deleteall') . '" href="#" onclick="' . htmlspecialchars('jumpToUrl(\'' . BackendUtility::getLinkToDataHandlerAction($params, -1) . '\');') . '">' .
                     $this->controller->getModuleTemplate()->getIconFactory()->getIcon('actions-edit-delete', Icon::SIZE_SMALL) .
                     '</a>';
             }
@@ -185,7 +185,7 @@ class NonUsedElementsTab implements Renderable
             $this->deleteUids[] = $uid;
             $params = '&cmd[tt_content][' . $uid . '][delete]=1';
 
-            return '<a title="' . static::getLanguageService()->getLL('renderreferencecount_delete', true) . '" class="tpm-countRef" href="#" onclick="' . htmlspecialchars('jumpToUrl(\'' . $this->controller->doc->issueCommand($params, -1) . '\');') . '">' .
+            return '<a title="' . static::getLanguageService()->getLL('renderreferencecount_delete', true) . '" class="tpm-countRef" href="#" onclick="' . htmlspecialchars('jumpToUrl(\'' . BackendUtility::getLinkToDataHandlerAction($params, -1) . '\');') . '">' .
             $this->controller->getModuleTemplate()->getIconFactory()->getIcon('actions-edit-delete', Icon::SIZE_SMALL) .
             '</a>';
         }

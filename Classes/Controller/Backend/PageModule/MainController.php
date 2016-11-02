@@ -28,7 +28,6 @@ use Schnitzler\Templavoila\Templavoila;
 use Schnitzler\Templavoila\Utility\PermissionUtility;
 use Schnitzler\Templavoila\Wizards;
 use TYPO3\CMS\Backend\Template\Components\ButtonBar;
-use TYPO3\CMS\Backend\Template\DocumentTemplate;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Http\Response;
 use TYPO3\CMS\Core\Http\ServerRequest;
@@ -155,13 +154,6 @@ class MainController extends AbstractModuleController implements Configurable
     public $calcPerms;
 
     /**
-     * Instance of template doc class
-     *
-     * @var DocumentTemplate
-     */
-    public $doc;
-
-    /**
      * Instance of clipboard class
      *
      * @var Clipboard
@@ -236,7 +228,6 @@ class MainController extends AbstractModuleController implements Configurable
 
         $this->extConf = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf'][Templavoila::EXTKEY]);
 
-        $this->doc = GeneralUtility::makeInstance(DocumentTemplate::class);
         $this->sysLanguageRepository = GeneralUtility::makeInstance(SysLanguageRepository::class);
     }
 
@@ -443,9 +434,6 @@ class MainController extends AbstractModuleController implements Configurable
     public function accessDenied(ServerRequest $request, Response $response)
     {
         $content = '';
-        $this->doc = GeneralUtility::makeInstance(DocumentTemplate::class);
-        $this->doc->setModuleTemplate('EXT:templavoila/Resources/Private/Templates/mod1_noaccess.html');
-        $this->doc->bodyTagId = 'typo3-mod-php';
 
         $cmd = GeneralUtility::_GP('cmd');
 
@@ -537,7 +525,7 @@ class MainController extends AbstractModuleController implements Configurable
 
         // Shortcut
         if (static::getBackendUser()->mayMakeShortcut()) {
-            $buttons['shortcut'] = $this->doc->makeShortcutIcon('id, edit_record, pointer, new_unique_uid, search_field, search_levels, showLimit', implode(',', array_keys($this->MOD_MENU)), $this->moduleName);
+            $buttons['shortcut'] = $this->getModuleTemplate()->makeShortcutIcon('id, edit_record, pointer, new_unique_uid, search_field, search_levels, showLimit', implode(',', array_keys($this->MOD_MENU)), $this->moduleName);
         }
 
         // If access to Web>List for user, then link to that module.
@@ -600,7 +588,7 @@ class MainController extends AbstractModuleController implements Configurable
     {
         $result = '';
         if (static::getBackendUser()->mayMakeShortcut()) {
-            $result = $this->doc->makeShortcutIcon('', 'function', $this->moduleName);
+            $result = $this->getModuleTemplate()->makeShortcutIcon('', 'function', $this->moduleName);
         }
 
         return $result;
@@ -683,7 +671,7 @@ class MainController extends AbstractModuleController implements Configurable
         if (false) {
             $sys_notes = '';
             // @todo: Check if and how this is to replace
-            $output .= '</div><div>' . $this->doc->section(static::getLanguageService()->sL('LLL:EXT:cms/layout/locallang.xlf:internalNotes'), str_replace('sysext/sys_note/ext_icon.gif', $GLOBALS['BACK_PATH'] . 'sysext/sys_note/ext_icon.gif', $sys_notes), 0, 1);
+            $output .= '</div><div>' . $this->getModuleTemplate()->section(static::getLanguageService()->sL('LLL:EXT:cms/layout/locallang.xlf:internalNotes'), str_replace('sysext/sys_note/ext_icon.gif', $GLOBALS['BACK_PATH'] . 'sysext/sys_note/ext_icon.gif', $sys_notes), 0, 1);
         }
 
         return $output;
