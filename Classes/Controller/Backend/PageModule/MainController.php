@@ -29,6 +29,7 @@ use Schnitzler\Templavoila\Utility\PermissionUtility;
 use Schnitzler\Templavoila\Wizards;
 use TYPO3\CMS\Backend\Template\Components\ButtonBar;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Core\DataHandling\DataHandler;
 use TYPO3\CMS\Core\Http\Response;
 use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Core\Imaging\Icon;
@@ -269,7 +270,7 @@ class MainController extends AbstractModuleController implements Configurable
 
         $clearCacheButton = $this->moduleTemplate->getDocHeaderComponent()->getButtonBar()->makeLinkButton()
             ->setTitle(static::getLanguageService()->getLL('labels.clear_cache'))
-            ->setHref($this->getReturnUrl(['clear_cache' => 1]))
+            ->setHref($this->getReturnUrl(['action' => 'clearPageCache']))
             ->setIcon($this->moduleTemplate->getIconFactory()->getIcon('actions-system-cache-clear', Icon::SIZE_SMALL))
         ;
 
@@ -410,6 +411,25 @@ class MainController extends AbstractModuleController implements Configurable
 
         $response->getBody()->write($this->moduleTemplate->renderContent());
         return $response;
+    }
+
+    /**
+     * @param ServerRequest $request
+     * @param Response $response
+     *
+     * @return ResponseInterface
+     */
+    public function clearPageCache(ServerRequest $request, Response $response)
+    {
+        $tce = GeneralUtility::makeInstance(DataHandler::class);
+        $tce->stripslashes_values = false;
+        $tce->start([], []);
+        $tce->clear_cacheCmd($this->getId());
+
+        return $response->withHeader(
+            'Location',
+            GeneralUtility::locationHeaderUrl($this->getReturnUrl())
+        );
     }
 
     /**
