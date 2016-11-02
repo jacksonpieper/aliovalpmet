@@ -18,6 +18,7 @@ namespace Schnitzler\Templavoila\Service\ItemProcFunc;
 use Schnitzler\Templavoila\Domain\Model\AbstractDataStructure;
 use Schnitzler\Templavoila\Domain\Repository\DataStructureRepository;
 use Schnitzler\Templavoila\Domain\Repository\TemplateRepository;
+use Schnitzler\Templavoila\Templavoila;
 use Schnitzler\Templavoila\Traits\DatabaseConnection;
 use Schnitzler\Templavoila\Traits\LanguageService;
 use TYPO3\CMS\Backend\Form\FormDataProvider\TcaSelectItems;
@@ -162,7 +163,7 @@ class StaticDataStructuresHandler
      */
     public function templateObjectItemsProcFunc(array &$params, TcaSelectItems $pObj)
     {
-        $this->conf = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf'][\Schnitzler\Templavoila\Templavoila::EXTKEY]);
+        $this->conf = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf'][Templavoila::EXTKEY]);
 
         if ($this->conf['enable.']['selectDataStructure']) {
             $this->templateObjectItemsProcFuncForCurrentDS($params, $pObj);

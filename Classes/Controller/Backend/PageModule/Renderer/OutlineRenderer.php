@@ -17,6 +17,7 @@ namespace Schnitzler\Templavoila\Controller\Backend\PageModule\Renderer;
 use Schnitzler\Templavoila\Controller\Backend\PageModule\MainController;
 use Schnitzler\Templavoila\Traits\BackendUser;
 use Schnitzler\Templavoila\Traits\LanguageService;
+use Schnitzler\Templavoila\Utility\IconUtility;
 use Schnitzler\Templavoila\Utility\PermissionUtility;
 use TYPO3\CMS\Backend\Template\DocumentTemplate;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
@@ -243,7 +244,7 @@ class OutlineRenderer implements Renderable
         if ($languageUid > 0) {
             $languageLabel = htmlspecialchars($this->controller->getAllAvailableLanguages()[$languageUid]['title']);
             if ($this->controller->getAllAvailableLanguages()[$languageUid]['flagIcon']) {
-                $languageIcon = \Schnitzler\Templavoila\Utility\IconUtility::getFlagIconForLanguage($this->controller->getAllAvailableLanguages()[$languageUid]['flagIcon'], ['title' => $languageLabel, 'alt' => $languageLabel]);
+                $languageIcon = IconUtility::getFlagIconForLanguage($this->controller->getAllAvailableLanguages()[$languageUid]['flagIcon'], ['title' => $languageLabel, 'alt' => $languageLabel]);
             } else {
                 $languageIcon = '[' . $languageLabel . ']';
             }
@@ -340,7 +341,7 @@ class OutlineRenderer implements Renderable
                                 'title' => BackendUtility::getRecordTitle('tt_content', $olrow),
                                 'table' => 'tt_content',
                                 'uid' => $olrow['uid'],
-                                'flag' => $flagLink_begin . \Schnitzler\Templavoila\Utility\IconUtility::getFlagIconForLanguage($sLInfo['flagIcon'], ['title' => $sLInfo['title'], 'alt' => $sLInfo['title']]) . $flagLink_end,
+                                'flag' => $flagLink_begin . IconUtility::getFlagIconForLanguage($sLInfo['flagIcon'], ['title' => $sLInfo['title'], 'alt' => $sLInfo['title']]) . $flagLink_end,
                                 'isNewVersion' => $olrow['_ORIG_uid'] ? true : false,
                             ];
                             break;

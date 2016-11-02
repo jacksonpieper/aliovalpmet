@@ -15,6 +15,7 @@ namespace Schnitzler\Templavoila\Domain\Model;
  * The TYPO3 project - inspiring people to share!
  */
 
+use Schnitzler\Templavoila\Templavoila;
 use Schnitzler\Templavoila\Traits\DatabaseConnection;
 use TYPO3\CMS\Backend\Utility\IconUtility;
 use TYPO3\CMS\Core\Html\HtmlParser;
@@ -315,7 +316,7 @@ class HtmlMarkup
 
         /* build primary cache for icon-images */
         foreach ($this->tags as $tag => &$conf) {
-            $conf['icon'] = IconUtility::skinImg($this->backPath, ExtensionManagementUtility::extRelPath(\Schnitzler\Templavoila\Templavoila::EXTKEY) . 'html_tags/' . $tag . '.gif', 'height="17"') . ' alt="" border="0"';
+            $conf['icon'] = IconUtility::skinImg($this->backPath, ExtensionManagementUtility::extRelPath(Templavoila::EXTKEY) . 'html_tags/' . $tag . '.gif', 'height="17"') . ' alt="" border="0"';
         }
 
         list($tagList_elements, $tagList_single) = $this->splitTagTypes($showTags);
@@ -770,7 +771,7 @@ class HtmlMarkup
      */
     public function getTemplateRecord($uid, $renderType, $langUid)
     {
-        if (ExtensionManagementUtility::isLoaded(\Schnitzler\Templavoila\Templavoila::EXTKEY)) {
+        if (ExtensionManagementUtility::isLoaded(Templavoila::EXTKEY)) {
             $rec = $GLOBALS['TSFE']->sys_page->checkRecord('tx_templavoila_tmplobj', $uid);
             $parentUid = $rec['uid'];
             $rendertype_ref = $rec['rendertype_ref'] ? $GLOBALS['TSFE']->sys_page->checkRecord('tx_templavoila_tmplobj', $rec['rendertype_ref']) : false;

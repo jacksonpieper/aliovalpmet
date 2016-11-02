@@ -17,6 +17,7 @@ namespace Schnitzler\Templavoila\Controller\Backend\PageModule\Renderer\Sidebar;
 use Schnitzler\Templavoila\Controller\Backend\PageModule\MainController;
 use Schnitzler\Templavoila\Controller\Backend\PageModule\Renderer\Renderable;
 use Schnitzler\Templavoila\Controller\Backend\PageModule\Renderer\SidebarRenderer;
+use Schnitzler\Templavoila\Templavoila;
 use Schnitzler\Templavoila\Traits\BackendUser;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -52,7 +53,7 @@ class AdvancedFunctionsTab implements Renderable
     {
         $this->controller = $controller;
         $this->view = new StandaloneView;
-        $this->view->setTemplatePathAndFilename(ExtensionManagementUtility::extPath(\Schnitzler\Templavoila\Templavoila::EXTKEY, 'Resources/Private/Templates/Backend/PageModule/Renderer/AdvancedFunctionsTab.html')); // todo: make configurable
+        $this->view->setTemplatePathAndFilename(ExtensionManagementUtility::extPath(Templavoila::EXTKEY, 'Resources/Private/Templates/Backend/PageModule/Renderer/AdvancedFunctionsTab.html')); // todo: make configurable
     }
 
     /**
