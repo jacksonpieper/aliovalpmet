@@ -844,51 +844,51 @@ class SheetRenderer implements Renderable
         // General preview of the row:
         $previewContent = count($row) > 0 && $sheet->getTable() === 'tt_content' ? $this->render_previewContent($row) : '';
 
-            // Define l/v keys for current language:
-            $lKey = $sheet->getLanguageKey();
-            $vKey = $sheet->getValueKey();
+        // Define l/v keys for current language:
+        $lKey = $sheet->getLanguageKey();
+        $vKey = $sheet->getValueKey();
 
-            foreach ($sheet->getPreviewDataSheets($sheet->getSheetKey()) as $fieldData) {
-                if (isset($fieldData['tx_templavoila']['preview']) && $fieldData['tx_templavoila']['preview'] === 'disable') {
-                    continue;
+        foreach ($sheet->getPreviewDataSheets($sheet->getSheetKey()) as $fieldData) {
+            if (isset($fieldData['tx_templavoila']['preview']) && $fieldData['tx_templavoila']['preview'] === 'disable') {
+                continue;
+            }
+
+            $TCEformsConfiguration = $fieldData['TCEforms']['config'];
+            $TCEformsLabel = $this->localizedFFLabel($fieldData['TCEforms']['label'], 1); // title for non-section elements
+
+            if ($fieldData['type'] === 'array') { // Making preview for array/section parts of a FlexForm structure:;
+                if (is_array($fieldData['childElements'][$lKey])) {
+                    $subData = $this->render_previewSubData($fieldData['childElements'][$lKey], $sheet->getTable(), $row['uid'], $vKey);
+                    $previewContent .= $this->controller->link_edit($subData, $sheet->getTable(), $row['uid']);
+                } else {
+                    // no child elements found here
                 }
+            } else { // Preview of flexform fields on top-level:
+                $fieldValue = $fieldData['data'][$lKey][$vKey];
 
-                $TCEformsConfiguration = $fieldData['TCEforms']['config'];
-                $TCEformsLabel = $this->localizedFFLabel($fieldData['TCEforms']['label'], 1); // title for non-section elements
-
-                if ($fieldData['type'] === 'array') { // Making preview for array/section parts of a FlexForm structure:;
-                    if (is_array($fieldData['childElements'][$lKey])) {
-                        $subData = $this->render_previewSubData($fieldData['childElements'][$lKey], $sheet->getTable(), $row['uid'], $vKey);
-                        $previewContent .= $this->controller->link_edit($subData, $sheet->getTable(), $row['uid']);
-                    } else {
-                        // no child elements found here
+                if ($TCEformsConfiguration['type'] === 'group') {
+                    if ($TCEformsConfiguration['internal_type'] === 'file') {
+                        // Render preview for images:
+                        $thumbnail = BackendUtility::thumbCode(['dummyFieldName' => $fieldValue], '', 'dummyFieldName', '', '', $TCEformsConfiguration['uploadfolder']);
+                        $previewContent .= '<strong>' . $TCEformsLabel . '</strong> ' . $thumbnail . '<br />';
+                    } elseif ($TCEformsConfiguration['internal_type'] === 'db') {
+                        if (!$this->renderPreviewDataObjects) {
+                            $this->renderPreviewDataObjects = $this->controller->hooks_prepareObjectsArray('renderPreviewDataClass');
+                        }
+                        if (isset($this->renderPreviewDataObjects[$TCEformsConfiguration['allowed']])
+                            && method_exists($this->renderPreviewDataObjects[$TCEformsConfiguration['allowed']], 'render_previewData_typeDb')
+                        ) {
+                            $previewContent .= $this->renderPreviewDataObjects[$TCEformsConfiguration['allowed']]->render_previewData_typeDb($fieldValue, $fieldData, $row['uid'], $sheet->getTable(), $this);
+                        }
                     }
-                } else { // Preview of flexform fields on top-level:
-                    $fieldValue = $fieldData['data'][$lKey][$vKey];
-
-                    if ($TCEformsConfiguration['type'] === 'group') {
-                        if ($TCEformsConfiguration['internal_type'] === 'file') {
-                            // Render preview for images:
-                            $thumbnail = BackendUtility::thumbCode(['dummyFieldName' => $fieldValue], '', 'dummyFieldName', '', '', $TCEformsConfiguration['uploadfolder']);
-                            $previewContent .= '<strong>' . $TCEformsLabel . '</strong> ' . $thumbnail . '<br />';
-                        } elseif ($TCEformsConfiguration['internal_type'] === 'db') {
-                            if (!$this->renderPreviewDataObjects) {
-                                $this->renderPreviewDataObjects = $this->controller->hooks_prepareObjectsArray('renderPreviewDataClass');
-                            }
-                            if (isset($this->renderPreviewDataObjects[$TCEformsConfiguration['allowed']])
-                                && method_exists($this->renderPreviewDataObjects[$TCEformsConfiguration['allowed']], 'render_previewData_typeDb')
-                            ) {
-                                $previewContent .= $this->renderPreviewDataObjects[$TCEformsConfiguration['allowed']]->render_previewData_typeDb($fieldValue, $fieldData, $row['uid'], $sheet->getTable(), $this);
-                            }
-                        }
-                    } else {
-                        if ($TCEformsConfiguration['type'] !== '') {
-                            // Render for everything else:
-                            $previewContent .= '<strong>' . $TCEformsLabel . '</strong> ' . (!$fieldValue ? '' : $this->controller->link_edit(htmlspecialchars(GeneralUtility::fixed_lgd_cs(strip_tags($fieldValue), 200)), $sheet->getTable(), $row['uid'])) . '<br />';
-                        }
+                } else {
+                    if ($TCEformsConfiguration['type'] !== '') {
+                        // Render for everything else:
+                        $previewContent .= '<strong>' . $TCEformsLabel . '</strong> ' . (!$fieldValue ? '' : $this->controller->link_edit(htmlspecialchars(GeneralUtility::fixed_lgd_cs(strip_tags($fieldValue), 200)), $sheet->getTable(), $row['uid'])) . '<br />';
                     }
                 }
             }
+        }
 
         return $previewContent;
     }
