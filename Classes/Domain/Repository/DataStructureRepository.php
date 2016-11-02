@@ -281,7 +281,7 @@ class DataStructureRepository
     /**
      * @return bool
      */
-    protected function isStaticDsEnabled()
+    protected static function isStaticDsEnabled()
     {
         $extConf = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf'][Templavoila::EXTKEY]);
 
