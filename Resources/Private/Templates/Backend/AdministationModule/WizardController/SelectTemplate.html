@@ -1,0 +1,35 @@
+{namespace tv=Schnitzler\Templavoila\ViewHelpers}
+
+<h1>{tv:ll( index:'newsitewizard_selecttemplate' )}</h1>
+
+<p>
+    {tv:ll( index:'newsitewizard_firststep', arguments:paths )}
+</p>
+
+<table class="table">
+    <tr class="tableheader bgColor5">
+        <th>{tv:ll( index:'toused_path')}:</th>
+        <th>{tv:ll( index:'usage')}:</th>
+        <th>{tv:ll( index:'action')}:</th>
+    </tr>
+
+    <f:for each="{files}" as="file">
+        <tr class="bgColor4">
+            <td>{file.path}</td>
+            <td>
+                <f:if condition="{file.templateObjectCount} > 0">
+                    <f:then>
+                        {tv:ll( index:'newsitewizard_usedtimes', arguments: { 0:file.tempalteObjectCount })}
+                    </f:then>
+                    <f:else>
+                        {tv:ll( index:'newsitewizard_notused')}
+                    </f:else>
+                </f:if>
+            </td>
+            <td>
+                <a href="/{file.path}" target="_blank">{tv:ll( index:'newsitewizard_preview')}</a>
+                <a href="{file.url}">{tv:ll( index:'newsitewizard_choose')}</a>
+            </td>
+        </tr>
+    </f:for>
+</table>

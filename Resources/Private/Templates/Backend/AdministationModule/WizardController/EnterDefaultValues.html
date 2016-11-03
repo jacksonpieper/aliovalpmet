@@ -1,0 +1,35 @@
+{namespace tv=Schnitzler\Templavoila\ViewHelpers}
+
+<h1>{tv:ll( index:'newsitewizard_step2' )}</h1>
+
+<p>
+    {tv:ll( index:'newsitewizard_templateselected', arguments: file )}
+</p>
+
+<iframe src="{file}" style="height:600px"></iframe>
+
+<p>
+    {tv:ll( index:'newsitewizard_step2next' )}
+</p>
+
+<form action="{action}" method="post">
+    <div class="form-group">
+        <label for="title">{tv:ll( index:'newsitewizard_step2_name' )} {tv:ll( index:'newsitewizard_step2_required' )}</label>
+        <input type="text" name="title" class="form-control" data-required value="{title}" id="title">
+        <p class="help-block">{tv:ll( index:'newsitewizard_step2_valuename' )}</p>
+    </div>
+
+    <div class="form-group">
+        <label for="url">{tv:ll( index:'newsitewizard_step2_url' )} {tv:ll( index:'newsitewizard_step2_optional' )}</label>
+        <input type="text" name="url" class="form-control" value="{url}" id="url">
+        <p class="help-block">{tv:ll( index:'newsitewizard_step2_valueurl' )}</p>
+    </div>
+
+    <div class="form-group">
+        <label for="username">{tv:ll( index:'newsitewizard_step2_editor' )} {tv:ll( index:'newsitewizard_step2_required' )}</label>
+        <input type="text" name="username" class="form-control" data-required value="{username}" id="username">
+        <p class="help-block">{tv:ll( index:'newsitewizard_step2_username' )}</p>
+    </div>
+
+    <button type="submit" class="btn btn-primary">{tv:ll( index:'newsitewizard_step2_createnewsite' )}</button>
+</form>

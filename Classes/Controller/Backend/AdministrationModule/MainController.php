@@ -1910,10 +1910,14 @@ class MainController extends AbstractModuleController implements Configurable
         $missingConf = $this->wizard_checkConfiguration();
         $missingDir = $this->wizard_checkDirectory();
         if (!$missingExt && !$missingConf) {
+            $url = BackendUtility::getModuleUrl(
+                'tv_mod_admin_wizard'
+            );
+
             $outputString .= '
             <br/>
             <br/>
-            <input type="submit" value="' . static::getLanguageService()->getLL('newsitewizard_startnow', true) . '" onclick="' . htmlspecialchars('document.location=\'index.php?SET[wiz_step]=1\'; return false;') . '" />';
+            <a href="' . $url . '" class="btn btn-primary">' . static::getLanguageService()->getLL('newsitewizard_startnow', true) . '</a>';
         } else {
             $outputString .= '<br/><br/>' . static::getLanguageService()->getLL('newsitewizard_problem');
         }

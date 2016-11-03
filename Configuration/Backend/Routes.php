@@ -11,6 +11,11 @@ return [
         'access' => 'public',
         'target' => \Schnitzler\Templavoila\Controller\Backend\Module\Administration\FileController::class . '::processRequest'
     ],
+    'tv_mod_admin_wizard' => [
+        'path' => '/templavoila/admininstration/wizard',
+        'access' => 'public',
+        'target' => \Schnitzler\Templavoila\Controller\Backend\AdministrationModule\WizardController::class . '::processRequest'
+    ],
     'tv_mod_xmlcontroller' => [
         'path' => '/templavoila/xml/show',
         'access' => 'public',
