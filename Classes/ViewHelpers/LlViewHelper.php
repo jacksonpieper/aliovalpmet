@@ -50,15 +50,17 @@ class LlViewHelper extends AbstractViewHelper implements CompilableInterface
 
     /**
      * @param string $index
+     * @param mixed $arguments
      *
      * @throws InvalidVariableException
      * @throws InvalidArgumentException
      */
-    public function render($index = null)
+    public function render($index = null, $arguments = null)
     {
         return static::renderStatic(
             [
-                'index' => $index
+                'index' => $index,
+                'arguments' => $arguments
             ],
             $this->buildRenderChildrenClosure(),
             $this->renderingContext
@@ -81,12 +83,13 @@ class LlViewHelper extends AbstractViewHelper implements CompilableInterface
         RenderingContextInterface $renderingContext
     ) {
         $index = $arguments['index'];
+        $arguments = $arguments['arguments'];
 
         if ((string)$index === '') {
             throw new InvalidVariableException('An argument "index" needs to be provided', 1467720203023);
         }
 
-        $value = static::getLanguageService()->getLL($index);
+        $value = sprintf(static::getLanguageService()->getLL($index), $arguments);
         return $value ?: 'LL:' . $index;
     }
 }
