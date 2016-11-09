@@ -643,7 +643,7 @@ class MainController extends AbstractModuleController implements Configurable
         // Create a back button if neccessary:
         if (is_array($this->altRoot)) {
             $output .= '<div style="text-align:right; width:100%; margin-bottom:5px;"><a href="index.php?id=' . $this->getId() . '">' .
-                $this->getModuleTemplate()->getIconFactory()->getIcon('actions-view-go-back', ['title' => htmlspecialchars(static::getLanguageService()->getLL('goback'))]) .
+                $this->getModuleTemplate()->getIconFactory()->getIcon('actions-view-go-back', Icon::SIZE_SMALL) .
                 '</a></div>';
         }
 
