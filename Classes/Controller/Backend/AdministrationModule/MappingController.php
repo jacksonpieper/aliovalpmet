@@ -22,24 +22,19 @@ use Schnitzler\Templavoila\Domain\Model\HtmlMarkup;
 use Schnitzler\Templavoila\Domain\Repository\TemplateRepository;
 use Schnitzler\Templavoila\Service\SyntaxHighlightingService;
 use Schnitzler\Templavoila\Templavoila;
-use Schnitzler\Templavoila\Utility\PermissionUtility;
 use TYPO3\CMS\Backend\Template\Components\ButtonBar;
-use TYPO3\CMS\Backend\Template\DocumentTemplate;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
-use TYPO3\CMS\Backend\Utility\IconUtility;
 use TYPO3\CMS\Core\DataHandling\DataHandler;
 use TYPO3\CMS\Core\Html\HtmlParser;
 use TYPO3\CMS\Core\Http\Response;
 use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
-use TYPO3\CMS\Core\Type\Bitmask\Permission;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\DebugUtility;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
-use TYPO3\CMS\Extbase\Utility\DebuggerUtility;
 
 /**
  * Class Schnitzler\Templavoila\Controller\Backend\AdministrationModule\MappingController
