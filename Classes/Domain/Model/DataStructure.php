@@ -93,7 +93,7 @@ class DataStructure extends AbstractDataStructure
      *
      * @return bool
      */
-    public function isPermittedForUser($parentRow = [], $removeItems = [])
+    public function isPermittedForUser(array $parentRow = [], array $removeItems = [])
     {
         if (static::getBackendUser()->isAdmin()) {
             return true;
