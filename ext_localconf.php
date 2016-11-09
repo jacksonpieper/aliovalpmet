@@ -90,9 +90,6 @@ $GLOBALS['TYPO3_CONF_VARS']['EXTCONF'][$_EXTKEY]['mod1']['renderPreviewContent']
 $GLOBALS['TYPO3_CONF_VARS']['EXTCONF'][$_EXTKEY]['mod1']['renderPreviewContent']['div'] = 'EXT:templavoila/Classes/Controller/Preview/NullController.php:&Schnitzler\Templavoila\Controller\Preview\NullController';
 $GLOBALS['TYPO3_CONF_VARS']['EXTCONF'][$_EXTKEY]['mod1']['renderPreviewContent']['templavoila_pi1'] = 'EXT:templavoila/Classes/Controller/Preview/NullController.php:&Schnitzler\Templavoila\Controller\Preview\NullController';
 
-$GLOBALS['TYPO3_CONF_VARS']['BE']['AJAX']['tx_templavoila_cm1_ajax::getDisplayFileContent'] =
-    'EXT:templavoila/cm1/class.tx_templavoila_cm1_ajax.php:tx_templavoila_cm1_ajax->getDisplayFileContent';
-
 $GLOBALS['TYPO3_CONF_VARS']['LOG']['Extension']['Templavoila']['Service']['ApiService']['writerConfiguration'] = [
     \TYPO3\CMS\Core\Log\LogLevel::DEBUG => [
         \TYPO3\CMS\Core\Log\Writer\FileWriter::class => [
