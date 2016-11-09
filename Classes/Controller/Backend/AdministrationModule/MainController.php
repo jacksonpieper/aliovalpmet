@@ -24,7 +24,6 @@ use Schnitzler\Templavoila\Service\SyntaxHighlightingService;
 use Schnitzler\Templavoila\Templavoila;
 use TYPO3\CMS\Backend\Template\DocumentTemplate;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
-use TYPO3\CMS\Backend\Utility\IconUtility;
 use TYPO3\CMS\Core\DataHandling\DataHandler;
 use TYPO3\CMS\Core\Html\HtmlParser;
 use TYPO3\CMS\Core\Http\Response;
@@ -725,7 +724,7 @@ class MainController extends AbstractModuleController implements Configurable
 
         if ($dsObj->isFilebased()) {
             $onClick = 'document.location=\'' . $this->doc->backPath . 'file_edit.php?target=' . rawurlencode(GeneralUtility::getFileAbsFileName($dsObj->getKey())) . '&returnUrl=' . rawurlencode(GeneralUtility::sanitizeLocalUrl(GeneralUtility::getIndpEnv('REQUEST_URI'))) . '\';';
-            $dsIcon = '<a href="#" onclick="' . htmlspecialchars($onClick) . '"><img' . IconUtility::skinImg($this->doc->backPath, 'gfx/fileicons/xml.gif', 'width="18" height="16"') . ' alt="" title="' . $dsObj->getKey() . '" class="absmiddle" /></a>';
+            $dsIcon = '<a href="#" onclick="' . htmlspecialchars($onClick) . '">' . $dsObj->getKey() . '</a>';
         } else {
             $dsIcon = $this->getModuleTemplate()->getIconFactory()->getIconForRecord('tx_templavoila_datastructure', [], Icon::SIZE_SMALL);
             $dsIcon = BackendUtility::wrapClickMenuOnIcon($dsIcon, 'tx_templavoila_datastructure', $dsObj->getKey(), 1, '&callingScriptId=' . rawurlencode($this->doc->scriptID));
@@ -739,9 +738,10 @@ class MainController extends AbstractModuleController implements Configurable
                 if ($path == false) {
                     $previewIcon = static::getLanguageService()->getLL('noicon', true);
                 } else {
-                    $previewIcon = BackendUtility::getThumbNail($this->doc->backPath . 'thumbs.php', $path,
-                        'hspace="5" vspace="5" border="1"',
-                        strpos($this->modTSconfig['properties']['dsPreviewIconThumb'], 'x') ? $this->modTSconfig['properties']['dsPreviewIconThumb'] : '');
+                    // $previewIcon = BackendUtility::getThumbNail($this->doc->backPath . 'thumbs.php', $path,
+                    //     'hspace="5" vspace="5" border="1"',
+                    //     strpos($this->modTSconfig['properties']['dsPreviewIconThumb'], 'x') ? $this->modTSconfig['properties']['dsPreviewIconThumb'] : '');
+                    $previewIcon = ''; // todo: fix me
                 }
             } else {
                 $previewIcon = '<img src="' . $this->doc->backPath . $dsObj->getIcon() . '" alt="" />';
@@ -859,9 +859,10 @@ class MainController extends AbstractModuleController implements Configurable
                 if ($path == false) {
                     $icon = static::getLanguageService()->getLL('noicon', true);
                 } else {
-                    $icon = BackendUtility::getThumbNail($this->doc->backPath . 'thumbs.php', $path,
-                        'hspace="5" vspace="5" border="1"',
-                        strpos($this->modTSconfig['properties']['toPreviewIconThumb'], 'x') ? $this->modTSconfig['properties']['toPreviewIconThumb'] : '');
+                    // $icon = BackendUtility::getThumbNail($this->doc->backPath . 'thumbs.php', $path,
+                    //     'hspace="5" vspace="5" border="1"',
+                    //     strpos($this->modTSconfig['properties']['toPreviewIconThumb'], 'x') ? $this->modTSconfig['properties']['toPreviewIconThumb'] : '');
+                    $icon = ''; // todo: fix me
                 }
             } else {
                 $icon = '<img src="' . $this->doc->backPath . $toObj->getIcon() . '" alt="" />';
@@ -2429,7 +2430,7 @@ lib.' . $menuType . '.1.NO {
 lib.' . $menuType . '.1.RO < lib.' . $menuType . '.1.NO
 lib.' . $menuType . '.1.RO = 1
 lib.' . $menuType . '.1.RO {
-    backColor = ' . GeneralUtility::modifyHTMLColorAll(($menu_normal['backColorGuess'] ? $menu_normal['backColorGuess'] : '#FFFFFF'), -20) . '
+    backColor = ' . GeneralUtility::modifyHTMLColor(($menu_normal['backColorGuess'] ? $menu_normal['backColorGuess'] : '#FFFFFF'), -20, -20, -20) . '
     10.fontColor = red
 }
             ';
@@ -2507,7 +2508,7 @@ lib.' . $menuType . '.1.ACT {
             $outputString .= '<hr/>' . $this->syntaxHLTypoScript($typoScript) . '<hr/><br/>';
 
             $outputString .= static::getLanguageService()->getLL('newsitewizard_menufinetune', true);
-            $outputString .= '<textarea name="CFG[menuCode]"' . $GLOBALS['TBE_TEMPLATE']->formWidthText() . ' rows="10">' . GeneralUtility::formatForTextarea($typoScript) . '</textarea><br/><br/>';
+            $outputString .= '<textarea name="CFG[menuCode]"' . $GLOBALS['TBE_TEMPLATE']->formWidthText() . ' rows="10">' . LF . htmlspecialchars($typoScript) . '</textarea><br/><br/>';
             $outputString .= '<input type="hidden" name="SET[wiz_step]" value="' . $menuTypeNextStep . '" />';
             $outputString .= '<input type="submit" name="_" value="' . sprintf(static::getLanguageService()->getLL('newsitewizard_menuwritets', true), $menuTypeText) . '" />';
         } else {

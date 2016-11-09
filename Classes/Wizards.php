@@ -181,7 +181,7 @@ class Wizards
         $this->doc->postCode .= $CMparts[2] . $tceforms->printNeededJSFunctions();
 
         // fix due to #13762
-        $this->doc->inDocStyles .= '.c-inputButton{ cursor:pointer; }';
+        // $this->doc->inDocStyles .= '.c-inputButton{ cursor:pointer; }'; todo: fix me
 
         $content = '';
         $content .= $this->doc->header(static::getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:db_new.php.pagetitle'));
@@ -191,22 +191,17 @@ class Wizards
         $tmplSelectorCode = '';
         $tmplSelector = $this->renderTemplateSelector($positionPid, 'tmplobj');
         if ($tmplSelector) {
-            $tmplSelectorCode .= $this->doc->spacer(5);
             $tmplSelectorCode .= $tmplSelector;
-            $tmplSelectorCode .= $this->doc->spacer(10);
         }
 
         $tmplSelector = $this->renderTemplateSelector($positionPid, 't3d');
         if ($tmplSelector) {
-            $tmplSelectorCode .= $this->doc->spacer(5);
             $tmplSelectorCode .= $tmplSelector;
-            $tmplSelectorCode .= $this->doc->spacer(10);
         }
 
         if ($tmplSelectorCode) {
             $content .= '<h3>' . htmlspecialchars(static::getLanguageService()->getLL('createnewpage_selecttemplate')) . '</h3>';
             $content .= static::getLanguageService()->getLL('createnewpage_templateobject_description');
-            $content .= $this->doc->spacer(10);
             $content .= $tmplSelectorCode;
         }
 

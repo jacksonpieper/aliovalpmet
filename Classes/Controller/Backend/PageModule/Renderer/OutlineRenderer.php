@@ -233,15 +233,12 @@ class OutlineRenderer implements Renderable
 
         // Prepare the language icon:
 
-        if ($languageUid > 0) {
-            $languageLabel = htmlspecialchars($this->controller->getAllAvailableLanguages()[$languageUid]['title']);
-            if ($this->controller->getAllAvailableLanguages()[$languageUid]['flagIcon']) {
-                $languageIcon = IconUtility::getFlagIconForLanguage($this->controller->getAllAvailableLanguages()[$languageUid]['flagIcon'], ['title' => $languageLabel, 'alt' => $languageLabel]);
-            } else {
-                $languageIcon = '[' . $languageLabel . ']';
-            }
+        $flagIdentifier = $this->controller->getAllAvailableLanguages()[$languageUid]['flagIcon'];
+        $languageLabel = htmlspecialchars($this->controller->getAllAvailableLanguages()[$languageUid]['title']);
+        if ($flagIdentifier) {
+            $languageIcon = $this->controller->getModuleTemplate()->getIconFactory()->getIcon('flags-' . ($flagIdentifier ? : 'unknown'), Icon::SIZE_SMALL);
         } else {
-            $languageIcon = '';
+            $languageIcon = '[' . $languageLabel . ']';
         }
 
         // If there was a langauge icon and the language was not default or [all] and if that langauge is accessible for the user, then wrap the flag with an edit link (to support the "Click the flag!" principle for translators)
@@ -331,7 +328,7 @@ class OutlineRenderer implements Renderable
                                 'title' => BackendUtility::getRecordTitle('tt_content', $olrow),
                                 'table' => 'tt_content',
                                 'uid' => $olrow['uid'],
-                                'flag' => $flagLink_begin . IconUtility::getFlagIconForLanguage($sLInfo['flagIcon'], ['title' => $sLInfo['title'], 'alt' => $sLInfo['title']]) . $flagLink_end,
+                                'flag' => $flagLink_begin . $this->controller->getModuleTemplate()->getIconFactory()->getIcon('flags-' . ($sLInfo['flagIcon'] ? : 'unknown'), Icon::SIZE_SMALL) . $flagLink_end,
                                 'isNewVersion' => $olrow['_ORIG_uid'] ? true : false,
                             ];
                             break;

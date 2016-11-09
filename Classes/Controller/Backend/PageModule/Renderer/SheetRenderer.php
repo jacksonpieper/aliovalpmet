@@ -25,7 +25,6 @@ use Schnitzler\Templavoila\Utility\PermissionUtility;
 use Schnitzler\Templavoila\Utility\ReferenceIndexUtility;
 use TYPO3\CMS\Backend\Template\ModuleTemplate;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
-use TYPO3\CMS\Backend\Utility\IconUtility;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
@@ -289,7 +288,8 @@ class SheetRenderer implements Renderable
         if (isset($sheetData['el']['iconTag'])) {
             $recordIcon = $sheetData['el']['iconTag'];
         } else {
-            $recordIcon = '<img' . IconUtility::skinImg('', $sheetData['el']['icon'], '') . ' border="0" title="' . htmlspecialchars('[' . $table . ':' . $uid . ']') . '" alt="" />';
+//            $recordIcon = '<img' . IconUtility::skinImg('', $sheetData['el']['icon'], '') . ' border="0" title="' . htmlspecialchars('[' . $table . ':' . $uid . ']') . '" alt="" />';
+            $recordIcon = ''; // todo: fix me
         }
 
         $wrapClickMenuOnIcon = !PermissionUtility::isInTranslatorMode();

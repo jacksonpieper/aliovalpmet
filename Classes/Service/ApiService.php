@@ -18,9 +18,10 @@ namespace Schnitzler\Templavoila\Service;
 use Schnitzler\Templavoila\Traits\DatabaseConnection;
 use Schnitzler\Templavoila\Traits\LanguageService;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
-use TYPO3\CMS\Backend\Utility\IconUtility;
 use TYPO3\CMS\Core\Database\RelationHandler;
 use TYPO3\CMS\Core\DataHandling\DataHandler;
+use TYPO3\CMS\Core\Imaging\Icon;
+use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Log\LogManager;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
@@ -66,12 +67,18 @@ class ApiService
     private $logger;
 
     /**
+     * @var IconFactory
+     */
+    private $iconFactory;
+
+    /**
      * @param string $rootTable Usually the root table is "pages" but another table can be specified (eg. "tt_content")
      */
     public function __construct($rootTable = 'pages')
     {
         $this->rootTable = $rootTable;
         $this->logger = GeneralUtility::makeInstance(LogManager::class)->getLogger(__CLASS__);
+        $this->iconFactory = GeneralUtility::makeInstance(IconFactory::class);
     }
 
     /******************************************************
@@ -1429,8 +1436,8 @@ class ApiService
             '_ORIG_uid' => $row['_ORIG_uid'],
             'title' => GeneralUtility::fixed_lgd_cs(BackendUtility::getRecordTitle($table, $row), 50),
             'fullTitle' => BackendUtility::getRecordTitle($table, $row),
-            'icon' => IconUtility::getIcon($table, $row), // kept because it's not clear if this is used elsewhere
-            'iconTag' => IconUtility::getSpriteIconForRecord($table, $row, ['title' => $alttext]),
+            'icon' => $this->iconFactory->getIconForRecord($table, $row, Icon::SIZE_SMALL), // kept because it's not clear if this is used elsewhere
+            'iconTag' => $this->iconFactory->getIconForRecord($table, $row, Icon::SIZE_SMALL),
             'sys_language_uid' => $row['sys_language_uid'],
             'l18n_parent' => $row['l18n_parent'],
             'CType' => $row['CType'],
