@@ -97,7 +97,7 @@ class MainController extends AbstractModuleController implements Configurable
 
     /**
      * Keys: "table", "uid" - thats all to define another "rootTable" than "pages" (using default field "tx_templavoila_flex" for flex form content)
-     *
+     * todo: support for altRoot is missing. altRoot is set when clicking on "view sub elements on a flexform with columns"
      * @var array
      */
     private $altRoot;
