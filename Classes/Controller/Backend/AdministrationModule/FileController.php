@@ -62,7 +62,7 @@ class FileController extends AbstractModuleController implements Configurable
     {
         parent::__construct();
 
-        static::getLanguageService()->includeLLFile('EXT:templavoila/cm1/locallang.xlf');
+        static::getLanguageService()->includeLLFile('EXT:templavoila/Resources/Private/Language/AdministrationModule/MappingController/locallang.xlf');
     }
 
     /**

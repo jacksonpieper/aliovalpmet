@@ -367,7 +367,7 @@ class MappingController extends AbstractModuleController implements Configurable
     {
         parent::__construct();
         static::getLanguageService()->includeLLFile('EXT:templavoila/Resources/Private/Language/AdministrationModule/MainController/locallang.xlf');
-        static::getLanguageService()->includeLLFile('EXT:templavoila/cm1/locallang.xlf');
+        static::getLanguageService()->includeLLFile('EXT:templavoila/Resources/Private/Language/AdministrationModule/MappingController/locallang.xlf');
 
         $this->modTSconfig = BackendUtility::getModTSconfig($this->getId(), 'mod.web_txtemplavoilaM2');
 
