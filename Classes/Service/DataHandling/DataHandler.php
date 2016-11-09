@@ -19,6 +19,7 @@ use Schnitzler\Templavoila\Service\ApiService;
 use Schnitzler\Templavoila\Templavoila;
 use Schnitzler\Templavoila\Traits\DatabaseConnection;
 use Schnitzler\Templavoila\Traits\LanguageService;
+use Schnitzler\Templavoila\Utility\ReferenceIndexUtility;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -269,7 +270,7 @@ page.10.disableExplosivePreview = 1
                 'table' => $table,
                 'uid' => $id
             ];
-            $references = \Schnitzler\Templavoila\Utility\GeneralUtility::getElementForeignReferences($element, $fieldArray['pid']);
+            $references = ReferenceIndexUtility::getElementForeignReferences($element, $fieldArray['pid']);
             if (is_array($references) && is_array($references['pages'])) {
                 foreach ($references['pages'] as $pageUid => $__) {
                     $reference->clear_cacheCmd($pageUid);

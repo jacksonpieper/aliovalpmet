@@ -15,7 +15,7 @@ namespace Schnitzler\Templavoila\Controller\Preview;
  * The TYPO3 project - inspiring people to share!
  */
 
-use Schnitzler\Templavoila\Utility\GeneralUtility;
+use Schnitzler\Templavoila\Traits\LanguageService;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 
 /**
@@ -23,6 +23,7 @@ use TYPO3\CMS\Backend\Utility\BackendUtility;
  */
 class DefaultController
 {
+    use LanguageService;
 
     /**
      * @param array $row
@@ -35,6 +36,6 @@ class DefaultController
      */
     public function render_previewContent($row, $table, $output, $alreadyRendered, &$ref)
     {
-        return '<strong>' . GeneralUtility::getLanguageService()->sL(BackendUtility::getLabelFromItemlist('tt_content', 'CType', $row['CType'])) . '</strong>';
+        return '<strong>' . static::getLanguageService()->sL(BackendUtility::getLabelFromItemlist('tt_content', 'CType', $row['CType'])) . '</strong>';
     }
 }

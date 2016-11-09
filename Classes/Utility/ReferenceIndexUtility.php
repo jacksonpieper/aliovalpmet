@@ -14,52 +14,14 @@ namespace Schnitzler\Templavoila\Utility;
  *
  * The TYPO3 project - inspiring people to share!
  */
+use Schnitzler\Templavoila\Traits\DatabaseConnection;
 
 /**
- * Class with static functions for templavoila.
- *
- * @author Steffen Kamper  <info@sk-typo3.de>
+ * Class Schnitzler\Templavoila\Utility\ReferenceIndexUtility
  */
-final class GeneralUtility
+class ReferenceIndexUtility
 {
-
-    /**
-     * @return \TYPO3\CMS\Core\Database\DatabaseConnection
-     */
-    public static function getDatabaseConnection()
-    {
-        return $GLOBALS['TYPO3_DB'];
-    }
-
-    /**
-     * @return \TYPO3\CMS\Core\Authentication\BackendUserAuthentication
-     */
-    public static function getBackendUser()
-    {
-        return $GLOBALS['BE_USER'];
-    }
-
-    /**
-     * @return \TYPO3\CMS\Lang\LanguageService
-     */
-    public static function getLanguageService()
-    {
-        return $GLOBALS['LANG'];
-    }
-
-    /**
-     * @return array
-     */
-    public static function getDenyListForUser()
-    {
-        $denyItems = [];
-        foreach (static::getBackendUser()->userGroups as $group) {
-            $groupDenyItems = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $group['tx_templavoila_access'], true);
-            $denyItems = array_merge($denyItems, $groupDenyItems);
-        }
-
-        return $denyItems;
-    }
+    use DatabaseConnection;
 
     /**
      * Get a list of referencing elements other than the given pid.
@@ -69,12 +31,12 @@ final class GeneralUtility
      * @param int $recursion recursion limiter
      * @param array &$references array containing a list of the actual references
      *
-     * @return bool true if there are other references for this element
+     * @return array
      */
     public static function getElementForeignReferences($element, $pid, $recursion = 99, &$references = null)
     {
         if (!$recursion) {
-            return false;
+            return [];
         }
         if (!is_array($references)) {
             $references = [];

@@ -18,6 +18,7 @@ namespace Schnitzler\Templavoila\Controller;
 use Schnitzler\Templavoila\Domain\Model\HtmlMarkup;
 use Schnitzler\Templavoila\Domain\Repository\DataStructureRepository;
 use Schnitzler\Templavoila\Templavoila;
+use Schnitzler\Templavoila\Traits\BackendUser;
 use TYPO3\CMS\Core\Configuration\FlexForm\FlexFormTools;
 use TYPO3\CMS\Core\Html\HtmlParser;
 use TYPO3\CMS\Core\TypoScript\Parser\TypoScriptParser;
@@ -33,6 +34,7 @@ use TYPO3\CMS\Frontend\Plugin\AbstractPlugin;
  */
 class FrontendController extends AbstractPlugin
 {
+    use BackendUser;
 
     /**
      * Same as class name
@@ -398,7 +400,7 @@ class FrontendController extends AbstractPlugin
 
                         // Visual identification aids:
 
-                        $feedit = is_object(\Schnitzler\Templavoila\Utility\GeneralUtility::getBackendUser()) && method_exists(\Schnitzler\Templavoila\Utility\GeneralUtility::getBackendUser(), 'isFrontendEditingActive') && \Schnitzler\Templavoila\Utility\GeneralUtility::getBackendUser()->isFrontendEditingActive();
+                        $feedit = is_object(static::getBackendUser()) && method_exists(static::getBackendUser(), 'isFrontendEditingActive') && static::getBackendUser()->isFrontendEditingActive();
 
                         if ($GLOBALS['TSFE']->fePreview && $GLOBALS['TSFE']->beUserLogin && !$GLOBALS['TSFE']->workspacePreview && !$this->conf['disableExplosivePreview'] && !$feedit) {
                             throw new \RuntimeException('Further execution of code leads to PHP errors.', 1404750505);

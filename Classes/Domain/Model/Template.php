@@ -18,6 +18,7 @@ namespace Schnitzler\Templavoila\Domain\Model;
 use Schnitzler\Templavoila\Domain\Repository\DataStructureRepository;
 use Schnitzler\Templavoila\Traits\BackendUser;
 use Schnitzler\Templavoila\Traits\LanguageService;
+use Schnitzler\Templavoila\Utility\PermissionUtility;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
@@ -293,7 +294,7 @@ class Template
             }
         }
         $permission = true;
-        $denyItems = \Schnitzler\Templavoila\Utility\GeneralUtility::getDenyListForUser();
+        $denyItems = PermissionUtility::getDenyListForUser();
 
         if (isset($parentRow['tx_templavoila_to'])) {
             $currentSetting = $parentRow['tx_templavoila_to'];

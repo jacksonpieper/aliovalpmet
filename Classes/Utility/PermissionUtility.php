@@ -86,6 +86,20 @@ final class PermissionUtility
         return !static::getBackendUser()->checkLanguageAccess(0) && !static::getBackendUser()->isAdmin();
     }
 
+    /**
+     * @return array
+     */
+    public static function getDenyListForUser()
+    {
+        $denyItems = [];
+        foreach (static::getBackendUser()->userGroups as $group) {
+            $groupDenyItems = GeneralUtility::trimExplode(',', $group['tx_templavoila_access'], true);
+            $denyItems = array_merge($denyItems, $groupDenyItems);
+        }
+
+        return $denyItems;
+    }
+
     private function __construct()
     {
         // deliberately private

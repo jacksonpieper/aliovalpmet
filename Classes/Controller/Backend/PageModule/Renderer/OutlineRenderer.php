@@ -19,6 +19,7 @@ use Schnitzler\Templavoila\Traits\BackendUser;
 use Schnitzler\Templavoila\Traits\LanguageService;
 use Schnitzler\Templavoila\Utility\IconUtility;
 use Schnitzler\Templavoila\Utility\PermissionUtility;
+use Schnitzler\Templavoila\Utility\ReferenceIndexUtility;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Configuration\FlexForm\FlexFormTools;
 use TYPO3\CMS\Core\DataHandling\DataHandler;
@@ -216,7 +217,7 @@ class OutlineRenderer implements Renderable
                         $linkUnlink = '';
                     }
                     if ($this->controller->modTSconfig['properties']['enableDeleteIconForLocalElements'] && $elementBelongsToCurrentPage) {
-                        $hasForeignReferences = \Schnitzler\Templavoila\Utility\GeneralUtility::hasElementForeignReferences($contentTreeArr['el'], $contentTreeArr['el']['pid']);
+                        $hasForeignReferences = ReferenceIndexUtility::hasElementForeignReferences($contentTreeArr['el'], $contentTreeArr['el']['pid']);
                         $iconDelete = $this->controller->getModuleTemplate()->getIconFactory()->getIcon('actions-edit-delete', Icon::SIZE_SMALL);
                         $linkDelete = $this->controller->link_unlink($iconDelete, $parentPointer['table'], $contentTreeArr['el']['uid'], true, $hasForeignReferences);
                     } else {
