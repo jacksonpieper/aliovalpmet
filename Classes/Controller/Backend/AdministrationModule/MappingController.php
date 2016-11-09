@@ -269,7 +269,7 @@ class MappingController extends AbstractModuleController implements Configurable
     /**
      * instance of class tx_templavoila_cm1_dsEdit
      *
-     * @var \tx_templavoila_cm1_dsEdit
+     * @var Renderer\DataStructureEditRenderer
      */
     public $dsEdit;
 
@@ -431,7 +431,7 @@ class MappingController extends AbstractModuleController implements Configurable
     public function index(ServerRequest $request, Response $response)
     {
         // Initialize ds_edit
-        $this->dsEdit = GeneralUtility::makeInstance(\tx_templavoila_cm1_dsEdit::class, $this);
+        $this->dsEdit = GeneralUtility::makeInstance(Renderer\DataStructureEditRenderer::class, $this);
 
         // Initialize eTypes
         $this->eTypes = GeneralUtility::makeInstance(\tx_templavoila_cm1_eTypes::class, $this);

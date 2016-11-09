@@ -1,4 +1,6 @@
 <?php
+namespace Schnitzler\Templavoila\Controller\Backend\AdministrationModule\Renderer;
+
 /*
  * This file is part of the TYPO3 CMS project.
  *
@@ -12,6 +14,9 @@
  * The TYPO3 project - inspiring people to share!
  */
 use Schnitzler\Templavoila\Controller\Backend\AdministrationModule\MappingController;
+use Schnitzler\Templavoila\Traits\LanguageService;
+use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Submodule 'dsEdit' for the mapping module
@@ -20,8 +25,10 @@ use Schnitzler\Templavoila\Controller\Backend\AdministrationModule\MappingContro
  * @co-author Robert Lemke <robert@typo3.org>
  * @co-author Steffen kamper <info@sk-typo3.de>
  */
-class tx_templavoila_cm1_dsEdit
+class DataStructureEditRenderer
 {
+
+    use LanguageService;
 
     /**
      * @var MappingController
@@ -65,8 +72,8 @@ class tx_templavoila_cm1_dsEdit
 
                 // Initialize, detecting either "add" or "edit" (default) mode:
                 $autokey = '';
-                if ($this->pObj->DS_cmd == 'add') {
-                    if (trim($this->pObj->fieldName) != '[' . htmlspecialchars(\Schnitzler\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('mapEnterNewFieldname')) . ']' && trim($this->pObj->fieldName) != 'field_') {
+                if ($this->pObj->DS_cmd === 'add') {
+                    if (trim($this->pObj->fieldName) != '[' . htmlspecialchars(static::getLanguageService()->getLL('mapEnterNewFieldname')) . ']' && trim($this->pObj->fieldName) !== 'field_') {
                         $autokey = strtolower(preg_replace('/[^a-z0-9_]/i', '', trim($this->pObj->fieldName)));
                         if (isset($value['el'][$autokey])) {
                             $autokey .= '_' . substr(md5(microtime()), 0, 2);
@@ -98,14 +105,14 @@ class tx_templavoila_cm1_dsEdit
                 $this->pObj->eTypes->substEtypeWithRealStuff($real);
 
                 /* ... */
-                if ($insertDataArray['type'] == 'array' && $insertDataArray['section']) {
+                if ($insertDataArray['type'] === 'array' && $insertDataArray['section']) {
                     $insertDataArray['type'] = 'section';
                 }
 
                 $eTypes = $this->pObj->eTypes->defaultEtypes();
-                $eTypes_formFields = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $eTypes['defaultTypes_formFields']);
-                $eTypes_typoscriptElements = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $eTypes['defaultTypes_typoscriptElements']);
-                $eTypes_misc = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $eTypes['defaultTypes_misc']);
+                $eTypes_formFields = GeneralUtility::trimExplode(',', $eTypes['defaultTypes_formFields']);
+                $eTypes_typoscriptElements = GeneralUtility::trimExplode(',', $eTypes['defaultTypes_typoscriptElements']);
+                $eTypes_misc = GeneralUtility::trimExplode(',', $eTypes['defaultTypes_misc']);
 
                 // Create form:
                 /* The basic XML-structure of an tx_templavoila-entry is:
@@ -121,43 +128,43 @@ class tx_templavoila_cm1_dsEdit
                 $form = '
                 <dl id="dsel-general" class="DS-config">
                     <!-- always present options +++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
-                    <dt><label>' . \Schnitzler\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('renderDSO_title') . ':</label></dt>
+                    <dt><label>' . static::getLanguageService()->getLL('renderDSO_title') . ':</label></dt>
                     <dd><input type="text" size="40" name="' . $formFieldName . '[tx_templavoila][title]" value="' . htmlspecialchars($insertDataArray['tx_templavoila']['title']) . '" /></dd>
 
-                    <dt><label>' . \Schnitzler\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('renderDSO_mappingInstructions') . ':</label></dt>
+                    <dt><label>' . static::getLanguageService()->getLL('renderDSO_mappingInstructions') . ':</label></dt>
                     <dd><input type="text" size="40" name="' . $formFieldName . '[tx_templavoila][description]" value="' . htmlspecialchars($insertDataArray['tx_templavoila']['description']) . '" /></dd>';
 
-                if ($insertDataArray['type'] != 'array' && $insertDataArray['type'] != 'section') {
+                if ($insertDataArray['type'] !== 'array' && $insertDataArray['type'] !== 'section') {
                     $form .= '
                     <!-- non-array options ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
-                    <dt><label>' . \Schnitzler\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('mapSampleData') . ':</label></dt>
+                    <dt><label>' . static::getLanguageService()->getLL('mapSampleData') . ':</label></dt>
                     <dd><textarea cols="40" rows="5" name="' . $formFieldName . '[tx_templavoila][sample_data][]">' . htmlspecialchars($insertDataArray['tx_templavoila']['sample_data'][0]) . '</textarea>
                     ' . $this->pObj->lipsumLink($formFieldName . '[tx_templavoila][sample_data]') . '</dd>
 
-                    <dt><label>' . \Schnitzler\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('mapElementPreset') . ':</label></dt>
+                    <dt><label>' . static::getLanguageService()->getLL('mapElementPreset') . ':</label></dt>
                     <dd><select name="' . $formFieldName . '[tx_templavoila][eType]">
-                        <optgroup class="c-divider" label="' . \Schnitzler\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('mapPresetGroups_tceFields') . '">';
+                        <optgroup class="c-divider" label="' . static::getLanguageService()->getLL('mapPresetGroups_tceFields') . '">';
                     foreach ($eTypes_formFields as $eType) {
-                        $label = htmlspecialchars($eType == 'ce' ?
+                        $label = htmlspecialchars($eType === 'ce' ?
                             sprintf($eTypes['eType'][$eType]['label'], $insertDataArray['tx_templavoila']['oldStyleColumnNumber'] ? (int)$insertDataArray['tx_templavoila']['oldStyleColumnNumber'] : $this->oldStyleColumnNumber) :
                             $eTypes['eType'][$eType]['label']);
                         $form .= chr(10) . '<option value="' . $eType . '"' . ($insertDataArray['tx_templavoila']['eType'] == $eType ? ' selected="selected"' : '') . '>' . $label . '</option>';
                     }
                     $form .= '
                         </optgroup>
-                        <optgroup class="c-divider" label="' . \Schnitzler\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('mapPresetGroups_ts') . '">';
+                        <optgroup class="c-divider" label="' . static::getLanguageService()->getLL('mapPresetGroups_ts') . '">';
                     foreach ($eTypes_typoscriptElements as $eType) {
                         $form .= chr(10) . '<option value="' . $eType . '"' . ($insertDataArray['tx_templavoila']['eType'] == $eType ? ' selected="selected"' : '') . '>' . htmlspecialchars($eTypes['eType'][$eType]['label']) . '</option>';
                     }
                     $form .= '
                         </optgroup>
-                        <optgroup class="c-divider" label="' . \Schnitzler\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('mapPresetGroups_other') . '">';
+                        <optgroup class="c-divider" label="' . static::getLanguageService()->getLL('mapPresetGroups_other') . '">';
                     foreach ($eTypes_misc as $eType) {
                         $form .= chr(10) . '<option value="' . $eType . '"' . ($insertDataArray['tx_templavoila']['eType'] == $eType ? ' selected="selected"' : '') . '>' . htmlspecialchars($eTypes['eType'][$eType]['label']) . '</option>';
                     }
                     $form .= '
                         </optgroup>
-                    </select><p>' . \Schnitzler\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('mapWarningElementChange') . '</p><input type="hidden"
+                    </select><p>' . static::getLanguageService()->getLL('mapWarningElementChange') . '</p><input type="hidden"
                         name="' . $formFieldName . '[tx_templavoila][eType_before]"
                         value="' . $insertDataArray['tx_templavoila']['eType'] . '" /></dd>';
                 }
@@ -167,8 +174,8 @@ class tx_templavoila_cm1_dsEdit
                     <dd><input type="text" size="40" name="' . $formFieldName . '[tx_templavoila][tags]" value="' . htmlspecialchars($insertDataArray['tx_templavoila']['tags']) . '" /></dd>
                 </dl>';
 
-                if (($insertDataArray['type'] != 'array') &&
-                    ($insertDataArray['type'] != 'section')
+                if (($insertDataArray['type'] !== 'array') &&
+                    ($insertDataArray['type'] !== 'section')
                 ) {
                     /* The Typoscript-related XML-structure of an tx_templavoila-entry is:
                      *
@@ -177,12 +184,12 @@ class tx_templavoila_cm1_dsEdit
                      *     <TypoScript>        ->
                      * </tx_templavoila>
                      */
-                    if ($insertDataArray['tx_templavoila']['eType'] != 'TypoScriptObject') {
+                    if ($insertDataArray['tx_templavoila']['eType'] !== 'TypoScriptObject') {
                         $form .= '
                     <dl id="dsel-ts" class="DS-config">
-                        <dt><label>' . \Schnitzler\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('mapTSconstants') . ':</label></dt>
+                        <dt><label>' . static::getLanguageService()->getLL('mapTSconstants') . ':</label></dt>
                         <dd><textarea class="xml enable-tab" cols="40" rows="10" wrap="off" name="' . $formFieldName . '[tx_templavoila][TypoScript_constants]">' . htmlspecialchars($this->pObj->flattenarray($insertDataArray['tx_templavoila']['TypoScript_constants'])) . '</textarea></dd>
-                        <dt><label>' . \Schnitzler\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('mapTScode') . ':</label></dt>
+                        <dt><label>' . static::getLanguageService()->getLL('mapTScode') . ':</label></dt>
                         <dd><textarea class="code enable-tab" cols="40" rows="10" wrap="off" name="' . $formFieldName . '[tx_templavoila][TypoScript]">' . htmlspecialchars($insertDataArray['tx_templavoila']['TypoScript']) . '</textarea></dd>
                     </dl>';
                     }
@@ -211,7 +218,7 @@ class tx_templavoila_cm1_dsEdit
                     if ($extra) {
                         $form .= '
                         <dl id="dsel-extra" class="DS-config">
-                            <dt>' . \Schnitzler\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('mapExtraOptions') . '</dt>
+                            <dt>' . static::getLanguageService()->getLL('mapExtraOptions') . '</dt>
                             <dd>' . $extra . '</dd>
                         </dl>';
                     }
@@ -228,38 +235,38 @@ class tx_templavoila_cm1_dsEdit
                      */
                     $form .= '
                     <dl id="dsel-proc" class="DS-config">
-                        <dt>' . \Schnitzler\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('mapPostProcesses') . ':</dt>
+                        <dt>' . static::getLanguageService()->getLL('mapPostProcesses') . ':</dt>
                         <dd>
                             <input type="checkbox" class="checkbox" id="tv_proc_int_" value="1" ' . ($insertDataArray['tx_templavoila']['proc']['int'] ? 'checked="checked"' : '') . ' onclick="$(\'tv_proc_int\').value=(this.checked ? 1 : 0);" />
-                            <label for="tv_proc_int_">' . \Schnitzler\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('mapPPcastInteger') . '</label><br />
+                            <label for="tv_proc_int_">' . static::getLanguageService()->getLL('mapPPcastInteger') . '</label><br />
                             <input type="checkbox" class="checkbox" id="tv_proc_hsc_" value="1" ' . ($insertDataArray['tx_templavoila']['proc']['HSC'] ? 'checked="checked"' : '') . ' onclick="$(\'tv_proc_hsc\').value=(this.checked ? 1 : 0);" />
-                            <label for="tv_proc_hsc_">' . \Schnitzler\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('mapPPhsc') . '</label>
+                            <label for="tv_proc_hsc_">' . static::getLanguageService()->getLL('mapPPhsc') . '</label>
                             <input type="hidden" id="tv_proc_int" name="' . $formFieldName . '[tx_templavoila][proc][int]" value="' . (int)$insertDataArray['tx_templavoila']['proc']['int'] . '" />
                             <input type="hidden" id="tv_proc_hsc" name="' . $formFieldName . '[tx_templavoila][proc][HSC]" value="' . (int)$insertDataArray['tx_templavoila']['proc']['HSC'] . '" />
                         </dd>
 
-                        <dt><label>' . \Schnitzler\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('mapCustomStdWrap') . ':</label></dt>
+                        <dt><label>' . static::getLanguageService()->getLL('mapCustomStdWrap') . ':</label></dt>
                         <dd><textarea class="code" cols="40" rows="10" name="' . $formFieldName . '[tx_templavoila][proc][stdWrap]">' . htmlspecialchars($insertDataArray['tx_templavoila']['proc']['stdWrap']) . '</textarea></dd>
 
-                        <dt><label>' . \Schnitzler\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('mapEnablePreview') . ':</label></dt>
+                        <dt><label>' . static::getLanguageService()->getLL('mapEnablePreview') . ':</label></dt>
                         <dd>
-                            <input type="radio" class="radio" id="tv_preview_enable" value="" name="' . $formFieldName . '[tx_templavoila][preview]" ' . ($insertDataArray['tx_templavoila']['preview'] != 'disable' ? 'checked="checked"' : '') . '> <label for="tv_preview_enable">' . \Schnitzler\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('mapEnablePreview.enable') . '</label><br/>
-                            <input type="radio" class="radio" id="tv_preview_disable" value="disable" name="' . $formFieldName . '[tx_templavoila][preview]" ' . ($insertDataArray['tx_templavoila']['preview'] == 'disable' ? 'checked="checked"' : '') . '> <label for="tv_preview_disable">' . \Schnitzler\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('mapEnablePreview.disable') . '</label>
+                            <input type="radio" class="radio" id="tv_preview_enable" value="" name="' . $formFieldName . '[tx_templavoila][preview]" ' . ($insertDataArray['tx_templavoila']['preview'] !== 'disable' ? 'checked="checked"' : '') . '> <label for="tv_preview_enable">' . static::getLanguageService()->getLL('mapEnablePreview.enable') . '</label><br/>
+                            <input type="radio" class="radio" id="tv_preview_disable" value="disable" name="' . $formFieldName . '[tx_templavoila][preview]" ' . ($insertDataArray['tx_templavoila']['preview'] === 'disable' ? 'checked="checked"' : '') . '> <label for="tv_preview_disable">' . static::getLanguageService()->getLL('mapEnablePreview.disable') . '</label>
                         </dd>';
                     if ($insertDataArray['tx_templavoila']['eType'] === 'ce') {
                         if (!isset($insertDataArray['tx_templavoila']['oldStyleColumnNumber'])) {
                             $insertDataArray['tx_templavoila']['oldStyleColumnNumber'] = $this->oldStyleColumnNumber++;
                         }
                         $form .= '
-                            <dt>' . \Schnitzler\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('mapOldStyleColumnNumber') . '</dt>
+                            <dt>' . static::getLanguageService()->getLL('mapOldStyleColumnNumber') . '</dt>
                             <dd>
-                                <label for="tv_oldstylecolumnnumber">' . \Schnitzler\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('mapOldStyleColumnNumber_label') . ':</label><br />
+                                <label for="tv_oldstylecolumnnumber">' . static::getLanguageService()->getLL('mapOldStyleColumnNumber_label') . ':</label><br />
                                 <input type="text" id="tv_oldstylecolumnnumber" name="' . $formFieldName . '[tx_templavoila][oldStyleColumnNumber]" value="' . (int)$insertDataArray['tx_templavoila']['oldStyleColumnNumber'] . '" />
 
                             </dd>';
 
                         $form .= '
-                            <dt><label for="tv_enabledragdrop_">' . \Schnitzler\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('mapEnableDragDrop') . '</label></dt>
+                            <dt><label for="tv_enabledragdrop_">' . static::getLanguageService()->getLL('mapEnableDragDrop') . '</label></dt>
                             <dd>
                                 <input type="checkbox" class="checkbox" id="tv_enabledragdrop_" value="1" ' . (($insertDataArray['tx_templavoila']['enableDragDrop'] === '0') ? '' : 'checked="checked"') . ' onclick="$(\'tv_enabledragdrop\').value=(this.checked ? 1 : 0);" />
                                 <input type="hidden" id="tv_enabledragdrop" name="' . $formFieldName . '[tx_templavoila][enableDragDrop]" value="' . (int)$insertDataArray['tx_templavoila']['enableDragDrop'] . '" />
@@ -274,35 +281,35 @@ class tx_templavoila_cm1_dsEdit
                      *     <config>        -> TCE-configuration array
                      * </TCEforms>
                      */
-                    if ($insertDataArray['tx_templavoila']['eType'] != 'TypoScriptObject') {
+                    if ($insertDataArray['tx_templavoila']['eType'] !== 'TypoScriptObject') {
                         $form .= '
                     <dl id="dsel-tce" class="DS-config">
-                        <dt><label>' . \Schnitzler\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('mapTCElabel') . ':</label></dt>
+                        <dt><label>' . static::getLanguageService()->getLL('mapTCElabel') . ':</label></dt>
                         <dd><input type="text" size="40" name="' . $formFieldName . '[TCEforms][label]" value="' . htmlspecialchars($insertDataArray['TCEforms']['label']) . '" /></dd>
 
-                        <dt><label>' . \Schnitzler\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('mapTCEconf') . ':</label></dt>
+                        <dt><label>' . static::getLanguageService()->getLL('mapTCEconf') . ':</label></dt>
                         <dd><textarea class="xml" cols="40" rows="10" name="' . $formFieldName . '[TCEforms][config]">' . htmlspecialchars($this->pObj->flattenarray($insertDataArray['TCEforms']['config'])) . '</textarea></dd>
 
-                        <dt><label>' . \Schnitzler\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('mapTCEextras') . ':</label></dt>
+                        <dt><label>' . static::getLanguageService()->getLL('mapTCEextras') . ':</label></dt>
                         <dd><input type="text" size="40" name="' . $formFieldName . '[TCEforms][defaultExtras]" value="' . htmlspecialchars($insertDataArray['TCEforms']['defaultExtras']) . '" /></dd>
                     </dl>';
                     }
                 } else {
                     $form .= '
                         <dl id="dsel-proc" class="DS-config">
-                            <dt><label>' . \Schnitzler\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('mapEnablePreview') . ':</label></dt>
+                            <dt><label>' . static::getLanguageService()->getLL('mapEnablePreview') . ':</label></dt>
                             <dd>
-                                <input type="radio" class="radio" id="tv_preview_enable" value="" name="' . $formFieldName . '[tx_templavoila][preview]" ' . ($insertDataArray['tx_templavoila']['preview'] != 'disable' ? 'checked="checked"' : '') . '> <label for="tv_preview_enable">' . \Schnitzler\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('mapEnablePreview.enable') . '</label><br/>
-                                <input type="radio" class="radio" id="tv_preview_disable" value="disable" name="' . $formFieldName . '[tx_templavoila][preview]" ' . ($insertDataArray['tx_templavoila']['preview'] == 'disable' ? 'checked="checked"' : '') . '> <label for="tv_preview_disable">' . \Schnitzler\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('mapEnablePreview.disable') . '</label>
+                                <input type="radio" class="radio" id="tv_preview_enable" value="" name="' . $formFieldName . '[tx_templavoila][preview]" ' . ($insertDataArray['tx_templavoila']['preview'] !== 'disable' ? 'checked="checked"' : '') . '> <label for="tv_preview_enable">' . static::getLanguageService()->getLL('mapEnablePreview.enable') . '</label><br/>
+                                <input type="radio" class="radio" id="tv_preview_disable" value="disable" name="' . $formFieldName . '[tx_templavoila][preview]" ' . ($insertDataArray['tx_templavoila']['preview'] === 'disable' ? 'checked="checked"' : '') . '> <label for="tv_preview_disable">' . static::getLanguageService()->getLL('mapEnablePreview.disable') . '</label>
                             </dd>
                         </dl>';
                 }
 
                 $formSubmit = '
-                    <input type="hidden" name="DS_element" value="' . htmlspecialchars($this->pObj->DS_cmd == 'add' ? $this->pObj->DS_element . '[el][' . $autokey . ']' : $this->pObj->DS_element) . '" />
-                    <input type="submit" name="_updateDS" value="' . ($this->pObj->DS_cmd == 'add' ? \Schnitzler\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('buttonAdd') : \Schnitzler\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('buttonUpdate')) . '" />
-                    <!--    <input type="submit" name="' . $formFieldName . '" value="' . \Schnitzler\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('buttonDelete') . ' (!)" />  -->
-                    <input type="submit" name="_" value="' . ($this->pObj->DS_cmd == 'add' ? \Schnitzler\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('buttonCancel') : \Schnitzler\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('buttonCancelClose')) . '" onclick="document.location=\'' . $this->pObj->linkThisScript() . '\'; return false;" />
+                    <input type="hidden" name="DS_element" value="' . htmlspecialchars($this->pObj->DS_cmd === 'add' ? $this->pObj->DS_element . '[el][' . $autokey . ']' : $this->pObj->DS_element) . '" />
+                    <input type="submit" name="_updateDS" value="' . ($this->pObj->DS_cmd === 'add' ? static::getLanguageService()->getLL('buttonAdd') : static::getLanguageService()->getLL('buttonUpdate')) . '" />
+                    <!--    <input type="submit" name="' . $formFieldName . '" value="' . static::getLanguageService()->getLL('buttonDelete') . ' (!)" />  -->
+                    <input type="submit" name="_" value="' . ($this->pObj->DS_cmd === 'add' ? static::getLanguageService()->getLL('buttonCancel') : static::getLanguageService()->getLL('buttonCancelClose')) . '" onclick="document.location=\'' . $this->pObj->getModuleUrl() . '\'; return false;" />
                 ';
 
                 /* The basic XML-structure of an entry is:
@@ -322,54 +329,54 @@ class tx_templavoila_cm1_dsEdit
                 // does not support paddings in select elements but supports
                 // backgrounds. The rest is text over background.
                 $selectStyle = 'margin: 4px 0; width: 150px !important; display: block;';
-                $userAgent = \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('HTTP_USER_AGENT');
+                $userAgent = GeneralUtility::getIndpEnv('HTTP_USER_AGENT');
                 if (strpos($userAgent, 'WebKit') === false) {
                     // Not Safai (Can't have "padding" for select elements in Safari)
                     $selectStyle .= 'padding: 1px 1px 1px 30px; background: 0 50% url(' . $info[3] . ') no-repeat;';
                 }
 
                 $addEditRows = '<tr class="tv-edit-row">
-                    <td valign="top" style="padding: 0.5em; padding-left: ' . (($level) * 16 + 3) . 'px" nowrap="nowrap" rowspan="2">
+                    <td valign="top" style="padding: 0.5em; padding-left: ' . ($level * 16 + 3) . 'px" nowrap="nowrap" rowspan="2">
                         <select style="' . $selectStyle . '" title="Mapping Type" name="' . $formFieldName . '[type]">
-                            <optgroup class="c-divider" label="' . \Schnitzler\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('mapElContainers') . '">
-                                <option style="padding: 1px 1px 1px 30px; background: 0 50% url(' . $this->pObj->dsTypes['sc'][3] . ') no-repeat;" value="section"' . ($insertDataArray['type'] == 'section' ? ' selected="selected"' : '') . '>' . \Schnitzler\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('mapSection') . '</option>
-                                <option style="padding: 1px 1px 1px 30px; background: 0 50% url(' . $this->pObj->dsTypes['co'][3] . ') no-repeat;" value="array"' . ($insertDataArray['type'] == 'array' ? ' selected="selected"' : '') . '>' . \Schnitzler\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('mapContainer') . '</option>
+                            <optgroup class="c-divider" label="' . static::getLanguageService()->getLL('mapElContainers') . '">
+                                <option style="padding: 1px 1px 1px 30px; background: 0 50% url(' . $this->pObj->dsTypes['sc'][3] . ') no-repeat;" value="section"' . ($insertDataArray['type'] === 'section' ? ' selected="selected"' : '') . '>' . static::getLanguageService()->getLL('mapSection') . '</option>
+                                <option style="padding: 1px 1px 1px 30px; background: 0 50% url(' . $this->pObj->dsTypes['co'][3] . ') no-repeat;" value="array"' . ($insertDataArray['type'] === 'array' ? ' selected="selected"' : '') . '>' . static::getLanguageService()->getLL('mapContainer') . '</option>
                             </optgroup>
-                            <optgroup class="c-divider" label="' . \Schnitzler\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('mapElElements') . '">
-                                <option style="padding: 1px 1px 1px 30px; background: 0 50% url(' . $this->pObj->dsTypes['el'][3] . ') no-repeat;" value=""' . ($insertDataArray['type'] == '' ? ' selected="selected"' : '') . '>' . \Schnitzler\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('mapElement') . '</option>
-                                <option style="padding: 1px 1px 1px 30px; background: 0 50% url(' . $this->pObj->dsTypes['at'][3] . ') no-repeat;" value="attr"' . ($insertDataArray['type'] == 'attr' ? ' selected="selected"' : '') . '>' . \Schnitzler\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('mapAttribute') . '</option>
+                            <optgroup class="c-divider" label="' . static::getLanguageService()->getLL('mapElElements') . '">
+                                <option style="padding: 1px 1px 1px 30px; background: 0 50% url(' . $this->pObj->dsTypes['el'][3] . ') no-repeat;" value=""' . ($insertDataArray['type'] == '' ? ' selected="selected"' : '') . '>' . static::getLanguageService()->getLL('mapElement') . '</option>
+                                <option style="padding: 1px 1px 1px 30px; background: 0 50% url(' . $this->pObj->dsTypes['at'][3] . ') no-repeat;" value="attr"' . ($insertDataArray['type'] === 'attr' ? ' selected="selected"' : '') . '>' . static::getLanguageService()->getLL('mapAttribute') . '</option>
                             </optgroup>
-                            <optgroup class="c-divider" label="' . \Schnitzler\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('mapPresetGroups_other') . '">
-                                <option style="padding: 1px 1px 1px 30px; background: 0 50% url(' . $this->pObj->dsTypes['no'][3] . ') no-repeat;" value="no_map"' . ($insertDataArray['type'] == 'no_map' ? ' selected="selected"' : '') . '>' . \Schnitzler\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('mapNotMapped') . '</option>
+                            <optgroup class="c-divider" label="' . static::getLanguageService()->getLL('mapPresetGroups_other') . '">
+                                <option style="padding: 1px 1px 1px 30px; background: 0 50% url(' . $this->pObj->dsTypes['no'][3] . ') no-repeat;" value="no_map"' . ($insertDataArray['type'] === 'no_map' ? ' selected="selected"' : '') . '>' . static::getLanguageService()->getLL('mapNotMapped') . '</option>
                             </optgroup>
                         </select>
                         <div style="margin: 0.25em;">' .
-                    ($this->pObj->DS_cmd == 'add' ? $autokey . ' <strong>(new)</strong>:<br />' : $key) .
+                    ($this->pObj->DS_cmd === 'add' ? $autokey . ' <strong>(new)</strong>:<br />' : $key) .
                     '</div>
                     <input id="dsel-act" type="hidden" name="dsel_act" />
                     <ul id="dsel-menu" class="DS-tree">
-                        <li><a id="dssel-general" class="active" href="#" onclick="" title="' . \Schnitzler\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('mapEditConfiguration') . '">' . \Schnitzler\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('mapConfiguration') . '</a>
+                        <li><a id="dssel-general" class="active" href="#" onclick="" title="' . static::getLanguageService()->getLL('mapEditConfiguration') . '">' . static::getLanguageService()->getLL('mapConfiguration') . '</a>
                                 <ul>
-                                    <li><a id="dssel-proc" href="#" title="' . \Schnitzler\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('mapEditDataProcessing') . '">' . \Schnitzler\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('mapDataProcessing') . '</a></li>
-                                    <li><a id="dssel-ts" href="#" title="' . \Schnitzler\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('mapEditTyposcript') . '">' . \Schnitzler\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('mapTyposcript') . '</a></li>
-                                    <li class="last-child"><a id="dssel-extra" href="#" title="' . \Schnitzler\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('mapEditExtra') . '">' . \Schnitzler\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('mapExtra') . '</a></li>
+                                    <li><a id="dssel-proc" href="#" title="' . static::getLanguageService()->getLL('mapEditDataProcessing') . '">' . static::getLanguageService()->getLL('mapDataProcessing') . '</a></li>
+                                    <li><a id="dssel-ts" href="#" title="' . static::getLanguageService()->getLL('mapEditTyposcript') . '">' . static::getLanguageService()->getLL('mapTyposcript') . '</a></li>
+                                    <li class="last-child"><a id="dssel-extra" href="#" title="' . static::getLanguageService()->getLL('mapEditExtra') . '">' . static::getLanguageService()->getLL('mapExtra') . '</a></li>
                                 </ul>
                             </li>
-                            <li class="last-child"><a id="dssel-tce" href="#" title="' . \Schnitzler\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('mapEditTCEform') . '">' . \Schnitzler\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('mapTCEform') . '</a></li>
+                            <li class="last-child"><a id="dssel-tce" href="#" title="' . static::getLanguageService()->getLL('mapEditTCEform') . '">' . static::getLanguageService()->getLL('mapTCEform') . '</a></li>
                         </ul>
-                        ' . $this->pObj->cshItem('xMOD_tx_templavoila', 'mapping_editform', $this->pObj->doc->backPath, '', false, 'margin-bottom: 0px;') . '
+                        ' . BackendUtility::cshItem('xMOD_tx_templavoila', 'mapping_editform', '', '') . '
                     </td>
 
                     <td valign="top" style="padding: 0.5em;" colspan="2">
                         ' . $form . '
                         <script type="text/javascript">
-                            var dsel_act = "' . (\TYPO3\CMS\Core\Utility\GeneralUtility::_GP('dsel_act') ? \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('dsel_act') : 'general') . '";
+                            var dsel_act = "' . (GeneralUtility::_GP('dsel_act') ? GeneralUtility::_GP('dsel_act') : 'general') . '";
                             var dsel_menu = [
-                                {"id" : "general",        "avail" : true,    "label" : "' . \Schnitzler\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('mapConfiguration') . '",    "title" : "' . \Schnitzler\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('mapEditConfiguration') . '",    "childs" : [
-                                    {"id" : "ts",        "avail" : true,    "label" : "' . \Schnitzler\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('mapDataProcessing') . '",    "title" : "' . \Schnitzler\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('mapEditDataProcessing') . '"},
-                                    {"id" : "extra",    "avail" : true,    "label" : "' . \Schnitzler\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('mapTyposcript') . '",        "title" : "' . \Schnitzler\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('mapEditTyposcript') . '"},
-                                    {"id" : "proc",        "avail" : true,    "label" : "' . \Schnitzler\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('mapExtra') . '",    "title" : "' . \Schnitzler\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('mapEditExtra') . '"}]},
-                                {"id" : "tce",            "avail" : true,    "label" : "' . \Schnitzler\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('mapTCEform') . '",        "title" : "' . \Schnitzler\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('mapEditTCEform') . '"}
+                                {"id" : "general",        "avail" : true,    "label" : "' . static::getLanguageService()->getLL('mapConfiguration') . '",    "title" : "' . static::getLanguageService()->getLL('mapEditConfiguration') . '",    "childs" : [
+                                    {"id" : "ts",        "avail" : true,    "label" : "' . static::getLanguageService()->getLL('mapDataProcessing') . '",    "title" : "' . static::getLanguageService()->getLL('mapEditDataProcessing') . '"},
+                                    {"id" : "extra",    "avail" : true,    "label" : "' . static::getLanguageService()->getLL('mapTyposcript') . '",        "title" : "' . static::getLanguageService()->getLL('mapEditTyposcript') . '"},
+                                    {"id" : "proc",        "avail" : true,    "label" : "' . static::getLanguageService()->getLL('mapExtra') . '",    "title" : "' . static::getLanguageService()->getLL('mapEditExtra') . '"}]},
+                                {"id" : "tce",            "avail" : true,    "label" : "' . static::getLanguageService()->getLL('mapTCEform') . '",        "title" : "' . static::getLanguageService()->getLL('mapEditTCEform') . '"}
                             ];
 
                             function dsel_menu_construct(dsul, dsmn) {
@@ -408,9 +415,9 @@ class tx_templavoila_cm1_dsEdit
                             dsel_menu_reset();
                         </script>
                     </td>
-                    <td>' . ($this->pObj->DS_cmd == 'add' ? '' : $rowCells['htmlPath']) . '</td>
-                    <td>' . ($this->pObj->DS_cmd == 'add' ? '' : $rowCells['cmdLinks']) . '</td>
-                    <td>' . ($this->pObj->DS_cmd == 'add' ? '' : $rowCells['tagRules']) . '</td>
+                    <td>' . ($this->pObj->DS_cmd === 'add' ? '' : $rowCells['htmlPath']) . '</td>
+                    <td>' . ($this->pObj->DS_cmd === 'add' ? '' : $rowCells['cmdLinks']) . '</td>
+                    <td>' . ($this->pObj->DS_cmd === 'add' ? '' : $rowCells['tagRules']) . '</td>
                     <td colspan="2"></td>
                 </tr>
                 <tr class="tv-edit-row">
@@ -418,12 +425,12 @@ class tx_templavoila_cm1_dsEdit
                     ' . $formSubmit . '
                     </td>
                 </tr>';
-            } elseif (($value['type'] == 'array' || $value['type'] == 'section') && !$this->pObj->mapElPath) {
+            } elseif (($value['type'] === 'array' || $value['type'] === 'section') && !$this->pObj->mapElPath) {
                 $addEditRows = '<tr class="bgColor4">
-                    <td colspan="7"><img src="clear.gif" width="' . (($level + 1) * 16) . '" height="1" alt="" />' .
-                    '<input type="text" name="' . md5($formPrefix . '[' . $key . ']') . '" value="[' . htmlspecialchars(\Schnitzler\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('mapEnterNewFieldname')) . ']" onfocus="if (this.value==\'[' . \Schnitzler\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('mapEnterNewFieldname') . ']\'){this.value=\'field_\';}" />' .
-                    '<input type="submit" name="_" value="Add" onclick="document.location=\'' . $this->pObj->linkThisScript(['DS_element' => $formPrefix . '[' . $key . ']', 'DS_cmd' => 'add']) . '&amp;fieldName=\'+document.pageform[\'' . md5($formPrefix . '[' . $key . ']') . '\'].value; return false;" />' .
-                    $this->pObj->cshItem('xMOD_tx_templavoila', 'mapping_addfield', $this->pObj->doc->backPath, '', false, 'margin-bottom: 0px;') .
+                    <td colspan="7">' .
+                    '<input style="margin-left:' . (($level + 1) * 16) . 'px;" type="text" name="' . md5($formPrefix . '[' . $key . ']') . '" value="[' . htmlspecialchars(static::getLanguageService()->getLL('mapEnterNewFieldname')) . ']" onfocus="if (this.value==\'[' . static::getLanguageService()->getLL('mapEnterNewFieldname') . ']\'){this.value=\'field_\';}" />' .
+                    '<input type="submit" name="_" value="Add" onclick="document.location=\'' . $this->pObj->getModuleUrl(['DS_element' => $formPrefix . '[' . $key . ']', 'DS_cmd' => 'add']) . '&amp;fieldName=\'+document.pageform[\'' . md5($formPrefix . '[' . $key . ']') . '\'].value; return false;" />' .
+                    BackendUtility::cshItem('xMOD_tx_templavoila', 'mapping_addfield', '', '') .
                     '</td>
                 </tr>';
             }
@@ -455,7 +462,7 @@ class tx_templavoila_cm1_dsEdit
                 'formFieldName' => $formFieldName . '[tx_templavoila][eType_EXTRA]',
                 'curValue' => $curValue,
             ];
-            $output = \TYPO3\CMS\Core\Utility\GeneralUtility::callUserFunction($GLOBALS['TYPO3_CONF_VARS']['EXTCONF'][\Schnitzler\Templavoila\Templavoila::EXTKEY]['cm1']['eTypesExtraFormFields'][$type], $_params, $this);
+            $output = GeneralUtility::callUserFunction($GLOBALS['TYPO3_CONF_VARS']['EXTCONF'][\Schnitzler\Templavoila\Templavoila::EXTKEY]['cm1']['eTypesExtraFormFields'][$type], $_params, $this);
         } else {
             switch ($type) {
                 default:
@@ -464,7 +471,7 @@ class tx_templavoila_cm1_dsEdit
                     $output = '
                         <table border="0" cellpadding="2" cellspacing="0">
                             <tr>
-                                <td>' . \Schnitzler\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('mapObjectPath') . ':</td>
+                                <td>' . static::getLanguageService()->getLL('mapObjectPath') . ':</td>
                                 <td>
                                     <input type="text" name="' . $formFieldName . '[tx_templavoila][eType_EXTRA][objPath]" value="' . htmlspecialchars($value) . '" onchange="$(\'hiddenTypoScriptObjPath\').value=this.value;" />
                                     <input type="hidden" id="hiddenTypoScriptObjPath" name="' . $formFieldName . '[tx_templavoila][TypoScriptObjPath]" value="' . htmlspecialchars($value) . '" />
