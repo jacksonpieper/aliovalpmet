@@ -16,6 +16,11 @@ return [
         'access' => 'public',
         'target' => \Schnitzler\Templavoila\Controller\Backend\AdministrationModule\WizardController::class . '::processRequest'
     ],
+    'tv_mod_admin_mapping' => [
+        'path' => '/templavoila/admininstration/mapping',
+        'access' => 'public',
+        'target' => \Schnitzler\Templavoila\Controller\Backend\AdministrationModule\MappingController::class . '::processRequest'
+    ],
     'tv_mod_xmlcontroller' => [
         'path' => '/templavoila/xml/show',
         'access' => 'public',

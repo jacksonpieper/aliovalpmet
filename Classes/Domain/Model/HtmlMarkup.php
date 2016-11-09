@@ -1483,7 +1483,7 @@ class HtmlMarkup
         if (!isset(self::$tagConf[$tag])) {
             return '';
         } else {
-            return '<span class="gnyfBox"><span ' . $onclick . ' class="gnyfElement gnyf' . ucfirst(self::$tagConf[$tag]['blocktype']) . '" title="' . htmlspecialchars(GeneralUtility::fixed_lgd_cs($title, -200)) . '">' . htmlspecialchars($tag) . '</span></span>';
+            return '<span class="gnyfBox"><span ' . $onclick . ' class="label label-primary gnyfElement gnyf' . ucfirst(self::$tagConf[$tag]['blocktype']) . '" title="' . htmlspecialchars(GeneralUtility::fixed_lgd_cs($title, -200)) . '">' . htmlspecialchars($tag) . '</span></span>';
         }
     }
 }

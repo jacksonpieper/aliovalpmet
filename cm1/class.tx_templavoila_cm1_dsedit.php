@@ -11,6 +11,7 @@
  *
  * The TYPO3 project - inspiring people to share!
  */
+use Schnitzler\Templavoila\Controller\Backend\AdministrationModule\MappingController;
 
 /**
  * Submodule 'dsEdit' for the mapping module
@@ -23,7 +24,7 @@ class tx_templavoila_cm1_dsEdit
 {
 
     /**
-     * @var \tx_templavoila_cm1
+     * @var MappingController
      */
     protected $pObj;
 
@@ -33,11 +34,11 @@ class tx_templavoila_cm1_dsEdit
     protected $oldStyleColumnNumber = 0;
 
     /**
-     * @param \tx_templavoila_cm1 $pObj
+     * @param MappingController $controller
      */
-    public function init($pObj)
+    public function __construct(MappingController $controller)
     {
-        $this->pObj = $pObj;
+        $this->pObj = $controller;
     }
 
     /**

@@ -12,30 +12,45 @@
  * The TYPO3 project - inspiring people to share!
  */
 
-// DEFAULT initialization of a module [BEGIN]
-unset($MCONF);
-require(dirname(__FILE__) . '/conf.php');
-require($BACK_PATH . 'init.php');
-$LANG->includeLLFile('EXT:templavoila/cm1/locallang.xlf');
+namespace Schnitzler\Templavoila\Controller\Backend\AdministrationModule;
+
+use Psr\Http\Message\ResponseInterface;
+use Schnitzler\Templavoila\Controller\Backend\AbstractModuleController;
+use Schnitzler\Templavoila\Controller\Backend\Configurable;
+use Schnitzler\Templavoila\Domain\Model\File;
+use Schnitzler\Templavoila\Domain\Model\HtmlMarkup;
+use Schnitzler\Templavoila\Domain\Repository\TemplateRepository;
+use Schnitzler\Templavoila\Service\SyntaxHighlightingService;
+use Schnitzler\Templavoila\Templavoila;
+use Schnitzler\Templavoila\Utility\PermissionUtility;
+use TYPO3\CMS\Backend\Template\Components\ButtonBar;
+use TYPO3\CMS\Backend\Template\DocumentTemplate;
+use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Backend\Utility\IconUtility;
+use TYPO3\CMS\Core\DataHandling\DataHandler;
+use TYPO3\CMS\Core\Html\HtmlParser;
+use TYPO3\CMS\Core\Http\Response;
+use TYPO3\CMS\Core\Http\ServerRequest;
+use TYPO3\CMS\Core\Imaging\Icon;
+use TYPO3\CMS\Core\Messaging\FlashMessage;
+use TYPO3\CMS\Core\Type\Bitmask\Permission;
+use TYPO3\CMS\Core\Utility\ArrayUtility;
+use TYPO3\CMS\Core\Utility\DebugUtility;
+use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Utility\MathUtility;
+use TYPO3\CMS\Extbase\Utility\DebuggerUtility;
 
 /**
- * Class for controlling the TemplaVoila module.
- *
- * @author Kasper Skaarhoj <kasperYYYY@typo3.com>
- * @co-author Robert Lemke <robert@typo3.org>
+ * Class Schnitzler\Templavoila\Controller\Backend\AdministrationModule\MappingController
  */
-class tx_templavoila_cm1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass
+class MappingController extends AbstractModuleController implements Configurable
 {
 
     /**
      * @var string
      */
     protected $DS_element_DELETE;
-
-    /**
-     * @var array
-     */
-    protected $pageinfo;
 
     /**
      * @var string
@@ -69,13 +84,6 @@ class tx_templavoila_cm1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass
     ];
 
     /**
-     * Extension key of this module
-     *
-     * @var string
-     */
-    public $extKey = \Schnitzler\Templavoila\Templavoila::EXTKEY;
-
-    /**
      * @var array
      */
     public $dsTypes;
@@ -88,7 +96,7 @@ class tx_templavoila_cm1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass
     public $markupFile = '';
 
     /**
-     * @var \Schnitzler\Templavoila\Domain\Model\HtmlMarkup
+     * @var HtmlMarkup
      */
     public $markupObj;
 
@@ -307,21 +315,17 @@ class tx_templavoila_cm1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass
     .gnyfEmbedding { background-color:#ff96ff; }
     .gnyfInteractive { background-color: #d3d3d3; }
 ';
+    /**
+     * Generally used for accumulating the output content of backend modules
+     *
+     * @var string
+     */
+    public $content = '';
 
     /**
-     * Adds items to the ->MOD_MENU array. Used for the function menu selector.
+     * @var array
      */
-    public function menuConfig()
-    {
-        $this->MOD_MENU = [
-            'displayMode' => [
-                'explode' => 'Mode: Exploded Visual',
-                'source' => 'Mode: HTML Source ',
-            ],
-            'showDSxml' => ''
-        ];
-        parent::menuConfig();
-    }
+    private $MOD_MENU;
 
     /**
      * Returns an abbrevation and a description for a given element-type.
@@ -333,11 +337,11 @@ class tx_templavoila_cm1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass
     public function dsTypeInfo($conf)
     {
         // Icon:
-        if ($conf['type'] == 'section') {
+        if ($conf['type'] === 'section') {
             return $this->dsTypes['sc'];
         }
 
-        if ($conf['type'] == 'array') {
+        if ($conf['type'] === 'array') {
             if (!$conf['section']) {
                 return $this->dsTypes['co'];
             }
@@ -345,11 +349,11 @@ class tx_templavoila_cm1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass
             return $this->dsTypes['sc'];
         }
 
-        if ($conf['type'] == 'attr') {
+        if ($conf['type'] === 'attr') {
             return $this->dsTypes['at'];
         }
 
-        if ($conf['type'] == 'no_map') {
+        if ($conf['type'] === 'no_map') {
             return $this->dsTypes['no'];
         }
 
@@ -357,25 +361,86 @@ class tx_templavoila_cm1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass
     }
 
     /**
-     * Main function, distributes the load between the module and display modes.
-     * "Display" mode is when the exploded template file is shown in an IFRAME
+     * @var array
      */
-    public function main()
-    {
+    private $modTSconfig = [];
 
+    public function __construct()
+    {
+        parent::__construct();
+        static::getLanguageService()->includeLLFile('EXT:templavoila/Resources/Private/Language/AdministrationModule/MainController/locallang.xlf');
+        static::getLanguageService()->includeLLFile('EXT:templavoila/cm1/locallang.xlf');
+
+        $this->modTSconfig = BackendUtility::getModTSconfig($this->getId(), 'mod.web_txtemplavoilaM2');
+
+        $this->MOD_MENU = [
+            'displayMode' => [
+                'explode' => 'Mode: Exploded Visual',
+                'source' => 'Mode: HTML Source ',
+            ],
+            'showDSxml' => ''
+        ];
+    }
+
+    private function initializeBackButton()
+    {
+        $returnButton = $this->moduleTemplate->getDocHeaderComponent()->getButtonBar()->makeLinkButton()
+            ->setTitle('Back')
+            ->setHref($this->getSetting('returnUrl'))
+            ->setIcon($this->moduleTemplate->getIconFactory()->getIcon('actions-close', Icon::SIZE_SMALL))
+        ;
+
+        $this->moduleTemplate->getDocHeaderComponent()->getButtonBar()->addButton($returnButton);
+    }
+
+    private function initializeButtons()
+    {
+        $saveButton = $this->moduleTemplate->getDocHeaderComponent()->getButtonBar()->makeLinkButton()
+            ->setTitle(static::getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:rm.saveDoc'))
+            ->setHref('#')
+            ->setShowLabelText(true)
+            ->setIcon($this->moduleTemplate->getIconFactory()->getIcon('actions-document-save', Icon::SIZE_SMALL))
+        ;
+
+        $saveAndCloseButton = $this->moduleTemplate->getDocHeaderComponent()->getButtonBar()->makeLinkButton()
+            ->setTitle(static::getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:rm.saveCloseDoc'))
+            ->setHref('#')
+            ->setShowLabelText(true)
+            ->setIcon($this->moduleTemplate->getIconFactory()->getIcon('actions-document-save-close', Icon::SIZE_SMALL))
+        ;
+
+        $clearButton = $this->moduleTemplate->getDocHeaderComponent()->getButtonBar()->makeLinkButton()
+            ->setTitle('Clear')
+            ->setHref('#')
+            ->setShowLabelText(true)
+            ->setIcon($this->moduleTemplate->getIconFactory()->getIcon('actions-delete', Icon::SIZE_SMALL))
+            ->setClasses('btn-warning')
+        ;
+
+        $this->moduleTemplate->getDocHeaderComponent()->getButtonBar()->addButton($saveButton, ButtonBar::BUTTON_POSITION_LEFT, 2);
+        $this->moduleTemplate->getDocHeaderComponent()->getButtonBar()->addButton($saveAndCloseButton, ButtonBar::BUTTON_POSITION_LEFT, 2);
+        $this->moduleTemplate->getDocHeaderComponent()->getButtonBar()->addButton($clearButton, ButtonBar::BUTTON_POSITION_LEFT, 3);
+    }
+
+    /**
+     * @param ServerRequest $request
+     * @param Response $response
+     *
+     * @return ResponseInterface
+     */
+    public function index(ServerRequest $request, Response $response)
+    {
         // Initialize ds_edit
-        $this->dsEdit = \TYPO3\CMS\Core\Utility\GeneralUtility::getUserObj('tx_templavoila_cm1_dsedit', '');
-        $this->dsEdit->init($this);
+        $this->dsEdit = GeneralUtility::makeInstance(\tx_templavoila_cm1_dsEdit::class, $this);
 
         // Initialize eTypes
-        $this->eTypes = \TYPO3\CMS\Core\Utility\GeneralUtility::getUserObj('tx_templavoila_cm1_eTypes', '');
-        $this->eTypes->init($this);
+        $this->eTypes = GeneralUtility::makeInstance(\tx_templavoila_cm1_eTypes::class, $this);
 
-        $this->extConf = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf'][\Schnitzler\Templavoila\Templavoila::EXTKEY]);
+        $this->extConf = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf'][Templavoila::EXTKEY]);
         $this->staticDS = ($this->extConf['staticDS.']['enable']);
 
         // Setting GPvars:
-        $this->mode = \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('mode');
+        $this->mode = GeneralUtility::_GP('mode');
 
         // Selecting display or module mode:
         switch ((string) $this->mode) {
@@ -386,16 +451,18 @@ class tx_templavoila_cm1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass
                 $this->main_mode();
                 break;
         }
-    }
 
-    /**
-     * Prints module content.
-     * Is only used in case of &mode = "mod" since both "display" mode and frameset is outputted + exiting before this is called.
-     */
-    public function printContent()
-    {
-        $this->content .= $this->doc->endPage();
-        echo $this->content;
+        $view = $this->initializeView('Backend/AdministrationModule/Mapping');
+        $view->assign('action', $this->getModuleUrl());
+        $view->assign('content', $this->content);
+
+        $this->moduleTemplate->setTitle(static::getLanguageService()->getLL('title'));
+        $this->moduleTemplate->getPageRenderer()->loadRequireJsModule('TYPO3/CMS/Backend/Modal');
+        $this->moduleTemplate->getPageRenderer()->loadRequireJsModule('TYPO3/CMS/Templavoila/AdministrationModule');
+        $this->moduleTemplate->getPageRenderer()->addInlineSetting('TemplaVoila:AdministrationModule', 'ModuleUrl', $this->getModuleUrl(['mapElPath' => $this->mapElPath, 'htmlPath' => '', 'doMappingOfPath' => 1]));
+        $this->moduleTemplate->setContent($view->render());
+        $response->getBody()->write($this->moduleTemplate->renderContent());
+        return $response;
     }
 
     /**
@@ -416,7 +483,7 @@ class tx_templavoila_cm1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass
             }
         }
 
-        return str_replace("<>\n", '', str_replace('</>', '', \TYPO3\CMS\Core\Utility\GeneralUtility::array2xml($array, '', -1, '', 0, ['useCDATA' => 1])));
+        return str_replace("<>\n", '', str_replace('</>', '', GeneralUtility::array2xml($array, '', -1, '', 0, ['useCDATA' => 1])));
     }
 
     /**
@@ -436,7 +503,7 @@ class tx_templavoila_cm1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass
             }
         }
 
-        return \TYPO3\CMS\Core\Utility\GeneralUtility::xml2array('<grouped>' . $string . '</grouped>');
+        return GeneralUtility::xml2array('<grouped>' . $string . '</grouped>');
     }
 
     /**
@@ -499,97 +566,42 @@ class tx_templavoila_cm1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass
      */
     public function main_mode()
     {
-        global $BACK_PATH;
-
-        $this->doc = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Template\DocumentTemplate::class);
-        $this->doc->docType = 'xhtml_trans';
-        $this->doc->backPath = $BACK_PATH;
-        $this->doc->setModuleTemplate('EXT:templavoila/Resources/Private/Templates/cm1_default.html');
-        $this->doc->bodyTagId = 'typo3-mod-php';
-        $this->doc->divClass = '';
-
-        $this->doc->inDocStylesArray[] = '
-            #templavoila-frame-visual { height:500px; display:block; margin:0 5px; width:98%; border: 1xpx solid black;}
-            DIV.typo3-fullDoc H2 { width: 100%; }
-            TABLE#c-mapInfo {margin-top: 10px; margin-bottom: 5px; }
-            TABLE#c-mapInfo TR TD {padding-right: 20px;}
-            select option.pagetemplate {background-image:url(../Resources/Public/Icon/icon_pagetemplate.gif);background-repeat: no-repeat; background-position: 5px 50%; padding: 1px 0 3px 24px; -webkit-background-size: 0;}
-            select option.fce {background-image:url(../Resources/Public/Icon/icon_fce_ce.png);background-repeat: no-repeat; background-position: 5px 50%; padding: 1px 0 3px 24px; -webkit-background-size: 0;}
-            #c-toMenu { margin-bottom:10px; }
-        ';
-        $this->doc->inDocStylesArray[] = self::$gnyfStyleBlock;
-
-        // Add custom styles
-        $this->doc->styleSheetFile2 = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath($this->extKey) . 'cm1/styles.css';
-
         // General GPvars for module mode:
-        $this->displayFile = \Schnitzler\Templavoila\Domain\Model\File::filename(\TYPO3\CMS\Core\Utility\GeneralUtility::_GP('file'));
-        $this->displayTable = \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('table');
-        $this->displayUid = \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('uid');
-        $this->displayPath = \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('htmlPath');
-        $this->returnUrl = \TYPO3\CMS\Core\Utility\GeneralUtility::sanitizeLocalUrl(\TYPO3\CMS\Core\Utility\GeneralUtility::_GP('returnUrl'));
+        $this->displayFile = File::filename(GeneralUtility::_GP('file'));
+        $this->displayTable = (string)GeneralUtility::_GP('table');
+        $this->displayUid = (int)GeneralUtility::_GP('uid');
+        $this->displayPath = GeneralUtility::_GP('htmlPath');
+        $this->returnUrl = GeneralUtility::sanitizeLocalUrl(GeneralUtility::_GP('returnUrl'));
 
         // GPvars specific to the DS listing/table and mapping features:
-        $this->_preview = \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('_preview');
-        $this->mapElPath = \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('mapElPath');
-        $this->doMappingOfPath = \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('doMappingOfPath');
-        $this->showPathOnly = \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('showPathOnly');
-        $this->mappingToTags = \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('mappingToTags');
-        $this->DS_element = \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('DS_element');
-        $this->DS_cmd = \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('DS_cmd');
-        $this->fieldName = \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('fieldName');
+        $this->_preview = GeneralUtility::_GP('_preview');
+        $this->mapElPath = GeneralUtility::_GP('mapElPath');
+        $this->doMappingOfPath = (int)GeneralUtility::_GP('doMappingOfPath') > 0;
+        $this->showPathOnly = GeneralUtility::_GP('showPathOnly');
+        $this->mappingToTags = GeneralUtility::_GP('mappingToTags');
+        $this->DS_element = GeneralUtility::_GP('DS_element');
+        $this->DS_cmd = GeneralUtility::_GP('DS_cmd');
+        $this->fieldName = GeneralUtility::_GP('fieldName');
 
         // GPvars specific for DS creation from a file.
-        $this->_load_ds_xml_content = \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('_load_ds_xml_content');
-        $this->_load_ds_xml_to = \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('_load_ds_xml_to');
-        $this->_saveDSandTO_TOuid = \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('_saveDSandTO_TOuid');
-        $this->_saveDSandTO_title = \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('_saveDSandTO_title');
-        $this->_saveDSandTO_type = \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('_saveDSandTO_type');
-        $this->_saveDSandTO_pid = \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('_saveDSandTO_pid');
-        $this->DS_element_DELETE = \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('DS_element_DELETE');
+        $this->_load_ds_xml_content = GeneralUtility::_GP('_load_ds_xml_content');
+        $this->_load_ds_xml_to = GeneralUtility::_GP('_load_ds_xml_to');
+        $this->_saveDSandTO_TOuid = GeneralUtility::_GP('_saveDSandTO_TOuid');
+        $this->_saveDSandTO_title = GeneralUtility::_GP('_saveDSandTO_title');
+        $this->_saveDSandTO_type = GeneralUtility::_GP('_saveDSandTO_type');
+        $this->_saveDSandTO_pid = GeneralUtility::_GP('_saveDSandTO_pid');
+        $this->DS_element_DELETE = GeneralUtility::_GP('DS_element_DELETE');
 
         // Finding Storage folder:
         $this->findingStorageFolderIds();
 
-        // Setting up form-wrapper:
-        $this->doc->form = '<form action="' . $this->linkThisScript([]) . '" method="post" name="pageform">';
-
-        // JavaScript
-        $this->doc->JScode .= $this->doc->wrapScriptTags('
-            script_ended = 0;
-            function jumpToUrl(URL)    {    //
-                document.location = URL;
-            }
-            function updPath(inPath)    {    //
-                document.location = "' . \TYPO3\CMS\Core\Utility\GeneralUtility::linkThisScript(['htmlPath' => '', 'doMappingOfPath' => 1]) . '&htmlPath="+top.rawurlencode(inPath);
-            }
-
-            function openValidator(key) {
-                new Ajax.Request("' . $GLOBALS['BACK_PATH'] . 'ajax.php?ajaxID=tx_templavoila_cm1_ajax::getDisplayFileContent&key=" + key, {
-                    onSuccess: function(response) {
-                        var valform = new Element(\'form\',{method: \'post\', target:\'_blank\', action: \'http://validator.w3.org/check#validate_by_input\'});
-                        valform.insert(new Element(\'input\',{name: \'fragment\', value:response.responseText, type: \'hidden\'}));$(document.body).insert(valform);
-                        valform.submit();
-                    }
-                });
-            }
-        ');
-
-        $this->doc->loadJavascriptLib('sysext/backend/Resources/Public/JavaScript/tabmenu.js');
-
-        // Setting up the context sensitive menu:
-        $CMparts = $this->doc->getContextMenuCode();
-        $this->doc->bodyTagAdditions = $CMparts[1];
-        $this->doc->JScode .= $CMparts[0];
-        $this->doc->postCode .= $CMparts[2];
-
         // Icons
         $this->dsTypes = [
-            'sc' => \Schnitzler\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('dsTypes_section') . ': ',
-            'co' => \Schnitzler\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('dsTypes_container') . ': ',
-            'el' => \Schnitzler\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('dsTypes_attribute') . ': ',
-            'at' => \Schnitzler\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('dsTypes_element') . ': ',
-            'no' => \Schnitzler\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('dsTypes_notmapped') . 'Not : '];
+            'sc' => static::getLanguageService()->getLL('dsTypes_section') . ': ',
+            'co' => static::getLanguageService()->getLL('dsTypes_container') . ': ',
+            'el' => static::getLanguageService()->getLL('dsTypes_attribute') . ': ',
+            'at' => static::getLanguageService()->getLL('dsTypes_element') . ': ',
+            'no' => static::getLanguageService()->getLL('dsTypes_notmapped') . 'Not : '];
         foreach ($this->dsTypes as $id => $title) {
             $this->dsTypes[$id] = [
                 // abbrevation
@@ -597,9 +609,9 @@ class tx_templavoila_cm1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass
                 // descriptive title
                 $title,
                 // image-path
-                \TYPO3\CMS\Backend\Utility\IconUtility::skinImg($this->doc->backPath, \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath(\Schnitzler\Templavoila\Templavoila::EXTKEY) . 'cm1/item_' . $id . '.gif', 'width="24" height="16" border="0" style="margin-right: 5px;"'),
+                IconUtility::skinImg('', ExtensionManagementUtility::extRelPath(Templavoila::EXTKEY) . 'cm1/item_' . $id . '.gif', 'width="24" height="16" border="0" style="margin-right: 5px;"'),
                 // background-path
-                \TYPO3\CMS\Backend\Utility\IconUtility::skinImg($this->doc->backPath, \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath(\Schnitzler\Templavoila\Templavoila::EXTKEY) . 'cm1/item_' . $id . '.gif', '', 1)
+                IconUtility::skinImg('', ExtensionManagementUtility::extRelPath(Templavoila::EXTKEY) . 'cm1/item_' . $id . '.gif', '', 1)
             ];
 
             // information
@@ -609,119 +621,98 @@ class tx_templavoila_cm1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass
         // Render content, depending on input values:
         if ($this->displayFile) { // Browsing file directly, possibly creating a template/data object records.
             $this->renderFile();
-        } elseif ($this->displayTable == 'tx_templavoila_datastructure') { // Data source display
+        } elseif ($this->displayTable === 'tx_templavoila_datastructure') { // Data source display
             $this->renderDSO();
-        } elseif ($this->displayTable == 'tx_templavoila_tmplobj') { // Data source display
+        } elseif ($this->displayTable === 'tx_templavoila_tmplobj') { // Data source display
             $this->renderTO();
         }
-
-        // Add spacer:
-        $this->content .= $this->doc->spacer(10);
-
-        $this->pageinfo = \TYPO3\CMS\Backend\Utility\BackendUtility::readPageAccess($this->id, $this->perms_clause);
-        $docHeaderButtons = $this->getDocHeaderButtons();
-        $docContent = [
-            'CSH' => $docHeaderButtons['csh'],
-            'CONTENT' => $this->content
-        ];
-
-        $content = $this->doc->startPage(\Schnitzler\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('title'));
-        $content .= $this->doc->moduleBody(
-            $this->pageinfo,
-            $docHeaderButtons,
-            $docContent
-        );
-        $content .= $this->doc->endPage();
-
-        // Replace content with templated content
-        $this->content = $content;
     }
 
-    /**
-     * Gets the buttons that shall be rendered in the docHeader.
-     *
-     * @return array Available buttons for the docHeader
-     */
-    protected function getDocHeaderButtons()
-    {
-        $buttons = [
-            'csh' => \TYPO3\CMS\Backend\Utility\BackendUtility::cshItem('_MOD_web_txtemplavoilaCM1', '', $this->backPath),
-            'back' => '',
-            'shortcut' => $this->getShortcutButton(),
-        ];
-
-        // Back
-        if ($this->returnUrl) {
-            $backIcon = \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-view-go-back');
-            $buttons['back'] = '<a href="' . htmlspecialchars(\TYPO3\CMS\Core\Utility\GeneralUtility::linkThisUrl($this->returnUrl)) . '" class="typo3-goBack" title="' . \Schnitzler\Templavoila\Utility\GeneralUtility::getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:labels.goBack', true) . '">' .
-                $backIcon .
-                '</a>';
-        }
-
-        return $buttons;
-    }
-
-    /**
-     * Gets the button to set a new shortcut in the backend (if current user is allowed to).
-     *
-     * @return string HTML representiation of the shortcut button
-     */
-    protected function getShortcutButton()
-    {
-        $result = '';
-        if (\Schnitzler\Templavoila\Utility\GeneralUtility::getBackendUser()->mayMakeShortcut()) {
-            $result = $this->doc->makeShortcutIcon('id', implode(',', array_keys($this->MOD_MENU)), $this->MCONF['name']);
-        }
-
-        return $result;
-    }
+//    /**
+//     * Gets the buttons that shall be rendered in the docHeader.
+//     *
+//     * @return array Available buttons for the docHeader
+//     */
+//    protected function getDocHeaderButtons()
+//    {
+//        $buttons = [
+//            'csh' => BackendUtility::cshItem('_MOD_web_txtemplavoilaCM1', '', $this->backPath),
+//            'back' => '',
+//            'shortcut' => $this->getShortcutButton(),
+//        ];
+//
+//        // Back
+//        if ($this->returnUrl) {
+//            $backIcon = $this->getModuleTemplate()->getIconFactory()->getIcon('actions-view-go-back');
+//            $buttons['back'] = '<a href="' . htmlspecialchars(GeneralUtility::linkThisUrl($this->returnUrl)) . '" class="typo3-goBack" title="' . static::getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:labels.goBack', true) . '">' .
+//                $backIcon .
+//                '</a>';
+//        }
+//
+//        return $buttons;
+//    }
+//
+//    /**
+//     * Gets the button to set a new shortcut in the backend (if current user is allowed to).
+//     *
+//     * @return string HTML representiation of the shortcut button
+//     */
+//    protected function getShortcutButton()
+//    {
+//        $result = '';
+//        if (static::getBackendUser()->mayMakeShortcut()) {
+//            $result = $this->doc->makeShortcutIcon('id', implode(',', array_keys($this->MOD_MENU)), $this->getModuleName());
+//        }
+//
+//        return $result;
+//    }
 
     /**
      * Renders the display of DS/TO creation directly from a file
      */
     public function renderFile()
     {
-        if (@is_file($this->displayFile) && \TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName($this->displayFile)) {
+        if (@is_file($this->displayFile) && GeneralUtility::getFileAbsFileName($this->displayFile)) {
 
             // Converting GPvars into a "cmd" value:
             $cmd = '';
             $msg = [];
-            if (\TYPO3\CMS\Core\Utility\GeneralUtility::_GP('_load_ds_xml')) { // Loading DS from XML or TO uid
+            if (GeneralUtility::_GP('_load_ds_xml')) { // Loading DS from XML or TO uid
                 $cmd = 'load_ds_xml';
-            } elseif (\TYPO3\CMS\Core\Utility\GeneralUtility::_GP('_clear')) { // Resetting mapping/DS
+            } elseif (GeneralUtility::_GP('_clear')) { // Resetting mapping/DS
                 $cmd = 'clear';
-            } elseif (\TYPO3\CMS\Core\Utility\GeneralUtility::_GP('_saveDSandTO')) { // Saving DS and TO to records.
+            } elseif (GeneralUtility::_GP('_saveDSandTO')) { // Saving DS and TO to records.
                 if (!strlen(trim($this->_saveDSandTO_title))) {
                     $cmd = 'saveScreen';
-                    $flashMessage = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(
-                        \TYPO3\CMS\Core\Messaging\FlashMessage::class,
-                        \Schnitzler\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('errorNoToTitleDefined'),
+                    $flashMessage = GeneralUtility::makeInstance(
+                        FlashMessage::class,
+                        static::getLanguageService()->getLL('errorNoToTitleDefined'),
                         '',
-                        \TYPO3\CMS\Core\Messaging\FlashMessage::ERROR
+                        FlashMessage::ERROR
                     );
                     $msg[] = $flashMessage->render();
                 } else {
                     $cmd = 'saveDSandTO';
                 }
-            } elseif (\TYPO3\CMS\Core\Utility\GeneralUtility::_GP('_updateDSandTO')) { // Updating DS and TO
+            } elseif (GeneralUtility::_GP('_updateDSandTO')) { // Updating DS and TO
                 $cmd = 'updateDSandTO';
-            } elseif (\TYPO3\CMS\Core\Utility\GeneralUtility::_GP('_showXMLDS')) { // Showing current DS as XML
+            } elseif (GeneralUtility::_GP('_showXMLDS')) { // Showing current DS as XML
                 $cmd = 'showXMLDS';
-            } elseif (\TYPO3\CMS\Core\Utility\GeneralUtility::_GP('_preview')) { // Previewing mappings
+            } elseif (GeneralUtility::_GP('_preview')) { // Previewing mappings
                 $cmd = 'preview';
-            } elseif (\TYPO3\CMS\Core\Utility\GeneralUtility::_GP('_save_data_mapping')) { // Saving mapping to Session
+            } elseif (GeneralUtility::_GP('_save_data_mapping')) { // Saving mapping to Session
                 $cmd = 'save_data_mapping';
-            } elseif (\TYPO3\CMS\Core\Utility\GeneralUtility::_GP('_updateDS')) {
+            } elseif (GeneralUtility::_GP('_updateDS')) {
                 $cmd = 'updateDS';
-            } elseif (\TYPO3\CMS\Core\Utility\GeneralUtility::_GP('DS_element_DELETE')) {
+            } elseif (GeneralUtility::_GP('DS_element_DELETE')) {
                 $cmd = 'DS_element_DELETE';
-            } elseif (\TYPO3\CMS\Core\Utility\GeneralUtility::_GP('_saveScreen')) {
+            } elseif (GeneralUtility::_GP('_saveScreen')) {
                 $cmd = 'saveScreen';
-            } elseif (\TYPO3\CMS\Core\Utility\GeneralUtility::_GP('_loadScreen')) {
+            } elseif (GeneralUtility::_GP('_loadScreen')) {
                 $cmd = 'loadScreen';
-            } elseif (\TYPO3\CMS\Core\Utility\GeneralUtility::_GP('_save')) {
+            } elseif (GeneralUtility::_GP('_save')) {
                 $cmd = 'saveUpdatedDSandTO';
-            } elseif (\TYPO3\CMS\Core\Utility\GeneralUtility::_GP('_saveExit')) {
+            } elseif (GeneralUtility::_GP('_saveExit')) {
                 $cmd = 'saveUpdatedDSandTOandExit';
             }
 
@@ -731,42 +722,42 @@ class tx_templavoila_cm1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass
 
             // Checking Storage Folder PID:
             if (!count($this->storageFolders)) {
-                $msg[] = \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('status-dialog-error') . '<strong>' . \Schnitzler\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('error') . '</strong> ' . \Schnitzler\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('errorNoStorageFolder');
+                $msg[] = $this->getModuleTemplate()->getIconFactory()->getIcon('status-dialog-error', Icon::SIZE_SMALL) . '<strong>' . static::getLanguageService()->getLL('error') . '</strong> ' . static::getLanguageService()->getLL('errorNoStorageFolder');
             }
 
             // Session data
-            $this->sessionKey = $this->MCONF['name'] . '_mappingInfo:' . $this->_load_ds_xml_to;
-            if ($cmd == 'clear') { // Reset session data:
+            $this->sessionKey = $this->getModuleName() . '_mappingInfo:' . $this->_load_ds_xml_to;
+            if ($cmd === 'clear') { // Reset session data:
                 $sesDat = ['displayFile' => $this->displayFile, 'TO' => $this->_load_ds_xml_to, 'DS' => $this->displayUid];
-                \Schnitzler\Templavoila\Utility\GeneralUtility::getBackendUser()->setAndSaveSessionData($this->sessionKey, $sesDat);
+                static::getBackendUser()->setAndSaveSessionData($this->sessionKey, $sesDat);
             } else { // Get session data:
-                $sesDat = \Schnitzler\Templavoila\Utility\GeneralUtility::getBackendUser()->getSessionData($this->sessionKey);
+                $sesDat = static::getBackendUser()->getSessionData($this->sessionKey);
             }
             if ($this->_load_ds_xml_to) {
-                $toREC = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecordWSOL('tx_templavoila_tmplobj', $this->_load_ds_xml_to);
+                $toREC = BackendUtility::getRecordWSOL('tx_templavoila_tmplobj', $this->_load_ds_xml_to);
                 if ($this->staticDS) {
-                    $dsREC['dataprot'] = \TYPO3\CMS\Core\Utility\GeneralUtility::getURL(\TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName($toREC['datastructure']));
+                    $dsREC['dataprot'] = GeneralUtility::getUrl(GeneralUtility::getFileAbsFileName($toREC['datastructure']));
                 } else {
-                    $dsREC = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecordWSOL('tx_templavoila_datastructure', $toREC['datastructure']);
+                    $dsREC = BackendUtility::getRecordWSOL('tx_templavoila_datastructure', $toREC['datastructure']);
                 }
             }
 
             // Loading DS from either XML or a Template Object (containing reference to DS)
-            if ($cmd == 'load_ds_xml' && ($this->_load_ds_xml_content || $this->_load_ds_xml_to)) {
+            if ($cmd === 'load_ds_xml' && ($this->_load_ds_xml_content || $this->_load_ds_xml_to)) {
                 $to_uid = $this->_load_ds_xml_to;
                 if ($to_uid) {
                     $tM = unserialize($toREC['templatemapping']);
                     $sesDat = ['displayFile' => $this->displayFile, 'TO' => $this->_load_ds_xml_to, 'DS' => $this->displayUid];
                     $sesDat['currentMappingInfo'] = $tM['MappingInfo'];
                     $sesDat['currentMappingInfo_head'] = $tM['MappingInfo_head'];
-                    $ds = \TYPO3\CMS\Core\Utility\GeneralUtility::xml2array($dsREC['dataprot']);
+                    $ds = GeneralUtility::xml2array($dsREC['dataprot']);
                     $sesDat['dataStruct'] = $sesDat['autoDS'] = $ds; // Just set $ds, not only its ROOT! Otherwise <meta> will be lost.
-                    \Schnitzler\Templavoila\Utility\GeneralUtility::getBackendUser()->setAndSaveSessionData($this->sessionKey, $sesDat);
+                    static::getBackendUser()->setAndSaveSessionData($this->sessionKey, $sesDat);
                 } else {
-                    $ds = \TYPO3\CMS\Core\Utility\GeneralUtility::xml2array($this->_load_ds_xml_content);
+                    $ds = GeneralUtility::xml2array($this->_load_ds_xml_content);
                     $sesDat = ['displayFile' => $this->displayFile, 'TO' => $this->_load_ds_xml_to, 'DS' => $this->displayUid];
                     $sesDat['dataStruct'] = $sesDat['autoDS'] = $ds;
-                    \Schnitzler\Templavoila\Utility\GeneralUtility::getBackendUser()->setAndSaveSessionData($this->sessionKey, $sesDat);
+                    static::getBackendUser()->setAndSaveSessionData($this->sessionKey, $sesDat);
                 }
             }
 
@@ -778,7 +769,7 @@ class tx_templavoila_cm1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass
                 'ROOT' => [
                     'tx_templavoila' => [
                         'title' => 'ROOT',
-                        'description' => \Schnitzler\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('rootDescription'),
+                        'description' => static::getLanguageService()->getLL('rootDescription'),
                     ],
                     'type' => 'array',
                     'el' => []
@@ -793,19 +784,19 @@ class tx_templavoila_cm1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass
             switch ($cmd) {
                 // Saving incoming Mapping Data to session data:
                 case 'save_data_mapping':
-                    $inputData = \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('dataMappingForm', 1);
+                    $inputData = GeneralUtility::_GP('dataMappingForm');
                     if (is_array($inputData)) {
                         $sesDat['currentMappingInfo'] = $currentMappingInfo = $this->array_merge_recursive_overrule($currentMappingInfo, $inputData);
                         $sesDat['dataStruct'] = $dataStruct;
-                        \Schnitzler\Templavoila\Utility\GeneralUtility::getBackendUser()->setAndSaveSessionData($this->sessionKey, $sesDat);
+                        static::getBackendUser()->setAndSaveSessionData($this->sessionKey, $sesDat);
                     }
                     break;
                 // Saving incoming Data Structure settings to session data:
                 case 'updateDS':
-                    $inDS = \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('autoDS', 1);
+                    $inDS = GeneralUtility::_GP('autoDS');
                     if (is_array($inDS)) {
                         $sesDat['dataStruct'] = $sesDat['autoDS'] = $dataStruct = $this->array_merge_recursive_overrule($dataStruct, $inDS);
-                        \Schnitzler\Templavoila\Utility\GeneralUtility::getBackendUser()->setAndSaveSessionData($this->sessionKey, $sesDat);
+                        static::getBackendUser()->setAndSaveSessionData($this->sessionKey, $sesDat);
                     }
                     break;
                 // If DS element is requested for deletion, remove it and update session data:
@@ -813,12 +804,12 @@ class tx_templavoila_cm1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass
                     $ref = explode('][', substr($this->DS_element_DELETE, 1, -1));
                     $this->unsetArrayPath($dataStruct, $ref);
                     $sesDat['dataStruct'] = $sesDat['autoDS'] = $dataStruct;
-                    \Schnitzler\Templavoila\Utility\GeneralUtility::getBackendUser()->setAndSaveSessionData($this->sessionKey, $sesDat);
+                    static::getBackendUser()->setAndSaveSessionData($this->sessionKey, $sesDat);
                     break;
             }
 
             // Creating $templatemapping array with cached mapping content:
-            if (\TYPO3\CMS\Core\Utility\GeneralUtility::inList('showXMLDS,saveDSandTO,updateDSandTO,saveUpdatedDSandTO,saveUpdatedDSandTOandExit', $cmd)) {
+            if (GeneralUtility::inList('showXMLDS,saveDSandTO,updateDSandTO,saveUpdatedDSandTO,saveUpdatedDSandTOandExit', $cmd)) {
 
                 // Template mapping prepared:
                 $templatemapping = [];
@@ -829,11 +820,11 @@ class tx_templavoila_cm1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass
 
                 // Getting cached data:
                 reset($dataStruct);
-                $fileContent = \TYPO3\CMS\Core\Utility\GeneralUtility::getUrl($this->displayFile);
-                $htmlParse = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\Html\HtmlParser::class);
+                $fileContent = GeneralUtility::getUrl($this->displayFile);
+                $htmlParse = GeneralUtility::makeInstance(HtmlParser::class);
                 $relPathFix = dirname(substr($this->displayFile, strlen(PATH_site))) . '/';
                 $fileContent = $htmlParse->prefixResourcePath($relPathFix, $fileContent);
-                $this->markupObj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\Schnitzler\Templavoila\Domain\Model\HtmlMarkup::class);
+                $this->markupObj = GeneralUtility::makeInstance(HtmlMarkup::class);
                 $contentSplittedByMapping = $this->markupObj->splitContentToMappingInfo($fileContent, $currentMappingInfo);
                 $templatemapping['MappingData_cached'] = $contentSplittedByMapping['sub']['ROOT'];
 
@@ -858,7 +849,7 @@ class tx_templavoila_cm1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass
                     $templatemapping['BodyTag_cached'] = $currentMappingInfo_head['addBodyTag'] ? $reg[0] : '';
                 }
 
-                if ($cmd != 'showXMLDS') {
+                if ($cmd !== 'showXMLDS') {
                     // Set default flags to <meta> tag
                     if (!isset($dataStruct['meta'])) {
                         // Make sure <meta> goes at the beginning of data structure.
@@ -886,7 +877,7 @@ class tx_templavoila_cm1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass
                 // If it is requested to save the current DS and mapping information to a DS and TO record, then...:
                 case 'saveDSandTO':
                     // Init TCEmain object and store:
-                    $tce = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\DataHandling\DataHandler::class);
+                    $tce = GeneralUtility::makeInstance(DataHandler::class);
                     $tce->stripslashes_values = 0;
 
                     // DS:
@@ -896,12 +887,12 @@ class tx_templavoila_cm1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass
                     if (is_array($storeDataStruct['ROOT']['el'])) {
                         $this->eTypes->substEtypeWithRealStuff($storeDataStruct['ROOT']['el'], $contentSplittedByMapping['sub']['ROOT'], $dataArr['tx_templavoila_datastructure']['NEW']['scope']);
                     }
-                    $dataProtXML = \TYPO3\CMS\Core\Utility\GeneralUtility::array2xml_cs($storeDataStruct, 'T3DataStructure', ['useCDATA' => 1]);
+                    $dataProtXML = GeneralUtility::array2xml_cs($storeDataStruct, 'T3DataStructure', ['useCDATA' => 1]);
 
                     if ($this->staticDS) {
                         $title = preg_replace('|[/,\."\']+|', '_', $this->_saveDSandTO_title) . ' (' . ($this->_saveDSandTO_type == 1 ? 'page' : 'fce') . ').xml';
-                        $path = \TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName($this->_saveDSandTO_type == 2 ? $this->extConf['staticDS.']['path_fce'] : $this->extConf['staticDS.']['path_page']) . $title;
-                        \TYPO3\CMS\Core\Utility\GeneralUtility::writeFile($path, $dataProtXML);
+                        $path = GeneralUtility::getFileAbsFileName($this->_saveDSandTO_type == 2 ? $this->extConf['staticDS.']['path_fce'] : $this->extConf['staticDS.']['path_page']) . $title;
+                        GeneralUtility::writeFile($path, $dataProtXML);
                         $newID = substr($path, strlen(PATH_site));
                     } else {
                         $dataArr = [];
@@ -932,27 +923,27 @@ class tx_templavoila_cm1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass
                         $tce->process_datamap();
                         $newToID = (int)$tce->substNEWwithIDs['NEW'];
                         if ($newToID) {
-                            $msg[] = \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('status-dialog-ok') .
-                                sprintf(\Schnitzler\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('msgDSTOSaved'),
+                            $msg[] = $this->getModuleTemplate()->getIconFactory()->getIcon('status-dialog-ok', Icon::SIZE_SMALL) .
+                                sprintf(static::getLanguageService()->getLL('msgDSTOSaved'),
                                     $dataArr['tx_templavoila_tmplobj']['NEW']['datastructure'],
                                     $tce->substNEWwithIDs['NEW'], $this->_saveDSandTO_pid);
                         } else {
-                            $msg[] = \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('status-dialog-warning') . '<strong>' . \Schnitzler\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('error') . ':</strong> ' . sprintf(\Schnitzler\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('errorTONotSaved'), $dataArr['tx_templavoila_tmplobj']['NEW']['datastructure']);
+                            $msg[] = $this->getModuleTemplate()->getIconFactory()->getIcon('status-dialog-warning') . '<strong>' . static::getLanguageService()->getLL('error') . ':</strong> ' . sprintf(static::getLanguageService()->getLL('errorTONotSaved'), $dataArr['tx_templavoila_tmplobj']['NEW']['datastructure']);
                         }
                     } else {
-                        $msg[] = \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('status-dialog-warning') . ' border="0" align="top" class="absmiddle" alt="" /><strong>' . \Schnitzler\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('error') . ':</strong> ' . \Schnitzler\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('errorTONotCreated');
+                        $msg[] = $this->getModuleTemplate()->getIconFactory()->getIcon('status-dialog-warning') . ' border="0" align="top" class="absmiddle" alt="" /><strong>' . static::getLanguageService()->getLL('error') . ':</strong> ' . static::getLanguageService()->getLL('errorTONotCreated');
                     }
 
                     unset($tce);
                     if ($newID && $newToID) {
                         //redirect to edit view
                         $redirectUrl = 'index.php?file=' . rawurlencode($this->displayFile) . '&_load_ds_xml=1&_load_ds_xml_to=' . $newToID . '&uid=' . rawurlencode($newID) . '&returnUrl=' . rawurlencode('../mod2/index.php?id=' . (int)$this->_saveDSandTO_pid);
-                        header('Location:' . \TYPO3\CMS\Core\Utility\GeneralUtility::locationHeaderUrl($redirectUrl));
+                        header('Location:' . GeneralUtility::locationHeaderUrl($redirectUrl));
                         exit;
                     } else {
                         // Clear cached header info because saveDSandTO always resets headers
                         $sesDat['currentMappingInfo_head'] = '';
-                        \Schnitzler\Templavoila\Utility\GeneralUtility::getBackendUser()->setAndSaveSessionData($this->sessionKey, $sesDat);
+                        static::getBackendUser()->setAndSaveSessionData($this->sessionKey, $sesDat);
                     }
                     break;
                 // Updating DS and TO records:
@@ -960,22 +951,22 @@ class tx_templavoila_cm1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass
                 case 'saveUpdatedDSandTO':
                 case 'saveUpdatedDSandTOandExit':
 
-                    if ($cmd == 'updateDSandTO') {
+                    if ($cmd === 'updateDSandTO') {
                         // Looking up the records by their uids:
-                        $toREC = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecordWSOL('tx_templavoila_tmplobj', $this->_saveDSandTO_TOuid);
+                        $toREC = BackendUtility::getRecordWSOL('tx_templavoila_tmplobj', $this->_saveDSandTO_TOuid);
                     } else {
-                        $toREC = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecordWSOL('tx_templavoila_tmplobj', $this->_load_ds_xml_to);
+                        $toREC = BackendUtility::getRecordWSOL('tx_templavoila_tmplobj', $this->_load_ds_xml_to);
                     }
                     if ($this->staticDS) {
                         $dsREC['uid'] = $toREC['datastructure'];
                     } else {
-                        $dsREC = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecordWSOL('tx_templavoila_datastructure', $toREC['datastructure']);
+                        $dsREC = BackendUtility::getRecordWSOL('tx_templavoila_datastructure', $toREC['datastructure']);
                     }
 
                     // If they are found, continue:
                     if ($toREC['uid'] && $dsREC['uid']) {
                         // Init TCEmain object and store:
-                        $tce = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\DataHandling\DataHandler::class);
+                        $tce = GeneralUtility::makeInstance(DataHandler::class);
                         $tce->stripslashes_values = 0;
 
                         // Modifying data structure with conversion of preset values for field types to actual settings:
@@ -983,12 +974,12 @@ class tx_templavoila_cm1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass
                         if (is_array($storeDataStruct['ROOT']['el'])) {
                             $this->eTypes->substEtypeWithRealStuff($storeDataStruct['ROOT']['el'], $contentSplittedByMapping['sub']['ROOT'], $dsREC['scope']);
                         }
-                        $dataProtXML = \TYPO3\CMS\Core\Utility\GeneralUtility::array2xml_cs($storeDataStruct, 'T3DataStructure', ['useCDATA' => 1]);
+                        $dataProtXML = GeneralUtility::array2xml_cs($storeDataStruct, 'T3DataStructure', ['useCDATA' => 1]);
 
                         // DS:
                         if ($this->staticDS) {
                             $path = PATH_site . $dsREC['uid'];
-                            \TYPO3\CMS\Core\Utility\GeneralUtility::writeFile($path, $dataProtXML);
+                            GeneralUtility::writeFile($path, $dataProtXML);
                         } else {
                             $dataArr = [];
                             $dataArr['tx_templavoila_datastructure'][$dsREC['uid']]['dataprot'] = $dataProtXML;
@@ -999,7 +990,7 @@ class tx_templavoila_cm1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass
                         }
 
                         // TO:
-                        $TOuid = \TYPO3\CMS\Backend\Utility\BackendUtility::wsMapId('tx_templavoila_tmplobj', $toREC['uid']);
+                        $TOuid = BackendUtility::wsMapId('tx_templavoila_tmplobj', $toREC['uid']);
                         $dataArr = [];
                         $dataArr['tx_templavoila_tmplobj'][$TOuid]['fileref'] = substr($this->displayFile, strlen(PATH_site));
                         $dataArr['tx_templavoila_tmplobj'][$TOuid]['templatemapping'] = serialize($templatemapping);
@@ -1011,21 +1002,21 @@ class tx_templavoila_cm1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass
 
                         unset($tce);
 
-                        $msg[] = \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('status-dialog-notification') . sprintf(\Schnitzler\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('msgDSTOUpdated'), $dsREC['uid'], $toREC['uid']);
+                        $msg[] = $this->getModuleTemplate()->getIconFactory()->getIcon('status-dialog-notification') . sprintf(static::getLanguageService()->getLL('msgDSTOUpdated'), $dsREC['uid'], $toREC['uid']);
 
-                        if ($cmd == 'updateDSandTO') {
+                        if ($cmd === 'updateDSandTO') {
                             if (!$this->_load_ds_xml_to) {
                                 //new created was saved to existing DS/TO, redirect to edit view
                                 $redirectUrl = 'index.php?file=' . rawurlencode($this->displayFile) . '&_load_ds_xml=1&_load_ds_xml_to=' . $toREC['uid'] . '&uid=' . rawurlencode($dsREC['uid']) . '&returnUrl=' . rawurlencode('../mod2/index.php?id=' . (int)$this->_saveDSandTO_pid);
-                                header('Location:' . \TYPO3\CMS\Core\Utility\GeneralUtility::locationHeaderUrl($redirectUrl));
+                                header('Location:' . GeneralUtility::locationHeaderUrl($redirectUrl));
                                 exit;
                             } else {
                                 // Clear cached header info because updateDSandTO always resets headers
                                 $sesDat['currentMappingInfo_head'] = '';
-                                \Schnitzler\Templavoila\Utility\GeneralUtility::getBackendUser()->setAndSaveSessionData($this->sessionKey, $sesDat);
+                                static::getBackendUser()->setAndSaveSessionData($this->sessionKey, $sesDat);
                             }
-                        } elseif ($cmd == 'saveUpdatedDSandTOandExit') {
-                            header('Location:' . \TYPO3\CMS\Core\Utility\GeneralUtility::locationHeaderUrl($this->returnUrl));
+                        } elseif ($cmd === 'saveUpdatedDSandTOandExit') {
+                            header('Location:' . GeneralUtility::locationHeaderUrl($this->returnUrl));
                         }
                     }
                     break;
@@ -1034,40 +1025,40 @@ class tx_templavoila_cm1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass
             // Header:
             $tRows = [];
             $relFilePath = substr($this->displayFile, strlen(PATH_site));
-            $onCl = 'return top.openUrlInWindow(\'' . \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('TYPO3_SITE_URL') . $relFilePath . '\',\'FileView\');';
+            $onCl = 'return top.openUrlInWindow(\'' . GeneralUtility::getIndpEnv('TYPO3_SITE_URL') . $relFilePath . '\',\'FileView\');';
             $tRows[] = '
                 <tr>
-                    <td class="bgColor5" rowspan="2">' . $this->cshItem('xMOD_tx_templavoila', 'mapping_file', $this->doc->backPath, '|') . '</td>
-                    <td class="bgColor5" rowspan="2"><strong>' . \Schnitzler\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('templateFile') . ':</strong></td>
+                    <td class="bgColor5" rowspan="2">' . BackendUtility::cshItem('xMOD_tx_templavoila', 'mapping_file', '', '|') . '</td>
+                    <td class="bgColor5" rowspan="2"><strong>' . static::getLanguageService()->getLL('templateFile') . ':</strong></td>
                     <td class="bgColor4"><a href="#" onclick="' . htmlspecialchars($onCl) . '">' . htmlspecialchars($relFilePath) . '</a></td>
                 </tr>
                  <tr>
                     <td class="bgColor4">
                         <a href="#" onclick ="openValidator(\'' . $this->sessionKey . '\');return false;">
-                        ' . \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('extensions-templavoila-htmlvalidate') . '
-                            ' . \Schnitzler\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('validateTpl') . '
+                        ' . $this->getModuleTemplate()->getIconFactory()->getIcon('extensions-templavoila-htmlvalidate', Icon::SIZE_SMALL) . '
+                            ' . static::getLanguageService()->getLL('validateTpl') . '
                         </a>
                     </td>
                 </tr>
                 <tr>
                     <td class="bgColor5">&nbsp;</td>
-                    <td class="bgColor5"><strong>' . \Schnitzler\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('templateObject') . ':</strong></td>
-                    <td class="bgColor4">' . ($toREC ? htmlspecialchars(\Schnitzler\Templavoila\Utility\GeneralUtility::getLanguageService()->sL($toREC['title'])) : \Schnitzler\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('mappingNEW')) . '</td>
+                    <td class="bgColor5"><strong>' . static::getLanguageService()->getLL('templateObject') . ':</strong></td>
+                    <td class="bgColor4">' . ($toREC ? htmlspecialchars(static::getLanguageService()->sL($toREC['title'])) : static::getLanguageService()->getLL('mappingNEW')) . '</td>
                 </tr>';
             if ($this->staticDS) {
-                $onClick = 'return top.openUrlInWindow(\'' . \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('TYPO3_SITE_URL') . $toREC['datastructure'] . '\',\'FileView\');';
+                $onClick = 'return top.openUrlInWindow(\'' . GeneralUtility::getIndpEnv('TYPO3_SITE_URL') . $toREC['datastructure'] . '\',\'FileView\');';
                 $tRows[] = '
                 <tr>
                     <td class="bgColor5">&nbsp;</td>
-                    <td class="bgColor5"><strong>' . \Schnitzler\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('renderDSO_XML') . ':</strong></td>
+                    <td class="bgColor5"><strong>' . static::getLanguageService()->getLL('renderDSO_XML') . ':</strong></td>
                     <td class="bgColor4"><a href="#" onclick="' . htmlspecialchars($onClick) . '">' . htmlspecialchars($toREC['datastructure']) . '</a></td>
                 </tr>';
             } else {
                 $tRows[] = '
                 <tr>
                     <td class="bgColor5">&nbsp;</td>
-                    <td class="bgColor5"><strong>' . \Schnitzler\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('renderTO_dsRecord') . ':</strong></td>
-                    <td class="bgColor4">' . ($dsREC ? htmlspecialchars(\Schnitzler\Templavoila\Utility\GeneralUtility::getLanguageService()->sL($dsREC['title'])) : \Schnitzler\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('mappingNEW')) . '</td>
+                    <td class="bgColor5"><strong>' . static::getLanguageService()->getLL('renderTO_dsRecord') . ':</strong></td>
+                    <td class="bgColor4">' . ($dsREC ? htmlspecialchars(static::getLanguageService()->sL($dsREC['title'])) : static::getLanguageService()->getLL('mappingNEW')) . '</td>
                 </tr>';
             }
 
@@ -1077,7 +1068,7 @@ class tx_templavoila_cm1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass
                 <!--
                     Create Data Structure Header:
                 -->
-                <table border="0" cellpadding="2" cellspacing="1" id="c-toHeader">
+                <table clas="table" id="c-toHeader">
                     ' . implode('', $tRows) . '
                 </table><br />
             ';
@@ -1096,14 +1087,14 @@ class tx_templavoila_cm1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass
             // Generate selector box options:
             // Storage Folders for elements:
             $sf_opt = [];
-            $res = \Schnitzler\Templavoila\Utility\GeneralUtility::getDatabaseConnection()->exec_SELECTquery(
+            $res = static::getDatabaseConnection()->exec_SELECTquery(
                 '*',
                 'pages',
-                'uid IN (' . $this->storageFolders_pidList . ')' . \TYPO3\CMS\Backend\Utility\BackendUtility::deleteClause('pages'),
+                '1=1' . BackendUtility::deleteClause('pages'),
                 '',
                 'title'
             );
-            while (false !== ($row = \Schnitzler\Templavoila\Utility\GeneralUtility::getDatabaseConnection()->sql_fetch_assoc($res))) {
+            while (false !== ($row = static::getDatabaseConnection()->sql_fetch_assoc($res))) {
                 $sf_opt[] = '<option value="' . htmlspecialchars($row['uid']) . '">' . htmlspecialchars($row['title'] . ' (UID:' . $row['uid'] . ')') . '</option>';
             }
 
@@ -1111,34 +1102,34 @@ class tx_templavoila_cm1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass
             $opt = [];
             $opt[] = '<option value="0"></option>';
             if ($this->staticDS) {
-                $res = \Schnitzler\Templavoila\Utility\GeneralUtility::getDatabaseConnection()->exec_SELECTquery(
-                    '*, CASE WHEN LOCATE(' . \Schnitzler\Templavoila\Utility\GeneralUtility::getDatabaseConnection()->fullQuoteStr('(fce)', 'tx_templavoila_tmplobj') . ', datastructure)>0 THEN 2 ELSE 1 END AS scope',
+                $res = static::getDatabaseConnection()->exec_SELECTquery(
+                    '*, CASE WHEN LOCATE(' . static::getDatabaseConnection()->fullQuoteStr('(fce)', 'tx_templavoila_tmplobj') . ', datastructure)>0 THEN 2 ELSE 1 END AS scope',
                     'tx_templavoila_tmplobj',
-                    'pid IN (' . $this->storageFolders_pidList . ') AND datastructure!=' . \Schnitzler\Templavoila\Utility\GeneralUtility::getDatabaseConnection()->fullQuoteStr('', 'tx_templavoila_tmplobj') .
-                    \TYPO3\CMS\Backend\Utility\BackendUtility::deleteClause('tx_templavoila_tmplobj') .
-                    \TYPO3\CMS\Backend\Utility\BackendUtility::versioningPlaceholderClause('tx_templavoila_tmplobj'),
+                    'datastructure!=' . static::getDatabaseConnection()->fullQuoteStr('', 'tx_templavoila_tmplobj') .
+                    BackendUtility::deleteClause('tx_templavoila_tmplobj') .
+                    BackendUtility::versioningPlaceholderClause('tx_templavoila_tmplobj'),
                     '',
                     'scope,title'
                 );
             } else {
-                $res = \Schnitzler\Templavoila\Utility\GeneralUtility::getDatabaseConnection()->exec_SELECTquery(
+                $res = static::getDatabaseConnection()->exec_SELECTquery(
                     'tx_templavoila_tmplobj.*,tx_templavoila_datastructure.scope',
                     'tx_templavoila_tmplobj LEFT JOIN tx_templavoila_datastructure ON tx_templavoila_datastructure.uid=tx_templavoila_tmplobj.datastructure',
-                    'tx_templavoila_tmplobj.pid IN (' . $this->storageFolders_pidList . ') AND tx_templavoila_tmplobj.datastructure>0 ' .
-                    \TYPO3\CMS\Backend\Utility\BackendUtility::deleteClause('tx_templavoila_tmplobj') .
-                    \TYPO3\CMS\Backend\Utility\BackendUtility::versioningPlaceholderClause('tx_templavoila_tmplobj'),
+                    'tx_templavoila_tmplobj.datastructure>0 ' .
+                    BackendUtility::deleteClause('tx_templavoila_tmplobj') .
+                    BackendUtility::versioningPlaceholderClause('tx_templavoila_tmplobj'),
                     '',
                     'tx_templavoila_datastructure.scope, tx_templavoila_tmplobj.pid, tx_templavoila_tmplobj.title'
                 );
             }
             $storageFolderPid = 0;
             $optGroupOpen = false;
-            while (false !== ($row = \Schnitzler\Templavoila\Utility\GeneralUtility::getDatabaseConnection()->sql_fetch_assoc($res))) {
-                $scope = $row['scope'];
+            while (false !== ($row = static::getDatabaseConnection()->sql_fetch_assoc($res))) {
+                $scope = (int)$row['scope'];
                 unset($row['scope']);
-                \TYPO3\CMS\Backend\Utility\BackendUtility::workspaceOL('tx_templavoila_tmplobj', $row);
-                if ($storageFolderPid != $row['pid']) {
-                    $storageFolderPid = $row['pid'];
+                BackendUtility::workspaceOL('tx_templavoila_tmplobj', $row);
+                if ($storageFolderPid !== (int)$row['pid']) {
+                    $storageFolderPid = (int)$row['pid'];
                     if ($optGroupOpen) {
                         $opt[] = '</optgroup>';
                     }
@@ -1146,8 +1137,8 @@ class tx_templavoila_cm1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass
                     $optGroupOpen = true;
                 }
                 $opt[] = '<option value="' . htmlspecialchars($row['uid']) . '" ' .
-                    ($scope == 1 ? 'class="pagetemplate"">' : 'class="fce">') .
-                    htmlspecialchars(\Schnitzler\Templavoila\Utility\GeneralUtility::getLanguageService()->sL($row['title']) . ' (UID:' . $row['uid'] . ')') . '</option>';
+                    ($scope === 1 ? 'class="pagetemplate"">' : 'class="fce">') .
+                    htmlspecialchars(static::getLanguageService()->sL($row['title']) . ' (UID:' . $row['uid'] . ')') . '</option>';
             }
             if ($optGroupOpen) {
                 $opt[] = '</optgroup>';
@@ -1159,57 +1150,57 @@ class tx_templavoila_cm1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass
                 case 'showXMLDS':
 
                     // Make instance of syntax highlight class:
-                    $hlObj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\Schnitzler\Templavoila\Service\SyntaxHighlightingService::class);
+                    $hlObj = GeneralUtility::makeInstance(SyntaxHighlightingService::class);
 
                     $storeDataStruct = $dataStruct;
                     if (is_array($storeDataStruct['ROOT']['el'])) {
                         $this->eTypes->substEtypeWithRealStuff($storeDataStruct['ROOT']['el'], $contentSplittedByMapping['sub']['ROOT']);
                     }
-                    $dataStructureXML = \TYPO3\CMS\Core\Utility\GeneralUtility::array2xml_cs($storeDataStruct, 'T3DataStructure', ['useCDATA' => 1]);
+                    $dataStructureXML = GeneralUtility::array2xml_cs($storeDataStruct, 'T3DataStructure', ['useCDATA' => 1]);
 
                     $content .= '
-                        <input type="submit" name="_DO_NOTHING" value="Go back" title="' . \Schnitzler\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('buttonGoBack') . '" />
-                        <h3>' . \Schnitzler\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('titleXmlConfiguration') . ':</h3>
-                        ' . $this->cshItem('xMOD_tx_templavoila', 'mapping_file_showXMLDS', $this->doc->backPath, '|<br/>') . '
+                        <input type="submit" class="btn btn-default btn-sm" name="_DO_NOTHING" value="Go back" title="' . static::getLanguageService()->getLL('buttonGoBack') . '" />
+                        <h3>' . static::getLanguageService()->getLL('titleXmlConfiguration') . ':</h3>
+                        ' . BackendUtility::cshItem('xMOD_tx_templavoila', 'mapping_file_showXMLDS', '', '|<br/>') . '
                         <pre>' . $hlObj->highLight_DS($dataStructureXML) . '</pre>';
                     break;
                 case 'loadScreen':
 
                     $content .= '
-                        <h3>' . \Schnitzler\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('titleLoadDSXml') . '</h3>
-                        ' . $this->cshItem('xMOD_tx_templavoila', 'mapping_file_loadDSXML', $this->doc->backPath, '|<br/>') . '
-                        <p>' . \Schnitzler\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('selectTOrecrdToLoadDSFrom') . ':</p>
+                        <h3>' . static::getLanguageService()->getLL('titleLoadDSXml') . '</h3>
+                        ' . BackendUtility::cshItem('xMOD_tx_templavoila', 'mapping_file_loadDSXML', '', '|<br/>') . '
+                        <p>' . static::getLanguageService()->getLL('selectTOrecrdToLoadDSFrom') . ':</p>
                         <select name="_load_ds_xml_to">' . implode('', $opt) . '</select>
                         <br />
-                        <p>' . \Schnitzler\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('pasteDSXml') . ':</p>
+                        <p>' . static::getLanguageService()->getLL('pasteDSXml') . ':</p>
                         <textarea rows="15" name="_load_ds_xml_content" wrap="off"' . $GLOBALS['TBE_TEMPLATE']->formWidthText(48, 'width:98%;', 'off') . '></textarea>
                         <br />
-                        <input type="submit" name="_load_ds_xml" value="' . \Schnitzler\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('loadDSXml') . '" />
-                        <input type="submit" name="_" value="' . \Schnitzler\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('buttonCancel') . '" />
+                        <input type="submit" class="btn btn-default btn-sm" name="_load_ds_xml" value="' . static::getLanguageService()->getLL('loadDSXml') . '" />
+                        <input type="submit" class="btn btn-default btn-sm" name="_" value="' . static::getLanguageService()->getLL('buttonCancel') . '" />
                         ';
                     break;
                 case 'saveScreen':
 
                     $content .= '
-                        <h3>' . \Schnitzler\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('createDSTO') . ':</h3>
-                        ' . $this->cshItem('xMOD_tx_templavoila', 'mapping_file_createDSTO', $this->doc->backPath, '|<br/>') . '
-                        <table border="0" cellpadding="2" cellspacing="2" class="dso_table">
+                        <h3>' . static::getLanguageService()->getLL('createDSTO') . ':</h3>
+                        ' . BackendUtility::cshItem('xMOD_tx_templavoila', 'mapping_file_createDSTO', '', '|<br/>') . '
+                        <table class="table dso_table">
                             <tr>
-                                <td class="bgColor5"><strong>' . \Schnitzler\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('titleDSTO') . ':</strong></td>
+                                <td class="bgColor5"><strong>' . static::getLanguageService()->getLL('titleDSTO') . ':</strong></td>
                                 <td class="bgColor4"><input type="text" name="_saveDSandTO_title" /></td>
                             </tr>
                             <tr>
-                                <td class="bgColor5"><strong>' . \Schnitzler\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('templateType') . ':</strong></td>
+                                <td class="bgColor5"><strong>' . static::getLanguageService()->getLL('templateType') . ':</strong></td>
                                 <td class="bgColor4">
                                     <select name="_saveDSandTO_type">
-                                        <option value="1">' . \Schnitzler\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('pageTemplate') . '</option>
-                                        <option value="2">' . \Schnitzler\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('contentElement') . '</option>
-                                        <option value="0">' . \Schnitzler\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('undefined') . '</option>
+                                        <option value="1">' . static::getLanguageService()->getLL('pageTemplate') . '</option>
+                                        <option value="2">' . static::getLanguageService()->getLL('contentElement') . '</option>
+                                        <option value="0">' . static::getLanguageService()->getLL('undefined') . '</option>
                                     </select>
                                 </td>
                             </tr>
                             <tr>
-                                <td class="bgColor5"><strong>' . \Schnitzler\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('storeInPID') . ':</strong></td>
+                                <td class="bgColor5"><strong>' . static::getLanguageService()->getLL('storeInPID') . ':</strong></td>
                                 <td class="bgColor4">
                                     <select name="_saveDSandTO_pid">
                                         ' . implode('
@@ -1219,13 +1210,13 @@ class tx_templavoila_cm1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass
                             </tr>
                         </table>
 
-                        <input type="submit" name="_saveDSandTO" value="' . $GLOBALS['LANG']->getLL('createDSTOshort') . '" />
-                        <input type="submit" name="_" value="' . $GLOBALS['LANG']->getLL('buttonCancel') . '" />
+                        <input type="submit" class="btn btn-default btn-sm" name="_saveDSandTO" value="' . $GLOBALS['LANG']->getLL('createDSTOshort') . '" />
+                        <input type="submit" class="btn btn-default btn-sm" name="_" value="' . $GLOBALS['LANG']->getLL('buttonCancel') . '" />
 
 
 
                         <h3>' . $GLOBALS['LANG']->getLL('updateDSTO') . ':</h3>
-                        <table border="0" cellpadding="2" cellspacing="2">
+                        <table class="table">
                             <tr>
                                 <td class="bgColor5"><strong>' . $GLOBALS['LANG']->getLL('selectTO') . ':</strong></td>
                                 <td class="bgColor4">
@@ -1237,49 +1228,38 @@ class tx_templavoila_cm1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass
                             </tr>
                         </table>
 
-                        <input type="submit" name="_updateDSandTO" value="UPDATE TO (and DS)" onclick="return confirm(' . \TYPO3\CMS\Core\Utility\GeneralUtility::quoteJSvalue(\Schnitzler\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('saveDSTOconfirm')) . ');" />
-                        <input type="submit" name="_" value="' . \Schnitzler\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('buttonCancel') . '" />
+                        <input type="submit" class="btn btn-default btn-sm" name="_updateDSandTO" value="UPDATE TO (and DS)" onclick="return confirm(' . GeneralUtility::quoteJSvalue(static::getLanguageService()->getLL('saveDSTOconfirm')) . ');" />
+                        <input type="submit" class="btn btn-default btn-sm" name="_" value="' . static::getLanguageService()->getLL('buttonCancel') . '" />
                         ';
                     break;
                 default:
                     // Creating menu:
                     $menuItems = [];
-                    $menuItems[] = '<input type="submit" name="_showXMLDS" value="' . \Schnitzler\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('buttonShowXML') . '" title="' . \Schnitzler\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('buttonTitle_showXML') . '" />';
-                    $menuItems[] = '<input type="submit" name="_clear" value="' . \Schnitzler\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('buttonClearAll') . '" title="' . \Schnitzler\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('buttonTitle_clearAll') . '" /> ';
-                    $menuItems[] = '<input type="submit" name="_preview" value="' . \Schnitzler\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('buttonPreview') . '" title="' . \Schnitzler\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('buttonTitle_preview') . '" />';
+                    $menuItems[] = '<input type="submit" class="btn btn-default btn-sm" name="_showXMLDS" value="' . static::getLanguageService()->getLL('buttonShowXML') . '" title="' . static::getLanguageService()->getLL('buttonTitle_showXML') . '" />';
+                    $menuItems[] = '<input type="submit" class="btn btn-default btn-sm" name="_clear" value="' . static::getLanguageService()->getLL('buttonClearAll') . '" title="' . static::getLanguageService()->getLL('buttonTitle_clearAll') . '" /> ';
+                    $menuItems[] = '<input type="submit" class="btn btn-default btn-sm" name="_preview" value="' . static::getLanguageService()->getLL('buttonPreview') . '" title="' . static::getLanguageService()->getLL('buttonTitle_preview') . '" />';
                     if (is_array($toREC) && is_array($dsREC)) {
-                        $menuItems[] = '<input type="submit" name="_save" value="' . \Schnitzler\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('buttonSave') . '" title="' . \Schnitzler\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('buttonTitle_save') . '" />';
-                        $menuItems[] = '<input type="submit" name="_saveExit" value="' . \Schnitzler\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('buttonSaveExit') . '" title="' . \Schnitzler\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('buttonTitle_saveExit') . '" />';
+                        $menuItems[] = '<input type="submit" class="btn btn-default btn-sm" name="_save" value="' . static::getLanguageService()->getLL('buttonSave') . '" title="' . static::getLanguageService()->getLL('buttonTitle_save') . '" />';
+                        $menuItems[] = '<input type="submit" class="btn btn-default btn-sm" name="_saveExit" value="' . static::getLanguageService()->getLL('buttonSaveExit') . '" title="' . static::getLanguageService()->getLL('buttonTitle_saveExit') . '" />';
                     }
-                    $menuItems[] = '<input type="submit" name="_saveScreen" value="' . \Schnitzler\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('buttonSaveAs') . '" title="' . \Schnitzler\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('buttonTitle_saveAs') . '" />';
-                    $menuItems[] = '<input type="submit" name="_loadScreen" value="' . \Schnitzler\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('buttonLoad') . '" title="' . \Schnitzler\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('buttonTitle_load') . '" />';
-                    $menuItems[] = '<input type="submit" name="_DO_NOTHING" value="' . \Schnitzler\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('buttonRefresh') . '" title="' . \Schnitzler\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('buttonTitle_refresh') . '" />';
+                    $menuItems[] = '<input type="submit" class="btn btn-default btn-sm" name="_saveScreen" value="' . static::getLanguageService()->getLL('buttonSaveAs') . '" title="' . static::getLanguageService()->getLL('buttonTitle_saveAs') . '" />';
+                    $menuItems[] = '<input type="submit" class="btn btn-default btn-sm" name="_loadScreen" value="' . static::getLanguageService()->getLL('buttonLoad') . '" title="' . static::getLanguageService()->getLL('buttonTitle_load') . '" />';
+                    $menuItems[] = '<input type="submit" class="btn btn-default btn-sm" name="_DO_NOTHING" value="' . static::getLanguageService()->getLL('buttonRefresh') . '" title="' . static::getLanguageService()->getLL('buttonTitle_refresh') . '" />';
 
-                    $menuContent = '
-
-                        <!--
-                            Menu for creation Data Structures / Template Objects
-                        -->
-                        <table border="0" cellpadding="2" cellspacing="2" id="c-toMenu">
-                            <tr class="bgColor5">
-                                <td>' . implode('</td>
-                                <td>', $menuItems) . '</td>
-                            </tr>
-                        </table>
-                    ';
+                    $menuContent = '<div class="btn-group">' . implode('', $menuItems) . '</div>';
 
                     $content .= '
 
                     <!--
                         Data Structure creation table:
                     -->
-                    <h3>' . $this->cshItem('xMOD_tx_templavoila', 'mapping_file', $this->doc->backPath, '|') . \Schnitzler\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('buildingDS') . ':</h3>' .
+                    <h3>' . BackendUtility::cshItem('xMOD_tx_templavoila', 'mapping_file', '', '|') . static::getLanguageService()->getLL('buildingDS') . ':</h3>' .
                         $this->renderTemplateMapper($this->displayFile, $this->displayPath, $dataStruct, $currentMappingInfo, $menuContent);
                     break;
             }
         }
 
-        $this->content .= $this->doc->section('', $content, 0, 1);
+        $this->content .= $this->getModuleTemplate()->section('', $content, 0, 1);
     }
 
     /**
@@ -1287,14 +1267,16 @@ class tx_templavoila_cm1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass
      */
     public function renderDSO()
     {
+        $content = '';
+
         if ((int)$this->displayUid > 0) { // TODO: static ds support
-            $row = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecordWSOL('tx_templavoila_datastructure', $this->displayUid);
+            $row = BackendUtility::getRecordWSOL('tx_templavoila_datastructure', $this->displayUid);
             if (is_array($row)) {
 
                 // Get title and icon:
-                $icon = \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIconForRecord('tx_templavoila_datastructure', $row);
-                $title = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecordTitle('tx_templavoila_datastructure', $row, 1);
-                $content .= $this->doc->wrapClickMenuOnIcon($icon, 'tx_templavoila_datastructure', $row['uid'], 1) .
+                $icon = $this->getModuleTemplate()->getIconFactory()->getIconForRecord('tx_templavoila_datastructure', $row, Icon::SIZE_SMALL);
+                $title = BackendUtility::getRecordTitle('tx_templavoila_datastructure', $row, 1);
+                $content .= BackendUtility::wrapClickMenuOnIcon($icon, 'tx_templavoila_datastructure', $row['uid'], 1) .
                     '<strong>' . $title . '</strong><br />';
 
                 // Get Data Structure:
@@ -1309,17 +1291,17 @@ class tx_templavoila_cm1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass
                         Data Structure content:
                     -->
                     <div id="c-ds">
-                        <h4>' . \Schnitzler\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('renderDSO_dataStructure') . ':</h4>
-                        <table border="0" cellspacing="2" cellpadding="2" class="dso_table">
+                        <h4>' . static::getLanguageService()->getLL('renderDSO_dataStructure') . ':</h4>
+                        <table class="table dso_table">
                                     <tr class="bgColor5">
-                                        <td nowrap="nowrap"><strong>' . \Schnitzler\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('renderDSO_dataElement') . ':</strong>' .
-                        $this->cshItem('xMOD_tx_templavoila', 'mapping_head_dataElement', $this->doc->backPath, '', true) .
+                                        <td nowrap="nowrap"><strong>' . static::getLanguageService()->getLL('renderDSO_dataElement') . ':</strong>' .
+                        BackendUtility::cshItem('xMOD_tx_templavoila', 'mapping_head_dataElement', '', '') .
                         '</td>
-                    <td nowrap="nowrap"><strong>' . \Schnitzler\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('renderDSO_mappingInstructions') . ':</strong>' .
-                        $this->cshItem('xMOD_tx_templavoila', 'mapping_head_mapping_instructions', $this->doc->backPath, '', true) .
+                    <td nowrap="nowrap"><strong>' . static::getLanguageService()->getLL('renderDSO_mappingInstructions') . ':</strong>' .
+                        BackendUtility::cshItem('xMOD_tx_templavoila', 'mapping_head_mapping_instructions', '', '') .
                         '</td>
-                    <td nowrap="nowrap"><strong>' . \Schnitzler\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('renderDSO_rules') . ':</strong>' .
-                        $this->cshItem('xMOD_tx_templavoila', 'mapping_head_Rules', $this->doc->backPath, '', true) .
+                    <td nowrap="nowrap"><strong>' . static::getLanguageService()->getLL('renderDSO_rules') . ':</strong>' .
+                        BackendUtility::cshItem('xMOD_tx_templavoila', 'mapping_head_Rules', '', '') .
                         '</td>
                 </tr>
     ' . implode('', $tRows) . '
@@ -1327,41 +1309,41 @@ class tx_templavoila_cm1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass
                     </div>';
 
                     // CSH
-                    $content .= $this->cshItem('xMOD_tx_templavoila', 'mapping_ds', $this->doc->backPath);
+                    $content .= BackendUtility::cshItem('xMOD_tx_templavoila', 'mapping_ds', '');
                 } else {
-                    $content .= '<h4>' . \Schnitzler\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('error') . ': ' . \Schnitzler\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('noDSDefined') . '</h4>';
+                    $content .= '<h4>' . static::getLanguageService()->getLL('error') . ': ' . static::getLanguageService()->getLL('noDSDefined') . '</h4>';
                 }
 
                 // Get Template Objects pointing to this Data Structure
-                $res = \Schnitzler\Templavoila\Utility\GeneralUtility::getDatabaseConnection()->exec_SELECTquery(
+                $res = static::getDatabaseConnection()->exec_SELECTquery(
                     '*',
                     'tx_templavoila_tmplobj',
-                    'pid IN (' . $this->storageFolders_pidList . ') AND datastructure=' . (int)$row['uid'] .
-                    \TYPO3\CMS\Backend\Utility\BackendUtility::deleteClause('tx_templavoila_tmplobj') .
-                    \TYPO3\CMS\Backend\Utility\BackendUtility::versioningPlaceholderClause('tx_templavoila_tmplobj')
+                    'datastructure=' . (int)$row['uid'] .
+                    BackendUtility::deleteClause('tx_templavoila_tmplobj') .
+                    BackendUtility::versioningPlaceholderClause('tx_templavoila_tmplobj')
                 );
                 $tRows = [];
                 $tRows[] = '
                             <tr class="bgColor5">
-                                <td><strong>' . \Schnitzler\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('renderDSO_uid') . ':</strong></td>
-                                <td><strong>' . \Schnitzler\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('renderDSO_title') . ':</strong></td>
-                                <td><strong>' . \Schnitzler\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('renderDSO_fileRef') . ':</strong></td>
-                                <td><strong>' . \Schnitzler\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('renderDSO_dataLgd') . ':</strong></td>
+                                <td><strong>' . static::getLanguageService()->getLL('renderDSO_uid') . ':</strong></td>
+                                <td><strong>' . static::getLanguageService()->getLL('renderDSO_title') . ':</strong></td>
+                                <td><strong>' . static::getLanguageService()->getLL('renderDSO_fileRef') . ':</strong></td>
+                                <td><strong>' . static::getLanguageService()->getLL('renderDSO_dataLgd') . ':</strong></td>
                             </tr>';
-                $TOicon = \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIconForRecord('tx_templavoila_tmplobj', []);
+                $TOicon = $this->getModuleTemplate()->getIconFactory()->getIconForRecord('tx_templavoila_tmplobj', [], Icon::SIZE_SMALL);
 
                 // Listing Template Objects with links:
-                while (false !== ($TO_Row = \Schnitzler\Templavoila\Utility\GeneralUtility::getDatabaseConnection()->sql_fetch_assoc($res))) {
-                    \TYPO3\CMS\Backend\Utility\BackendUtility::workspaceOL('tx_templavoila_tmplobj', $TO_Row);
+                while (false !== ($TO_Row = static::getDatabaseConnection()->sql_fetch_assoc($res))) {
+                    BackendUtility::workspaceOL('tx_templavoila_tmplobj', $TO_Row);
                     $tRows[] = '
                             <tr class="bgColor4">
                                 <td>[' . $TO_Row['uid'] . ']</td>
-                                <td nowrap="nowrap">' . $this->doc->wrapClickMenuOnIcon($TOicon, 'tx_templavoila_tmplobj', $TO_Row['uid'], 1) .
+                                <td nowrap="nowrap">' . BackendUtility::wrapClickMenuOnIcon($TOicon, 'tx_templavoila_tmplobj', $TO_Row['uid'], 1) .
                         '<a href="' . htmlspecialchars('index.php?table=tx_templavoila_tmplobj&uid=' . $TO_Row['uid'] . '&_reload_from=1') . '">' .
-                        \TYPO3\CMS\Backend\Utility\BackendUtility::getRecordTitle('tx_templavoila_tmplobj', $TO_Row, 1) . '</a>' .
+                        BackendUtility::getRecordTitle('tx_templavoila_tmplobj', $TO_Row, 1) . '</a>' .
                         '</td>
                     <td nowrap="nowrap">' . htmlspecialchars($TO_Row['fileref']) . ' <strong>' .
-                        (!\TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName($TO_Row['fileref'], 1) ? \Schnitzler\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('renderDSO_notFound') : \Schnitzler\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('renderDSO_ok')) . '</strong></td>
+                        (!GeneralUtility::getFileAbsFileName($TO_Row['fileref'], 1) ? static::getLanguageService()->getLL('renderDSO_notFound') : static::getLanguageService()->getLL('renderDSO_ok')) . '</strong></td>
                                 <td>' . strlen($TO_Row['templatemapping']) . '</td>
                             </tr>';
                 }
@@ -1372,22 +1354,22 @@ class tx_templavoila_cm1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass
                         Template Objects attached to Data Structure Record:
                     -->
                     <div id="c-to">
-                        <h4>' . \Schnitzler\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('renderDSO_usedTO') . ':</h4>
-                        <table border="0" cellpadding="2" cellspacing="2" class="dso_table">
+                        <h4>' . static::getLanguageService()->getLL('renderDSO_usedTO') . ':</h4>
+                        <table class="table dso_table">
                         ' . implode('', $tRows) . '
                         </table>
                     </div>';
 
                 // CSH
-                $content .= $this->cshItem('xMOD_tx_templavoila', 'mapping_ds_to', $this->doc->backPath);
+                $content .= BackendUtility::cshItem('xMOD_tx_templavoila', 'mapping_ds_to', '');
 
                 // Display XML of data structure:
                 if (is_array($dataStruct)) {
 
                     // Make instance of syntax highlight class:
-                    $hlObj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\Schnitzler\Templavoila\Service\SyntaxHighlightingService::class);
+                    $hlObj = GeneralUtility::makeInstance(SyntaxHighlightingService::class);
 
-                    $dataStructureXML = \TYPO3\CMS\Core\Utility\GeneralUtility::array2xml_cs($origDataStruct, 'T3DataStructure', ['useCDATA' => 1]);
+                    $dataStructureXML = GeneralUtility::array2xml_cs($origDataStruct, 'T3DataStructure', ['useCDATA' => 1]);
                     $content .= '
 
                     <!--
@@ -1395,21 +1377,21 @@ class tx_templavoila_cm1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass
                     -->
                     <br />
                     <div id="c-dsxml">
-                        <h3>' . \Schnitzler\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('renderDSO_XML') . ':</h3>
-                        ' . $this->cshItem('xMOD_tx_templavoila', 'mapping_ds_showXML', $this->doc->backPath) . '
-                        <p>' . \TYPO3\CMS\Backend\Utility\BackendUtility::getFuncCheck('', 'SET[showDSxml]', $this->MOD_SETTINGS['showDSxml'], '', \TYPO3\CMS\Core\Utility\GeneralUtility::implodeArrayForUrl('', $_GET, '', 1, 1)) . ' Show XML</p>
+                        <h3>' . static::getLanguageService()->getLL('renderDSO_XML') . ':</h3>
+                        ' . BackendUtility::cshItem('xMOD_tx_templavoila', 'mapping_ds_showXML', '') . '
+                        <p>' . BackendUtility::getFuncCheck('', 'SET[showDSxml]', $this->getSetting('showDSxml'), '', GeneralUtility::implodeArrayForUrl('', $_GET, '', 1, 1)) . ' Show XML</p>
                         <pre>' .
-                        ($this->MOD_SETTINGS['showDSxml'] ? $hlObj->highLight_DS($dataStructureXML) : '') . '
+                        ($this->getSetting('showDSxml') ? $hlObj->highLight_DS($dataStructureXML) : '') . '
                         </pre>
                     </div>
                     ';
                 }
             } else {
-                $content .= sprintf(\Schnitzler\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('errorNoDSrecord'), $this->displayUid);
+                $content .= sprintf(static::getLanguageService()->getLL('errorNoDSrecord'), $this->displayUid);
             }
-            $this->content .= $this->doc->section(\Schnitzler\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('renderDSO_DSO'), $content, 0, 1);
+            $this->content .= $this->getModuleTemplate()->section(static::getLanguageService()->getLL('renderDSO_DSO'), $content, 0, 1);
         } else {
-            $this->content .= $this->doc->section(\Schnitzler\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('errorInDSO'), '' . \Schnitzler\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('renderDSO_noUid'), 0, 1, 3);
+            $this->content .= $this->getModuleTemplate()->section(static::getLanguageService()->getLL('errorInDSO'), '' . static::getLanguageService()->getLL('renderDSO_noUid'), 0, 1, 3);
         }
     }
 
@@ -1418,49 +1400,52 @@ class tx_templavoila_cm1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass
      */
     public function renderTO()
     {
+        $content = '';
+        $parts = [];
+
         if ((int)$this->displayUid > 0) {
-            $row = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecordWSOL('tx_templavoila_tmplobj', $this->displayUid);
+            $row = BackendUtility::getRecordWSOL('tx_templavoila_tmplobj', $this->displayUid);
 
             if (is_array($row)) {
                 $tRows = [];
                 $tRows[] = '
                     <tr class="bgColor5">
-                        <td colspan="2"><strong>' . \Schnitzler\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('renderTO_toDetails') . ':</strong>' .
-                    $this->cshItem('xMOD_tx_templavoila', 'mapping_to', $this->doc->backPath, '') .
+                        <td colspan="2"><strong>' . static::getLanguageService()->getLL('renderTO_toDetails') . ':</strong>' .
+                    BackendUtility::cshItem('xMOD_tx_templavoila', 'mapping_to', '', '') .
                     '</td>
             </tr>';
 
                 // Get title and icon:
-                $icon = \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIconForRecord('tx_templavoila_tmplobj', $row);
+                $icon = $this->getModuleTemplate()->getIconFactory()->getIconForRecord('tx_templavoila_tmplobj', $row, Icon::SIZE_SMALL);
 
-                $title = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecordTitle('tx_templavoila_tmplobj', $row);
-                $title = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecordTitlePrep(\Schnitzler\Templavoila\Utility\GeneralUtility::getLanguageService()->sL($title));
+                $title = BackendUtility::getRecordTitle('tx_templavoila_tmplobj', $row);
+                $title = BackendUtility::getRecordTitlePrep(static::getLanguageService()->sL($title));
                 $tRows[] = '
                     <tr class="bgColor4">
-                        <td>' . \Schnitzler\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('templateObject') . ':</td>
-                        <td>' . $this->doc->wrapClickMenuOnIcon($icon, 'tx_templavoila_tmplobj', $row['uid'], 1) . $title . '</td>
+                        <td>' . static::getLanguageService()->getLL('templateObject') . ':</td>
+                        <td>' . BackendUtility::wrapClickMenuOnIcon($icon, 'tx_templavoila_tmplobj', $row['uid'], 1) . $title . '</td>
                     </tr>';
 
                 // Session data
-                $sessionKey = $this->MCONF['name'] . '_validatorInfo:' . $row['uid'];
+                $sessionKey = $this->getModuleName() . '_validatorInfo:' . $row['uid'];
                 $sesDat = ['displayFile' => $row['fileref']];
-                \Schnitzler\Templavoila\Utility\GeneralUtility::getBackendUser()->setAndSaveSessionData($sessionKey, $sesDat);
+                static::getBackendUser()->setAndSaveSessionData($sessionKey, $sesDat);
 
                 // Find the file:
-                $theFile = \TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName($row['fileref'], 1);
+                $theFile = GeneralUtility::getFileAbsFileName($row['fileref'], 1);
                 if ($theFile && @is_file($theFile)) {
                     $relFilePath = substr($theFile, strlen(PATH_site));
-                    $onCl = 'return top.openUrlInWindow(\'' . \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('TYPO3_SITE_URL') . $relFilePath . '\',\'FileView\');';
+                    $onCl = 'return top.openUrlInWindow(\'' . GeneralUtility::getIndpEnv('TYPO3_SITE_URL') . $relFilePath . '\',\'FileView\');';
                     $tRows[] = '
                         <tr class="bgColor4">
-                            <td rowspan="2">' . \Schnitzler\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('templateFile') . ':</td>
+                            <td rowspan="2">' . static::getLanguageService()->getLL('templateFile') . ':</td>
                             <td><a href="#" onclick="' . htmlspecialchars($onCl) . '">' . htmlspecialchars($relFilePath) . '</a></td>
                         </tr>
                         <tr class="bgColor4">
                             <td>
                                 <a href="#" onclick ="openValidator(\'' . $sessionKey . '\');return false;">
-                                    ' . \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('extensions-templavoila-htmlvalidate') . '
-                                    ' . \Schnitzler\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('validateTpl') . '
+                                    ' . $this->getModuleTemplate()->getIconFactory()->getIcon('extensions-templavoila-htmlvalidate', Icon::SIZE_SMALL) . '
+                                    ' . static::getLanguageService()->getLL('validateTpl') . '
                                 </a>
                             </td>
                         </tr>';
@@ -1469,43 +1454,53 @@ class tx_templavoila_cm1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass
                     $DSOfile = '';
                     $dsValue = $row['datastructure'];
                     if ($row['parent']) {
-                        $parentRec = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecordWSOL('tx_templavoila_tmplobj', $row['parent'], 'datastructure');
+                        $parentRec = BackendUtility::getRecordWSOL('tx_templavoila_tmplobj', $row['parent'], 'datastructure');
                         $dsValue = $parentRec['datastructure'];
                     }
 
-                    if (\TYPO3\CMS\Core\Utility\MathUtility::canBeInterpretedAsInteger($dsValue)) {
-                        $DS_row = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecordWSOL('tx_templavoila_datastructure', $dsValue);
+                    $DS_row = null;
+                    if (MathUtility::canBeInterpretedAsInteger($dsValue)) {
+                        $DS_row = BackendUtility::getRecordWSOL('tx_templavoila_datastructure', $dsValue);
                     } else {
-                        $DSOfile = \TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName($dsValue);
+                        $DSOfile = GeneralUtility::getFileAbsFileName($dsValue);
                     }
                     if (is_array($DS_row) || @is_file($DSOfile)) {
 
                         // Get main DS array:
                         if (is_array($DS_row)) {
                             // Get title and icon:
-                            $icon = \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIconForRecord('tx_templavoila_datastructure', $DS_row);
-                            $title = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecordTitle('tx_templavoila_datastructure', $DS_row);
-                            $title = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecordTitlePrep(\Schnitzler\Templavoila\Utility\GeneralUtility::getLanguageService()->sL($title));
+                            $icon = $this->getModuleTemplate()->getIconFactory()->getIconForRecord('tx_templavoila_datastructure', $DS_row, Icon::SIZE_SMALL);
+                            $title = BackendUtility::getRecordTitle('tx_templavoila_datastructure', $DS_row);
+                            $title = BackendUtility::getRecordTitlePrep(static::getLanguageService()->sL($title));
 
                             $tRows[] = '
                                 <tr class="bgColor4">
-                                    <td>' . \Schnitzler\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('renderTO_dsRecord') . ':</td>
-                                    <td>' . $this->doc->wrapClickMenuOnIcon($icon, 'tx_templavoila_datastructure', $DS_row['uid'], 1) . $title . '</td>
+                                    <td>' . static::getLanguageService()->getLL('renderTO_dsRecord') . ':</td>
+                                    <td>' . BackendUtility::wrapClickMenuOnIcon($icon, 'tx_templavoila_datastructure', $DS_row['uid'], 1) . $title . '</td>
                                 </tr>';
 
                             // Link to updating DS/TO:
-                            $onCl = 'index.php?file=' . rawurlencode($theFile) . '&_load_ds_xml=1&_load_ds_xml_to=' . $row['uid'] . '&uid=' . $DS_row['uid'] . '&returnUrl=' . $this->returnUrl;
-                            $onClMsg = '
-                                if (confirm(' . \TYPO3\CMS\Core\Utility\GeneralUtility::quoteJSvalue(\Schnitzler\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('renderTO_updateWarningConfirm')) . ')) {
-                                    document.location=\'' . $onCl . '\';
-                                }
-                                return false;
-                                ';
+                            $url = $this->getModuleUrl([
+                                'file' => $theFile,
+                                '_load_ds_xml' => 1,
+                                '_load_ds_xml_to' => $row['uid'],
+                                'uid' => $DS_row['uid'],
+                                'returnUrl' => $this->returnUrl,
+                            ]);
+
                             $tRows[] = '
                                 <tr class="bgColor4">
                                     <td>&nbsp;</td>
-                                    <td><input type="submit" name="_" value="' . \Schnitzler\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('renderTO_editDSTO') . '" onclick="' . htmlspecialchars($onClMsg) . '"/>' .
-                                $this->cshItem('xMOD_tx_templavoila', 'mapping_to_modifyDSTO', $this->doc->backPath, '') .
+                                    <td>
+                                    <a 
+                                        class="btn btn-default btn-sm t3js-modal-trigger" 
+                                        data-severity="warning" 
+                                        data-title="Warning" 
+                                        data-content="' . static::getLanguageService()->getLL('renderTO_updateWarningConfirm') . '" 
+                                        data-button-close-text="Cancel" 
+                                        href="' . $url . '"
+                                    >' . static::getLanguageService()->getLL('renderTO_editDSTO') . '</a>' .
+                                BackendUtility::cshItem('xMOD_tx_templavoila', 'mapping_to_modifyDSTO', '', '') .
                                 '</td>
                         </tr>';
 
@@ -1514,15 +1509,15 @@ class tx_templavoila_cm1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass
                         } else {
                             // Show filepath of external XML file:
                             $relFilePath = substr($DSOfile, strlen(PATH_site));
-                            $onCl = 'return top.openUrlInWindow(\'' . \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('TYPO3_SITE_URL') . $relFilePath . '\',\'FileView\');';
+                            $onCl = 'return top.openUrlInWindow(\'' . GeneralUtility::getIndpEnv('TYPO3_SITE_URL') . $relFilePath . '\',\'FileView\');';
                             $tRows[] = '
                                 <tr class="bgColor4">
-                                    <td>' . \Schnitzler\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('renderTO_dsFile') . ':</td>
+                                    <td>' . static::getLanguageService()->getLL('renderTO_dsFile') . ':</td>
                                     <td><a href="#" onclick="' . htmlspecialchars($onCl) . '">' . htmlspecialchars($relFilePath) . '</a></td>
                                 </tr>';
                             $onCl = 'index.php?file=' . rawurlencode($theFile) . '&_load_ds_xml=1&_load_ds_xml_to=' . $row['uid'] . '&uid=' . rawurlencode($DSOfile) . '&returnUrl=' . $this->returnUrl;
                             $onClMsg = '
-                                if (confirm(' . \TYPO3\CMS\Core\Utility\GeneralUtility::quoteJSvalue(\Schnitzler\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('renderTO_updateWarningConfirm')) . ')) {
+                                if (confirm(' . GeneralUtility::quoteJSvalue(static::getLanguageService()->getLL('renderTO_updateWarningConfirm')) . ')) {
                                     document.location=\'' . $onCl . '\';
                                 }
                                 return false;
@@ -1530,8 +1525,8 @@ class tx_templavoila_cm1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass
                             $tRows[] = '
                                 <tr class="bgColor4">
                                     <td>&nbsp;</td>
-                                    <td><input type="submit" name="_" value="' . \Schnitzler\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('renderTO_editDSTO') . '" onclick="' . htmlspecialchars($onClMsg) . '"/>' .
-                                $this->cshItem('xMOD_tx_templavoila', 'mapping_to_modifyDSTO', $this->doc->backPath, '') .
+                                    <td><input type="submit" class="btn btn-default btn-sm" name="_" value="' . static::getLanguageService()->getLL('renderTO_editDSTO') . '" onclick="' . htmlspecialchars($onClMsg) . '"/>' .
+                                BackendUtility::cshItem('xMOD_tx_templavoila', 'mapping_to_modifyDSTO', '', '') .
                                 '</td>
                         </tr>';
 
@@ -1545,8 +1540,8 @@ class tx_templavoila_cm1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass
                             <!--
                                 Template Object Header:
                             -->
-                            <h3>' . \Schnitzler\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('renderTO_toInfo') . ':</h3>
-                            <table border="0" cellpadding="2" cellspacing="1" id="c-toHeader">
+                            <h3>' . static::getLanguageService()->getLL('renderTO_toInfo') . ':</h3>
+                            <table class="table" id="c-toHeader">
                                 ' . implode('', $tRows) . '
                             </table>
                         ';
@@ -1564,59 +1559,59 @@ class tx_templavoila_cm1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass
 
                             $parts = [];
                             $parts[] = [
-                                'label' => \Schnitzler\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('tabTODetails'),
+                                'label' => static::getLanguageService()->getLL('tabTODetails'),
                                 'content' => $content
                             ];
 
                             // -- Processing the head editing
-                            $headerContent .= '
+                            $headerContent = '
                                 <!--
                                     HTML header parts selection:
                                 -->
-                            <h3>' . \Schnitzler\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('mappingHeadParts') . ': ' . $this->cshItem('xMOD_tx_templavoila', 'mapping_to_headerParts', $this->doc->backPath, '') . '</h3>
+                            <h3>' . static::getLanguageService()->getLL('mappingHeadParts') . ': ' . BackendUtility::cshItem('xMOD_tx_templavoila', 'mapping_to_headerParts', '', '') . '</h3>
                                 ' . $this->renderHeaderSelection($theFile, $currentHeaderMappingInfo, $showBodyTag, $editContent);
 
                             $parts[] = [
-                                'label' => \Schnitzler\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('tabHeadParts'),
+                                'label' => static::getLanguageService()->getLL('tabHeadParts'),
                                 'content' => $headerContent
                             ];
 
                             // -- Processing the body editing --
                             list($editContent, $currentMappingInfo) = $this->renderTO_editProcessing($dataStruct, $row, $theFile, 0);
 
-                            $bodyContent .= '
+                            $bodyContent = '
                                 <!--
                                     Data Structure mapping table:
                                 -->
-                            <h3>' . \Schnitzler\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('mappingBodyParts') . ':</h3>
+                            <h3>' . static::getLanguageService()->getLL('mappingBodyParts') . ':</h3>
                                 ' . $this->renderTemplateMapper($theFile, $this->displayPath, $dataStruct, $currentMappingInfo, $editContent);
 
                             $parts[] = [
-                                'label' => \Schnitzler\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('tabBodyParts'),
+                                'label' => static::getLanguageService()->getLL('tabBodyParts'),
                                 'content' => $bodyContent
                             ];
                         } else {
-                            $content .= \Schnitzler\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('error') . ': ' . sprintf(\Schnitzler\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('errorNoDSfound'), $dsValue);
+                            $content .= static::getLanguageService()->getLL('error') . ': ' . sprintf(static::getLanguageService()->getLL('errorNoDSfound'), $dsValue);
                         }
                     } else {
-                        $content .= \Schnitzler\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('error') . ': ' . sprintf(\Schnitzler\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('errorNoDSfound'), $dsValue);
+                        $content .= static::getLanguageService()->getLL('error') . ': ' . sprintf(static::getLanguageService()->getLL('errorNoDSfound'), $dsValue);
                     }
                 } else {
-                    $content .= \Schnitzler\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('error') . ': ' . sprintf(\Schnitzler\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('errorFileNotFound'), $row['fileref']);
+                    $content .= static::getLanguageService()->getLL('error') . ': ' . sprintf(static::getLanguageService()->getLL('errorFileNotFound'), $row['fileref']);
                 }
             } else {
-                $content .= \Schnitzler\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('error') . ': ' . sprintf(\Schnitzler\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('errorNoTOfound'), $this->displayUid);
+                $content .= static::getLanguageService()->getLL('error') . ': ' . sprintf(static::getLanguageService()->getLL('errorNoTOfound'), $this->displayUid);
             }
 
             $parts[0]['content'] = $content;
         } else {
-            $this->content .= $this->doc->section(\Schnitzler\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('templateObject') . ' ' . \Schnitzler\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('error'), \Schnitzler\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('errorNoUidFound'), 0, 1, 3);
+            $this->content .= $this->getModuleTemplate()->section(static::getLanguageService()->getLL('templateObject') . ' ' . static::getLanguageService()->getLL('error'), static::getLanguageService()->getLL('errorNoUidFound'), 0, 1, 3);
         }
 
         // show tab menu
-        if (is_array($parts)) {
-            $this->content .= $this->doc->section(\Schnitzler\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('mappingTitle'), '' .
-                $this->doc->getDynTabMenu($parts, 'TEMPLAVOILA:templateModule:' . $this->id, 0, 0, 300), 0, 1);
+        if (count($parts) > 0) {
+            $this->content .= $this->getModuleTemplate()->section(static::getLanguageService()->getLL('mappingTitle'), '' .
+                $this->getModuleTemplate()->getDynamicTabMenu($parts, 'TEMPLAVOILA:templateModule:' . $this->getId()), 0, 1);
         }
     }
 
@@ -1638,13 +1633,13 @@ class tx_templavoila_cm1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass
 
         // Converting GPvars into a "cmd" value:
         $cmd = '';
-        if (\TYPO3\CMS\Core\Utility\GeneralUtility::_GP('_reload_from')) { // Reverting to old values in TO
+        if (GeneralUtility::_GP('_reload_from')) { // Reverting to old values in TO
             $cmd = 'reload_from';
-        } elseif (\TYPO3\CMS\Core\Utility\GeneralUtility::_GP('_clear')) { // Resetting mapping
+        } elseif (GeneralUtility::_GP('_clear')) { // Resetting mapping
             $cmd = 'clear';
-        } elseif (\TYPO3\CMS\Core\Utility\GeneralUtility::_GP('_save_data_mapping')) { // Saving to Session
+        } elseif (GeneralUtility::_GP('_save_data_mapping')) { // Saving to Session
             $cmd = 'save_data_mapping';
-        } elseif (\TYPO3\CMS\Core\Utility\GeneralUtility::_GP('_save_to') || \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('_save_to_return')) { // Saving to Template Object
+        } elseif (GeneralUtility::_GP('_save_to') || GeneralUtility::_GP('_save_to_return')) { // Saving to Template Object
             $cmd = 'save_to';
         }
 
@@ -1656,12 +1651,12 @@ class tx_templavoila_cm1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass
 
         // If that array contains sheets, then traverse them:
         if (is_array($dataStruct['sheets'])) {
-            $dSheets = \TYPO3\CMS\Core\Utility\GeneralUtility::resolveAllSheetsInDS($dataStruct);
+            $dSheets = GeneralUtility::resolveAllSheetsInDS($dataStruct);
             $dataStruct = [
                 'ROOT' => [
                     'tx_templavoila' => [
-                        'title' => \Schnitzler\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('rootMultiTemplate_title'),
-                        'description' => \Schnitzler\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('rootMultiTemplate_description'),
+                        'title' => static::getLanguageService()->getLL('rootMultiTemplate_title'),
+                        'description' => static::getLanguageService()->getLL('rootMultiTemplate_description'),
                     ],
                     'type' => 'array',
                     'el' => []
@@ -1675,7 +1670,7 @@ class tx_templavoila_cm1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass
         }
 
         // Get session data:
-        $sesDat = \Schnitzler\Templavoila\Utility\GeneralUtility::getBackendUser()->getSessionData($this->sessionKey);
+        $sesDat = static::getBackendUser()->getSessionData($this->sessionKey);
 
         // Set current mapping info arrays:
         $currentMappingInfo_head = is_array($sesDat['currentMappingInfo_head']) ? $sesDat['currentMappingInfo_head'] : [];
@@ -1684,45 +1679,45 @@ class tx_templavoila_cm1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass
 
         // Perform processing for head
         // GPvars, incoming data
-        $checkboxElement = \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('checkboxElement', 1);
-        $addBodyTag = \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('addBodyTag');
+        $checkboxElement = GeneralUtility::_GP('checkboxElement');
+        $addBodyTag = GeneralUtility::_GP('addBodyTag');
 
         // Update session data:
-        if ($cmd == 'reload_from' || $cmd == 'clear') {
-            $currentMappingInfo_head = is_array($templatemapping['MappingInfo_head']) && $cmd != 'clear' ? $templatemapping['MappingInfo_head'] : [];
+        if ($cmd === 'reload_from' || $cmd === 'clear') {
+            $currentMappingInfo_head = is_array($templatemapping['MappingInfo_head']) && $cmd !== 'clear' ? $templatemapping['MappingInfo_head'] : [];
             $sesDat['currentMappingInfo_head'] = $currentMappingInfo_head;
-            \Schnitzler\Templavoila\Utility\GeneralUtility::getBackendUser()->setAndSaveSessionData($this->sessionKey, $sesDat);
+            static::getBackendUser()->setAndSaveSessionData($this->sessionKey, $sesDat);
         } else {
-            if ($cmd == 'save_data_mapping' || $cmd == 'save_to') {
+            if ($cmd === 'save_data_mapping' || $cmd === 'save_to') {
                 $sesDat['currentMappingInfo_head'] = $currentMappingInfo_head = [
                     'headElementPaths' => $checkboxElement,
                     'addBodyTag' => $addBodyTag ? 1 : 0
                 ];
-                \Schnitzler\Templavoila\Utility\GeneralUtility::getBackendUser()->setAndSaveSessionData($this->sessionKey, $sesDat);
+                static::getBackendUser()->setAndSaveSessionData($this->sessionKey, $sesDat);
             }
         }
 
         // Perform processing for  body
         // GPvars, incoming data
-        $inputData = \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('dataMappingForm', 1);
+        $inputData = GeneralUtility::_GP('dataMappingForm');
 
         // Update session data:
-        if ($cmd == 'reload_from' || $cmd == 'clear') {
-            $currentMappingInfo = is_array($templatemapping['MappingInfo']) && $cmd != 'clear' ? $templatemapping['MappingInfo'] : [];
+        if ($cmd === 'reload_from' || $cmd === 'clear') {
+            $currentMappingInfo = is_array($templatemapping['MappingInfo']) && $cmd !== 'clear' ? $templatemapping['MappingInfo'] : [];
             $this->cleanUpMappingInfoAccordingToDS($currentMappingInfo, $dataStruct);
             $sesDat['currentMappingInfo'] = $currentMappingInfo;
             $sesDat['dataStruct'] = $dataStruct;
-            \Schnitzler\Templavoila\Utility\GeneralUtility::getBackendUser()->setAndSaveSessionData($this->sessionKey, $sesDat);
+            static::getBackendUser()->setAndSaveSessionData($this->sessionKey, $sesDat);
         } else {
-            if ($cmd == 'save_data_mapping' && is_array($inputData)) {
+            if ($cmd === 'save_data_mapping' && is_array($inputData)) {
                 $sesDat['currentMappingInfo'] = $currentMappingInfo = $this->array_merge_recursive_overrule($currentMappingInfo, $inputData);
                 $sesDat['dataStruct'] = $dataStruct; // Adding data structure to session data so that the PREVIEW window can access the DS easily...
-                \Schnitzler\Templavoila\Utility\GeneralUtility::getBackendUser()->setAndSaveSessionData($this->sessionKey, $sesDat);
+                static::getBackendUser()->setAndSaveSessionData($this->sessionKey, $sesDat);
             }
         }
 
         // SAVE to template object
-        if ($cmd == 'save_to') {
+        if ($cmd === 'save_to') {
             $dataArr = [];
 
             // Set content, either for header or body:
@@ -1732,13 +1727,13 @@ class tx_templavoila_cm1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass
             // Getting cached data:
             reset($dataStruct);
             // Init; read file, init objects:
-            $fileContent = \TYPO3\CMS\Core\Utility\GeneralUtility::getUrl($theFile);
-            $htmlParse = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\Html\HtmlParser::class);
-            $this->markupObj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\Schnitzler\Templavoila\Domain\Model\HtmlMarkup::class);
+            $fileContent = GeneralUtility::getUrl($theFile);
+            $htmlParse = GeneralUtility::makeInstance(HtmlParser::class);
+            $this->markupObj = GeneralUtility::makeInstance(HtmlMarkup::class);
 
             // Fix relative paths in source:
             $relPathFix = dirname(substr($theFile, strlen(PATH_site))) . '/';
-            $uniqueMarker = uniqid('###') . '###';
+            $uniqueMarker = uniqid('###', true) . '###';
             $fileContent = $htmlParse->prefixResourcePath($relPathFix, $fileContent, ['A' => $uniqueMarker]);
             $fileContent = $this->fixPrefixForLinks($relPathFix, $fileContent, $uniqueMarker);
 
@@ -1765,77 +1760,64 @@ class tx_templavoila_cm1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass
             preg_match('/<body[^>]*>/i', $fileContent, $reg);
             $templatemapping['BodyTag_cached'] = $currentMappingInfo_head['addBodyTag'] ? $reg[0] : '';
 
-            $TOuid = \TYPO3\CMS\Backend\Utility\BackendUtility::wsMapId('tx_templavoila_tmplobj', $row['uid']);
+            $TOuid = BackendUtility::wsMapId('tx_templavoila_tmplobj', $row['uid']);
             $dataArr['tx_templavoila_tmplobj'][$TOuid]['templatemapping'] = serialize($templatemapping);
             $dataArr['tx_templavoila_tmplobj'][$TOuid]['fileref_mtime'] = @filemtime($theFile);
             $dataArr['tx_templavoila_tmplobj'][$TOuid]['fileref_md5'] = @md5_file($theFile);
 
-            $tce = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\DataHandling\DataHandler::class);
+            $tce = GeneralUtility::makeInstance(DataHandler::class);
             $tce->stripslashes_values = 0;
             $tce->start($dataArr, []);
             $tce->process_datamap();
             unset($tce);
-            $flashMessage = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(
-                \TYPO3\CMS\Core\Messaging\FlashMessage::class,
-                \Schnitzler\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('msgMappingSaved'),
+            $flashMessage = GeneralUtility::makeInstance(
+                FlashMessage::class,
+                static::getLanguageService()->getLL('msgMappingSaved'),
                 '',
-                \TYPO3\CMS\Core\Messaging\FlashMessage::OK
+                FlashMessage::OK
             );
             $msg[] .= $flashMessage->render();
-            $row = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecordWSOL('tx_templavoila_tmplobj', $this->displayUid);
+            $row = BackendUtility::getRecordWSOL('tx_templavoila_tmplobj', $this->displayUid);
             $templatemapping = unserialize($row['templatemapping']);
 
-            if (\TYPO3\CMS\Core\Utility\GeneralUtility::_GP('_save_to_return')) {
-                header('Location: ' . \TYPO3\CMS\Core\Utility\GeneralUtility::locationHeaderUrl($this->returnUrl));
+            if (GeneralUtility::_GP('_save_to_return')) {
+                header('Location: ' . GeneralUtility::locationHeaderUrl($this->returnUrl));
                 exit;
             }
         }
 
         // Making the menu
         $menuItems = [];
-        $menuItems[] = '<input type="submit" name="_clear" value="' . \Schnitzler\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('buttonClearAll') . '" title="' . \Schnitzler\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('buttonClearAllMappingTitle') . '" />';
+        $menuItems[] = '<input type="submit" class="btn btn-default btn-sm" name="_clear" value="' . static::getLanguageService()->getLL('buttonClearAll') . '" title="' . static::getLanguageService()->getLL('buttonClearAllMappingTitle') . '" />';
 
         // Make either "Preview" button (body) or "Set" button (header)
         if ($headerPart) { // Header:
-            $menuItems[] = '<input type="submit" name="_save_data_mapping" value="' . \Schnitzler\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('buttonSet') . '" title="' . \Schnitzler\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('buttonSetTitle') . '" />';
+            $menuItems[] = '<input type="submit" class="btn btn-default btn-sm" name="_save_data_mapping" value="' . static::getLanguageService()->getLL('buttonSet') . '" title="' . static::getLanguageService()->getLL('buttonSetTitle') . '" />';
         } else { // Body:
-            $menuItems[] = '<input type="submit" name="_preview" value="' . \Schnitzler\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('buttonPreview') . '" title="' . \Schnitzler\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('buttonPreviewMappingTitle') . '" />';
+            $menuItems[] = '<input type="submit" class="btn btn-default btn-sm" name="_preview" value="' . static::getLanguageService()->getLL('buttonPreview') . '" title="' . static::getLanguageService()->getLL('buttonPreviewMappingTitle') . '" />';
         }
 
-        $menuItems[] = '<input type="submit" name="_save_to" value="' . \Schnitzler\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('buttonSave') . '" title="' . \Schnitzler\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('buttonSaveTOTitle') . '" />';
+        $menuItems[] = '<input type="submit" class="btn btn-default btn-sm" name="_save_to" value="' . static::getLanguageService()->getLL('buttonSave') . '" title="' . static::getLanguageService()->getLL('buttonSaveTOTitle') . '" />';
 
         if ($this->returnUrl) {
-            $menuItems[] = '<input type="submit" name="_save_to_return" value="' . \Schnitzler\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('buttonSaveAndReturn') . '" title="' . \Schnitzler\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('buttonSaveAndReturnTitle') . '" />';
+            $menuItems[] = '<input type="submit" class="btn btn-default btn-sm" name="_save_to_return" value="' . static::getLanguageService()->getLL('buttonSaveAndReturn') . '" title="' . static::getLanguageService()->getLL('buttonSaveAndReturnTitle') . '" />';
         }
 
         // If a difference is detected...:
         if (
-            (serialize($templatemapping['MappingInfo_head']) != serialize($currentMappingInfo_head)) ||
-            (serialize($templatemapping['MappingInfo']) != serialize($currentMappingInfo))
+            (serialize($templatemapping['MappingInfo_head']) !== serialize($currentMappingInfo_head)) ||
+            (serialize($templatemapping['MappingInfo']) !== serialize($currentMappingInfo))
         ) {
-            $menuItems[] = '<input type="submit" name="_reload_from" value="' . \Schnitzler\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('buttonRevert') . '" title="' . sprintf(\Schnitzler\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('buttonRevertTitle'), $headerPart ? 'HEAD' : 'BODY') . '" />';
+            $menuItems[] = '<input type="submit" class="btn btn-default btn-sm" name="_reload_from" value="' . static::getLanguageService()->getLL('buttonRevert') . '" title="' . sprintf(static::getLanguageService()->getLL('buttonRevertTitle'), $headerPart ? 'HEAD' : 'BODY') . '" />';
 
-            $flashMessage = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(
-                \TYPO3\CMS\Core\Messaging\FlashMessage::class,
-                \Schnitzler\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('msgMappingIsDifferent'),
+            $this->getModuleTemplate()->addFlashMessage(
+                static::getLanguageService()->getLL('msgMappingIsDifferent'),
                 '',
-                \TYPO3\CMS\Core\Messaging\FlashMessage::INFO
+                FlashMessage::INFO
             );
-            $msg[] .= $flashMessage->render();
         }
 
-        $content = '
-
-            <!--
-                Menu for saving Template Objects
-            -->
-            <table border="0" cellpadding="2" cellspacing="2" id="c-toMenu">
-                <tr class="bgColor5">
-                    <td>' . implode('</td>
-                    <td>', $menuItems) . '</td>
-                </tr>
-            </table>
-        ';
+        $content = '<div class="btn-group">' . implode('', $menuItems) . '</div>';
 
         // @todo - replace with FlashMessage Queue
         $content .= implode('', $msg);
@@ -1864,10 +1846,10 @@ class tx_templavoila_cm1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass
 
         // Get file content
         $this->markupFile = $displayFile;
-        $fileContent = \TYPO3\CMS\Core\Utility\GeneralUtility::getUrl($this->markupFile);
+        $fileContent = GeneralUtility::getUrl($this->markupFile);
 
         // Init mark up object.
-        $this->markupObj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\Schnitzler\Templavoila\Domain\Model\HtmlMarkup::class);
+        $this->markupObj = GeneralUtility::makeInstance(HtmlMarkup::class);
         $this->markupObj->init();
 
         // Get <body> tag:
@@ -1888,8 +1870,8 @@ class tx_templavoila_cm1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass
         $tRows = $this->markupObj->markupHTMLcontent($html_header, $GLOBALS['BACK_PATH'], '', 'script,style,link,meta', 'checkbox');
         $bodyTagRow = $showBodyTag ? '
                 <tr class="bgColor2">
-                    <td><input type="checkbox" name="addBodyTag" value="1"' . ($currentHeaderMappingInfo['addBodyTag'] ? ' checked="checked"' : '') . ' /></td>
-                    <td>' . \Schnitzler\Templavoila\Domain\Model\HtmlMarkup::getGnyfMarkup('body') . '</td>
+                    <td><input type="checkbox" name="addBodyTag" value="1" ' . ($currentHeaderMappingInfo['addBodyTag'] ? ' checked="checked"' : '') . '></td>
+                    <td>' . HtmlMarkup::getGnyfMarkup('body') . '</td>
                     <td><pre>' . htmlspecialchars($html_body) . '</pre></td>
                 </tr>' : '';
 
@@ -1897,25 +1879,25 @@ class tx_templavoila_cm1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass
             <!--
                 Header parts:
             -->
-            <table width="100%" border="0" cellpadding="2" cellspacing="2" id="c-headerParts">
+            <table class="table" id="c-headerParts">
                 <tr class="bgColor5">
-                    <td><strong>' . \Schnitzler\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('include') . ':</strong></td>
-                    <td><strong>' . \Schnitzler\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('tag') . ':</strong></td>
-                    <td><strong>' . \Schnitzler\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('tagContent') . ':</strong></td>
+                    <td><strong>' . static::getLanguageService()->getLL('include') . ':</strong></td>
+                    <td><strong>' . static::getLanguageService()->getLL('tag') . ':</strong></td>
+                    <td><strong>' . static::getLanguageService()->getLL('tagContent') . ':</strong></td>
                 </tr>
                 ' . $tRows . '
                 ' . $bodyTagRow . '
             </table><br />';
 
-        $flashMessage = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(
-            \TYPO3\CMS\Core\Messaging\FlashMessage::class,
-            \Schnitzler\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('msgHeaderSet'),
+        $flashMessage = GeneralUtility::makeInstance(
+            FlashMessage::class,
+            static::getLanguageService()->getLL('msgHeaderSet'),
             '',
-            \TYPO3\CMS\Core\Messaging\FlashMessage::WARNING
+            FlashMessage::WARNING
         );
         $headerParts .= $flashMessage->render();
 
-        $headerParts .= $this->cshItem('xMOD_tx_templavoila', 'mapping_to_headerParts_buttons', $this->doc->backPath, '') . $htmlAfterDSTable;
+        $headerParts .= BackendUtility::cshItem('xMOD_tx_templavoila', 'mapping_to_headerParts_buttons', '', '') . $htmlAfterDSTable;
 
         // Return result:
         return $headerParts;
@@ -1932,21 +1914,21 @@ class tx_templavoila_cm1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass
      *
      * @return string HTML table.
      */
-    public function renderTemplateMapper($displayFile, $path, $dataStruct = [], $currentMappingInfo = [], $htmlAfterDSTable = '')
+    public function renderTemplateMapper($displayFile, $path, array $dataStruct = [], array $currentMappingInfo = [], $htmlAfterDSTable = '')
     {
 
         // Get file content
         $this->markupFile = $displayFile;
-        $fileContent = \TYPO3\CMS\Core\Utility\GeneralUtility::getUrl($this->markupFile);
+        $fileContent = GeneralUtility::getUrl($this->markupFile);
 
         // Init mark up object.
-        $this->markupObj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\Schnitzler\Templavoila\Domain\Model\HtmlMarkup::class);
+        $this->markupObj = GeneralUtility::makeInstance(HtmlMarkup::class);
 
         // Load splitted content from currentMappingInfo array (used to show us which elements maps to some real content).
         $contentSplittedByMapping = $this->markupObj->splitContentToMappingInfo($fileContent, $currentMappingInfo);
 
         // Show path:
-        $pathRendered = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode('|', $path, 1);
+        $pathRendered = GeneralUtility::trimExplode('|', $path, 1);
         $acc = [];
         foreach ($pathRendered as $k => $v) {
             $acc[] = $v;
@@ -1968,7 +1950,7 @@ class tx_templavoila_cm1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass
         $optDat[$lastEl['path'] . '/INNER'] = 'INNER (Exclude tag)';
 
         // Tags, which will trigger "INNER" to be listed on top (because it is almost always INNER-mapping that is needed)
-        if (\TYPO3\CMS\Core\Utility\GeneralUtility::inList('body,span,h1,h2,h3,h4,h5,h6,div,td,p,b,i,u,a', $lastEl['el'])) {
+        if (GeneralUtility::inList('body,span,h1,h2,h3,h4,h5,h6,div,td,p,b,i,u,a', $lastEl['el'])) {
             $optDat = array_reverse($optDat);
         }
 
@@ -1982,7 +1964,7 @@ class tx_templavoila_cm1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass
 
                 // If the element has an ID the path doesn't include parent nodes
                 // If it has an ID and a CSS Class - we need to throw that CSS Class(es) away - otherwise they won't match
-                $curPath = stristr($rEl, '#') ? preg_replace('/^(\w+)\.?.*#(.*)$/i', '\1#\2', $rEl) : trim($parentElement . ' ' . $rEl);
+                $curPath = strstr($rEl, '#') ? preg_replace('/^(\w+)\.?.*#(.*)$/i', '\1#\2', $rEl) : trim($parentElement . ' ' . $rEl);
                 if ($curPath == $lastEl['path']) {
                     $startFound = 1;
                 }
@@ -1992,7 +1974,7 @@ class tx_templavoila_cm1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass
         // Add options for attributes:
         if (is_array($attrDat)) {
             foreach ($attrDat as $attrK => $v) {
-                $optDat[$lastEl['path'] . '/ATTR:' . $attrK] = 'ATTRIBUTE "' . $attrK . '" (= ' . \TYPO3\CMS\Core\Utility\GeneralUtility::fixed_lgd_cs($v, 15) . ')';
+                $optDat[$lastEl['path'] . '/ATTR:' . $attrK] = 'ATTRIBUTE "' . $attrK . '" (= ' . GeneralUtility::fixed_lgd_cs($v, 15) . ')';
             }
         }
 
@@ -2002,33 +1984,33 @@ class tx_templavoila_cm1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass
             <!--
                 Data Structure table:
             -->
-            <table border="0" cellspacing="2" cellpadding="2" class="dso_table">
+            <table class="table dso_table">
             <tr class="bgColor5">
-                <td nowrap="nowrap"><strong>' . \Schnitzler\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('mapDataElement') . ':</strong>' .
-            $this->cshItem('xMOD_tx_templavoila', 'mapping_head_dataElement', $this->doc->backPath, '', true) .
+                <td nowrap="nowrap"><strong>' . static::getLanguageService()->getLL('mapDataElement') . ':</strong>' .
+            BackendUtility::cshItem('xMOD_tx_templavoila', 'mapping_head_dataElement', '', '') .
             '</td>
-        ' . ($this->editDataStruct ? '<td nowrap="nowrap"><strong>' . \Schnitzler\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('mapField') . ':</strong>' .
-                $this->cshItem('xMOD_tx_templavoila', 'mapping_head_Field', $this->doc->backPath, '', true) .
+        ' . ($this->editDataStruct ? '<td nowrap="nowrap"><strong>' . static::getLanguageService()->getLL('mapField') . ':</strong>' .
+                BackendUtility::cshItem('xMOD_tx_templavoila', 'mapping_head_Field', '', '') .
                 '</td>' : '') . '
-                <td nowrap="nowrap"><strong>' . (!$this->_preview ? \Schnitzler\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('mapInstructions') : \Schnitzler\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('mapSampleData')) . '</strong>' .
-            $this->cshItem('xMOD_tx_templavoila', 'mapping_head_' . (!$this->_preview ? 'mapping_instructions' : 'sample_data'), $this->doc->backPath, '', true) .
-            '<br /><img src="clear.gif" width="200" height="1" alt="" /></td>
-        <td nowrap="nowrap"><strong>' . \Schnitzler\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('mapHTMLpath') . ':</strong>' .
-            $this->cshItem('xMOD_tx_templavoila', 'mapping_head_HTMLpath', $this->doc->backPath, '', true) .
+                <td nowrap="nowrap"><strong>' . (!$this->_preview ? static::getLanguageService()->getLL('mapInstructions') : static::getLanguageService()->getLL('mapSampleData')) . '</strong>' .
+            BackendUtility::cshItem('xMOD_tx_templavoila', 'mapping_head_' . (!$this->_preview ? 'mapping_instructions' : 'sample_data'), '', '') .
             '</td>
-        <td nowrap="nowrap"><strong>' . \Schnitzler\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('mapAction') . ':</strong>' .
-            $this->cshItem('xMOD_tx_templavoila', 'mapping_head_Action', $this->doc->backPath, '', true) .
+        <td nowrap="nowrap"><strong>' . static::getLanguageService()->getLL('mapHTMLpath') . ':</strong>' .
+            BackendUtility::cshItem('xMOD_tx_templavoila', 'mapping_head_HTMLpath', '', '') .
             '</td>
-        <td nowrap="nowrap"><strong>' . \Schnitzler\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('mapRules') . ':</strong>' .
-            $this->cshItem('xMOD_tx_templavoila', 'mapping_head_Rules', $this->doc->backPath, '', true) .
+        <td nowrap="nowrap"><strong>' . static::getLanguageService()->getLL('mapAction') . ':</strong>' .
+            BackendUtility::cshItem('xMOD_tx_templavoila', 'mapping_head_Action', '', '') .
             '</td>
-        ' . ($this->editDataStruct ? '<td nowrap="nowrap"><strong>' . \Schnitzler\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('mapEdit') . ':</strong>' .
-                $this->cshItem('xMOD_tx_templavoila', 'mapping_head_Edit', $this->doc->backPath, '', true) .
+        <td nowrap="nowrap"><strong>' . static::getLanguageService()->getLL('mapRules') . ':</strong>' .
+            BackendUtility::cshItem('xMOD_tx_templavoila', 'mapping_head_Rules', '', '') .
+            '</td>
+        ' . ($this->editDataStruct ? '<td nowrap="nowrap"><strong>' . static::getLanguageService()->getLL('mapEdit') . ':</strong>' .
+                BackendUtility::cshItem('xMOD_tx_templavoila', 'mapping_head_Edit', '', '') .
                 '</td>' : '') . '
             </tr>
             ' . implode('', $this->drawDataStructureMap($dataStruct, 1, $currentMappingInfo, $pathLevels, $optDat, $contentSplittedByMapping)) . '</table>
             ' . $htmlAfterDSTable .
-            $this->cshItem('xMOD_tx_templavoila', 'mapping_basics', $this->doc->backPath, '');
+            BackendUtility::cshItem('xMOD_tx_templavoila', 'mapping_basics', '', '');
 
         // Make mapping window:
         $limitTags = implode(',', array_keys($this->explodeMappingToTagsStr($this->mappingToTags, 1)));
@@ -2039,12 +2021,20 @@ class tx_templavoila_cm1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass
                 <!--
                     Visual Mapping Window (Iframe)
                 -->
-                <h3>' . \Schnitzler\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('mapMappingWindow') . ':</h3>
-            <!-- <p><strong>File:</strong> ' . htmlspecialchars($displayFile) . '</p> -->
-            <p>' .
-                \TYPO3\CMS\Backend\Utility\BackendUtility::getFuncMenu('', 'SET[displayMode]', $this->MOD_SETTINGS['displayMode'], $this->MOD_MENU['displayMode'], 'index.php', \TYPO3\CMS\Core\Utility\GeneralUtility::implodeArrayForUrl('', $_GET, '', 1, 1)) .
-                $this->cshItem('xMOD_tx_templavoila', 'mapping_window_modes', $this->doc->backPath, '') .
-                '</p>';
+                <h3>' . static::getLanguageService()->getLL('mapMappingWindow') . ':</h3>
+            <!-- <p><strong>File:</strong> ' . htmlspecialchars($displayFile) . '</p> -->';
+
+            $content .= '<p><select onchange="document.location=this.options[this.selectedIndex].value">';
+            foreach ($this->MOD_MENU['displayMode'] as $value => $label) {
+                $url = $this->getModuleUrl([
+                    'SET' => [
+                        'displayMode' => $value
+                    ],
+                    '_preview' => 1
+                ]);
+                $content .= '<option value="' . $url . '" ' . ($this->getSetting('displayMode') === $value ? ' selected="selected"' : '') . '>' . $label . '</option>';
+            }
+            $content .= '</select></p>';
 
             if ($this->_preview) {
                 $content .= '
@@ -2052,36 +2042,36 @@ class tx_templavoila_cm1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass
                     <!--
                         Preview information table
                     -->
-                    <table border="0" cellpadding="4" cellspacing="2" id="c-mapInfo">
-                        <tr class="bgColor5"><td><strong>' . \Schnitzler\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('mapPreviewInfo') . ':</strong>' .
-                    $this->cshItem('xMOD_tx_templavoila', 'mapping_window_help', $this->doc->backPath, '') .
+                    <table class="table" id="c-mapInfo">
+                        <tr class="bgColor5"><td><strong>' . static::getLanguageService()->getLL('mapPreviewInfo') . ':</strong>' .
+                    BackendUtility::cshItem('xMOD_tx_templavoila', 'mapping_window_help', '', '') .
                     '</td></tr>
             </table>
         ';
 
                 // Add the Iframe:
-                $content .= $this->makeIframeForVisual($displayFile, '', '', 0, 1);
+                $content .= $this->makeIframeForVisual($displayFile, '', '', false, true);
             } else {
                 $tRows = [];
                 if ($this->showPathOnly) {
                     $tRows[] = '
                         <tr class="bgColor4">
-                            <td class="bgColor5"><strong>' . \Schnitzler\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('mapHTMLpath') . ':</strong></td>
+                            <td class="bgColor5"><strong>' . static::getLanguageService()->getLL('mapHTMLpath') . ':</strong></td>
                             <td>' . htmlspecialchars(str_replace('~~~', ' ', $this->displayPath)) . '</td>
                         </tr>
                     ';
                 } else {
                     $tRows[] = '
                         <tr class="bgColor4">
-                            <td class="bgColor5"><strong>' . \Schnitzler\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('mapDSelement') . ':</strong></td>
+                            <td class="bgColor5"><strong>' . static::getLanguageService()->getLL('mapDSelement') . ':</strong></td>
                             <td>' . $this->elNames[$this->mapElPath]['tx_templavoila']['title'] . '</td>
                         </tr>
                         <tr class="bgColor4">
-                            <td class="bgColor5"><strong>' . \Schnitzler\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('mapLimitToTags') . ':</strong></td>
+                            <td class="bgColor5"><strong>' . static::getLanguageService()->getLL('mapLimitToTags') . ':</strong></td>
                             <td>' . htmlspecialchars(($limitTags ? strtoupper($limitTags) : '(ALL TAGS)')) . '</td>
                         </tr>
                         <tr class="bgColor4">
-                            <td class="bgColor5"><strong>' . \Schnitzler\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('mapInstructions') . ':</strong></td>
+                            <td class="bgColor5"><strong>' . static::getLanguageService()->getLL('mapInstructions') . ':</strong></td>
                             <td>' . htmlspecialchars($this->elNames[$this->mapElPath]['tx_templavoila']['description']) . '</td>
                         </tr>
                     ';
@@ -2091,7 +2081,7 @@ class tx_templavoila_cm1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass
                     <!--
                         Mapping information table
                     -->
-                    <table border="0" cellpadding="2" cellspacing="2" id="c-mapInfo">
+                    <table class="table" id="c-mapInfo">
                         ' . implode('', $tRows) . '
                     </table>
                 ';
@@ -2115,32 +2105,32 @@ class tx_templavoila_cm1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass
      *
      * @return array Array containing 0 => parentElement (string) and 1 => sameLevelElements (array)
      */
-    protected function getRangeParameters($lastEl, $elParentLevel)
+    protected function getRangeParameters($lastEl, array $elParentLevel)
     {
         /*
          * Add options for "samelevel" elements -
          * If element has an id the "parent" is empty, therefore we need two steps to get the elements (see #11842)
          */
         $sameLevelElements = [];
-        if (strlen($lastEl['parent'])) {
+        if ((string)$lastEl['parent'] !== '') {
             // we have a "named" parent
             $parentElement = $lastEl['parent'];
             $sameLevelElements = $elParentLevel[$parentElement];
-        } elseif (count($elParentLevel) == 1) {
+        } elseif (count($elParentLevel) === 1) {
             // we have no real parent - happens if parent element is mapped with INNER
             $parentElement = $lastEl['parent'];
             $sameLevelElements = $elParentLevel[$parentElement];
         } else {
             //there's no parent - maybe because it was wrapped with INNER therefore we try to find it ourselfs
             $parentElement = '';
-            $hasId = stristr($lastEl['path'], '#');
+            $hasId = strstr($lastEl['path'], '#');
             foreach ($elParentLevel as $pKey => $pValue) {
                 if (in_array($lastEl['path'], $pValue)) {
                     $parentElement = $pKey;
                     break;
                 } elseif ($hasId) {
                     foreach ($pValue as $pElement) {
-                        if (stristr($pElement, '#') && preg_replace('/^(\w+)\.?.*#(.*)$/i', '\1#\2', $pElement) == $lastEl['path']) {
+                        if (strstr($pElement, '#') && preg_replace('/^(\w+)\.?.*#(.*)$/i', '\1#\2', $pElement) == $lastEl['path']) {
                             $parentElement = $pKey;
                             break;
                         }
@@ -2193,10 +2183,10 @@ class tx_templavoila_cm1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass
      *
      * @return array Table rows as an array of <tr> tags, $tRows
      */
-    public function drawDataStructureMap($dataStruct, $mappingMode = 0, $currentMappingInfo = [], $pathLevels = [], $optDat = [], $contentSplittedByMapping = [], $level = 0, $tRows = [], $formPrefix = '', $path = '', $mapOK = 1)
+    public function drawDataStructureMap($dataStruct, $mappingMode = 0, array $currentMappingInfo = [], array $pathLevels = [], array $optDat = [], array $contentSplittedByMapping = [], $level = 0, array $tRows = [], $formPrefix = '', $path = '', $mapOK = 1)
     {
-        $bInfo = \TYPO3\CMS\Core\Utility\GeneralUtility::clientInfo();
-        $multilineTooltips = ($bInfo['BROWSER'] == 'msie');
+        $bInfo = GeneralUtility::clientInfo();
+        $multilineTooltips = ($bInfo['BROWSER'] === 'msie');
         $rowIndex = -1;
 
         // Data Structure array must be ... and array of course...
@@ -2204,7 +2194,7 @@ class tx_templavoila_cm1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass
             foreach ($dataStruct as $key => $value) {
                 $rowIndex++;
 
-                if ($key == 'meta') {
+                if ($key === 'meta') {
                     // Do not show <meta> information in mapping interface!
                     continue;
                 }
@@ -2222,14 +2212,14 @@ class tx_templavoila_cm1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass
 
                     // Composing title-cell:
                     if (preg_match('/^LLL:/', $value['tx_templavoila']['title'])) {
-                        $translatedTitle = \Schnitzler\Templavoila\Utility\GeneralUtility::getLanguageService()->sL($value['tx_templavoila']['title']);
-                        $translateIcon = '<sup title="' . \Schnitzler\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('displayDSTitleTranslated') . '">*</sup>';
+                        $translatedTitle = static::getLanguageService()->sL($value['tx_templavoila']['title']);
+                        $translateIcon = '<sup title="' . static::getLanguageService()->getLL('displayDSTitleTranslated') . '">*</sup>';
                     } else {
                         $translatedTitle = $value['tx_templavoila']['title'];
                         $translateIcon = '';
                     }
-                    $this->elNames[$formPrefix . '[' . $key . ']']['tx_templavoila']['title'] = $icon . '<strong>' . htmlspecialchars(\TYPO3\CMS\Core\Utility\GeneralUtility::fixed_lgd_cs($translatedTitle, 30)) . '</strong>' . $translateIcon;
-                    $rowCells['title'] = '<img src="clear.gif" width="' . ($level * 16) . '" height="1" alt="" />' . $this->elNames[$formPrefix . '[' . $key . ']']['tx_templavoila']['title'];
+                    $this->elNames[$formPrefix . '[' . $key . ']']['tx_templavoila']['title'] = $icon . '<strong>' . htmlspecialchars(GeneralUtility::fixed_lgd_cs($translatedTitle, 30)) . '</strong>' . $translateIcon;
+                    $rowCells['title'] = '<span style="padding-left:' . ($level * 16) . 'px;">' . $this->elNames[$formPrefix . '[' . $key . ']']['tx_templavoila']['title'] . '</span>';
 
                     // Description:
                     $this->elNames[$formPrefix . '[' . $key . ']']['tx_templavoila']['description'] = $rowCells['description'] = htmlspecialchars($value['tx_templavoila']['description']);
@@ -2243,46 +2233,48 @@ class tx_templavoila_cm1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass
 
                             $mappingElement = str_replace('~~~', ' ', $currentMappingInfo[$key]['MAP_EL']);
                             if (isset($contentSplittedByMapping['cArray'][$key])) { // If mapping of this information also succeeded...:
-                                $cF = implode(chr(10), \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(chr(10), $contentSplittedByMapping['cArray'][$key], 1));
+                                $cF = implode(chr(10), GeneralUtility::trimExplode(chr(10), $contentSplittedByMapping['cArray'][$key], 1));
 
                                 if (strlen($cF) > 200) {
-                                    $cF = \TYPO3\CMS\Core\Utility\GeneralUtility::fixed_lgd_cs($cF, 90) . ' ' . \TYPO3\CMS\Core\Utility\GeneralUtility::fixed_lgd_cs($cF, -90);
+                                    $cF = GeneralUtility::fixed_lgd_cs($cF, 90) . ' ' . GeneralUtility::fixed_lgd_cs($cF, -90);
                                 }
 
                                 // Render HTML path:
                                 list($pI) = $this->markupObj->splitPath($currentMappingInfo[$key]['MAP_EL']);
 
-                                $okTitle = htmlspecialchars($cF ? sprintf(\Schnitzler\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('displayDSContentFound'), strlen($contentSplittedByMapping['cArray'][$key])) . ($multilineTooltips ? ':' . chr(10) . chr(10) . $cF : '') : \Schnitzler\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('displayDSContentEmpty'));
+                                $okTitle = htmlspecialchars($cF ? sprintf(static::getLanguageService()->getLL('displayDSContentFound'), strlen($contentSplittedByMapping['cArray'][$key])) . ($multilineTooltips ? ':' . chr(10) . chr(10) . $cF : '') : static::getLanguageService()->getLL('displayDSContentEmpty'));
 
-                                $rowCells['htmlPath'] = \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('status-dialog-ok', ['title' => $okTitle]) .
-                                    \Schnitzler\Templavoila\Domain\Model\HtmlMarkup::getGnyfMarkup($pI['el'], '---' . htmlspecialchars(\TYPO3\CMS\Core\Utility\GeneralUtility::fixed_lgd_cs($mappingElement, -80))) .
-                                    ($pI['modifier'] ? $pI['modifier'] . ($pI['modifier_value'] ? ':' . ($pI['modifier'] != 'RANGE' ? $pI['modifier_value'] : '...') : '') : '');
-                                $rowCells['htmlPath'] = '<a href="' . $this->linkThisScript([
+                                $rowCells['htmlPath'] = $this->getModuleTemplate()->getIconFactory()->getIcon('status-dialog-ok', Icon::SIZE_SMALL) .
+                                    HtmlMarkup::getGnyfMarkup($pI['el'], '---' . htmlspecialchars(GeneralUtility::fixed_lgd_cs($mappingElement, -80))) .
+                                    ($pI['modifier'] ? $pI['modifier'] . ($pI['modifier_value'] ? ':' . ($pI['modifier'] !== 'RANGE' ? $pI['modifier_value'] : '...') : '') : '');
+                                $rowCells['htmlPath'] = '<a href="' . $this->getModuleUrl([
                                         'htmlPath' => $path . ($path ? '|' : '') . preg_replace('/\/[^ ]*$/', '', $currentMappingInfo[$key]['MAP_EL']),
                                         'showPathOnly' => 1,
-                                        'DS_element' => \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('DS_element')
+                                        'DS_element' => GeneralUtility::_GP('DS_element')
                                     ]) . '">' . $rowCells['htmlPath'] . '</a>';
 
+                                $remapUrl = $this->getModuleUrl([
+                                    'mapElPath' => $formPrefix . '[' . $key . ']',
+                                    'htmlPath' => $path,
+                                    'mappingToTags' => $value['tx_templavoila']['tags'],
+                                    'DS_element' => GeneralUtility::_GP('DS_element')
+                                ]);
+
+                                $changeModeUrl = $this->getModuleUrl([
+                                    'mapElPath' => $formPrefix . '[' . $key . ']',
+                                    'htmlPath' => $path . ($path ? '|' : '') . $pI['path'],
+                                    'doMappingOfPath' => 1,
+                                    'DS_element' => GeneralUtility::_GP('DS_element')
+                                ]);
+
                                 // CMD links, default content:
-                                $rowCells['cmdLinks'] = '<span class="nobr"><input type="submit" value="Re-Map" name="_" onclick="document.location=\'' .
-                                    $this->linkThisScript([
-                                        'mapElPath' => $formPrefix . '[' . $key . ']',
-                                        'htmlPath' => $path,
-                                        'mappingToTags' => $value['tx_templavoila']['tags'],
-                                        'DS_element' => \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('DS_element')
-                                    ]) . '\';return false;" title="' . \Schnitzler\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('buttonRemapTitle') . '" />' .
-                                    '<input type="submit" value="' . \Schnitzler\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('buttonChangeMode') . '" name="_" onclick="document.location=\'' .
-                                    $this->linkThisScript([
-                                        'mapElPath' => $formPrefix . '[' . $key . ']',
-                                        'htmlPath' => $path . ($path ? '|' : '') . $pI['path'],
-                                        'doMappingOfPath' => 1,
-                                        'DS_element' => \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('DS_element')
-                                    ]) . '\';return false;" title="' . \Schnitzler\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('buttonChangeMode') . '" /></span>';
+                                $rowCells['cmdLinks'] = '<div class="btn-group btn-group-sm" role="group"><a class="btn btn-default btn-sm" href="' . $remapUrl . '" title="' . static::getLanguageService()->getLL('buttonRemapTitle') . '" />Re-Map</a>' .
+                                    '<a class="btn btn-default btn-sm" href="' . $changeModeUrl . '" title="' . static::getLanguageService()->getLL('buttonChangeMode') . '" />' . static::getLanguageService()->getLL('buttonChangeMode') . '</a>';
 
                                 // If content mapped ok, set flag:
                                 $isMapOK = 1;
                             } else { // Issue warning if mapping was lost:
-                                $rowCells['htmlPath'] = \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('status-dialog-warning', ['title' => \Schnitzler\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('msgNoContentFound')]) . htmlspecialchars($mappingElement);
+                                $rowCells['htmlPath'] = $this->getModuleTemplate()->getIconFactory()->getIcon('status-dialog-warning', ['title' => static::getLanguageService()->getLL('msgNoContentFound')]) . htmlspecialchars($mappingElement);
                             }
                         } else { // For non-mapped cases, just output a no-break-space:
                             $rowCells['htmlPath'] = '&nbsp;';
@@ -2306,16 +2298,15 @@ class tx_templavoila_cm1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass
                                 foreach ($optDat as $k => $v) {
                                     list($pI) = $this->markupObj->splitPath($k);
 
-                                    if (($value['type'] == 'attr' && $pI['modifier'] == 'ATTR') || ($value['type'] != 'attr' && $pI['modifier'] != 'ATTR')) {
+                                    if (($value['type'] === 'attr' && $pI['modifier'] === 'ATTR') || ($value['type'] !== 'attr' && $pI['modifier'] !== 'ATTR')) {
                                         if (
-                                            (!$this->markupObj->tags[$lastLevel['el']]['single'] || $pI['modifier'] != 'INNER') &&
-                                            (!is_array($mapDat) || ($pI['modifier'] != 'ATTR' && isset($mapDat[strtolower($pI['modifier'] ? $pI['modifier'] : 'outer')])) || ($pI['modifier'] == 'ATTR' && (isset($mapDat['attr']['*']) || isset($mapDat['attr'][$pI['modifier_value']]))))
+                                            (!$this->markupObj->tags[$lastLevel['el']]['single'] || $pI['modifier'] !== 'INNER') &&
+                                            (!is_array($mapDat) || ($pI['modifier'] !== 'ATTR' && isset($mapDat[strtolower($pI['modifier'] ? $pI['modifier'] : 'outer')])) || ($pI['modifier'] === 'ATTR' && (isset($mapDat['attr']['*']) || isset($mapDat['attr'][$pI['modifier_value']]))))
 
                                         ) {
+                                            $sel = '';
                                             if ($k == $currentMappingInfo[$key]['MAP_EL']) {
                                                 $sel = ' selected="selected"';
-                                            } else {
-                                                $sel = '';
                                             }
                                             $opt[] = '<option value="' . htmlspecialchars($k) . '"' . $sel . '>' . htmlspecialchars($v) . '</option>';
                                         }
@@ -2323,55 +2314,57 @@ class tx_templavoila_cm1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass
                                 }
 
                                 // Finally, put together the selector box:
-                                $rowCells['cmdLinks'] = \Schnitzler\Templavoila\Domain\Model\HtmlMarkup::getGnyfMarkup($pI['el'], '---' . htmlspecialchars(\TYPO3\CMS\Core\Utility\GeneralUtility::fixed_lgd_cs($lastLevel['path'], -80))) .
+                                $rowCells['cmdLinks'] = HtmlMarkup::getGnyfMarkup($pI['el'], '---' . htmlspecialchars(GeneralUtility::fixed_lgd_cs($lastLevel['path'], -80))) .
                                     '<br /><select name="dataMappingForm' . $formPrefix . '[' . $key . '][MAP_EL]">
                                         ' . implode('
                                         ', $opt) . '
                                         <option value=""></option>
                                     </select>
                                     <br />
-                                    <input type="submit" name="_save_data_mapping" value="' . \Schnitzler\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('buttonSet') . '" />
-                                    <input type="submit" name="_" value="' . \Schnitzler\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('buttonCancel') . '" />';
+                                    <input type="submit" class="btn btn-default btn-sm" name="_save_data_mapping" value="' . static::getLanguageService()->getLL('buttonSet') . '" />
+                                    <input type="submit" class="btn btn-default btn-sm" name="_" value="' . static::getLanguageService()->getLL('buttonCancel') . '" />';
                                 $rowCells['cmdLinks'] .=
-                                    $this->cshItem('xMOD_tx_templavoila', 'mapping_modeset', $this->doc->backPath, '', false, 'margin-bottom: 0px;');
+                                    BackendUtility::cshItem('xMOD_tx_templavoila', 'mapping_modeset', '', '');
                             } else {
-                                $rowCells['cmdLinks'] = \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('status-dialog-notification') . '
-                                                        <strong>' . \Schnitzler\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('msgHowToMap') . '</strong>';
+                                $rowCells['cmdLinks'] = $this->getModuleTemplate()->getIconFactory()->getIcon('status-dialog-notification', Icon::SIZE_SMALL) . '
+                                                        <strong>' . static::getLanguageService()->getLL('msgHowToMap') . '</strong>';
+
+                                $cancelUrl = $this->getModuleUrl([
+                                    'DS_element' => GeneralUtility::_GP('DS_element')
+                                ]);
+
                                 $rowCells['cmdLinks'] .= '<br />
-                                        <input type="submit" value="' . \Schnitzler\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('buttonCancel') . '" name="_" onclick="document.location=\'' .
-                                    $this->linkThisScript([
-                                        'DS_element' => \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('DS_element')
-                                    ]) . '\';return false;" />';
+                                        <a class="btn btn-default btn-sm" href="' . $cancelUrl . '">' . static::getLanguageService()->getLL('buttonCancel') . '</a>';
                             }
-                        } elseif (!$rowCells['cmdLinks'] && $mapOK && $value['type'] != 'no_map') {
-                            $rowCells['cmdLinks'] = '<input type="submit" value="' . \Schnitzler\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('buttonMap') . '" name="_" onclick="document.location=\'' .
-                                $this->linkThisScript([
+                        } elseif (!$rowCells['cmdLinks'] && $mapOK && $value['type'] !== 'no_map') {
+                            $rowCells['cmdLinks'] = '<input type="submit" class="btn btn-default btn-sm" value="' . static::getLanguageService()->getLL('buttonMap') . '" name="_" onclick="document.location=\'' .
+                                $this->getModuleUrl([
                                     'mapElPath' => $formPrefix . '[' . $key . ']',
                                     'htmlPath' => $path,
                                     'mappingToTags' => $value['tx_templavoila']['tags'],
-                                    'DS_element' => \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('DS_element')
+                                    'DS_element' => GeneralUtility::_GP('DS_element')
                                 ]) . '\';return false;" />';
                         }
                     }
 
                     // Display mapping rules:
-                    $rowCells['tagRules'] = implode('<br />', \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', strtolower($value['tx_templavoila']['tags']), 1));
+                    $rowCells['tagRules'] = implode('<br />', GeneralUtility::trimExplode(',', strtolower($value['tx_templavoila']['tags']), 1));
                     if (!$rowCells['tagRules']) {
                         $rowCells['tagRules'] = $GLOBALS['LANG']->getLL('all');
                     }
 
                     // Display edit/delete icons:
                     if ($this->editDataStruct) {
-                        $editAddCol = '<a href="' . $this->linkThisScript([
+                        $editAddCol = '<a href="' . $this->getModuleUrl([
                                 'DS_element' => $formPrefix . '[' . $key . ']'
                             ]) . '">' .
-                            \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-document-open', ['title' => \Schnitzler\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('editEntry')]) .
+                            $this->getModuleTemplate()->getIconFactory()->getIcon('actions-document-open', Icon::SIZE_SMALL) .
                             '</a>
-                            <a href="' . $this->linkThisScript([
+                            <a href="' . $this->getModuleUrl([
                                 'DS_element_DELETE' => $formPrefix . '[' . $key . ']'
                             ]) . '"
-                                            onClick="return confirm(' . \TYPO3\CMS\Core\Utility\GeneralUtility::quoteJSvalue(\Schnitzler\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('confirmDeleteEntry')) . ');">' .
-                            \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-edit-delete', ['title' => \Schnitzler\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('deleteEntry')]) .
+                                            onClick="return confirm(' . GeneralUtility::quoteJSvalue(static::getLanguageService()->getLL('confirmDeleteEntry')) . ');">' .
+                            $this->getModuleTemplate()->getIconFactory()->getIcon('actions-edit-delete', Icon::SIZE_SMALL) .
                             '</a>';
                         $editAddCol = '<td nowrap="nowrap">' . $editAddCol . '</td>';
                     } else {
@@ -2381,9 +2374,9 @@ class tx_templavoila_cm1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass
                     // Description:
                     if ($this->_preview) {
                         if (!is_array($value['tx_templavoila']['sample_data'])) {
-                            $rowCells['description'] = '[' . \Schnitzler\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('noSampleData') . ']';
+                            $rowCells['description'] = '[' . static::getLanguageService()->getLL('noSampleData') . ']';
                         } else {
-                            $rowCells['description'] = \TYPO3\CMS\Core\Utility\DebugUtility::viewArray($value['tx_templavoila']['sample_data']);
+//                            $rowCells['description'] = DebugUtility::viewArray($value['tx_templavoila']['sample_data']);
                         }
                     }
 
@@ -2417,16 +2410,16 @@ class tx_templavoila_cm1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass
                     }
 
                     // Recursive call:
-                    if (($value['type'] == 'array') ||
-                        ($value['type'] == 'section')
+                    if (($value['type'] === 'array') ||
+                        ($value['type'] === 'section')
                     ) {
                         $tRows = $this->drawDataStructureMap(
                             $value['el'],
                             $mappingMode,
-                            $currentMappingInfo[$key]['el'],
+                            is_array($currentMappingInfo[$key]['el']) ? $currentMappingInfo[$key]['el'] : [],
                             $pathLevels,
                             $optDat,
-                            $contentSplittedByMapping['sub'][$key],
+                            is_array($contentSplittedByMapping['sub'][$key]) ? $contentSplittedByMapping['sub'][$key] : [],
                             $level + 1,
                             $tRows,
                             $formPrefix . '[' . $key . '][el]',
@@ -2462,9 +2455,9 @@ class tx_templavoila_cm1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass
     public function getDataStructFromDSO($datString, $file = '')
     {
         if ($file) {
-            $dataStruct = \TYPO3\CMS\Core\Utility\GeneralUtility::xml2array(\TYPO3\CMS\Core\Utility\GeneralUtility::getUrl($file));
+            $dataStruct = GeneralUtility::xml2array(GeneralUtility::getUrl($file));
         } else {
-            $dataStruct = \TYPO3\CMS\Core\Utility\GeneralUtility::xml2array($datString);
+            $dataStruct = GeneralUtility::xml2array($datString);
         }
 
         return $dataStruct;
@@ -2485,36 +2478,9 @@ class tx_templavoila_cm1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass
             'path' => $path,
             'mode' => 'display'
         ];
-        $p = \TYPO3\CMS\Core\Utility\GeneralUtility::implodeArrayForUrl('', $theArray);
+        $p = GeneralUtility::implodeArrayForUrl('', $theArray);
 
-        $content .= '<strong><a href="' . htmlspecialchars('index.php?' . $p) . '" target="display">' . $title . '</a></strong>';
-
-        return $content;
-    }
-
-    /**
-     * Creates a link to this script, maintaining the values of the displayFile, displayTable, displayUid variables.
-     * Primarily used by ->drawDataStructureMap
-     *
-     * @param array $array Overriding parameters.
-     *
-     * @return string URL, already htmlspecialchars()'ed
-     *
-     * @see drawDataStructureMap()
-     */
-    public function linkThisScript($array = [])
-    {
-        $theArray = [
-            'id' => $this->id, // id of the current sysfolder
-            'file' => $this->displayFile,
-            'table' => $this->displayTable,
-            'uid' => $this->displayUid,
-            'returnUrl' => $this->returnUrl,
-            '_load_ds_xml_to' => $this->_load_ds_xml_to
-        ];
-        $p = \TYPO3\CMS\Core\Utility\GeneralUtility::implodeArrayForUrl('', array_merge($theArray, $array), '', 1);
-
-        return htmlspecialchars('index.php?' . $p);
+        return '<strong><a href="' . htmlspecialchars('index.php?' . $p) . '" target="display">' . $title . '</a></strong>';
     }
 
     /**
@@ -2524,21 +2490,29 @@ class tx_templavoila_cm1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass
      * @param string $path HTML-page
      * @param string $limitTags Tags which is the only ones to show
      * @param bool $showOnly If set, the template is only shown, mapping links disabled.
-     * @param int $preview Preview enabled.
+     * @param bool $preview Preview enabled.
      *
      * @return string HTML code for the IFRAME.
      *
      * @see main_display()
      */
-    public function makeIframeForVisual($file, $path, $limitTags, $showOnly, $preview = 0)
+    public function makeIframeForVisual($file, $path, $limitTags, $showOnly, $preview = false)
     {
-        $url = 'index.php?mode=display' .
-            '&file=' . rawurlencode($file) .
-            '&path=' . rawurlencode($path) .
-            '&preview=' . ($preview ? 1 : 0) .
-            ($showOnly ? '&show=1' : '&limitTags=' . rawurlencode($limitTags));
+        $params = [
+            'id' => $this->getId(),
+            'mode' => 'display',
+            'file' => $file,
+            'path' => $path,
+            'preview' => $preview ? 1 : 0,
+        ];
 
-        return '<iframe id="templavoila-frame-visual" src="' . htmlspecialchars($url) . '#_MARKED_UP_ELEMENT"></iframe>';
+        if ($showOnly) {
+            $params['show'] = 1;
+        } else {
+            $params['limitTags'] = $limitTags;
+        }
+
+        return '<iframe id="templavoila-frame-visual" style="min-height:600px" src="' . BackendUtility::getModuleUrl($this->getModuleName(), $params) . '#_MARKED_UP_ELEMENT"></iframe>';
     }
 
     /**
@@ -2551,10 +2525,10 @@ class tx_templavoila_cm1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass
      */
     public function explodeMappingToTagsStr($mappingToTags, $unsetAll = 0)
     {
-        $elements = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', strtolower($mappingToTags));
+        $elements = GeneralUtility::trimExplode(',', strtolower($mappingToTags));
         $output = [];
         foreach ($elements as $v) {
-            $subparts = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(':', $v);
+            $subparts = GeneralUtility::trimExplode(':', $v);
             $output[$subparts[0]][$subparts[1]][($subparts[2] ? $subparts[2] : '*')] = 1;
         }
         if ($unsetAll) {
@@ -2607,19 +2581,17 @@ class tx_templavoila_cm1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass
      */
     public function findingStorageFolderIds()
     {
+        /** @var TemplateRepository $templateRepository */
+        $templateRepository = GeneralUtility::makeInstance(TemplateRepository::class);
+        $storagePids = $templateRepository->getTemplateStoragePids();
+
         // Init:
-        $readPerms = \Schnitzler\Templavoila\Utility\GeneralUtility::getBackendUser()->getPagePermsClause(1);
+        $readPerms = static::getBackendUser()->getPagePermsClause(1);
         $this->storageFolders = [];
 
-        // Looking up all references to a storage folder:
-        $res = \Schnitzler\Templavoila\Utility\GeneralUtility::getDatabaseConnection()->exec_SELECTquery(
-            'uid,storage_pid',
-            'pages',
-            'storage_pid>0' . \TYPO3\CMS\Backend\Utility\BackendUtility::deleteClause('pages')
-        );
-        while (false !== ($row = \Schnitzler\Templavoila\Utility\GeneralUtility::getDatabaseConnection()->sql_fetch_assoc($res))) {
-            if (\Schnitzler\Templavoila\Utility\GeneralUtility::getBackendUser()->isInWebMount($row['storage_pid'], $readPerms)) {
-                $storageFolder = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecord('pages', $row['storage_pid'], 'uid,title');
+        foreach ($storagePids as $storagePid) {
+            if (static::getBackendUser()->isInWebMount($storagePid, $readPerms)) {
+                $storageFolder = BackendUtility::getRecord('pages', $storagePid, 'uid,title');
                 if ($storageFolder['uid']) {
                     $this->storageFolders[$storageFolder['uid']] = $storageFolder['title'];
                 }
@@ -2627,18 +2599,18 @@ class tx_templavoila_cm1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass
         }
 
         // Looking up all root-pages and check if there's a tx_templavoila.storagePid setting present
-        $res = \Schnitzler\Templavoila\Utility\GeneralUtility::getDatabaseConnection()->exec_SELECTquery(
+        $res = static::getDatabaseConnection()->exec_SELECTquery(
             'pid,root',
             'sys_template',
-            'root=1' . \TYPO3\CMS\Backend\Utility\BackendUtility::deleteClause('sys_template')
+            'root=1' . BackendUtility::deleteClause('sys_template')
         );
-        while (false !== ($row = \Schnitzler\Templavoila\Utility\GeneralUtility::getDatabaseConnection()->sql_fetch_assoc($res))) {
-            $tsCconfig = \TYPO3\CMS\Backend\Utility\BackendUtility::getModTSconfig($row['pid'], 'tx_templavoila');
+        while (false !== ($row = static::getDatabaseConnection()->sql_fetch_assoc($res))) {
+            $tsCconfig = BackendUtility::getModTSconfig($row['pid'], 'tx_templavoila');
             if (
                 isset($tsCconfig['properties']['storagePid']) &&
-                \Schnitzler\Templavoila\Utility\GeneralUtility::getBackendUser()->isInWebMount($tsCconfig['properties']['storagePid'], $readPerms)
+                static::getBackendUser()->isInWebMount($tsCconfig['properties']['storagePid'], $readPerms)
             ) {
-                $storageFolder = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecord('pages', $tsCconfig['properties']['storagePid'], 'uid,title');
+                $storageFolder = BackendUtility::getRecord('pages', $tsCconfig['properties']['storagePid'], 'uid,title');
                 if ($storageFolder['uid']) {
                     $this->storageFolders[$storageFolder['uid']] = $storageFolder['title'];
                 }
@@ -2666,15 +2638,15 @@ class tx_templavoila_cm1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass
     {
 
         // Setting GPvars:
-        $this->displayFile = \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('file');
-        $this->show = \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('show');
-        $this->preview = \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('preview');
-        $this->limitTags = \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('limitTags');
-        $this->path = \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('path');
+        $this->displayFile = GeneralUtility::_GP('file');
+        $this->show = GeneralUtility::_GP('show');
+        $this->preview = GeneralUtility::_GP('preview');
+        $this->limitTags = GeneralUtility::_GP('limitTags');
+        $this->path = GeneralUtility::_GP('path');
 
         // Checking if the displayFile parameter is set:
-        if (@is_file($this->displayFile) && \TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName($this->displayFile)) { // FUTURE: grabbing URLS?:         .... || substr($this->displayFile,0,7)=='http://'
-            $content = \TYPO3\CMS\Core\Utility\GeneralUtility::getUrl($this->displayFile);
+        if (@is_file($this->displayFile) && GeneralUtility::getFileAbsFileName($this->displayFile)) { // FUTURE: grabbing URLS?:         .... || substr($this->displayFile,0,7)=='http://'
+            $content = GeneralUtility::getUrl($this->displayFile);
             if ($content) {
                 $relPathFix = $GLOBALS['BACK_PATH'] . '../' . dirname(substr($this->displayFile, strlen(PATH_site))) . '/';
 
@@ -2688,10 +2660,10 @@ class tx_templavoila_cm1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass
                 // Output content:
                 echo $content;
             } else {
-                $this->displayFrameError(\Schnitzler\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('errorNoContentInFile') . ': <em>' . htmlspecialchars($this->displayFile) . '</em>');
+                $this->displayFrameError(static::getLanguageService()->getLL('errorNoContentInFile') . ': <em>' . htmlspecialchars($this->displayFile) . '</em>');
             }
         } else {
-            $this->displayFrameError(\Schnitzler\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('errorNoFileToDisplay'));
+            $this->displayFrameError(static::getLanguageService()->getLL('errorNoFileToDisplay'));
         }
 
         // Exit since a full page has been outputted now.
@@ -2712,7 +2684,7 @@ class tx_templavoila_cm1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass
      */
     public function displayFileContentWithMarkup($content, $path, $relPathFix, $limitTags)
     {
-        $markupObj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\Schnitzler\Templavoila\Domain\Model\HtmlMarkup::class);
+        $markupObj = GeneralUtility::makeInstance(HtmlMarkup::class);
         $markupObj->gnyfImgAdd = $this->show ? '' : 'onclick="return parent.updPath(\'###PATH###\');"';
         $markupObj->pathPrefix = $path ? $path . '|' : '';
         $markupObj->onlyElements = $limitTags;
@@ -2726,10 +2698,10 @@ class tx_templavoila_cm1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass
                 $GLOBALS['BACK_PATH'],
                 $relPathFix,
                 implode(',', array_keys($markupObj->tags)),
-                $this->MOD_SETTINGS['displayMode']
+                $this->getSetting('displayMode')
             );
-            $cParts[0] = $markupObj->passthroughHTMLcontent($cParts[0], $relPathFix, $this->MOD_SETTINGS['displayMode']);
-            $cParts[2] = $markupObj->passthroughHTMLcontent($cParts[2], $relPathFix, $this->MOD_SETTINGS['displayMode']);
+            $cParts[0] = $markupObj->passthroughHTMLcontent($cParts[0], $relPathFix, $this->getSetting('displayMode'));
+            $cParts[2] = $markupObj->passthroughHTMLcontent($cParts[2], $relPathFix, $this->getSetting('displayMode'));
             if (trim($cParts[0])) {
                 $cParts[1] = '<a name="_MARKED_UP_ELEMENT"></a>' . $cParts[1];
             }
@@ -2763,12 +2735,12 @@ class tx_templavoila_cm1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass
     {
 
         // Getting session data to get currentMapping info:
-        $sesDat = \Schnitzler\Templavoila\Utility\GeneralUtility::getBackendUser()->getSessionData($this->sessionKey);
+        $sesDat = static::getBackendUser()->getSessionData($this->sessionKey);
         $currentMappingInfo = is_array($sesDat['currentMappingInfo']) ? $sesDat['currentMappingInfo'] : [];
 
         // Init mark up object.
-        $this->markupObj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\Schnitzler\Templavoila\Domain\Model\HtmlMarkup::class);
-        $this->markupObj->htmlParse = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\Html\HtmlParser::class);
+        $this->markupObj = GeneralUtility::makeInstance(HtmlMarkup::class);
+        $this->markupObj->htmlParse = GeneralUtility::makeInstance(HtmlParser::class);
 
         // Splitting content, adding a random token for the part to be previewed:
         $contentSplittedByMapping = $this->markupObj->splitContentToMappingInfo($content, $currentMappingInfo);
@@ -2778,7 +2750,7 @@ class tx_templavoila_cm1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass
         // Exploding by that token and traverse content:
         $pp = explode($token, $content);
         foreach ($pp as $kk => $vv) {
-            $pp[$kk] = $this->markupObj->passthroughHTMLcontent($vv, $relPathFix, $this->MOD_SETTINGS['displayMode'], $kk == 1 ? 'font-size:11px; color:#000066;' : '');
+            $pp[$kk] = $this->markupObj->passthroughHTMLcontent($vv, $relPathFix, $this->getSetting('displayMode'), $kk == 1 ? 'font-size:11px; color:#000066;' : '');
         }
 
         // Adding a anchor point (will work in most cases unless put into a table/tr tag etc).
@@ -2820,36 +2792,15 @@ class tx_templavoila_cm1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass
     }
 
     /**
-     * Wrapper function for context sensitive help - for downwards compatibility with TYPO3 prior 3.7.x
-     *
-     * @param string $table Table name ('_MOD_'+module name)
-     * @param string $field Field name (CSH locallang main key)
-     * @param string $BACK_PATH Back path
-     * @param string $wrap Wrap code for icon-mode, splitted by "|". Not used for full-text mode.
-     * @param bool $onlyIconMode If set, the full text will never be shown (only icon). Useful for places where it will break the page if the table with full text is shown.
-     * @param string $styleAttrib Additional style-attribute content for wrapping table (full text mode only)
-     *
-     * @return string HTML content for help text
-     */
-    public function cshItem($table, $field, $BACK_PATH, $wrap = '', $onlyIconMode = false, $styleAttrib = '')
-    {
-        if (is_callable(['\TYPO3\CMS\Backend\Utility\BackendUtility', 'cshItem'])) {
-            return \TYPO3\CMS\Backend\Utility\BackendUtility::cshItem($table, $field, $BACK_PATH, $wrap, $onlyIconMode, $styleAttrib);
-        }
-
-        return '';
-    }
-
-    /**
      * @param string $formElementName
      *
      * @return string
      */
     public function lipsumLink($formElementName)
     {
-        if (\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('lorem_ipsum')) {
-            $LRobj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\tx_loremipsum_wiz::class);
-            $LRobj->backPath = $this->doc->backPath;
+        if (ExtensionManagementUtility::isLoaded('lorem_ipsum')) {
+            $LRobj = GeneralUtility::makeInstance(\tx_loremipsum_wiz::class);
+            $LRobj->backPath = '';
 
             $PA = [
                 'fieldChangeFunc' => [],
@@ -2902,7 +2853,7 @@ class tx_templavoila_cm1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass
         $count = count($parts);
         if ($count > 1) {
             for ($i = 1; $i < $count; $i++) {
-                if ($parts[$i]{0} != '#') {
+                if ($parts[$i]{0} !== '#') {
                     $parts[$i] = $relPathFix . $parts[$i];
                 }
             }
@@ -2910,23 +2861,49 @@ class tx_templavoila_cm1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass
 
         return implode($parts);
     }
-}
 
-if (!function_exists('md5_file')) {
     /**
-     * @param string $file
-     * @param bool $raw
+     * @return string
+     */
+    public function getModuleName()
+    {
+        return 'tv_mod_admin_mapping';
+    }
+
+    /**
+     * @return array
+     */
+    public function getDefaultSettings()
+    {
+        return [
+            'displayMode' => 'source',
+            'showDSxml' => ''
+        ];
+    }
+
+    /**
+     * @param array $params
      *
      * @return string
      */
-    function md5_file($file, $raw = false)
+    public function getModuleUrl(array $params = [])
     {
-        return md5(file_get_contents($file), $raw);
+        $defaultParams = [
+            'id' => $this->getId(),
+            'file' => $this->displayFile,
+            'table' => $this->displayTable,
+            'uid' => $this->displayUid,
+            'returnUrl' => $this->returnUrl,
+            '_load_ds_xml_to' => $this->_load_ds_xml_to
+        ];
+
+        if (count($params) > 0) {
+            ArrayUtility::mergeRecursiveWithOverrule($defaultParams, $params);
+        }
+
+        return BackendUtility::getModuleUrl(
+            $this->getModuleName(),
+            $defaultParams
+        );
     }
 }
-
-// Make instance:
-$SOBE = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\tx_templavoila_cm1::class);
-$SOBE->init();
-$SOBE->main();
-$SOBE->printContent();
