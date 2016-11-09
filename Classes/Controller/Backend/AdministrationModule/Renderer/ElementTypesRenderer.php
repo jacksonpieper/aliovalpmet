@@ -17,6 +17,7 @@ use Schnitzler\Templavoila\Controller\Backend\AdministrationModule\MappingContro
 use Schnitzler\Templavoila\Templavoila;
 use Schnitzler\Templavoila\Traits\BackendUser;
 use Schnitzler\Templavoila\Traits\LanguageService;
+use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -32,11 +33,6 @@ class ElementTypesRenderer
      * @var MappingController
      */
     public $pObj;
-
-    /**
-     * @var array
-     */
-    public $eTypeArray;
 
     /**
      * @param MappingController $controller
@@ -120,7 +116,7 @@ class ElementTypesRenderer
                         $elArray[$key]['tx_templavoila']['TypoScript'] = $bef;
                     }
                 } else {
-                    $eTypes = $this->defaultEtypes();
+                    $eTypes = static::defaultEtypes();
                     $eType = $elArray[$key]['tx_templavoila']['eType'];
                     switch ($eType) {
                         case 'text':
@@ -438,7 +434,7 @@ class ElementTypesRenderer
      *
      * @return array Array with default eTypes
      */
-    public function defaultEtypes()
+    public static function defaultEtypes()
     {
         // formFields: input, input_h, input_g, text, rte, link, int, image, imagefixed, select, ce
         // typoscriptElements: TypoScriptObject, none
@@ -637,21 +633,21 @@ backColor = #999999
         $config = static::getBackendUser()->getTSConfigProp('templavoila.eTypes');
         if (is_array($config)) {
             $config = GeneralUtility::removeDotsFromTS($config);
-            $eTypes = $this->pObj->array_merge_recursive_overrule($eTypes, $config);
+            ArrayUtility::mergeRecursiveWithOverrule($eTypes, $config);
         }
 
-        // Hook
-        if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS'][Templavoila::EXTKEY]['eTypes'])) {
-            $params = [
-                'eType' => &$eTypes['eType'],
-                'defaultTypes_formFields' => &$eTypes['defaultTypes_formFields'],
-                'defaultTypes_typoscriptElements' => &$eTypes['defaultTypes_typoscriptElements'],
-                'defaultTypes_misc' => &$eTypes['defaultTypes_misc']
-            ];
-            foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS'][Templavoila::EXTKEY]['eTypes'] as $hook) {
-                GeneralUtility::callUserFunction($hook, $params, $this);
-            }
-        }
+        // Hook todo: this is breaking, introduce alternative to this hook
+//        if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS'][Templavoila::EXTKEY]['eTypes'])) {
+//            $params = [
+//                'eType' => &$eTypes['eType'],
+//                'defaultTypes_formFields' => &$eTypes['defaultTypes_formFields'],
+//                'defaultTypes_typoscriptElements' => &$eTypes['defaultTypes_typoscriptElements'],
+//                'defaultTypes_misc' => &$eTypes['defaultTypes_misc']
+//            ];
+//            foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS'][Templavoila::EXTKEY]['eTypes'] as $hook) {
+//                GeneralUtility::callUserFunction($hook, $params, $this);
+//            }
+//        }
 
         return $eTypes;
     }

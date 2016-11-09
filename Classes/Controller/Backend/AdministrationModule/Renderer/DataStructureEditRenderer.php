@@ -109,7 +109,7 @@ class DataStructureEditRenderer
                     $insertDataArray['type'] = 'section';
                 }
 
-                $eTypes = $this->pObj->eTypes->defaultEtypes();
+                $eTypes = ElementTypesRenderer::defaultEtypes();
                 $eTypes_formFields = GeneralUtility::trimExplode(',', $eTypes['defaultTypes_formFields']);
                 $eTypes_typoscriptElements = GeneralUtility::trimExplode(',', $eTypes['defaultTypes_typoscriptElements']);
                 $eTypes_misc = GeneralUtility::trimExplode(',', $eTypes['defaultTypes_misc']);
