@@ -39,12 +39,17 @@ final class PermissionUtility
     public static function getCompiledPermissions($pid)
     {
         if (!isset(static::$compiledPermissions[$pid])) {
+            $calcPerms = Permission::NOTHING;
             $row = BackendUtility::getRecordWSOL('pages', $pid);
-            $calcPerms = static::getBackendUser()->calcPerms($row);
 
-            if (!static::hasBasicEditRights('pages', $row)) {
-                $calcPerms &= ~Permission::CONTENT_EDIT;
+            if (is_array($row)) {
+                $calcPerms = static::getBackendUser()->calcPerms($row);
+
+                if (!static::hasBasicEditRights('pages', $row)) {
+                    $calcPerms &= ~Permission::CONTENT_EDIT;
+                }
             }
+
             static::$compiledPermissions[$pid] = $calcPerms;
         }
 
