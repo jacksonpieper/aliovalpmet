@@ -1,4 +1,6 @@
 <?php
+namespace Schnitzler\Templavoila\Controller\Backend\AdministrationModule\Renderer;
+
 /*
  * This file is part of the TYPO3 CMS project.
  *
@@ -12,18 +14,19 @@
  * The TYPO3 project - inspiring people to share!
  */
 use Schnitzler\Templavoila\Controller\Backend\AdministrationModule\MappingController;
+use Schnitzler\Templavoila\Templavoila;
+use Schnitzler\Templavoila\Traits\BackendUser;
+use Schnitzler\Templavoila\Traits\LanguageService;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
- * Submodule 'eTypes' for the mapping module
- *
- * $Id: index.php 17597 2009-03-08 17:59:14Z steffenk $
- *
- * @author Kasper Skaarhoj <kasperYYYY@typo3.com>
- * @co-author    Robert Lemke <robert@typo3.org>
- * @co-author    Steffen kamper <info@sk-typo3.de>
+ * Class Schnitzler\Templavoila\Controller\Backend\AdministrationModule\Renderer\ElementTypesRenderer
  */
-class tx_templavoila_cm1_eTypes
+class ElementTypesRenderer
 {
+
+    use BackendUser;
+    use LanguageService;
 
     /**
      * @var MappingController
@@ -59,7 +62,7 @@ class tx_templavoila_cm1_eTypes
         // Traverse array
         foreach ($elArray as $key => $value) {
             // this MUST not ever enter the XMLs (it will break TV)
-            if ($elArray[$key]['type'] == 'section' || $elArray[$key]['section']) {
+            if ($elArray[$key]['type'] === 'section' || $elArray[$key]['section']) {
                 $elArray[$key]['type'] = 'array';
                 $elArray[$key]['section'] = '1';
             } else {
@@ -93,7 +96,7 @@ class tx_templavoila_cm1_eTypes
             }
 
             /* ---------------------------------------------------------------------- */
-            if ($elArray[$key]['type'] == 'array') { // If array, then unset:
+            if ($elArray[$key]['type'] === 'array') { // If array, then unset:
                 unset($elArray[$key]['tx_templavoila']['sample_data']);
             } else { // Only non-arrays can have configuration (that is elements and attributes)
 
@@ -102,7 +105,7 @@ class tx_templavoila_cm1_eTypes
 
                 // Based on the eType (the preset type) we make configuration settings.
                 // If a user function was registered, use that instead of our own handlers:
-                if (isset($GLOBALS['TYPO3_CONF_VARS']['EXTCONF'][\Schnitzler\Templavoila\Templavoila::EXTKEY]['cm1']['eTypesConfGen'][$elArray[$key]['tx_templavoila']['eType']])) {
+                if (isset($GLOBALS['TYPO3_CONF_VARS']['EXTCONF'][Templavoila::EXTKEY]['cm1']['eTypesConfGen'][$elArray[$key]['tx_templavoila']['eType']])) {
                     $_params = [
                         'key' => $key,
                         'elArray' => &$elArray,
@@ -111,7 +114,7 @@ class tx_templavoila_cm1_eTypes
 
                     $bef = $elArray[$key]['tx_templavoila']['TypoScript'];
 
-                    \TYPO3\CMS\Core\Utility\GeneralUtility::callUserFunction($GLOBALS['TYPO3_CONF_VARS']['EXTCONF'][\Schnitzler\Templavoila\Templavoila::EXTKEY]['cm1']['eTypesConfGen'][$elArray[$key]['tx_templavoila']['eType']], $_params, $this, '');
+                    GeneralUtility::callUserFunction($GLOBALS['TYPO3_CONF_VARS']['EXTCONF'][Templavoila::EXTKEY]['cm1']['eTypesConfGen'][$elArray[$key]['tx_templavoila']['eType']], $_params, $this, '');
 
                     if (!$reset && trim($bef)) {
                         $elArray[$key]['tx_templavoila']['TypoScript'] = $bef;
@@ -122,7 +125,7 @@ class tx_templavoila_cm1_eTypes
                     switch ($eType) {
                         case 'text':
                             /* preserve previous config, if of the right kind */
-                            if ($reset || ($elArray[$key]['TCEforms']['config']['type'] != 'text')) {
+                            if ($reset || ($elArray[$key]['TCEforms']['config']['type'] !== 'text')) {
                                 $elArray[$key]['TCEforms']['label'] = $elArray[$key]['tx_templavoila']['title'];
                                 $elArray[$key]['TCEforms']['config'] = $eTypes['eType'][$eType]['TCEforms']['config'];
                             }
@@ -134,7 +137,7 @@ class tx_templavoila_cm1_eTypes
                             break;
                         case 'rte':
                             /* preserve previous config, if of the right kind */
-                            if ($reset || ($elArray[$key]['TCEforms']['config']['type'] != 'text')) {
+                            if ($reset || ($elArray[$key]['TCEforms']['config']['type'] !== 'text')) {
                                 $elArray[$key]['TCEforms']['label'] = $elArray[$key]['tx_templavoila']['title'];
                                 $elArray[$key]['TCEforms']['config'] = $eTypes['eType'][$eType]['TCEforms']['config'];
                             }
@@ -156,14 +159,14 @@ class tx_templavoila_cm1_eTypes
                         case 'image':
                         case 'imagefixed':
                             /* preserve previous config, if of the right kind */
-                            if ($reset || ($elArray[$key]['TCEforms']['config']['type'] != 'group')) {
+                            if ($reset || ($elArray[$key]['TCEforms']['config']['type'] !== 'group')) {
                                 $elArray[$key]['TCEforms']['label'] = $elArray[$key]['tx_templavoila']['title'];
                                 $elArray[$key]['TCEforms']['config'] = $eTypes['eType'][$eType]['TCEforms']['config'];
                             }
 
                             $maxW = $contentInfo['img']['width'] ? $contentInfo['img']['width'] : $eTypes['eType'][$eType]['maxWdefault'];
                             $maxH = $contentInfo['img']['height'] ? $contentInfo['img']['height'] : $eTypes['eType'][$eType]['maxHdefault'];
-                            $typoScriptImageObject = ($elArray[$key]['type'] == 'attr') ? 'IMG_RESOURCE' : 'IMAGE';
+                            $typoScriptImageObject = ($elArray[$key]['type'] === 'attr') ? 'IMG_RESOURCE' : 'IMAGE';
 
                             if ($reset) {
                                 unset($elArray[$key]['tx_templavoila']['proc']);
@@ -181,7 +184,7 @@ class tx_templavoila_cm1_eTypes
                             break;
                         case 'link':
                             /* preserve previous config, if of the right kind */
-                            if ($reset || ($elArray[$key]['TCEforms']['config']['type'] != 'input')) {
+                            if ($reset || ($elArray[$key]['TCEforms']['config']['type'] !== 'input')) {
                                 $elArray[$key]['TCEforms']['label'] = $elArray[$key]['tx_templavoila']['title'];
                                 $elArray[$key]['TCEforms']['config'] = $eTypes['eType'][$eType]['TCEforms']['config'];
                             }
@@ -189,7 +192,7 @@ class tx_templavoila_cm1_eTypes
                             /* preserve previous config, if of the right kind */
                             if ($reset || !trim($elArray[$key]['tx_templavoila']['TypoScript'])) {
                                 $elArray[$key]['tx_templavoila']['TypoScript'] = $eTypes['eType'][$eType]['Typoscript'];
-                                if ($elArray[$key]['type'] == 'attr') {
+                                if ($elArray[$key]['type'] === 'attr') {
                                     $elArray[$key]['tx_templavoila']['TypoScript'] .= chr(10) . '10.typolink.returnLast = url';
                                     /* preserve previous config, if explicitly set */
                                     if (!isset($elArray[$key]['TCEforms']['proc']['HSC'])) {
@@ -203,7 +206,7 @@ class tx_templavoila_cm1_eTypes
                             break;
                         case 'ce':
                             /* preserve previous config, if of the right kind */
-                            if ($reset || ($elArray[$key]['TCEforms']['config']['type'] != 'group')) {
+                            if ($reset || ($elArray[$key]['TCEforms']['config']['type'] !== 'group')) {
                                 $elArray[$key]['TCEforms']['label'] = $elArray[$key]['tx_templavoila']['title'];
                                 $elArray[$key]['TCEforms']['config'] = $eTypes['eType'][$eType]['TCEforms']['config'];
                             }
@@ -222,7 +225,7 @@ class tx_templavoila_cm1_eTypes
                             break;
                         case 'int':
                             /* preserve previous config, if of the right kind */
-                            if ($reset || ($elArray[$key]['TCEforms']['config']['type'] != 'input')) {
+                            if ($reset || ($elArray[$key]['TCEforms']['config']['type'] !== 'input')) {
                                 $elArray[$key]['TCEforms']['label'] = $elArray[$key]['tx_templavoila']['title'];
                                 $elArray[$key]['TCEforms']['config'] = $eTypes['eType'][$eType]['TCEforms']['config'];
                             }
@@ -233,7 +236,7 @@ class tx_templavoila_cm1_eTypes
                             break;
                         case 'select':
                             /* preserve previous config, if of the right kind */
-                            if ($reset || ($elArray[$key]['TCEforms']['config']['type'] != 'select')) {
+                            if ($reset || ($elArray[$key]['TCEforms']['config']['type'] !== 'select')) {
                                 $elArray[$key]['TCEforms']['label'] = $elArray[$key]['tx_templavoila']['title'];
                                 $elArray[$key]['TCEforms']['config'] = $eTypes['eType'][$eType]['TCEforms']['config'];
                             }
@@ -243,7 +246,7 @@ class tx_templavoila_cm1_eTypes
                             break;
                         case 'check':
                             /* preserve previous config, if of the right kind */
-                            if ($reset || ($elArray[$key]['TCEforms']['config']['type'] != 'check')) {
+                            if ($reset || ($elArray[$key]['TCEforms']['config']['type'] !== 'check')) {
                                 $elArray[$key]['TCEforms']['label'] = $elArray[$key]['tx_templavoila']['title'];
                                 $elArray[$key]['TCEforms']['config'] = $eTypes['eType'][$eType]['TCEforms']['config'];
                             }
@@ -255,7 +258,7 @@ class tx_templavoila_cm1_eTypes
                         case 'input_h':
                         case 'input_g':
                             /* preserve previous config, if of the right kind */
-                            if ($reset || ($elArray[$key]['TCEforms']['config']['type'] != 'input')) {
+                            if ($reset || ($elArray[$key]['TCEforms']['config']['type'] !== 'input')) {
                                 $elArray[$key]['TCEforms']['label'] = $elArray[$key]['tx_templavoila']['title'];
                                 $elArray[$key]['TCEforms']['config'] = $eTypes['eType'][$eType]['TCEforms']['config'];
                             }
@@ -264,18 +267,18 @@ class tx_templavoila_cm1_eTypes
                                 $elArray[$key]['tx_templavoila']['TypoScript'] = $eTypes['eType'][$eType]['Typoscript'];
                             }
 
-                            if ($eType == 'input_h') { // Text-Header
+                            if ($eType === 'input_h') { // Text-Header
                                 // Finding link-fields on same level and set the image to be linked by that TypoLink:
                                 $elArrayKeys = array_keys($elArray);
                                 foreach ($elArrayKeys as $theKey) {
-                                    if ($elArray[$theKey]['tx_templavoila']['eType'] == 'link') {
+                                    if ($elArray[$theKey]['tx_templavoila']['eType'] === 'link') {
                                         $elArray[$key]['tx_templavoila']['TypoScript'] .= chr(10) . '10.typolink.parameter.field = ' . $theKey;
                                     }
                                 }
                                 if ($reset) {
                                     $elArray[$key]['tx_templavoila']['proc']['HSC'] = 1;
                                 }
-                            } elseif ($eType == 'input_g') { // Graphical-Header
+                            } elseif ($eType === 'input_g') { // Graphical-Header
 
                                 $maxW = $contentInfo['img']['width'] ? $contentInfo['img']['width'] : $eTypes['eType'][$eType]['maxWdefault'];
                                 $maxH = $contentInfo['img']['height'] ? $contentInfo['img']['height'] : $eTypes['eType'][$eType]['maxHdefault'];
@@ -326,7 +329,7 @@ class tx_templavoila_cm1_eTypes
                             break;
                         default:
                             /* preserve previous config, if of the right kind */
-                            if ($reset || ($elArray[$key]['TCEforms']['config']['type'] != 'text')) {
+                            if ($reset || ($elArray[$key]['TCEforms']['config']['type'] !== 'text')) {
                                 $elArray[$key]['TCEforms']['label'] = $elArray[$key]['tx_templavoila']['title'];
                                 $elArray[$key]['TCEforms']['config'] = $eTypes['eType'][$eType]['TCEforms']['config'];
                             }
@@ -340,7 +343,7 @@ class tx_templavoila_cm1_eTypes
                             break;
                     }
                 } // End switch else
-                if ($elArray[$key]['tx_templavoila']['eType'] != 'TypoScriptObject') {
+                if ($elArray[$key]['tx_templavoila']['eType'] !== 'TypoScriptObject') {
                     if (isset($elArray[$key]['tx_templavoila']['TypoScriptObjPath'])) {
                         unset($elArray[$key]['tx_templavoila']['TypoScriptObjPath']);
                     }
@@ -406,11 +409,11 @@ class tx_templavoila_cm1_eTypes
     public function substEtypeWithRealStuff_contentInfo($content)
     {
         if ($content) {
-            if (substr($content, 0, 4) == '<img') {
-                $attrib = \TYPO3\CMS\Core\Utility\GeneralUtility::get_tag_attributes($content);
+            if (strpos($content, '<img') === 0) {
+                $attrib = GeneralUtility::get_tag_attributes($content);
                 if ((!$attrib['width'] || !$attrib['height']) && $attrib['src']) {
-                    $pathWithNoDots = \TYPO3\CMS\Core\Utility\GeneralUtility::resolveBackPath($attrib['src']);
-                    $filePath = \TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName($pathWithNoDots);
+                    $pathWithNoDots = GeneralUtility::resolveBackPath($attrib['src']);
+                    $filePath = GeneralUtility::getFileAbsFileName($pathWithNoDots);
                     if ($filePath && @is_file($filePath)) {
                         $imgInfo = @getimagesize($filePath);
 
@@ -456,18 +459,18 @@ class tx_templavoila_cm1_eTypes
             'size' => '48',
             'eval' => 'trim',
         ];
-        $eTypes['eType']['input']['label'] = \Schnitzler\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('mapPresets_plainInput');
+        $eTypes['eType']['input']['label'] = static::getLanguageService()->getLL('mapPresets_plainInput');
 
         // input_h
         $eTypes['eType']['input_h']['TCEforms']['config'] = $eTypes['eType']['input']['TCEforms']['config'];
-        $eTypes['eType']['input_h']['label'] = \Schnitzler\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('mapPresets_headerField');
+        $eTypes['eType']['input_h']['label'] = static::getLanguageService()->getLL('mapPresets_headerField');
         $eTypes['eType']['input_h']['Typoscript'] = '
 10 = TEXT
 10.current = 1';
 
         // input_g
         $eTypes['eType']['input_g']['TCEforms']['config'] = $eTypes['eType']['input']['TCEforms']['config'];
-        $eTypes['eType']['input_g']['label'] = \Schnitzler\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('mapPresets_gHederField');
+        $eTypes['eType']['input_g']['label'] = static::getLanguageService()->getLL('mapPresets_gHederField');
         $eTypes['eType']['input_g']['Typoscript'] = '
 10 = IMAGE
 10.file = GIFBUILDER
@@ -492,7 +495,7 @@ backColor = #999999
             'cols' => '48',
             'rows' => '5',
         ];
-        $eTypes['eType']['text']['label'] = \Schnitzler\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('mapPresets_textarea');
+        $eTypes['eType']['text']['label'] = static::getLanguageService()->getLL('mapPresets_textarea');
 
         // rte
         $eTypes['eType']['rte']['TCEforms']['config'] = [
@@ -504,7 +507,7 @@ backColor = #999999
                     'typolink_tag,images,email[subst],url'),
         ];
         $eTypes['eType']['rte']['TCEforms']['defaultExtras'] = 'richtext:rte_transform[flag=rte_enabled|mode=ts_css]';
-        $eTypes['eType']['rte']['label'] = \Schnitzler\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('mapPresets_rte');
+        $eTypes['eType']['rte']['label'] = static::getLanguageService()->getLL('mapPresets_rte');
         $eTypes['eType']['rte']['Typoscript'] = '
 10 = TEXT
 10.current = 1
@@ -528,7 +531,7 @@ backColor = #999999
                 ]
             ]
         ];
-        $eTypes['eType']['link']['label'] = \Schnitzler\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('mapPresets_linkField');
+        $eTypes['eType']['link']['label'] = static::getLanguageService()->getLL('mapPresets_linkField');
         $eTypes['eType']['link']['Typoscript'] = '
 10 = TEXT
 10.typolink.parameter.current = 1';
@@ -546,7 +549,7 @@ backColor = #999999
             ],
             'default' => 0
         ];
-        $eTypes['eType']['int']['label'] = \Schnitzler\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('mapPresets_integer');
+        $eTypes['eType']['int']['label'] = static::getLanguageService()->getLL('mapPresets_integer');
 
         // image
         $eTypes['eType']['image']['TCEforms']['config'] = [
@@ -560,7 +563,7 @@ backColor = #999999
             'maxitems' => '1',
             'minitems' => '0'
         ];
-        $eTypes['eType']['image']['label'] = \Schnitzler\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('mapPresets_image');
+        $eTypes['eType']['image']['label'] = static::getLanguageService()->getLL('mapPresets_image');
         $eTypes['eType']['image']['Typoscript'] = '
 10 = IMAGE
 10.file.import = uploads/tx_templavoila/
@@ -572,7 +575,7 @@ backColor = #999999
 
         // imagefixed
         $eTypes['eType']['imagefixed']['TCEforms']['config'] = $eTypes['eType']['image']['TCEforms']['config'];
-        $eTypes['eType']['imagefixed']['label'] = \Schnitzler\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('mapPresets_imageFixed');
+        $eTypes['eType']['imagefixed']['label'] = static::getLanguageService()->getLL('mapPresets_imageFixed');
         $eTypes['eType']['imagefixed']['Typoscript'] = '
 10 = IMAGE
 10.file.XY = MAXW,MAXH
@@ -597,14 +600,14 @@ backColor = #999999
             ],
             'default' => '0'
         ];
-        $eTypes['eType']['select']['label'] = \Schnitzler\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('mapPresets_select');
+        $eTypes['eType']['select']['label'] = static::getLanguageService()->getLL('mapPresets_select');
 
         // check
         $eTypes['eType']['check']['TCEforms']['config'] = [
             'type' => 'check',
             'default' => 0,
         ];
-        $eTypes['eType']['check']['label'] = \Schnitzler\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('mapPresets_check');
+        $eTypes['eType']['check']['label'] = static::getLanguageService()->getLL('mapPresets_check');
 
         // ce
         $eTypes['eType']['ce']['TCEforms']['config'] = [
@@ -617,36 +620,36 @@ backColor = #999999
             'multiple' => '1',
             'show_thumbs' => '1',
         ];
-        $eTypes['eType']['ce']['label'] = \Schnitzler\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('mapPresets_ce');
+        $eTypes['eType']['ce']['label'] = static::getLanguageService()->getLL('mapPresets_ce');
         $eTypes['eType']['ce']['Typoscript'] = '
 10= RECORDS
 10.source.current=1
 10.tables = tt_content';
 
         /* Typoscript Elements */
-        $eTypes['eType']['TypoScriptObject']['label'] = \Schnitzler\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('mapPresets_TSobjectPath');
-        $eTypes['eType']['none']['label'] = \Schnitzler\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('mapPresets_none');
+        $eTypes['eType']['TypoScriptObject']['label'] = static::getLanguageService()->getLL('mapPresets_TSobjectPath');
+        $eTypes['eType']['none']['label'] = static::getLanguageService()->getLL('mapPresets_none');
 
         /* Misc */
-        $eTypes['eType']['custom']['label'] = \Schnitzler\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('mapPresets_customTCA');
+        $eTypes['eType']['custom']['label'] = static::getLanguageService()->getLL('mapPresets_customTCA');
 
         // merge with tsConfig
-        $config = \Schnitzler\Templavoila\Utility\GeneralUtility::getBackendUser()->getTSConfigProp('templavoila.eTypes');
+        $config = static::getBackendUser()->getTSConfigProp('templavoila.eTypes');
         if (is_array($config)) {
-            $config = \TYPO3\CMS\Core\Utility\GeneralUtility::removeDotsFromTS($config);
+            $config = GeneralUtility::removeDotsFromTS($config);
             $eTypes = $this->pObj->array_merge_recursive_overrule($eTypes, $config);
         }
 
         // Hook
-        if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS'][\Schnitzler\Templavoila\Templavoila::EXTKEY]['eTypes'])) {
+        if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS'][Templavoila::EXTKEY]['eTypes'])) {
             $params = [
                 'eType' => &$eTypes['eType'],
                 'defaultTypes_formFields' => &$eTypes['defaultTypes_formFields'],
                 'defaultTypes_typoscriptElements' => &$eTypes['defaultTypes_typoscriptElements'],
                 'defaultTypes_misc' => &$eTypes['defaultTypes_misc']
             ];
-            foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS'][\Schnitzler\Templavoila\Templavoila::EXTKEY]['eTypes'] as $hook) {
-                \TYPO3\CMS\Core\Utility\GeneralUtility::callUserFunction($hook, $params, $this);
+            foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS'][Templavoila::EXTKEY]['eTypes'] as $hook) {
+                GeneralUtility::callUserFunction($hook, $params, $this);
             }
         }
 

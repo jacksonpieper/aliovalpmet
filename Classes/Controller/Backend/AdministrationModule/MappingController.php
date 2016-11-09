@@ -274,9 +274,7 @@ class MappingController extends AbstractModuleController implements Configurable
     public $dsEdit;
 
     /**
-     * instance of class tx_templavoila_cm1_eTypes
-     *
-     * @var \tx_templavoila_cm1_eTypes
+     * @var Renderer\ElementTypesRenderer
      */
     public $eTypes;
 
@@ -434,7 +432,7 @@ class MappingController extends AbstractModuleController implements Configurable
         $this->dsEdit = GeneralUtility::makeInstance(Renderer\DataStructureEditRenderer::class, $this);
 
         // Initialize eTypes
-        $this->eTypes = GeneralUtility::makeInstance(\tx_templavoila_cm1_eTypes::class, $this);
+        $this->eTypes = GeneralUtility::makeInstance(Renderer\ElementTypesRenderer::class, $this);
 
         $this->extConf = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf'][Templavoila::EXTKEY]);
         $this->staticDS = ($this->extConf['staticDS.']['enable']);
