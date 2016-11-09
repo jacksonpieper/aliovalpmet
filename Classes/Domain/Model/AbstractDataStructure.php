@@ -90,7 +90,7 @@ abstract class AbstractDataStructure
      */
     protected function setScope($scope)
     {
-        if ($scope == self::SCOPE_PAGE || $scope == self::SCOPE_FCE) {
+        if ($scope === self::SCOPE_PAGE || $scope === self::SCOPE_FCE) {
             $this->scope = $scope;
         } else {
             $this->scope = self::SCOPE_UNKNOWN;
@@ -165,7 +165,7 @@ abstract class AbstractDataStructure
      *
      * @return bool
      */
-    abstract public function isPermittedForUser($parentRow = [], $removeItems = []);
+    abstract public function isPermittedForUser(array $parentRow = [], array $removeItems = []);
 
     /**
      * Enables to determine whether this element is based on a record or on a file

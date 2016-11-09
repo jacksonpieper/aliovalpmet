@@ -52,7 +52,7 @@ class TemplateRepository
      */
     public function getTemplatesByDatastructure(AbstractDataStructure $ds, $storagePid = 0)
     {
-        $toList = static::getDatabaseConnection()->exec_SELECTgetRows(
+        $toList = (array)static::getDatabaseConnection()->exec_SELECTgetRows(
             'tx_templavoila_tmplobj.uid',
             'tx_templavoila_tmplobj',
             'tx_templavoila_tmplobj.datastructure=' . static::getDatabaseConnection()->fullQuoteStr($ds->getKey(), 'tx_templavoila_tmplobj')
@@ -106,6 +106,7 @@ class TemplateRepository
      */
     public function getTemplatesByStoragePidAndScope($storagePid, $scope)
     {
+        /** @var DataStructureRepository $dsRepo */
         $dsRepo = GeneralUtility::makeInstance(DataStructureRepository::class);
         $dsList = $dsRepo->getDatastructuresByStoragePidAndScope($storagePid, $scope);
         $toCollection = [];
@@ -124,6 +125,7 @@ class TemplateRepository
      */
     public function findByScope($scope)
     {
+        /** @var DataStructureRepository $dsRepo */
         $dsRepo = GeneralUtility::makeInstance(DataStructureRepository::class);
         $dsList = $dsRepo->findByScope($scope);
         $toCollection = [];
@@ -145,7 +147,7 @@ class TemplateRepository
      */
     public function getTemplatesByParentTemplate(Template $to, $storagePid = 0)
     {
-        $toList = static::getDatabaseConnection()->exec_SELECTgetRows(
+        $toList = (array)static::getDatabaseConnection()->exec_SELECTgetRows(
             'tx_templavoila_tmplobj.uid',
             'tx_templavoila_tmplobj',
             'tx_templavoila_tmplobj.parent=' . static::getDatabaseConnection()->fullQuoteStr($to->getKey(), 'tx_templavoila_tmplobj')
@@ -171,7 +173,7 @@ class TemplateRepository
      */
     public function getAll($storagePid = 0)
     {
-        $toList = static::getDatabaseConnection()->exec_SELECTgetRows(
+        $toList = (array)static::getDatabaseConnection()->exec_SELECTgetRows(
             'tx_templavoila_tmplobj.uid',
             'tx_templavoila_tmplobj',
             '1=1'

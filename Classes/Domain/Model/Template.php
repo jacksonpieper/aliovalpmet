@@ -272,7 +272,7 @@ class Template
      */
     public function hasParentTemplate()
     {
-        return $this->row['parent'] != 0;
+        return (int)$this->row['parent'] !== 0;
     }
 
     /**
@@ -356,10 +356,9 @@ class Template
      */
     public function getLocalDataprotArray($skipDsDataprot = false)
     {
+        $dataprot = [];
         if (!$skipDsDataprot) {
             $dataprot = $this->getDatastructure()->getDataprotArray();
-        } else {
-            $dataprot = [];
         }
         $toDataprot = GeneralUtility::xml2array($this->row['localprocessing']);
 
@@ -425,9 +424,9 @@ class Template
      */
     public function getSortingFieldValue()
     {
-        if ($this->sortbyField == 'title') {
+        if ($this->sortbyField === 'title') {
             $fieldVal = $this->getLabel(); // required to resolve LLL texts
-        } elseif ($this->sortbyField == 'sorting') {
+        } elseif ($this->sortbyField === 'sorting') {
             $fieldVal = str_pad($this->row[$this->sortbyField], 15, '0', STR_PAD_LEFT);
         } else {
             $fieldVal = $this->row[$this->sortbyField];

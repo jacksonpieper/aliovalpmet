@@ -312,7 +312,7 @@ class FrontendController extends AbstractPlugin
                 // Initialize rendering type:
                 if ($this->conf['childTemplate']) {
                     $renderType = $this->conf['childTemplate'];
-                    if (substr($renderType, 0, 9) == 'USERFUNC:') {
+                    if (strpos($renderSheet, 'USERFUNC:') === 0) {
                         $conf = [
                             'conf' => is_array($this->conf['childTemplate.']) ? $this->conf['childTemplate.'] : [],
                             'toRecord' => $row
@@ -393,7 +393,7 @@ class FrontendController extends AbstractPlugin
 
                         // Edit icon (frontend editing):
                         $eIconf = ['styleAttribute' => 'position:absolute;'];
-                        if ($table == 'pages') {
+                        if ($table === 'pages') {
                             $eIconf['beforeLastTag'] = -1;
                         } // For "pages", set icon in top, not after.
                         $content = $this->pi_getEditIcon($content, 'tx_templavoila_flex', 'Edit element', $row, $table, $eIconf);
@@ -447,7 +447,7 @@ class FrontendController extends AbstractPlugin
             $LP = [];
             foreach ($DSelements as $key => $dsConf) {
                 if ($mappingInfo === true || array_key_exists($key, $mappingInfo)) {
-                    if ($DSelements[$key]['type'] != 'array') { // For all non-arrays:
+                    if ($DSelements[$key]['type'] !== 'array') { // For all non-arrays:
                         // Set base configuration:
                         $LP[$key] = $DSelements[$key]['tx_templavoila'];
                         // Overlaying local processing:
@@ -524,7 +524,7 @@ class FrontendController extends AbstractPlugin
                 $GLOBALS['TSFE']->register['tx_templavoila_pi1.current_field'] = $key;
 
                 // Array/Section:
-                if ($DSelements[$key]['type'] == 'array') {
+                if ($DSelements[$key]['type'] === 'array') {
                     /* no DS-childs: bail out
                      * no EL-childs: progress (they may all be TypoScript elements without visual representation)
                      */
@@ -562,7 +562,7 @@ class FrontendController extends AbstractPlugin
                 } else {
 
                     // Language inheritance:
-                    if ($valueKey != 'vDEF') {
+                    if ($valueKey !== 'vDEF') {
                         $dataValues[$key][$valueKey] = $this->inheritValue($dataValues[$key], $valueKey, $LP[$key]['langOverlayMode']);
 
                         // The value "__REMOVE" will trigger removal of the item!
@@ -582,8 +582,8 @@ class FrontendController extends AbstractPlugin
                     $cObj->setCurrentVal($dataValues[$key][$valueKey]);
 
                     // Render localized labels for 'select' elements:
-                    if ($DSelements[$key]['TCEforms']['config']['type'] == 'select'
-                        && substr($dataValues[$key][$valueKey], 0, 4) == 'LLL:'
+                    if ($DSelements[$key]['TCEforms']['config']['type'] === 'select'
+                        && strpos($dataValues[$key][$valueKey], 'LLL:') === 0
                     ) {
                         $tempLangVal = $GLOBALS['TSFE']->sL($dataValues[$key][$valueKey]);
                         if ($tempLangVal != '') {
@@ -601,7 +601,7 @@ class FrontendController extends AbstractPlugin
                                 foreach ($LP[$key]['TypoScript_constants'] as $constant => $value) {
 
                                     // First, see if the constant is itself a constant referring back to TypoScript Setup Object Tree:
-                                    if (substr(trim($value), 0, 2) == '{$' && substr(trim($value), -1) == '}') {
+                                    if (strpos(trim($value), '{$') === 0 && substr(trim($value), -1) === '}') {
                                         $objPath = substr(trim($value), 2, -1);
 
                                         // If no value for this object path reference was found, get value:
@@ -704,7 +704,7 @@ class FrontendController extends AbstractPlugin
                 throw new \RuntimeException('Key "vDEF" of array "$dV" doesn\'t exist');
             }
 
-            if ($valueKey != 'vDEF') {
+            if ($valueKey !== 'vDEF') {
                 // Prevent PHP warnings
                 $defaultValue = isset($dV['vDEF']) ? $dV['vDEF'] : '';
                 $languageValue = isset($dV[$valueKey]) ? $dV[$valueKey] : '';
@@ -902,7 +902,7 @@ class FrontendController extends AbstractPlugin
             $pageIds = GeneralUtility::trimExplode(',', $pids);
             foreach ($pageIds as $pageId) {
                 $page = $GLOBALS['TSFE']->sys_page->checkRecord('pages', $pageId);
-                if (isset($page) && isset($page['tx_templavoila_flex'])) {
+                if (isset($page, $page['tx_templavoila_flex'])) {
                     $flex = [];
                     $this->cObj->readFlexformIntoConf($page['tx_templavoila_flex'], $flex);
                     $contentIds = array_merge($contentIds, GeneralUtility::trimExplode(',', $flex[$ceField]));

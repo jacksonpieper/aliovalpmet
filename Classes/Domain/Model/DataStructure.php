@@ -63,7 +63,7 @@ class DataStructure extends AbstractDataStructure
      */
     public function getStoragePids()
     {
-        return $this->row['pid'];
+        return (string)$this->row['pid'];
     }
 
     /**
@@ -106,7 +106,7 @@ class DataStructure extends AbstractDataStructure
         $denyItems = PermissionUtility::getDenyListForUser();
 
         $currentSetting = $parentRow['tx_templavoila_ds'];
-        if ($this->getScope() == static::SCOPE_PAGE) {
+        if ($this->getScope() === static::SCOPE_PAGE) {
             $inheritSetting = $parentRow['tx_templavoila_next_ds'];
         } else {
             $inheritSetting = -1;
@@ -185,9 +185,9 @@ class DataStructure extends AbstractDataStructure
      */
     public function getSortingFieldValue()
     {
-        if ($this->sortbyField == 'title') {
+        if ($this->sortbyField === 'title') {
             $fieldVal = $this->getLabel(); // required to resolve LLL texts
-        } elseif ($this->sortbyField == 'sorting') {
+        } elseif ($this->sortbyField === 'sorting') {
             $fieldVal = str_pad($this->row[$this->sortbyField], 15, '0', STR_PAD_LEFT);
         } else {
             $fieldVal = $this->row[$this->sortbyField];

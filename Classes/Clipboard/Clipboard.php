@@ -112,10 +112,10 @@ class Clipboard
 
             // Set whether the current element is selected for copy/cut/reference or not:
             if ($pointToTheSameRecord) {
-                $selectMode = isset($this->clipboard->clipData['normal']['flexMode']) ? $this->clipboard->clipData['normal']['flexMode'] : ($this->clipboard->clipData['normal']['mode'] == 'copy' ? 'copy' : 'cut');
-                $clipActive_copy = ($selectMode == 'copy');
-                $clipActive_cut = ($selectMode == 'cut');
-                $clipActive_ref = ($selectMode == 'ref');
+                $selectMode = isset($this->clipboard->clipData['normal']['flexMode']) ? $this->clipboard->clipData['normal']['flexMode'] : ($this->clipboard->clipData['normal']['mode'] === 'copy' ? 'copy' : 'cut');
+                $clipActive_copy = ($selectMode === 'copy');
+                $clipActive_cut = ($selectMode === 'cut');
+                $clipActive_ref = ($selectMode === 'ref');
             }
         }
 
@@ -167,9 +167,9 @@ class Clipboard
         $linkRef = '<a title="' . static::getLanguageService()->getLL('createreference') . '" class="btn btn-default tpm-ref" href="' . $this->controller->getReturnUrl($referenceUrlParams) . '">' . $refIcon . '</a>';
 
         $output =
-            (GeneralUtility::inList($listOfButtons, 'copy') && !in_array('copy', $this->controller->getBlindIcons()) ? $linkCopy : '') .
-            (GeneralUtility::inList($listOfButtons, 'ref') && !in_array('ref', $this->controller->getBlindIcons()) ? $linkRef : '') .
-            (GeneralUtility::inList($listOfButtons, 'cut') && !in_array('cut', $this->controller->getBlindIcons()) ? $linkCut : '');
+            (GeneralUtility::inList($listOfButtons, 'copy') && !in_array('copy', $this->controller->getBlindIcons(), true) ? $linkCopy : '') .
+            (GeneralUtility::inList($listOfButtons, 'ref') && !in_array('ref', $this->controller->getBlindIcons(), true) ? $linkRef : '') .
+            (GeneralUtility::inList($listOfButtons, 'cut') && !in_array('cut', $this->controller->getBlindIcons(), true) ? $linkCut : '');
 
         return $output;
     }
@@ -185,7 +185,7 @@ class Clipboard
      */
     public function element_getPasteButtons($destinationPointer)
     {
-        if (in_array('paste', $this->controller->getBlindIcons())) {
+        if (in_array('paste', $this->controller->getBlindIcons(), true)) {
             return '';
         }
 
@@ -204,7 +204,7 @@ class Clipboard
         // If we have no flexform reference pointing to the element, we create a short flexform pointer pointing to the record directly:
         list($clipboardElementTable, $clipboardElementUid) = explode('|', $clipboardElementTableAndUid);
         if (!is_array($clipboardElementPointer)) {
-            if ($clipboardElementTable != 'tt_content') {
+            if ($clipboardElementTable !== 'tt_content') {
                 return '';
             }
 
@@ -231,7 +231,7 @@ class Clipboard
         }
 
         // Prepare the ingredients for the different buttons:
-        $pasteMode = isset($this->clipboard->clipData['normal']['flexMode']) ? $this->clipboard->clipData['normal']['flexMode'] : ($this->clipboard->clipData['normal']['mode'] == 'copy' ? 'copy' : 'cut');
+        $pasteMode = isset($this->clipboard->clipData['normal']['flexMode']) ? $this->clipboard->clipData['normal']['flexMode'] : ($this->clipboard->clipData['normal']['mode'] === 'copy' ? 'copy' : 'cut');
         $pasteAfterIcon = $this->controller->getModuleTemplate()->getIconFactory()->getIcon('actions-document-paste-after', Icon::SIZE_SMALL);
         $pasteSubRefIcon = $this->controller->getModuleTemplate()->getIconFactory()->getIcon('extensions-templavoila-pasteSubRef', Icon::SIZE_SMALL);
 
@@ -239,7 +239,7 @@ class Clipboard
         $destinationPointerString = $this->controller->getApiService()->flexform_getStringFromPointer($destinationPointer);
 
         $output = '';
-        if (!in_array('pasteAfter', $this->controller->getBlindIcons())) {
+        if (!in_array('pasteAfter', $this->controller->getBlindIcons(), true)) {
             $url = BackendUtility::getModuleUrl(
                 'tv_mod_pagemodule_contentcontroller',
                 [
@@ -258,7 +258,7 @@ class Clipboard
             $output .= '<a title="' . static::getLanguageService()->getLL('pasterecord') . '" class="btn btn-default btn-sm tpm-pasteAfter" href="' . $url . '">' . $pasteAfterIcon . '</a>';
         }
         // FCEs with sub elements have two different paste icons, normal elements only one:
-        if ($pasteMode === 'copy' && $clipboardElementHasSubElements && !in_array('pasteSubRef', $this->controller->getBlindIcons())) {
+        if ($pasteMode === 'copy' && $clipboardElementHasSubElements && !in_array('pasteSubRef', $this->controller->getBlindIcons(), true)) {
             $url = BackendUtility::getModuleUrl(
                 'tv_mod_pagemodule_contentcontroller',
                 [

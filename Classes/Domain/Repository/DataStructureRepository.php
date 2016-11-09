@@ -60,9 +60,7 @@ class DataStructureRepository
             }
         }
 
-        $ds = GeneralUtility::makeInstance($className, $uidOrFile);
-
-        return $ds;
+        return GeneralUtility::makeInstance($className, $uidOrFile);
     }
 
     /**
@@ -80,14 +78,14 @@ class DataStructureRepository
             foreach ($confArr as $conf) {
                 $ds = $this->getDatastructureByUidOrFilename($conf['path']);
                 $pids = $ds->getStoragePids();
-                if ($pids == '' || GeneralUtility::inList($pids, $pid)) {
+                if ($pids === '' || GeneralUtility::inList($pids, $pid)) {
                     $dscollection[] = $ds;
                 }
             }
         }
 
         if (!self::isStaticDsEnabled()) {
-            $dsRows = static::getDatabaseConnection()->exec_SELECTgetRows(
+            $dsRows = (array)static::getDatabaseConnection()->exec_SELECTgetRows(
                 'uid',
                 'tx_templavoila_datastructure',
                 'pid=' . (int)$pid
@@ -121,7 +119,7 @@ class DataStructureRepository
                 if ($conf['scope'] == $scope) {
                     $ds = $this->getDatastructureByUidOrFilename($conf['path']);
                     $pids = $ds->getStoragePids();
-                    if ($pids == '' || GeneralUtility::inList($pids, $pid)) {
+                    if ($pids === '' || GeneralUtility::inList($pids, $pid)) {
                         $dscollection[] = $ds;
                     }
                 }
@@ -129,7 +127,7 @@ class DataStructureRepository
         }
 
         if (!self::isStaticDsEnabled()) {
-            $dsRows = static::getDatabaseConnection()->exec_SELECTgetRows(
+            $dsRows = (array)static::getDatabaseConnection()->exec_SELECTgetRows(
                 'uid',
                 'tx_templavoila_datastructure',
                 'scope=' . (int)$scope . ' AND pid=' . (int)$pid
@@ -205,7 +203,7 @@ class DataStructureRepository
         }
 
         if (!self::isStaticDsEnabled()) {
-            $dsRows = static::getDatabaseConnection()->exec_SELECTgetRows(
+            $dsRows = (array)static::getDatabaseConnection()->exec_SELECTgetRows(
                 'uid',
                 'tx_templavoila_datastructure',
                 'scope=' . (int)$scope
@@ -239,7 +237,7 @@ class DataStructureRepository
         }
 
         if (!self::isStaticDsEnabled()) {
-            $dsRows = static::getDatabaseConnection()->exec_SELECTgetRows(
+            $dsRows = (array)static::getDatabaseConnection()->exec_SELECTgetRows(
                 'uid',
                 'tx_templavoila_datastructure',
                 '1=1'
@@ -268,7 +266,7 @@ class DataStructureRepository
         if (count($confArr)) {
             $fileAbsName = GeneralUtility::getFileAbsFileName($file);
             foreach ($confArr as $key => $conf) {
-                if (GeneralUtility::getFileAbsFileName($conf['path']) == $fileAbsName) {
+                if (GeneralUtility::getFileAbsFileName($conf['path']) === $fileAbsName) {
                     $confKey = $key;
                     break;
                 }

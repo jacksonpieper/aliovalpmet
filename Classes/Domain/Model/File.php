@@ -26,14 +26,6 @@ class File
 {
 
     /**
-     * @return bool
-     */
-    public static function includesFal()
-    {
-        return class_exists('TYPO3\\CMS\\Core\\Resource\\ResourceFactory');
-    }
-
-    /**
      * Build a File/Folder object from an resource pointer. This might raise exceptions.
      *
      * @param $filename
@@ -44,9 +36,7 @@ class File
     {
         /** @var $resourceFactory ResourceFactory */
         $resourceFactory = GeneralUtility::makeInstance(ResourceFactory::class);
-        $file = $resourceFactory->getObjectFromCombinedIdentifier($filename);
-
-        return $file;
+        return $resourceFactory->getObjectFromCombinedIdentifier($filename);
     }
 
     /**
@@ -59,10 +49,6 @@ class File
      */
     public static function filename($filename)
     {
-        if (!self::includesFal()) {
-            return $filename;
-        }
-
         try {
             $file = self::file($filename);
             $filename = $file->getForLocalProcessing(false);
@@ -81,9 +67,6 @@ class File
      */
     public static function is_file($filename)
     {
-        if (!self::includesFal()) {
-            return @is_file($filename);
-        }
         $is_file = true;
         try {
             self::file($filename);
@@ -105,14 +88,11 @@ class File
      */
     public static function is_xmlFile($filename)
     {
-        if (!self::includesFal()) {
-            return self::is_xmlFile_finfo($filename);
-        }
         $isXmlFile = false;
         try {
             $file = self::file($filename);
             if ($file instanceof FileInterface) {
-                $isXmlFile = in_array($file->getMimeType(), ['text/html', 'application/xml']);
+                $isXmlFile = in_array($file->getMimeType(), ['text/html', 'application/xml'], true);
             }
         } catch (\Exception $e) {
         }

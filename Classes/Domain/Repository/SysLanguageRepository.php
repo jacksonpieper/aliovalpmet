@@ -86,7 +86,7 @@ class SysLanguageRepository
         $where = [
             'pages_language_overlay.sys_language_uid = sys_language.uid',
             'pages_language_overlay.pid = ' . $pid,
-            'pages_language_overlay.deleted = 0',
+            'pages_language_overlay.deleted = 0'
         ];
 
         $where = $this->addExcludeHiddenWhereClause($where);

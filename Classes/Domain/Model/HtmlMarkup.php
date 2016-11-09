@@ -315,11 +315,12 @@ class HtmlMarkup
         foreach ($this->tags as $tag => &$conf) {
             $conf['icon'] = IconUtility::skinImg($this->backPath, ExtensionManagementUtility::extRelPath(Templavoila::EXTKEY) . 'html_tags/' . $tag . '.gif', 'height="17"') . ' alt="" border="0"';
         }
+        unset($conf);
 
         list($tagList_elements, $tagList_single) = $this->splitTagTypes($showTags);
 
         // Fix links/paths
-        if ($this->mode != 'source') {
+        if ($this->mode !== 'source') {
             $content = $this->htmlParse->prefixResourcePath($relPathFix, $content);
         }
 
@@ -327,7 +328,7 @@ class HtmlMarkup
         $content = $this->recursiveBlockSplitting($content, $tagList_elements, $tagList_single, 'markup');
 
         // Wrap in <pre>-tags if source
-        if ($this->mode == 'source') {
+        if ($this->mode === 'source') {
             $content = '<pre>' . $content . '</pre>';
         }
 
@@ -349,12 +350,12 @@ class HtmlMarkup
     public function passthroughHTMLcontent($content, $relPathFix, $mode = '', $altStyle = '')
     {
         // Fix links/paths
-        if ($mode != 'source') {
+        if ($mode !== 'source') {
             $content = $this->htmlParse->prefixResourcePath($relPathFix, $content);
         }
 
         // Wrap in <pre>-tags if source
-        if ($mode == 'source') {
+        if ($mode === 'source') {
             $content = '<pre style="' . htmlspecialchars($altStyle ? $altStyle : 'font-size:11px; color:#999999; font-style:italic;') . '">' . str_replace(chr(9), '    ', htmlspecialchars($content)) . '</pre>';
         }
 
@@ -455,7 +456,7 @@ class HtmlMarkup
             if ($k % 2) {
                 // Based on the path, find the element in 'searchparts':
                 list($pathInfo) = $this->splitPath($v);
-                if ($pathInfo['modifier'] == 'ATTR') {
+                if ($pathInfo['modifier'] === 'ATTR') {
                     $lC = $divContent['searchparts'][$pathInfo['path']]['attr'][$pathInfo['modifier_value']]['content'];
                 } else {
                     $lC = $divContent['searchparts'][$pathInfo['path']]['content'];
@@ -572,7 +573,7 @@ class HtmlMarkup
     {
         foreach ($currentMappingInfo['cArray'] as $key => $val) {
             if (!MathUtility::canBeInterpretedAsInteger($key) && $dataStruct[$key]) {
-                if ($dataStruct[$key]['type'] == 'array') {
+                if ($dataStruct[$key]['type'] === 'array') {
                     if (is_array($currentMappingInfo['sub'][$key])) {
                         $currentMappingInfo['cArray'][$key] = $this->mergeSampleDataIntoTemplateStructure($dataStruct[$key]['el'], $currentMappingInfo['sub'][$key], '',
                             ($dataStruct[$key]['section'] ?
@@ -582,7 +583,7 @@ class HtmlMarkup
                     }
                 } else {
                     if (is_array($dataStruct[$key]['tx_templavoila']['sample_data'])) {
-                        $point = rand(0, count($dataStruct[$key]['tx_templavoila']['sample_data']) - 1);
+                        $point = mt_rand(0, count($dataStruct[$key]['tx_templavoila']['sample_data']) - 1);
                         $sample = $dataStruct[$key]['tx_templavoila']['sample_data'][$point];
                     } else {
                         $sample = '[SAMPLE DATA]';
@@ -615,10 +616,10 @@ class HtmlMarkup
     public function mergeFormDataIntoTemplateStructure($editStruct, $currentMappingInfo, $firstLevelImplodeToken = '', $valueKey = 'vDEF')
     {
         $isSection = 0;
-        $htmlParse = ($this->htmlParse ? $this->htmlParse : GeneralUtility::makeInstance(HtmlParser::class));
+        $htmlParse = ($this->htmlParse ?: GeneralUtility::makeInstance(HtmlParser::class));
         if (is_array($editStruct) && count($editStruct)) {
             $testInt = implode('', array_keys($editStruct));
-            $isSection = !preg_match('/[^0-9]/', $testInt);
+            $isSection = !preg_match('/\D/', $testInt);
         }
         $out = '';
         if ($isSection) {
@@ -678,9 +679,9 @@ class HtmlMarkup
             if ($modArr[0]) {
                 $subPaths[$index]['modifier'] = $modArr[0];
                 $subPaths[$index]['modifier_value'] = $modArr[1];
-                if (strstr($modArr[0], 'INNER')) {
+                if (strpos($modArr[0], 'INNER') !== false) {
                     $subPaths[$index]['modifier_lu'] = '/INNER';
-                } elseif ($modArr[0] == 'RANGE') {
+                } elseif ($modArr[0] === 'RANGE') {
                     $subPaths[$index]['modifier_lu'] = '/RANGE:' . $modArr[1];
                 } else {
                     $subPaths[$index]['modifier_lu'] = ''; // Outer.
@@ -690,7 +691,7 @@ class HtmlMarkup
             // Tag list
             $tagIndex = [];
             $tagSplitParts = $splitParts;
-            if ($subPaths[$index]['modifier'] == 'RANGE' && $subPaths[$index]['modifier_value']) {
+            if ($subPaths[$index]['modifier'] === 'RANGE' && $subPaths[$index]['modifier_value']) {
                 $tagSplitParts[] = $subPaths[$index]['modifier_value'];
             }
             foreach ($tagSplitParts as $tagV) {
@@ -852,9 +853,8 @@ class HtmlMarkup
             'tx_templavoila_tmplobj',
             'parent=' . (int)$uid . ' ' . $where . $TSFE->sys_page->enableFields('tx_templavoila_tmplobj')
         );
-        $printRow = static::getDatabaseConnection()->sql_fetch_assoc($res);
 
-        return $printRow;
+        return static::getDatabaseConnection()->sql_fetch_assoc($res);
     }
 
     /**
@@ -1091,13 +1091,13 @@ class HtmlMarkup
                 $subPath = $this->makePath($path, $firstTagName, $params[0]);
 
                 // Make the call again - recursively.
-                if ($recursion < $this->maxRecursion && !($mode == 'search' && isset($this->searchPaths[$subPath]) && ($this->searchPaths[$subPath]['modifier'] != 'ATTR'))) {
+                if ($recursion < $this->maxRecursion && !($mode === 'search' && isset($this->searchPaths[$subPath]) && ($this->searchPaths[$subPath]['modifier'] !== 'ATTR'))) {
                     $v = $this->recursiveBlockSplitting($v, $tagsBlock, $tagsSolo, $mode, $subPath, $recursion + 1);
                 }
 
-                if ($mode == 'markup') {
+                if ($mode === 'markup') {
                     $v = $this->getMarkupCode('block', $v, $params, $firstTagName, $firstTag, $endTag, $subPath, $recursion);
-                } elseif ($mode == 'search') {
+                } elseif ($mode === 'search') {
                     $v = $this->getSearchCode('block', $v, $params, $firstTagName, $firstTag, $endTag, $subPath, $path, $recursion);
                 } else {
                     $v = $firstTag . $v . $endTag;
@@ -1148,16 +1148,16 @@ class HtmlMarkup
                             // Get path for THIS element:
                             $subPath = $this->makePath($path, $firstTagName, $params[0]);
 
-                            if ($mode == 'markup') {
+                            if ($mode === 'markup') {
                                 $vv = $this->getMarkupCode('', $vv, $params, $firstTagName, $firstTag, '', $subPath, $recursion + 1);
-                            } elseif ($mode == 'search') {
+                            } elseif ($mode === 'search') {
                                 $vv = $this->getSearchCode('', $vv, $params, $firstTagName, '', '', $subPath, $path, $recursion);
                             }
-                        } elseif ($this->mode == 'source' && $mode == 'markup') {
+                        } elseif ($this->mode === 'source' && $mode === 'markup') {
                             $vv = $this->sourceDisplay($vv, $recursion, '', 1);
-                        } elseif ($this->mode == 'checkbox') {
+                        } elseif ($this->mode === 'checkbox') {
                             $vv = $this->checkboxDisplay($vv, $recursion, '', '', 1);
-                        } elseif ($mode == 'search' && $this->rangeEndSearch[$recursion]) {
+                        } elseif ($mode === 'search' && $this->rangeEndSearch[$recursion]) {
                             $this->searchPaths[$this->rangeStartPath[$recursion]]['content'] .= $vv;
                             $vv = '';
                         }
@@ -1200,31 +1200,31 @@ class HtmlMarkup
         }
         $gnyf = $this->getGnyf($firstTagName, $subPath, $subPath . ($attrInfo ? ' - ' . $attrInfo : ''));
 
-        if ($mode == 'block') {
+        if ($mode === 'block') {
             // Disable A tags:
-            if ($firstTagName == 'a') {
+            if ($firstTagName === 'a') {
                 $params[0]['onclick'] = 'return false;';
                 $firstTag = '<' . trim($firstTagName . ' ' . GeneralUtility::implodeAttributes($params[0])) . '>';
             }
             // Display modes:
-            if ($this->mode == 'explode') {
-                if ($firstTagName == 'table') {
+            if ($this->mode === 'explode') {
+                if ($firstTagName === 'table') {
                     $params[0]['border'] = 0;
                     $params[0]['cellspacing'] = 4;
                     $params[0]['cellpadding'] = 0;
                     $params[0]['style'] .= '; border: 1px dotted #666666;';
                     $firstTag = '<' . trim($firstTagName . ' ' . GeneralUtility::implodeAttributes($params[0])) . '>';
-                } elseif ($firstTagName == 'td') {
+                } elseif ($firstTagName === 'td') {
                     $params[0]['style'] .= '; border: 1px dotted #666666;';
                     $firstTag = '<' . trim($firstTagName . ' ' . GeneralUtility::implodeAttributes($params[0])) . '>';
 
                     $v = (string) $v != '' ? $v : '&nbsp;';
                 }
-            } elseif ($this->mode == 'borders') {
-                if ($firstTagName == 'table') {
+            } elseif ($this->mode === 'borders') {
+                if ($firstTagName === 'table') {
                     $params[0]['style'] .= '; border: 1px dotted #666666;';
                     $firstTag = '<' . trim($firstTagName . ' ' . GeneralUtility::implodeAttributes($params[0])) . '>';
-                } elseif ($firstTagName == 'td') {
+                } elseif ($firstTagName === 'td') {
                     $params[0]['style'] .= '; border: 1px dotted #666666;';
                     $firstTag = '<' . trim($firstTagName . ' ' . GeneralUtility::implodeAttributes($params[0])) . '>';
                 }
@@ -1233,9 +1233,9 @@ class HtmlMarkup
             $tagConf = $this->tags[$firstTagName];
 
             // If source mode or normal
-            if ($this->mode == 'source') {
+            if ($this->mode === 'source') {
                 $v = $this->sourceDisplay($firstTag, $recursion, $gnyf) . $v . $this->sourceDisplay($endTag, $recursion);
-            } elseif ($this->mode == 'checkbox') {
+            } elseif ($this->mode === 'checkbox') {
                 $v = $this->checkboxDisplay($firstTag . $v . $endTag, $recursion, $subPath, $gnyf);
             } else {
                 // Find wrapping value for tag.
@@ -1251,9 +1251,9 @@ class HtmlMarkup
             }
         } else { // If solo/single element:
             // Adding gnyf to the tag:
-            if ($this->mode == 'source') {
+            if ($this->mode === 'source') {
                 $v = $this->sourceDisplay($v, $recursion, $gnyf);
-            } elseif ($this->mode == 'checkbox') {
+            } elseif ($this->mode === 'checkbox') {
                 $v = $this->checkboxDisplay($v, $recursion, $subPath, $gnyf);
             } else {
                 $v = $gnyf . $v;
@@ -1291,7 +1291,7 @@ class HtmlMarkup
                 $this->rangeStartPath[$recursion] = '';
             }
         } elseif ($this->searchPaths[$subPath]) {
-            $placeholder = md5(uniqid(rand(), true));
+            $placeholder = md5(uniqid(mt_rand(), true));
 
             switch ((string) $this->searchPaths[$subPath]['modifier']) {
                 case 'ATTR':
@@ -1304,16 +1304,16 @@ class HtmlMarkup
                             $this->searchPaths[$subPath]['attr'][$attr]['placeholder'] = $placeholder;
                             $this->searchPaths[$subPath]['attr'][$attr]['content'] = $params[0][$attr];
                             $params[0][$attr] = $placeholder;
-                            $placeholder = md5(uniqid(rand(), true));
+                            $placeholder = md5(uniqid(mt_rand(), true));
                         }
-                        $firstTag = '<' . trim($firstTagName . ' ' . GeneralUtility::implodeAttributes($params[0])) . ($mode != 'block' ? ' /' : '') . '>';
-                        if ($mode != 'block') {
+                        $firstTag = '<' . trim($firstTagName . ' ' . GeneralUtility::implodeAttributes($params[0])) . ($mode !== 'block' ? ' /' : '') . '>';
+                        if ($mode !== 'block') {
                             $v = $firstTag;
                             $firstTag = '';
                         }
                     }
 
-                    if ($mode == 'block' && (string) $this->searchPaths[$subPath]['modifier'] == 'INNER+ATTR') {
+                    if ($mode === 'block' && (string) $this->searchPaths[$subPath]['modifier'] === 'INNER+ATTR') {
                         // INNER
                         $placeholder = '<!--###' . $placeholder . '###-->';
                         $this->searchPaths[$subPath]['placeholder'] = $placeholder;
@@ -1403,7 +1403,7 @@ class HtmlMarkup
         }
 
         return '
-                <tr class="bgColor' . ($rows++ % 2 == 0 ? '4' : '6') . '">
+                <tr class="bgColor' . ($rows++ % 2 === 0 ? '4' : '6') . '">
                     <td><input type="checkbox" name="checkboxElement[]" value="' . $path . '"' . (in_array($path, $this->checkboxPathsSet) ? ' checked="checked"' : '') . ' /></td>
                     <td>' . $gnyf . '</td>
                     <td><pre>' . trim(htmlspecialchars($str)) . '</pre></td>
@@ -1460,7 +1460,7 @@ class HtmlMarkup
             $gnyf = $this->textGnyf
                 ? '<span ' . $onclick . ' style="cursor:pointer; border: 1px solid blank; background-color: yellow;">[' . $firstTagName . ']</span>'
                 : self::getGnyfMarkup($firstTagName, $title, $onclick);
-            $gnyf .= $this->mode == 'explode'
+            $gnyf .= $this->mode === 'explode'
                 ? '<br />'
                 : '';
 

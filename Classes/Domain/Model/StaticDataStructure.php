@@ -59,12 +59,12 @@ class StaticDataStructure extends AbstractDataStructure
     }
 
     /**
-     * @return string;
+     * @return string
      */
     public function getStoragePids()
     {
         $pids = [];
-        $toList = static::getDatabaseConnection()->exec_SELECTgetRows(
+        $toList = (array)static::getDatabaseConnection()->exec_SELECTgetRows(
             'tx_templavoila_tmplobj.uid,tx_templavoila_tmplobj.pid',
             'tx_templavoila_tmplobj',
             'tx_templavoila_tmplobj.datastructure=' . static::getDatabaseConnection()->fullQuoteStr($this->filename, 'tx_templavoila_tmplobj') . BackendUtility::deleteClause('tx_templavoila_tmplobj')
@@ -112,7 +112,7 @@ class StaticDataStructure extends AbstractDataStructure
      *
      * @return bool
      */
-    public function isPermittedForUser($parentRow = [], $removeItems = [])
+    public function isPermittedForUser(array $parentRow = [], array $removeItems = [])
     {
         return true;
     }
@@ -135,11 +135,10 @@ class StaticDataStructure extends AbstractDataStructure
      */
     public function getTstamp()
     {
+        $tstamp = 0;
         $file = GeneralUtility::getFileAbsFileName($this->filename);
         if (is_readable($file)) {
             $tstamp = filemtime($file);
-        } else {
-            $tstamp = 0;
         }
 
         return $tstamp;
@@ -152,11 +151,10 @@ class StaticDataStructure extends AbstractDataStructure
      */
     public function getCrdate()
     {
+        $tstamp = 0;
         $file = GeneralUtility::getFileAbsFileName($this->filename);
         if (is_readable($file)) {
             $tstamp = filectime($file);
-        } else {
-            $tstamp = 0;
         }
 
         return $tstamp;
