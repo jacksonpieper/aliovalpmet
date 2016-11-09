@@ -426,7 +426,7 @@ class ElementTypesRenderer
             }
         }
 
-        return false;
+        return [];
     }
 
     /**
