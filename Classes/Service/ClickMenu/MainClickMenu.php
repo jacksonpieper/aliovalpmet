@@ -15,9 +15,18 @@ namespace Schnitzler\Templavoila\Service\ClickMenu;
  * The TYPO3 project - inspiring people to share!
  */
 
-use Schnitzler\Templavoila\Utility\GeneralUtility;
+use Schnitzler\Templavoila\Domain\Model\File;
+use Schnitzler\Templavoila\Templavoila;
+use Schnitzler\Templavoila\Traits\BackendUser;
+use Schnitzler\Templavoila\Traits\DatabaseConnection;
+use Schnitzler\Templavoila\Traits\LanguageService;
+use TYPO3\CMS\Backend\ClickMenu\ClickMenu;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
-use TYPO3\CMS\Backend\Utility\IconUtility;
+use TYPO3\CMS\Core\Imaging\Icon;
+use TYPO3\CMS\Core\Imaging\IconFactory;
+use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Utility\MathUtility;
 
 /**
  * Class which will add menu items to click menus for the extension TemplaVoila
@@ -27,38 +36,57 @@ use TYPO3\CMS\Backend\Utility\IconUtility;
  */
 class MainClickMenu
 {
+    use BackendUser;
+    use DatabaseConnection;
+    use LanguageService;
+
+    /**
+     * @var IconFactory
+     */
+    private $iconFactory;
+
+    public function __construct()
+    {
+        $this->iconFactory = GeneralUtility::makeInstance(IconFactory::class);
+    }
 
     /**
      * Main function, adding items to the click menu array.
      *
-     * @param object &$backRef Reference to the parent object of the clickmenu class which calls this function
+     * @param ClickMenu $clickMenu Reference to the parent object of the clickmenu class which calls this function
      * @param array $menuItems The current array of menu items - you have to add or remove items to this array in this function. Thats the point...
      * @param string $table The database table OR filename
      * @param int $uid For database tables, the UID
      *
      * @return array The modified menu array.
      */
-    public function main(&$backRef, $menuItems, $table, $uid)
+    public function main(ClickMenu $clickMenu, array $menuItems = [], $table, $uid)
     {
         $localItems = [];
-        $extensionRelativePath = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath(\Schnitzler\Templavoila\Templavoila::EXTKEY);
-        if (!$backRef->cmLevel) {
-            $LL = GeneralUtility::getLanguageService()->includeLLFile(
+        $extensionRelativePath = ExtensionManagementUtility::extRelPath(Templavoila::EXTKEY);
+        if (!$clickMenu->cmLevel) {
+            $LL = static::getLanguageService()->includeLLFile(
                 'EXT:templavoila/Resources/Private/Language/locallang.xlf',
                 false
             );
 
             // Adding link for Mapping tool:
             if (
-                \Schnitzler\Templavoila\Domain\Model\File::is_file($table)
-                && GeneralUtility::getBackendUser()->isAdmin()
-                && \Schnitzler\Templavoila\Domain\Model\File::is_xmlFile($table)
+                File::is_file($table)
+                && static::getBackendUser()->isAdmin()
+                && File::is_xmlFile($table)
             ) {
-                $url = $extensionRelativePath . 'cm1/index.php?file=' . rawurlencode($table);
-                $localItems[] = $backRef->linkItem(
-                    GeneralUtility::getLanguageService()->getLLL('cm1_title', $LL, true),
-                    $backRef->excludeIcon(IconUtility::getSpriteIcon('extensions-templavoila-templavoila-logo-small')),
-                    $backRef->urlRefForCM($url, 'returnUrl'),
+                $url = BackendUtility::getModuleUrl(
+                    'tv_mod_admin_mapping',
+                    [
+                        'file' => $table
+                    ]
+                );
+
+                $localItems[] = $clickMenu->linkItem(
+                    static::getLanguageService()->getLLL('cm1_title', $LL, true),
+                    $this->iconFactory->getIcon('extensions-templavoila-templavoila-logo-small', Icon::SIZE_SMALL),
+                    $clickMenu->urlRefForCM($url, 'returnUrl'),
                     true // Disables the item in the top-bar. Set this to zero if you wish the item to appear in the top bar!
                 );
             } elseif (
@@ -66,36 +94,50 @@ class MainClickMenu
                 || $table === 'tx_templavoila_datastructure'
                 || $table === 'tx_templavoila_content'
             ) {
-                $url = $extensionRelativePath . 'cm1/index.php?table=' . rawurlencode($table) . '&uid=' . $uid . '&_reload_from=1';
-                $localItems[] = $backRef->linkItem(
-                    GeneralUtility::getLanguageService()->getLLL('cm1_title', $LL, true),
-                    $backRef->excludeIcon(IconUtility::getSpriteIcon('extensions-templavoila-templavoila-logo-small')),
-                    $backRef->urlRefForCM($url, 'returnUrl'),
+                $url = BackendUtility::getModuleUrl(
+                    'tv_mod_admin_mapping',
+                    [
+                        'uid' => $uid,
+                        'table' => $table,
+                        '_reload_from' => 1
+                    ]
+                );
+                $localItems[] = $clickMenu->linkItem(
+                    static::getLanguageService()->getLLL('cm1_title', $LL, true),
+                    $this->iconFactory->getIcon('extensions-templavoila-templavoila-logo-small', Icon::SIZE_SMALL),
+                    $clickMenu->urlRefForCM($url, 'returnUrl'),
                     true // Disables the item in the top-bar. Set this to zero if you wish the item to appear in the top bar!
                 );
             }
 
-            $isTVelement = ('tt_content' === $table && $backRef->rec['CType'] === 'templavoila_pi1' || 'pages' === $table) && $backRef->rec['tx_templavoila_flex'];
+            $isTVelement = ('tt_content' === $table && $clickMenu->rec['CType'] === 'templavoila_pi1' || 'pages' === $table) && $clickMenu->rec['tx_templavoila_flex'];
 
             // Adding link for "View: Sub elements":
             if ($table === 'tt_content' && $isTVelement) {
                 $localItems = [];
 
-                $url = $extensionRelativePath . 'mod1/index.php?id=' . (int)$backRef->rec['pid'] .
-                    '&altRoot[table]=' . rawurlencode($table) .
-                    '&altRoot[uid]=' . $uid .
-                    '&altRoot[field_flex]=tx_templavoila_flex';
+                $url = BackendUtility::getModuleUrl(
+                    'web_txtemplavoilaM1',
+                    [
+                        'id' => $clickMenu->rec['pid'],
+                        'altRoot' => [
+                            'uid' => $uid,
+                            'table' => $table,
+                            'field_flex' => 'tx_templavoila_flex'
+                        ]
+                    ]
+                );
 
-                $localItems[] = $backRef->linkItem(
-                    GeneralUtility::getLanguageService()->getLLL('cm1_viewsubelements', $LL, true),
-                    $backRef->excludeIcon(IconUtility::getSpriteIcon('extensions-templavoila-templavoila-logo-small')),
-                    $backRef->urlRefForCM($url, 'returnUrl'),
+                $localItems[] = $clickMenu->linkItem(
+                    static::getLanguageService()->getLLL('cm1_viewsubelements', $LL, true),
+                    $this->iconFactory->getIcon('extensions-templavoila-templavoila-logo-small', Icon::SIZE_SMALL),
+                    $clickMenu->urlRefForCM($url, 'returnUrl'),
                     true // Disables the item in the top-bar. Set this to zero if you wish the item to appear in the top bar!
                 );
             }
 
             // Adding link for "View: Flexform XML" (admin only):
-            if (GeneralUtility::getBackendUser()->isAdmin() && $isTVelement) {
+            if (static::getBackendUser()->isAdmin() && $isTVelement) {
                 $url = BackendUtility::getModuleUrl(
                     'tv_mod_xmlcontroller',
                     [
@@ -105,46 +147,52 @@ class MainClickMenu
                     ]
                 );
 
-                $localItems[] = $backRef->linkItem(
-                    GeneralUtility::getLanguageService()->getLLL('cm1_viewflexformxml', $LL, true),
-                    $backRef->excludeIcon(IconUtility::getSpriteIcon('extensions-templavoila-templavoila-logo-small')),
-                    $backRef->urlRefForCM($url, 'returnUrl'),
+                $localItems[] = $clickMenu->linkItem(
+                    static::getLanguageService()->getLLL('cm1_viewflexformxml', $LL, true),
+                    $this->iconFactory->getIcon('extensions-templavoila-templavoila-logo-small', Icon::SIZE_SMALL),
+                    $clickMenu->urlRefForCM($url, 'returnUrl'),
                     true // Disables the item in the top-bar. Set this to zero if you wish the item to appear in the top bar!
                 );
 
                 // Adding link for "View: DS/TO" (admin only):
-                if (\TYPO3\CMS\Core\Utility\MathUtility::canBeInterpretedAsInteger($backRef->rec['tx_templavoila_ds'])) {
-                    $url = $extensionRelativePath . 'cm1/index.php?table=tx_templavoila_datastructure&uid=' . $backRef->rec['tx_templavoila_ds'];
+                if (MathUtility::canBeInterpretedAsInteger($clickMenu->rec['tx_templavoila_ds'])) {
+                    $url = BackendUtility::getModuleUrl(
+                        'tv_mod_admin_mapping',
+                        [
+                            'uid' => $clickMenu->rec['tx_templavoila_ds'],
+                            'table' => 'tx_templavoila_datastructure'
+                        ]
+                    );
 
-                    $localItems[] = $backRef->linkItem(
-                        GeneralUtility::getLanguageService()->getLLL('cm_viewdsto', $LL, true) . ' [' . $backRef->rec['tx_templavoila_ds'] . '/' . $backRef->rec['tx_templavoila_to'] . ']',
-                        $backRef->excludeIcon(IconUtility::getSpriteIcon('extensions-templavoila-templavoila-logo-small')),
-                        $backRef->urlRefForCM($url, 'returnUrl'),
+                    $localItems[] = $clickMenu->linkItem(
+                        static::getLanguageService()->getLLL('cm_viewdsto', $LL, true) . ' [' . $clickMenu->rec['tx_templavoila_ds'] . '/' . $clickMenu->rec['tx_templavoila_to'] . ']',
+                        $this->iconFactory->getIcon('extensions-templavoila-templavoila-logo-small', Icon::SIZE_SMALL),
+                        $clickMenu->urlRefForCM($url, 'returnUrl'),
                         true // Disables the item in the top-bar. Set this to zero if you wish the item to appear in the top bar!
                     );
                 }
             }
         } else {
             // @TODO check where this code is used.
-            if (\TYPO3\CMS\Core\Utility\GeneralUtility::_GP('subname') === 'tx_templavoila_cm1_pagesusingthiselement') {
+            if (GeneralUtility::_GP('subname') === 'tx_templavoila_cm1_pagesusingthiselement') {
                 $menuItems = [];
                 $url = $extensionRelativePath . 'mod1/index.php?id=';
 
                 // Generate a list of pages where this element is also being used:
-                $referenceRecords = GeneralUtility::getDatabaseConnection()->exec_SELECTgetRows(
+                $referenceRecords = (array)static::getDatabaseConnection()->exec_SELECTgetRows(
                     '*',
                     'tx_templavoila_elementreferences',
-                    'uid=' . (int)$backRef->rec['uid']
+                    'uid=' . (int)$clickMenu->rec['uid']
                 );
                 foreach ($referenceRecords as $referenceRecord) {
-                    $pageRecord = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecord('pages', $referenceRecord['pid']);
+                    $pageRecord = BackendUtility::getRecord('pages', $referenceRecord['pid']);
                     // @todo: Display language flag icon and jump to correct language
                     if ($pageRecord !== null) {
-                        $icon = IconUtility::getSpriteIconForRecord('pages', $pageRecord);
-                        $menuItems[] = $backRef->linkItem(
+                        $icon = $this->iconFactory->getIconForRecord('pages', $pageRecord);
+                        $menuItems[] = $clickMenu->linkItem(
                             $icon,
-                            \TYPO3\CMS\Backend\Utility\BackendUtility::getRecordTitle('pages', $pageRecord, true),
-                            $backRef->urlRefForCM($url . $pageRecord['uid'], 'returnUrl'),
+                            BackendUtility::getRecordTitle('pages', $pageRecord, true),
+                            $clickMenu->urlRefForCM($url . $pageRecord['uid'], 'returnUrl'),
                             true // Disables the item in the top-bar. Set this to zero if you wish the item to appear in the top bar!
                         );
                     }
