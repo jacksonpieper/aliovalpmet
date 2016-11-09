@@ -130,12 +130,48 @@ if (
     \TYPO3\CMS\Backend\Sprite\SpriteManager::addSingleIcons($icons, $_EXTKEY);
 }
 
+/** @var \TYPO3\CMS\Core\Imaging\IconRegistry $iconRegistry */
 $iconRegistry = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\Imaging\IconRegistry::class);
 $iconRegistry->registerIcon(
     'tx-tv-unlink',
     \TYPO3\CMS\Core\Imaging\IconProvider\FontawesomeIconProvider::class,
     [
         'name' => 'unlink'
+    ]
+);
+$iconRegistry->registerIcon(
+    'tx-tv-ds-sc',
+    \TYPO3\CMS\Core\Imaging\IconProvider\BitmapIconProvider::class,
+    [
+        'source' => 'EXT:templavoila/Resources/Public/Icon/DataStructureTypes/Section.gif'
+    ]
+);
+$iconRegistry->registerIcon(
+    'tx-tv-ds-co',
+    \TYPO3\CMS\Core\Imaging\IconProvider\BitmapIconProvider::class,
+    [
+        'source' => 'EXT:templavoila/Resources/Public/Icon/DataStructureTypes/Container.gif'
+    ]
+);
+$iconRegistry->registerIcon(
+    'tx-tv-ds-at',
+    \TYPO3\CMS\Core\Imaging\IconProvider\BitmapIconProvider::class,
+    [
+        'source' => 'EXT:templavoila/Resources/Public/Icon/DataStructureTypes/Attribute.gif'
+    ]
+);
+$iconRegistry->registerIcon(
+    'tx-tv-ds-el',
+    \TYPO3\CMS\Core\Imaging\IconProvider\BitmapIconProvider::class,
+    [
+        'source' => 'EXT:templavoila/Resources/Public/Icon/DataStructureTypes/Element.gif'
+    ]
+);
+$iconRegistry->registerIcon(
+    'tx-tv-ds-no',
+    \TYPO3\CMS\Core\Imaging\IconProvider\BitmapIconProvider::class,
+    [
+        'source' => 'EXT:templavoila/Resources/Public/Icon/DataStructureTypes/NotMapped.gif'
     ]
 );
 

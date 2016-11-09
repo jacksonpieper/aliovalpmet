@@ -607,13 +607,8 @@ class MappingController extends AbstractModuleController implements Configurable
                 // descriptive title
                 $title,
                 // image-path
-                IconUtility::skinImg('', ExtensionManagementUtility::extRelPath(Templavoila::EXTKEY) . 'cm1/item_' . $id . '.gif', 'width="24" height="16" border="0" style="margin-right: 5px;"'),
-                // background-path
-                IconUtility::skinImg('', ExtensionManagementUtility::extRelPath(Templavoila::EXTKEY) . 'cm1/item_' . $id . '.gif', '', 1)
+                $this->getModuleTemplate()->getIconFactory()->getIcon('tx-tv-ds-' . $id, Icon::SIZE_SMALL),
             ];
-
-            // information
-            $this->dsTypes[$id][4] = @getimagesize($this->dsTypes[$id][3]);
         }
 
         // Render content, depending on input values:
@@ -2205,8 +2200,9 @@ class MappingController extends AbstractModuleController implements Configurable
                     $rowCells = [];
 
                     // Icon:
-                    $info = $this->dsTypeInfo($value);
-                    $icon = '<img' . $info[2] . ' alt="" title="' . $info[1] . $key . '" class="absmiddle" />';
+                    list($type, $title, $iconObject) = $this->dsTypeInfo($value);
+                    /** @var Icon $iconObject */
+                    $icon = '<span title="' . $title . $key . '" class="absmiddle" />' . $iconObject->render() . '</span>&nbsp;';
 
                     // Composing title-cell:
                     if (preg_match('/^LLL:/', $value['tx_templavoila']['title'])) {
