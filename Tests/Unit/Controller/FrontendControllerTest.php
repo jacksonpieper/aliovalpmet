@@ -1,6 +1,6 @@
 <?php
 
-namespace Schnitzler\Templavoila\Tests\Unit;
+namespace Schnitzler\Templavoila\Tests\Unit\Controller;
 
 /**
  * This file is part of the TYPO3 CMS project.
@@ -19,7 +19,7 @@ use TYPO3\CMS\Core\Tests\UnitTestCase;
 /**
  * @author Alexander Schnitzler <typo3@alexanderschnitzler.de>
  */
-class Pi1Test extends UnitTestCase
+class FrontendControllerTest extends UnitTestCase
 {
 
     /**
