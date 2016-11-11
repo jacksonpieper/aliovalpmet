@@ -1,0 +1,20 @@
+<phpunit
+    backupGlobals="true"
+    backupStaticAttributes="false"
+    colors="true"
+    convertErrorsToExceptions="true"
+    convertWarningsToExceptions="true"
+    forceCoversAnnotation="false"
+    processIsolation="true"
+    stopOnError="false"
+    stopOnFailure="false"
+    stopOnIncomplete="false"
+    stopOnSkipped="false"
+    verbose="false"
+>
+    <testsuites>
+        <testsuite name="TemplaVoilà Functional Test">
+            <directory>../Functional/</directory>
+        </testsuite>
+    </testsuites>
+</phpunit>

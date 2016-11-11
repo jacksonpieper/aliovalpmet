@@ -1,6 +1,6 @@
 <?php
 
-namespace Schnitzler\Templavoila\Tests\Functional;
+namespace Schnitzler\Templavoila\Tests\Functional\Service;
 
 /*
  * This file is part of the TYPO3 CMS project.
@@ -24,7 +24,7 @@ use TYPO3\CMS\Core\Tests\FunctionalTestCase;
  * @author Robert Lemke <robert@typo3.org>
  * @author Alexander Schnitzler <typo3@alexanderschnitzler.de>
  */
-class ApiTest extends FunctionalTestCase
+class ApiServiceTest extends FunctionalTestCase
 {
 
     /**

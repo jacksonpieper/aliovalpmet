@@ -1,9 +1,74 @@
 {
+  "name": "schnitzler/templavoila",
+  "description": "",
+  "license": ["GPL-2.0+"],
+  "autoload": {
+    "psr-4": {
+      "Schnitzler\\Templavoila\\": "Classes/"
+    },
+    "classmap": [
+      "Compatibility/"
+    ]
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "Schnitzler\\Templavoila\\": "Tests/",
+      "TYPO3\\CMS\\Backend\\Tests\\": ".Build/vendor/typo3/cms/typo3/sysext/backend/Tests/",
+      "TYPO3\\CMS\\Belog\\Tests\\": ".Build/vendor/typo3/cms/typo3/sysext/belog/Tests/",
+      "TYPO3\\CMS\\Beuser\\Tests\\": ".Build/vendor/typo3/cms/typo3/sysext/beuser/Tests/",
+      "TYPO3\\CMS\\Core\\Tests\\": ".Build/vendor/typo3/cms/typo3/sysext/core/Tests/",
+      "TYPO3\\CMS\\Dbal\\Tests\\": ".Build/vendor/typo3/cms/typo3/sysext/dbal/Tests/",
+      "TYPO3\\CMS\\Documentation\\Tests\\": ".Build/vendor/typo3/cms/typo3/sysext/documentation/Tests/",
+      "TYPO3\\CMS\\Extbase\\Tests\\": ".Build/vendor/typo3/cms/typo3/sysext/extbase/Tests/",
+      "TYPO3\\CMS\\Extensionmanager\\Tests\\": ".Build/vendor/typo3/cms/typo3/sysext/extensionmanager/Tests/",
+      "TYPO3\\CMS\\Felogin\\Tests\\": ".Build/vendor/typo3/cms/typo3/sysext/felogin/Tests/",
+      "TYPO3\\CMS\\Fluid\\Tests\\": ".Build/vendor/typo3/cms/typo3/sysext/fluid/Tests/",
+      "TYPO3\\CMS\\Form\\Tests\\": ".Build/vendor/typo3/cms/typo3/sysext/form/Tests/",
+      "TYPO3\\CMS\\Frontend\\Tests\\": ".Build/vendor/typo3/cms/typo3/sysext/frontend/Tests/",
+      "TYPO3\\CMS\\Impexp\\Tests\\": ".Build/vendor/typo3/cms/typo3/sysext/impexp/Tests/",
+      "TYPO3\\CMS\\IndexedSearch\\Tests\\": ".Build/vendor/typo3/cms/typo3/sysext/indexed_search/Tests/",
+      "TYPO3\\CMS\\Install\\Tests\\": ".Build/vendor/typo3/cms/typo3/sysext/install/Tests/",
+      "TYPO3\\CMS\\Lang\\Tests\\": ".Build/vendor/typo3/cms/typo3/sysext/lang/Tests/",
+      "TYPO3\\CMS\\Lowlevel\\Tests\\": ".Build/vendor/typo3/cms/typo3/sysext/lowlevel/Tests/",
+      "TYPO3\\CMS\\Recordlist\\Tests\\": ".Build/vendor/typo3/cms/typo3/sysext/recordlist/Tests/",
+      "TYPO3\\CMS\\Reports\\Tests\\": ".Build/vendor/typo3/cms/typo3/sysext/reports/Tests/",
+      "TYPO3\\CMS\\Rsaauth\\Tests\\": ".Build/vendor/typo3/cms/typo3/sysext/rsaauth/Tests/",
+      "TYPO3\\CMS\\Saltedpasswords\\Tests\\": ".Build/vendor/typo3/cms/typo3/sysext/saltedpasswords/Tests/",
+      "TYPO3\\CMS\\Scheduler\\Tests\\": ".Build/vendor/typo3/cms/typo3/sysext/scheduler/Tests/",
+      "TYPO3\\CMS\\Sv\\Tests\\": ".Build/vendor/typo3/cms/typo3/sysext/sv/Tests/",
+      "TYPO3\\CMS\\Workspaces\\Tests\\": ".Build/vendor/typo3/cms/typo3/sysext/workspaces/Tests/",
+      "TYPO3\\CMS\\Recycler\\Tests\\": ".Build/vendor/typo3/cms/typo3/sysext/recycler/Tests/"
+    },
+    "classmap": [".Build/vendor/typo3/cms/typo3/sysext/extbase/Tests/Unit/Object/Container/Fixtures/"]
+  },
+  "repositories": [
+    {
+      "type": "composer",
+      "url": "https://composer.typo3.org/"
+    }
+  ],
+  "require": {
+    "php": ">=5.5.0",
+    "typo3/cms": "~7.6"
+  },
   "require-dev": {
-    "mikey179/vfsStream": "1.3.*@dev",
-    "phpunit/phpunit": "~4.4"
+    "phpunit/phpunit": "~4.8.0",
+    "mikey179/vfsStream": "1.6.0"
   },
   "config": {
-    "bin-dir": "bin"
+    "vendor-dir": ".Build/vendor",
+    "bin-dir": ".Build/bin"
+  },
+  "scripts": {
+    "post-autoload-dump": [
+      "mkdir -p .Build/Web/typo3conf/ext/",
+      "[ -L .Build/Web/typo3conf/ext/templavoila ] || ln -snvf ../../../../. .Build/Web/typo3conf/ext/templavoila"
+    ]
+  },
+  "extra": {
+    "typo3/cms": {
+      "cms-package-dir": "{$vendor-dir}/typo3/cms",
+      "web-dir": ".Build/Web"
+    }
   }
 }
