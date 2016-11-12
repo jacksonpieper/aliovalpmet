@@ -121,7 +121,7 @@ class Clipboard
 
         $copyIcon = $this->controller->getModuleTemplate()->getIconFactory()->getIcon('actions-edit-copy' . ($clipActive_copy ? '-release' : ''), Icon::SIZE_SMALL);
         $cutIcon = $this->controller->getModuleTemplate()->getIconFactory()->getIcon('actions-edit-cut' . ($clipActive_cut ? '-release' : ''), Icon::SIZE_SMALL);
-        $refIcon = $this->controller->getModuleTemplate()->getIconFactory()->getIcon('extensions-templavoila-clip_ref' . ($clipActive_ref ? '-release' : ''), Icon::SIZE_SMALL);
+        $refIcon = $this->controller->getModuleTemplate()->getIconFactory()->getIcon('extensions-templavoila-clipref' . ($clipActive_ref ? 'release' : ''), Icon::SIZE_SMALL);
 
         $copyUrlParams = [
             'CB' => [
@@ -233,7 +233,7 @@ class Clipboard
         // Prepare the ingredients for the different buttons:
         $pasteMode = isset($this->clipboard->clipData['normal']['flexMode']) ? $this->clipboard->clipData['normal']['flexMode'] : ($this->clipboard->clipData['normal']['mode'] === 'copy' ? 'copy' : 'cut');
         $pasteAfterIcon = $this->controller->getModuleTemplate()->getIconFactory()->getIcon('actions-document-paste-after', Icon::SIZE_SMALL);
-        $pasteSubRefIcon = $this->controller->getModuleTemplate()->getIconFactory()->getIcon('extensions-templavoila-pasteSubRef', Icon::SIZE_SMALL);
+        $pasteSubRefIcon = $this->controller->getModuleTemplate()->getIconFactory()->getIcon('extensions-templavoila-pastesubref', Icon::SIZE_SMALL);
 
         $sourcePointerString = $this->controller->getApiService()->flexform_getStringFromPointer($clipboardElementPointer);
         $destinationPointerString = $this->controller->getApiService()->flexform_getStringFromPointer($destinationPointer);

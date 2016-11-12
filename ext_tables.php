@@ -106,30 +106,6 @@ if (TYPO3_MODE === 'BE') {
 \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::allowTableOnStandardPages('tx_templavoila_datastructure');
 \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::allowTableOnStandardPages('tx_templavoila_tmplobj');
 
-// complex condition to make sure the icons are available during frontend editing...
-if (
-    TYPO3_MODE === 'BE' ||
-    (
-        TYPO3_MODE === 'FE'
-        && isset($GLOBALS['BE_USER'])
-        && method_exists($GLOBALS['BE_USER'], 'isFrontendEditingActive')
-        && $GLOBALS['BE_USER']->isFrontendEditingActive()
-    )
-) {
-    $icons = [
-        'paste' => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath($_EXTKEY) . 'Resources/Public/Icon/clip_pasteafter.gif',
-        'pasteSubRef' => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath($_EXTKEY) . 'Resources/Public/Icon/clip_pastesubref.gif',
-        'makelocalcopy' => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath($_EXTKEY) . 'Resources/Public/Icon/makelocalcopy.gif',
-        'clip_ref' => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath($_EXTKEY) . 'Resources/Public/Icon/clip_ref.gif',
-        'clip_ref-release' => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath($_EXTKEY) . 'Resources/Public/Icon/clip_ref_h.gif',
-        'htmlvalidate' => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath($_EXTKEY) . 'Resources/Public/Icon/html_go.png',
-        'type-fce' => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath($_EXTKEY) . 'Resources/Public/Icon/icon_fce_ce.png',
-        'templavoila-logo' => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath($_EXTKEY) . 'Resources/Public/Image/templavoila-logo.png',
-        'templavoila-logo-small' => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath($_EXTKEY) . 'Resources/Public/Image/templavoila-logo-small.png',
-    ];
-    \TYPO3\CMS\Backend\Sprite\SpriteManager::addSingleIcons($icons, $_EXTKEY);
-}
-
 /** @var \TYPO3\CMS\Core\Imaging\IconRegistry $iconRegistry */
 $iconRegistry = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\Imaging\IconRegistry::class);
 $iconRegistry->registerIcon(
@@ -137,6 +113,55 @@ $iconRegistry->registerIcon(
     \TYPO3\CMS\Core\Imaging\IconProvider\FontawesomeIconProvider::class,
     [
         'name' => 'unlink'
+    ]
+);
+$iconRegistry->registerIcon(
+    'extensions-templavoila-pastesubref',
+    \TYPO3\CMS\Core\Imaging\IconProvider\BitmapIconProvider::class,
+    [
+        'source' => 'EXT:templavoila/Resources/Public/Icon/clip_pastesubref.gif'
+    ]
+);
+$iconRegistry->registerIcon(
+    'extensions-templavoila-makelocalcopy',
+    \TYPO3\CMS\Core\Imaging\IconProvider\BitmapIconProvider::class,
+    [
+        'source' => 'EXT:templavoila/Resources/Public/Icon/makelocalcopy.gif'
+    ]
+);
+$iconRegistry->registerIcon(
+    'extensions-templavoila-clipref',
+    \TYPO3\CMS\Core\Imaging\IconProvider\BitmapIconProvider::class,
+    [
+        'source' => 'EXT:templavoila/Resources/Public/Icon/clip_ref.gif'
+    ]
+);
+$iconRegistry->registerIcon(
+    'extensions-templavoila-cliprefrelease',
+    \TYPO3\CMS\Core\Imaging\IconProvider\BitmapIconProvider::class,
+    [
+        'source' => 'EXT:templavoila/Resources/Public/Icon/clip_ref_h.gif'
+    ]
+);
+$iconRegistry->registerIcon(
+    'extensions-templavoila-htmlvalidate',
+    \TYPO3\CMS\Core\Imaging\IconProvider\BitmapIconProvider::class,
+    [
+        'source' => 'EXT:templavoila/Resources/Public/Icon/html_go.png'
+    ]
+);
+$iconRegistry->registerIcon(
+    'extensions-templavoila-type-fce',
+    \TYPO3\CMS\Core\Imaging\IconProvider\BitmapIconProvider::class,
+    [
+        'source' => 'EXT:templavoila/Resources/Public/Icon/icon_fce_ce.png'
+    ]
+);
+$iconRegistry->registerIcon(
+    'extensions-templavoila-logo',
+    \TYPO3\CMS\Core\Imaging\IconProvider\BitmapIconProvider::class,
+    [
+        'source' => 'EXT:templavoila/Resources/Public/Image/templavoila-logo.png'
     ]
 );
 $iconRegistry->registerIcon(

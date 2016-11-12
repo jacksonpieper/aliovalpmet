@@ -85,7 +85,7 @@ class MainClickMenu
 
                 $localItems[] = $clickMenu->linkItem(
                     static::getLanguageService()->getLLL('cm1_title', $LL, true),
-                    $this->iconFactory->getIcon('extensions-templavoila-templavoila-logo-small', Icon::SIZE_SMALL),
+                    $this->iconFactory->getIcon('extensions-templavoila-logo', Icon::SIZE_SMALL),
                     $clickMenu->urlRefForCM($url, 'returnUrl'),
                     true // Disables the item in the top-bar. Set this to zero if you wish the item to appear in the top bar!
                 );
@@ -104,7 +104,7 @@ class MainClickMenu
                 );
                 $localItems[] = $clickMenu->linkItem(
                     static::getLanguageService()->getLLL('cm1_title', $LL, true),
-                    $this->iconFactory->getIcon('extensions-templavoila-templavoila-logo-small', Icon::SIZE_SMALL),
+                    $this->iconFactory->getIcon('extensions-templavoila-logo', Icon::SIZE_SMALL),
                     $clickMenu->urlRefForCM($url, 'returnUrl'),
                     true // Disables the item in the top-bar. Set this to zero if you wish the item to appear in the top bar!
                 );
@@ -130,7 +130,7 @@ class MainClickMenu
 
                 $localItems[] = $clickMenu->linkItem(
                     static::getLanguageService()->getLLL('cm1_viewsubelements', $LL, true),
-                    $this->iconFactory->getIcon('extensions-templavoila-templavoila-logo-small', Icon::SIZE_SMALL),
+                    $this->iconFactory->getIcon('extensions-templavoila-logo', Icon::SIZE_SMALL),
                     $clickMenu->urlRefForCM($url, 'returnUrl'),
                     true // Disables the item in the top-bar. Set this to zero if you wish the item to appear in the top bar!
                 );
@@ -149,7 +149,7 @@ class MainClickMenu
 
                 $localItems[] = $clickMenu->linkItem(
                     static::getLanguageService()->getLLL('cm1_viewflexformxml', $LL, true),
-                    $this->iconFactory->getIcon('extensions-templavoila-templavoila-logo-small', Icon::SIZE_SMALL),
+                    $this->iconFactory->getIcon('extensions-templavoila-logo', Icon::SIZE_SMALL),
                     $clickMenu->urlRefForCM($url, 'returnUrl'),
                     true // Disables the item in the top-bar. Set this to zero if you wish the item to appear in the top bar!
                 );
@@ -166,7 +166,7 @@ class MainClickMenu
 
                     $localItems[] = $clickMenu->linkItem(
                         static::getLanguageService()->getLLL('cm_viewdsto', $LL, true) . ' [' . $clickMenu->rec['tx_templavoila_ds'] . '/' . $clickMenu->rec['tx_templavoila_to'] . ']',
-                        $this->iconFactory->getIcon('extensions-templavoila-templavoila-logo-small', Icon::SIZE_SMALL),
+                        $this->iconFactory->getIcon('extensions-templavoila-logo', Icon::SIZE_SMALL),
                         $clickMenu->urlRefForCM($url, 'returnUrl'),
                         true // Disables the item in the top-bar. Set this to zero if you wish the item to appear in the top bar!
                     );
