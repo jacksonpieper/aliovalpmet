@@ -1877,13 +1877,11 @@ class MappingController extends AbstractModuleController implements Configurable
                 ' . $bodyTagRow . '
             </table><br />';
 
-        $flashMessage = GeneralUtility::makeInstance(
-            FlashMessage::class,
+        $this->getModuleTemplate()->addFlashMessage(
             static::getLanguageService()->getLL('msgHeaderSet'),
             '',
             FlashMessage::WARNING
         );
-        $headerParts .= $flashMessage->render();
 
         $headerParts .= BackendUtility::cshItem('xMOD_tx_templavoila', 'mapping_to_headerParts_buttons', '', '') . $htmlAfterDSTable;
 

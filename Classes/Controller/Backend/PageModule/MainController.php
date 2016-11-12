@@ -30,6 +30,7 @@ use Schnitzler\Templavoila\Wizards;
 use TYPO3\CMS\Backend\Template\Components\ButtonBar;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\DataHandling\DataHandler;
+use TYPO3\CMS\Core\FormProtection\FormProtectionFactory;
 use TYPO3\CMS\Core\Http\Response;
 use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Core\Imaging\Icon;
@@ -587,7 +588,7 @@ class MainController extends AbstractModuleController implements Configurable
 
             if ($this->getId()) {
                 $cacheUrl = $GLOBALS['BACK_PATH'] . 'tce_db.php?vC=' . static::getBackendUser()->veriCode() .
-                    BackendUtility::getUrlToken('tceAction') .
+                    FormProtectionFactory::get()->generateToken('tceAction') .
                     '&redirect=' . rawurlencode(GeneralUtility::getIndpEnv('REQUEST_URI')) .
                     '&cacheCmd=' . $this->getId();
 

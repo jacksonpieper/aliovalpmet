@@ -17,8 +17,8 @@ namespace Schnitzler\Templavoila\Domain\Model;
 
 use Schnitzler\Templavoila\Templavoila;
 use Schnitzler\Templavoila\Traits\DatabaseConnection;
-use TYPO3\CMS\Backend\Utility\IconUtility;
 use TYPO3\CMS\Core\Html\HtmlParser;
+use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
@@ -310,12 +310,6 @@ class HtmlMarkup
 
         $this->init();
         $this->backPath = $backPath;
-
-        /* build primary cache for icon-images */
-        foreach ($this->tags as $tag => &$conf) {
-            $conf['icon'] = IconUtility::skinImg($this->backPath, ExtensionManagementUtility::extRelPath(Templavoila::EXTKEY) . 'html_tags/' . $tag . '.gif', 'height="17"') . ' alt="" border="0"';
-        }
-        unset($conf);
 
         list($tagList_elements, $tagList_single) = $this->splitTagTypes($showTags);
 
@@ -616,6 +610,7 @@ class HtmlMarkup
     public function mergeFormDataIntoTemplateStructure($editStruct, $currentMappingInfo, $firstLevelImplodeToken = '', $valueKey = 'vDEF')
     {
         $isSection = 0;
+        /** @var HtmlParser $htmlParse */
         $htmlParse = ($this->htmlParse ?: GeneralUtility::makeInstance(HtmlParser::class));
         if (is_array($editStruct) && count($editStruct)) {
             $testInt = implode('', array_keys($editStruct));
@@ -643,7 +638,7 @@ class HtmlMarkup
                             $currentMappingInfo['cArray'][$key] = $editStruct[$key][$valueKey];
                         }
                     } else {
-                        $currentMappingInfo['cArray'][$key] = $htmlParse->XHTML_clean($currentMappingInfo['cArray'][$key]);
+                        $currentMappingInfo['cArray'][$key] = $htmlParse->HTMLcleaner($currentMappingInfo['cArray'][$key], [], 1, 0, ['xhtml' => 1]);
                     }
                 }
                 $out = implode($firstLevelImplodeToken, $currentMappingInfo['cArray']);
@@ -890,7 +885,7 @@ class HtmlMarkup
                     ) {
                         $name = 'templavoila#' . md5($MappingData_head_cached['cArray']['el_' . $kk]);
                         /** @var \TYPO3\CMS\Core\Page\PageRenderer $pageRenderer */
-                        $pageRenderer = $GLOBALS['TSFE']->getPageRenderer();
+                        $pageRenderer = GeneralUtility::makeInstance(PageRenderer::class);
                         switch ($tag) {
                             case 'LINK':
                                 $rel = isset($attr[0]['rel']) ? $attr[0]['rel'] : 'stylesheet';
@@ -918,7 +913,7 @@ class HtmlMarkup
                         }
                     } else {
                         $uKey = md5(trim($MappingData_head_cached['cArray']['el_' . $kk]));
-                        $extraHeaderData['TV_' . $uKey] = chr(10) . chr(9) . trim($htmlParse->XHTML_clean($MappingData_head_cached['cArray']['el_' . $kk]));
+                        $extraHeaderData['TV_' . $uKey] = chr(10) . chr(9) . trim($htmlParse->HTMLcleaner($MappingData_head_cached['cArray']['el_' . $kk], [], 1, 0, ['xhtml' => 1]));
                     }
                 }
             }
