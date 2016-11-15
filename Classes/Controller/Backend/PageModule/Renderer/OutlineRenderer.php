@@ -17,7 +17,6 @@ namespace Schnitzler\Templavoila\Controller\Backend\PageModule\Renderer;
 use Schnitzler\Templavoila\Controller\Backend\PageModule\MainController;
 use Schnitzler\Templavoila\Traits\BackendUser;
 use Schnitzler\Templavoila\Traits\LanguageService;
-use Schnitzler\Templavoila\Utility\IconUtility;
 use Schnitzler\Templavoila\Utility\PermissionUtility;
 use Schnitzler\Templavoila\Utility\ReferenceIndexUtility;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
