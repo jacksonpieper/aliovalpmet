@@ -1,13 +1,12 @@
-<!-- Grid.html -->
-<!-- ⇩ -->
-<div class="t3-grid-container">
-    <table border="0" cellspacing="0" cellpadding="0" width="100%" class="t3-page-columns t3-grid-table t3js-page-columns">
-        <colgroup>
-            <f:for each="{columns}" as="column">
-                <col style="width:{column.relativeWidth}%">
-            </f:for>
-        </colgroup>
-        <tbody>
+<f:layout name="Backend/Grid/Default" />
+
+<f:section name="table">
+    <colgroup>
+        <f:for each="{columns}" as="column">
+            <col style="width:{column.relativeWidth}%">
+        </f:for>
+    </colgroup>
+    <tbody>
         <tr>
             <f:for each="{columns}" as="column">
             <td valign="top" class="t3-grid-cell t3-page-column">
@@ -20,8 +19,5 @@
             </td>
             </f:for>
         </tr>
-        </tbody>
-    </table>
-</div>
-<!-- ⇧ -->
-<!-- Grid.html -->
+    </tbody>
+</f:section>

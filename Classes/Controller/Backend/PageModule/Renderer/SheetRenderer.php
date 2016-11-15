@@ -598,7 +598,7 @@ class SheetRenderer implements Renderable
         }
         unset($column);
 
-        $contentElementView = $this->controller->getStandaloneView('Backend/PageModule/Renderer/SheetRenderer/Grid');
+        $contentElementView = $this->controller->getStandaloneView('Backend/Grid/Default');
         $contentElementView->assign('columns', $columns);
 
         return $contentElementView->render();
