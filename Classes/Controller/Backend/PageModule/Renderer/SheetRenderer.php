@@ -18,7 +18,6 @@ use Schnitzler\Templavoila\Controller\Backend\PageModule\MainController;
 use Schnitzler\Templavoila\Controller\Backend\PageModule\Renderer\SheetRenderer\Column;
 use Schnitzler\Templavoila\Controller\Backend\PageModule\Renderer\SheetRenderer\Sheet;
 use Schnitzler\Templavoila\Domain\Repository\TemplateRepository;
-use Schnitzler\Templavoila\Templavoila;
 use Schnitzler\Templavoila\Traits\BackendUser;
 use Schnitzler\Templavoila\Traits\LanguageService;
 use Schnitzler\Templavoila\Utility\PermissionUtility;
@@ -27,9 +26,7 @@ use TYPO3\CMS\Backend\Template\ModuleTemplate;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
-use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Fluid\View\StandaloneView;
 
 /**
  * Class Schnitzler\Templavoila\Controller\Backend\PageModule\Renderer\SheetRenderer
@@ -466,11 +463,7 @@ class SheetRenderer implements Renderable
             && $sheet->getColumn()->isDragAndDropAllowed()
             && (string)$this->controller->modTSconfig['properties']['enableDragDrop'] !== '0';
 
-        $contentElementView = GeneralUtility::makeInstance(StandaloneView::class);
-        $contentElementView->setLayoutRootPaths([ExtensionManagementUtility::extPath(Templavoila::EXTKEY, 'Resources/Private/Layouts/')]);
-        $contentElementView->setTemplateRootPaths([ExtensionManagementUtility::extPath(Templavoila::EXTKEY, 'Resources/Private/Templates/')]);
-        $contentElementView->setPartialRootPaths([ExtensionManagementUtility::extPath(Templavoila::EXTKEY, 'Resources/Private/Partials/')]);
-        $contentElementView->setTemplate('Backend/PageModule/Renderer/SheetRenderer/ContentElement');
+        $contentElementView = $this->controller->getStandaloneView('Backend/PageModule/Renderer/SheetRenderer/ContentElement');
         $contentElementView->assignMultiple([
             'languageLabel' => $this->getLanguageLabel($sheet->getSysLanguageUid()),
             'languageFlagIconIdentifier' => $this->getLanguageFlagIconIdentifier($sheet->getSysLanguageUid()),
@@ -605,11 +598,7 @@ class SheetRenderer implements Renderable
         }
         unset($column);
 
-        $contentElementView = GeneralUtility::makeInstance(StandaloneView::class);
-        $contentElementView->setLayoutRootPaths([ExtensionManagementUtility::extPath(Templavoila::EXTKEY, 'Resources/Private/Layouts/')]);
-        $contentElementView->setTemplateRootPaths([ExtensionManagementUtility::extPath(Templavoila::EXTKEY, 'Resources/Private/Templates/')]);
-        $contentElementView->setPartialRootPaths([ExtensionManagementUtility::extPath(Templavoila::EXTKEY, 'Resources/Private/Partials/')]);
-        $contentElementView->setTemplate('Backend/PageModule/Renderer/SheetRenderer/Grid');
+        $contentElementView = $this->controller->getStandaloneView('Backend/PageModule/Renderer/SheetRenderer/Grid');
         $contentElementView->assign('columns', $columns);
 
         return $contentElementView->render();

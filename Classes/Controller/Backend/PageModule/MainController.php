@@ -339,7 +339,7 @@ class MainController extends AbstractModuleController implements Configurable
         $this->rootElementRecord = BackendUtility::getRecordWSOL($this->rootElementTable, $this->rootElementUid, '*');
         $this->clipboardObj = new Clipboard($this);
 
-        $view = $this->initializeView('Backend/PageModule/Main/Index');
+        $view = $this->getStandaloneView('Backend/PageModule/Main/Index');
 
         $doktypeRenderer = new DoktypeRenderer($this);
         $doktype = $this->getDoktype($this->rootElementRecord);

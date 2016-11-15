@@ -82,7 +82,7 @@ class CreateContentController extends AbstractModuleController
 
         $returnUrl = $request->getQueryParams()['returnUrl'];
 
-        $view = $this->initializeView('Backend/PageModule/CreateContent');
+        $view = $this->getStandaloneView('Backend/PageModule/CreateContent');
 
         $backButton = $this->moduleTemplate->getDocHeaderComponent()->getButtonBar()->makeLinkButton()
             ->setTitle('Go back')

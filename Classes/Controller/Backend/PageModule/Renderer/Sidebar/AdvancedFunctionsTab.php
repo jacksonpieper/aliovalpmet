@@ -16,12 +16,9 @@ namespace Schnitzler\Templavoila\Controller\Backend\PageModule\Renderer\Sidebar;
 
 use Schnitzler\Templavoila\Controller\Backend\PageModule\MainController;
 use Schnitzler\Templavoila\Controller\Backend\PageModule\Renderer\Renderable;
-use Schnitzler\Templavoila\Templavoila;
 use Schnitzler\Templavoila\Traits\BackendUser;
-use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Fluid\Core\ViewHelper\TagBuilder;
-use TYPO3\CMS\Fluid\View\StandaloneView;
 
 /**
  * Class Schnitzler\Templavoila\Controller\Backend\PageModule\Renderer\Sidebar\AdvancedFunctionsTab
@@ -36,11 +33,6 @@ class AdvancedFunctionsTab implements Renderable
     private $controller;
 
     /**
-     * @var StandaloneView
-     */
-    private $view;
-
-    /**
      * @throws \UnexpectedValueException
      * @throws \InvalidArgumentException
      *
@@ -49,8 +41,6 @@ class AdvancedFunctionsTab implements Renderable
     public function __construct(MainController $controller)
     {
         $this->controller = $controller;
-        $this->view = new StandaloneView;
-        $this->view->setTemplatePathAndFilename(ExtensionManagementUtility::extPath(Templavoila::EXTKEY, 'Resources/Private/Templates/Backend/PageModule/Renderer/AdvancedFunctionsTab.html')); // todo: make configurable
     }
 
     /**
@@ -89,10 +79,11 @@ class AdvancedFunctionsTab implements Renderable
             $showOutlineCheckbox->addAttribute('checked', null);
         }
 
-        $this->view->assign('showHiddenCheckbox', $showHiddenCheckbox->render());
-        $this->view->assign('showOutlineCheckbox', $showOutlineCheckbox->render());
-        $this->view->assign('displayShowOutlineCheckbox', static::getBackendUser()->isAdmin() || $this->controller->modTSconfig['properties']['enableOutlineForNonAdmin']);
+        $view = $this->controller->getStandaloneView('Backend/PageModule/Renderer/AdvancedFunctionsTab');
+        $view->assign('showHiddenCheckbox', $showHiddenCheckbox->render());
+        $view->assign('showOutlineCheckbox', $showOutlineCheckbox->render());
+        $view->assign('displayShowOutlineCheckbox', static::getBackendUser()->isAdmin() || $this->controller->modTSconfig['properties']['enableOutlineForNonAdmin']);
 
-        return $this->view->render();
+        return $view->render();
     }
 }

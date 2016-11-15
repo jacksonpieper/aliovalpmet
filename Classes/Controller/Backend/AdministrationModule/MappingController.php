@@ -445,7 +445,7 @@ class MappingController extends AbstractModuleController implements Configurable
                 break;
         }
 
-        $view = $this->initializeView('Backend/AdministrationModule/Mapping');
+        $view = $this->getStandaloneView('Backend/AdministrationModule/Mapping');
         $view->assign('action', $this->getModuleUrl());
         $view->assign('content', $this->content);
 

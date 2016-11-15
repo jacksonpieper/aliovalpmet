@@ -16,7 +16,6 @@ namespace Schnitzler\Templavoila\Controller\Backend;
 
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
-use Schnitzler\Templavoila\Templavoila;
 use Schnitzler\Templavoila\Traits\BackendUser;
 use Schnitzler\Templavoila\Traits\DatabaseConnection;
 use Schnitzler\Templavoila\Traits\LanguageService;
@@ -25,10 +24,11 @@ use TYPO3\CMS\Backend\Template\ModuleTemplate;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Http\Response;
 use TYPO3\CMS\Core\Http\ServerRequest;
+use TYPO3\CMS\Core\TypoScript\TemplateService;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
-use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Fluid\View\StandaloneView;
+use TYPO3\CMS\Frontend\Page\PageRepository;
 
 /**
  * Class Schnitzler\Templavoila\Controller\Backend\AbstractModuleController
@@ -51,6 +51,11 @@ abstract class AbstractModuleController extends AbstractModule
      * @var array
      */
     private $settings;
+
+    /**
+     * @var array
+     */
+    private $typoScriptSetupCache = [];
 
     use BackendUser;
     use DatabaseConnection;
@@ -170,30 +175,14 @@ abstract class AbstractModuleController extends AbstractModule
      * @throws \BadFunctionCallException
      * @throws \InvalidArgumentException
      */
-    protected function initializeView($templateName)
+    public function getStandaloneView($templateName)
     {
-        $privateResourcesPath = ExtensionManagementUtility::extPath(
-            Templavoila::EXTKEY,
-            implode(
-                DIRECTORY_SEPARATOR,
-                [
-                    'Resources',
-                    'Private'
-                ]
-            )
-        );
+        $setup = $this->getTypoScriptSetup();
 
-        // Initialize view
         $view = GeneralUtility::makeInstance(StandaloneView::class);
-        $view->setLayoutRootPaths([
-            10 => $privateResourcesPath . DIRECTORY_SEPARATOR . 'Layouts'
-        ]);
-        $view->setTemplateRootPaths([
-            10 => $privateResourcesPath . DIRECTORY_SEPARATOR . 'Templates'
-        ]);
-        $view->setPartialRootPaths([
-            10 => $privateResourcesPath . DIRECTORY_SEPARATOR . 'Partials'
-        ]);
+        $view->setLayoutRootPaths($setup['module.']['tx_templavoila.']['view.']['layoutRootPaths.']);
+        $view->setTemplateRootPaths($setup['module.']['tx_templavoila.']['view.']['templateRootPaths.']);
+        $view->setPartialRootPaths($setup['module.']['tx_templavoila.']['view.']['partialRootPaths.']);
         $view->setTemplate($templateName);
         $view->assign('settings', $this->settings);
 
@@ -214,5 +203,32 @@ abstract class AbstractModuleController extends AbstractModule
     public function getModuleTemplate()
     {
         return $this->moduleTemplate;
+    }
+
+    /**
+     * @return array
+     */
+    public function getTypoScriptSetup()
+    {
+        if (!isset($this->typoScriptSetupCache[$this->getId()])) {
+            $rootline = [];
+            if ($this->getId() > 0) {
+                /** @var $sysPage PageRepository */
+                $sysPage = GeneralUtility::makeInstance(PageRepository::class);
+                $rootline = $sysPage->getRootLine($this->getId(), '', true);
+            }
+
+            /** @var $template TemplateService */
+            $template = GeneralUtility::makeInstance(TemplateService::class);
+            $template->tt_track = 0;
+            $template->setProcessExtensionStatics(true);
+            $template->init();
+            $template->runThroughTemplates($rootline, 0);
+            $template->generateConfig();
+
+            $this->typoScriptSetupCache[$this->getId()] = $template->setup;
+        }
+
+        return $this->typoScriptSetupCache[$this->getId()];
     }
 }

@@ -163,7 +163,7 @@ class MainController extends AbstractModuleController implements Configurable
             return $this->noRecordsAction($request, $response);
         }
 
-        $view = $this->initializeView('Backend/AdministrationModule/Main');
+        $view = $this->getStandaloneView('Backend/AdministrationModule/Main');
         $view->assign('title', $this->moduleTemplate->header(static::getLanguageService()->getLL('title')));
 
         // Traverse scopes of data structures display template records belonging to them:
@@ -265,7 +265,7 @@ class MainController extends AbstractModuleController implements Configurable
      */
     public function noRecordsAction(ServerRequest $request, Response $response)
     {
-        $view = $this->initializeView('Backend/AdministrationModule/NoRecordsFound');
+        $view = $this->getStandaloneView('Backend/AdministrationModule/NoRecordsFound');
         $view->assign('title', $this->moduleTemplate->header(static::getLanguageService()->getLL('title')));
 
         $content = '';
