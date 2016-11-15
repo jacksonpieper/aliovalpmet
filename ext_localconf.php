@@ -15,15 +15,15 @@ module.tx_' . $_EXTKEY . ' {
     view {
         templateRootPaths {
             0 = EXT:' . $_EXTKEY . '/Resources/Private/Templates/
-            1 = {$plugin.tx_' . $_EXTKEY . '.view.templateRootPath}
+            1 = {$module.tx_' . $_EXTKEY . '.view.templateRootPath}
         }
         partialRootPaths {
             0 = EXT:' . $_EXTKEY . '/Resources/Private/Partials/
-            1 = {$plugin.tx_' . $_EXTKEY . '.view.partialRootPath}
+            1 = {$module.tx_' . $_EXTKEY . '.view.partialRootPath}
         }
         layoutRootPaths {
             0 = EXT:' . $_EXTKEY . '/Resources/Private/Layouts/
-            1 = {$plugin.tx_' . $_EXTKEY . '.view.layoutRootPath}
+            1 = {$module.tx_' . $_EXTKEY . '.view.layoutRootPath}
         }
     }
 }
