@@ -539,7 +539,7 @@ class SheetRenderer implements Renderable
 
         $templateUid = $sheet->getTemplateUid() > 0
             ? $sheet->getTemplateUid()
-            : $this->controller->getRecord()['uid'];
+            : $this->controller->getApiService()->getContentTree_fetchPageTemplateObject($this->controller->getRecord())['uid'];
         $template = $this->templateRepository->getTemplateByUid($templateUid);
 
         $columns = [];
