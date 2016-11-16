@@ -69,38 +69,18 @@ return [
                 'minitems' => '0'
             ]
         ],
-        'belayout' => [
+        'backendGridTemplateName' => [
             'exclude' => 1,
-            'label' => 'LLL:EXT:templavoila/Resources/Private/Language/locallang_db.xlf:tx_templavoila_tmplobj.belayout',
+            'label' => 'LLL:EXT:templavoila/Resources/Private/Language/locallang_db.xlf:tx_templavoila_datastructure.backendGridTemplateName',
             'config' => [
                 'type' => 'input',
                 'size' => '48',
-                'wizards' => [
-                    '_PADDING' => 2,
-                    'link' => [
-                        'type' => 'popup',
-                        'title' => 'Link',
-                        'icon' => 'EXT:backend/Resources/Public/Images/FormFieldWizard/wizard_link.gif',
-                        'module' => [
-                            'name' => 'wizard_link',
-                            'urlParameters' => [
-                                'mode' => 'wizard',
-                                'act' => 'file',
-                            ],
-                        ],
-                        'params' => [
-                            'blindLinkOptions' => 'page,folder,mail,spec,url',
-                            'allowedExtensions' => $GLOBALS['TYPO3_CONF_VARS']['SYS']['textfile_ext'],
-                        ],
-                        'JSopenParams' => 'height=300,width=500,status=0,menubar=0,scrollbars=1'
-                    ],
-                ],
-                'eval' => 'nospace',
-                'softref' => 'typolink'
+                'placeholder' => 'Backend/Grid/Default',
+                'eval' => 'null,nospace,trim',
             ]
         ],
     ],
     'types' => [
-        '0' => ['showitem' => 'title, scope, previewicon, belayout, dataprot']
+        '0' => ['showitem' => 'title, scope, previewicon, backendGridTemplateName, dataprot']
     ]
 ];

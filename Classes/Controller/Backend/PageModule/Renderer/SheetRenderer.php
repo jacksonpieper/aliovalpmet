@@ -586,7 +586,7 @@ class SheetRenderer implements Renderable
                 'position' => 0
             ];
 
-            $columns[] = [
+            $columns[$fieldID] = [
                 'title' => $column->getTitle(),
                 'content' => $this->renderColumn($column, $subElementPointer, $elementContentTreeArr['ds_meta'])
             ];
@@ -598,7 +598,8 @@ class SheetRenderer implements Renderable
         }
         unset($column);
 
-        $contentElementView = $this->controller->getStandaloneView('Backend/Grid/Default');
+        $templateName = $template->hasBackendGridTemplateName() ? $template->getBackendGridTemplateName() : 'Backend/Grid/Default';
+        $contentElementView = $this->controller->getStandaloneView($templateName);
         $contentElementView->assign('columns', $columns);
 
         return $contentElementView->render();

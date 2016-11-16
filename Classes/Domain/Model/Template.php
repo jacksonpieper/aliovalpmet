@@ -326,6 +326,7 @@ class Template
      */
     public function getDatastructure()
     {
+        /** @var DataStructureRepository $dsRepo */
         $dsRepo = GeneralUtility::makeInstance(DataStructureRepository::class);
 
         return $dsRepo->getDatastructureByUidOrFilename($this->row['datastructure']);
@@ -394,17 +395,26 @@ class Template
     }
 
     /**
-     * @return mixed
+     * @return string
      */
-    public function getBeLayout()
+    public function getBackendGridTemplateName()
     {
-        if ($this->row['belayout']) {
-            $beLayout = GeneralUtility::getUrl(GeneralUtility::getFileAbsFileName($this->row['belayout']));
-        } else {
-            $beLayout = $this->getDatastructure()->getBeLayout();
+        $backendGridTemplateName = '';
+        if ($this->row['backendGridTemplateName'] !== null) {
+            $backendGridTemplateName = (string)$this->row['backendGridTemplateName'];
+        } elseif ($this->getDatastructure()->hasBackendGridTemplateName()) {
+            $backendGridTemplateName = $this->getDatastructure()->getBackendGridTemplateName();
         }
 
-        return $beLayout;
+        return $backendGridTemplateName;
+    }
+
+    /**
+     * @return bool
+     */
+    public function hasBackendGridTemplateName()
+    {
+        return $this->row['backendGridTemplateName'] !== null || $this->getDatastructure()->hasBackendGridTemplateName();
     }
 
     /**

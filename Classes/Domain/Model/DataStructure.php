@@ -154,21 +154,6 @@ class DataStructure extends AbstractDataStructure
     }
 
     /**
-     * @param void
-     *
-     * @return mixed
-     */
-    public function getBeLayout()
-    {
-        $beLayout = false;
-        if ($this->row['belayout']) {
-            $beLayout = GeneralUtility::getUrl(GeneralUtility::getFileAbsFileName($this->row['belayout']));
-        }
-
-        return $beLayout;
-    }
-
-    /**
      * @param string $fieldname
      */
     protected function setSortbyField($fieldname)
@@ -194,5 +179,21 @@ class DataStructure extends AbstractDataStructure
         }
 
         return $fieldVal;
+    }
+
+    /**
+     * @return bool
+     */
+    public function hasBackendGridTemplateName()
+    {
+        return $this->row['backendGridTemplateName'] !== null;
+    }
+
+    /**
+     * @return string
+     */
+    public function getBackendGridTemplateName()
+    {
+        return (string)$this->row['backendGridTemplateName'];
     }
 }

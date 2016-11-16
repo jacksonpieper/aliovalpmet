@@ -173,26 +173,26 @@ class StaticDataStructure extends AbstractDataStructure
     /**
      * @param void
      *
-     * @return mixed
-     */
-    public function getBeLayout()
-    {
-        $beLayout = false;
-        $file = substr(GeneralUtility::getFileAbsFileName($this->filename), 0, -3) . 'html';
-        if (file_exists($file)) {
-            $beLayout = GeneralUtility::getUrl($file);
-        }
-
-        return $beLayout;
-    }
-
-    /**
-     * @param void
-     *
      * @return string
      */
     public function getSortingFieldValue()
     {
         return $this->getLabel(); // required to resolve LLL texts
+    }
+
+    /**
+     * @return bool
+     */
+    public function hasBackendGridTemplateName()
+    {
+        return false; // todo: implement correctly
+    }
+
+    /**
+     * @return string
+     */
+    public function getBackendGridTemplateName()
+    {
+        return ''; // todo: implement correctly
     }
 }

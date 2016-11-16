@@ -202,14 +202,17 @@ abstract class AbstractDataStructure
     /**
      * @param void
      *
-     * @return mixed
-     */
-    abstract public function getBeLayout();
-
-    /**
-     * @param void
-     *
      * @return string
      */
     abstract public function getSortingFieldValue();
+
+    /**
+     * @return bool
+     */
+    abstract public function hasBackendGridTemplateName();
+
+    /**
+     * @return string
+     */
+    abstract public function getBackendGridTemplateName();
 }
