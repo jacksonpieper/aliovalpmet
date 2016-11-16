@@ -1,3 +1,6 @@
+
+.. include:: ../../Includes.txt
+
 =========================================
 Deprecation: Deprecate tx_templavoila_pi1
 =========================================
@@ -5,7 +8,7 @@ Deprecation: Deprecate tx_templavoila_pi1
 Description
 ===========
 
-The class tx_templavoila_pi1 is deprecated and replaced by \Schnitzler\Templavoila\Controller\FrontendController.
+The class `tx_templavoila_pi1` is deprecated and replaced by `\Schnitzler\Templavoila\Controller\FrontendController`.
 
 
 Impact
@@ -25,12 +28,13 @@ Migration
 
 Replace `tx_templavoila_pi1` with `\Schnitzler\Templavoila\Controller\FrontendController`.
 
-Example:
-.. code-block:: typoscript
+**Example:**
 
-	page = PAGE
-	page.10 = USER
-	page.10.userFunc = Schnitzler\Templavoila\Controller\FrontendController->renderPage
+.. code-block:: ts
+
+   page = PAGE
+   page.10 = USER
+   page.10.userFunc = Schnitzler\Templavoila\Controller\FrontendController->renderPage
 
 Further replace the following method calls:
 

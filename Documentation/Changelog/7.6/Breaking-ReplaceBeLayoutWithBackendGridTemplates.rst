@@ -1,3 +1,6 @@
+
+.. include:: ../../Includes.txt
+
 ======================================================
 Breaking: Replace beLayout with backend grid templates
 ======================================================
