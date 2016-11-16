@@ -602,7 +602,7 @@ class MappingController extends AbstractModuleController implements Configurable
                 // descriptive title
                 $title,
                 // image-path
-                $this->getModuleTemplate()->getIconFactory()->getIcon('tx-tv-ds-' . $id, Icon::SIZE_SMALL),
+                $this->getModuleTemplate()->getIconFactory()->getIcon('extensions-templavoila-datastructure-' . $id, Icon::SIZE_SMALL),
             ];
         }
 

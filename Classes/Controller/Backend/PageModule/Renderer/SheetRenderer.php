@@ -360,7 +360,7 @@ class SheetRenderer implements Renderable
                 !$elementBelongsToCurrentPage ||
                 $this->controller->getElementRegister()[$uid] > 1
             ) {
-                $iconUnlink = $this->controller->getModuleTemplate()->getIconFactory()->getIcon('tx-tv-unlink', Icon::SIZE_SMALL);
+                $iconUnlink = $this->controller->getModuleTemplate()->getIconFactory()->getIcon('extensions-templavoila-unlink', Icon::SIZE_SMALL);
                 $linkUnlink = !in_array('unlink', $this->controller->getBlindIcons()) ? $this->controller->link_unlink($iconUnlink, 'tt_content', $uid, false, false, $elementPointer) : '';
             } else {
                 $linkUnlink = '';

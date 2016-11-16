@@ -109,7 +109,7 @@ if (TYPO3_MODE === 'BE') {
 /** @var \TYPO3\CMS\Core\Imaging\IconRegistry $iconRegistry */
 $iconRegistry = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\Imaging\IconRegistry::class);
 $iconRegistry->registerIcon(
-    'tx-tv-unlink',
+    'extensions-templavoila-unlink',
     \TYPO3\CMS\Core\Imaging\IconProvider\FontawesomeIconProvider::class,
     [
         'name' => 'unlink'
@@ -165,35 +165,35 @@ $iconRegistry->registerIcon(
     ]
 );
 $iconRegistry->registerIcon(
-    'tx-tv-ds-sc',
+    'extensions-templavoila-datastructure-sc',
     \TYPO3\CMS\Core\Imaging\IconProvider\SvgIconProvider::class,
     [
         'source' => 'EXT:templavoila/Resources/Public/Icon/DataStructureTypes/Section.svg'
     ]
 );
 $iconRegistry->registerIcon(
-    'tx-tv-ds-co',
+    'extensions-templavoila-datastructure-co',
     \TYPO3\CMS\Core\Imaging\IconProvider\SvgIconProvider::class,
     [
         'source' => 'EXT:templavoila/Resources/Public/Icon/DataStructureTypes/Container.svg'
     ]
 );
 $iconRegistry->registerIcon(
-    'tx-tv-ds-at',
+    'extensions-templavoila-datastructure-at',
     \TYPO3\CMS\Core\Imaging\IconProvider\SvgIconProvider::class,
     [
         'source' => 'EXT:templavoila/Resources/Public/Icon/DataStructureTypes/Attribute.svg'
     ]
 );
 $iconRegistry->registerIcon(
-    'tx-tv-ds-el',
+    'extensions-templavoila-datastructure-el',
     \TYPO3\CMS\Core\Imaging\IconProvider\SvgIconProvider::class,
     [
         'source' => 'EXT:templavoila/Resources/Public/Icon/DataStructureTypes/Element.svg'
     ]
 );
 $iconRegistry->registerIcon(
-    'tx-tv-ds-no',
+    'extensions-templavoila-datastructure-no',
     \TYPO3\CMS\Core\Imaging\IconProvider\SvgIconProvider::class,
     [
         'source' => 'EXT:templavoila/Resources/Public/Icon/DataStructureTypes/NotMapped.svg'
