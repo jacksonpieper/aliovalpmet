@@ -22,7 +22,7 @@ if (TYPO3_MODE === 'BE') {
             'labels' => [
                 'll_ref' => 'LLL:EXT:templavoila/Resources/Private/Language/PageModule/locallang_mod.xlf',
                 'tabs_images' => [
-                    'tab' => 'EXT:templavoila/Resources/Public/Icon/Modules/PageModuleIcon.png'
+                    'tab' => 'EXT:templavoila/Resources/Public/Icon/Modules/PageModuleIcon.svg'
                 ]
             ]
         ]
@@ -40,7 +40,7 @@ if (TYPO3_MODE === 'BE') {
             'labels' => [
                 'll_ref' => 'LLL:EXT:templavoila/Resources/Private/Language/AdministrationModule/locallang_mod.xlf',
                 'tabs_images' => [
-                    'tab' => 'EXT:templavoila/Resources/Public/Icon/Modules/AdministrationModuleIcon.png'
+                    'tab' => 'EXT:templavoila/Resources/Public/Icon/Modules/AdministrationModuleIcon.svg'
                 ]
             ]
         ]
@@ -152,51 +152,51 @@ $iconRegistry->registerIcon(
 );
 $iconRegistry->registerIcon(
     'extensions-templavoila-type-fce',
-    \TYPO3\CMS\Core\Imaging\IconProvider\BitmapIconProvider::class,
+    \TYPO3\CMS\Core\Imaging\IconProvider\SvgIconProvider::class,
     [
-        'source' => 'EXT:templavoila/Resources/Public/Icon/icon_fce_ce.png'
+        'source' => 'EXT:templavoila/Resources/Public/Icon/icon_fce_ce.svg'
     ]
 );
 $iconRegistry->registerIcon(
     'extensions-templavoila-logo',
-    \TYPO3\CMS\Core\Imaging\IconProvider\BitmapIconProvider::class,
+    \TYPO3\CMS\Core\Imaging\IconProvider\SvgIconProvider::class,
     [
-        'source' => 'EXT:templavoila/Resources/Public/Image/templavoila-logo.png'
+        'source' => 'EXT:templavoila/Resources/Public/Icon/logo.svg'
     ]
 );
 $iconRegistry->registerIcon(
     'tx-tv-ds-sc',
-    \TYPO3\CMS\Core\Imaging\IconProvider\BitmapIconProvider::class,
+    \TYPO3\CMS\Core\Imaging\IconProvider\SvgIconProvider::class,
     [
-        'source' => 'EXT:templavoila/Resources/Public/Icon/DataStructureTypes/Section.gif'
+        'source' => 'EXT:templavoila/Resources/Public/Icon/DataStructureTypes/Section.svg'
     ]
 );
 $iconRegistry->registerIcon(
     'tx-tv-ds-co',
-    \TYPO3\CMS\Core\Imaging\IconProvider\BitmapIconProvider::class,
+    \TYPO3\CMS\Core\Imaging\IconProvider\SvgIconProvider::class,
     [
-        'source' => 'EXT:templavoila/Resources/Public/Icon/DataStructureTypes/Container.gif'
+        'source' => 'EXT:templavoila/Resources/Public/Icon/DataStructureTypes/Container.svg'
     ]
 );
 $iconRegistry->registerIcon(
     'tx-tv-ds-at',
-    \TYPO3\CMS\Core\Imaging\IconProvider\BitmapIconProvider::class,
+    \TYPO3\CMS\Core\Imaging\IconProvider\SvgIconProvider::class,
     [
-        'source' => 'EXT:templavoila/Resources/Public/Icon/DataStructureTypes/Attribute.gif'
+        'source' => 'EXT:templavoila/Resources/Public/Icon/DataStructureTypes/Attribute.svg'
     ]
 );
 $iconRegistry->registerIcon(
     'tx-tv-ds-el',
-    \TYPO3\CMS\Core\Imaging\IconProvider\BitmapIconProvider::class,
+    \TYPO3\CMS\Core\Imaging\IconProvider\SvgIconProvider::class,
     [
-        'source' => 'EXT:templavoila/Resources/Public/Icon/DataStructureTypes/Element.gif'
+        'source' => 'EXT:templavoila/Resources/Public/Icon/DataStructureTypes/Element.svg'
     ]
 );
 $iconRegistry->registerIcon(
     'tx-tv-ds-no',
-    \TYPO3\CMS\Core\Imaging\IconProvider\BitmapIconProvider::class,
+    \TYPO3\CMS\Core\Imaging\IconProvider\SvgIconProvider::class,
     [
-        'source' => 'EXT:templavoila/Resources/Public/Icon/DataStructureTypes/NotMapped.gif'
+        'source' => 'EXT:templavoila/Resources/Public/Icon/DataStructureTypes/NotMapped.svg'
     ]
 );
 

@@ -186,8 +186,12 @@ class CreateContentController extends AbstractModuleController
                 $urlParams
             );
 
+            $iconIdentifier = $wizardItem['iconIdentifier'];
+            if ($groupKey === 'fce' && $wizardItem['iconIdentifier'] === null) {
+                $iconIdentifier = 'extensions-templavoila-type-fce';
+            }
             $wizardItem['url'] = $newRecordLink;
-            $wizardItem['icon'] = $this->moduleTemplate->getIconFactory()->getIcon($wizardItem['iconIdentifier'], Icon::SIZE_DEFAULT);
+            $wizardItem['icon'] = $this->moduleTemplate->getIconFactory()->getIcon($iconIdentifier, Icon::SIZE_DEFAULT);
 
             $groupedWizardItems[$groupKey]['items'][] = $wizardItem;
         }
