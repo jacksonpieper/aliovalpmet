@@ -25,8 +25,9 @@ use TYPO3\CMS\Backend\Wizard\NewContentElementWizardHookInterface;
 use TYPO3\CMS\Core\Http\Response;
 use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Core\Imaging\Icon;
+use TYPO3\CMS\Core\Imaging\IconProvider\BitmapIconProvider;
+use TYPO3\CMS\Core\Imaging\IconRegistry;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
-use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -187,9 +188,24 @@ class CreateContentController extends AbstractModuleController
             );
 
             $iconIdentifier = $wizardItem['iconIdentifier'];
-            if ($groupKey === 'fce' && $wizardItem['iconIdentifier'] === null) {
+
+            if ($groupKey === 'fce') {
                 $iconIdentifier = 'extensions-templavoila-type-fce';
+                if ($wizardItem['icon'] !== null) {
+                    $iconIdentifier = 'extensions-templavoila-type-fce-' . $key;
+
+                    /** @var IconRegistry $iconRegistry */
+                    $iconRegistry = GeneralUtility::makeInstance(IconRegistry::class);
+                    $iconRegistry->registerIcon(
+                        $iconIdentifier,
+                        BitmapIconProvider::class,
+                        [
+                            'source' => $wizardItem['icon']
+                        ]
+                    );
+                }
             }
+
             $wizardItem['url'] = $newRecordLink;
             $wizardItem['icon'] = $this->moduleTemplate->getIconFactory()->getIcon($iconIdentifier, Icon::SIZE_DEFAULT);
 
@@ -340,9 +356,8 @@ class CreateContentController extends AbstractModuleController
         foreach ($templates as $template) {
             /** @var $template Template */
             if ($template->isPermittedForUser()) {
-                $tmpFilename = $template->getIcon();
                 $returnElements['fce.']['elements.']['fce_' . $template->getKey() . '.'] = [
-                    'icon' => (@is_file(GeneralUtility::getFileAbsFileName(substr($tmpFilename, 3)))) ? $tmpFilename : ('../' . ExtensionManagementUtility::siteRelPath(Templavoila::EXTKEY) . 'Resources/Public/Image/default_previewicon.gif'),
+                    'icon' => $template->getIcon(),
                     'description' => $template->getDescription() ? htmlspecialchars($template->getDescription()) : static::getLanguageService()->getLL('template_nodescriptionavailable'),
                     'title' => $template->getLabel(),
                     'tt_content_defValues.' => $this->getDsDefaultValues($template)

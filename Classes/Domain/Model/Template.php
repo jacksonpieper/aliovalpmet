@@ -20,6 +20,9 @@ use Schnitzler\Templavoila\Traits\BackendUser;
 use Schnitzler\Templavoila\Traits\LanguageService;
 use Schnitzler\Templavoila\Utility\PermissionUtility;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Core\Resource\FileReference;
+use TYPO3\CMS\Core\Resource\FileRepository;
+use TYPO3\CMS\Core\Resource\ProcessedFile;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -31,6 +34,8 @@ class Template
 {
     use BackendUser;
     use LanguageService;
+
+    const TABLE = 'tx_templavoila_tmplobj';
 
     /**
      * @var array
@@ -84,9 +89,34 @@ class Template
     {
         $this->row = BackendUtility::getRecordWSOL('tx_templavoila_tmplobj', $uid);
 
+        try {
+            /** @var FileRepository $fileRepository */
+            $fileRepository = GeneralUtility::makeInstance(FileRepository::class);
+            $fileReferences = $fileRepository->findByRelation(
+                static::TABLE,
+                'previewicon',
+                $this->row['uid']
+            );
+
+            if (count($fileReferences) > 0) {
+                /** @var FileReference $fileReference */
+                $fileReference = reset($fileReferences);
+                $relativePath = $fileReference->getOriginalFile()->process(
+                    ProcessedFile::CONTEXT_IMAGECROPSCALEMASK,
+                    [
+                        'width' => '64m',
+                        'height' => '64'
+                    ]
+                )->getPublicUrl();
+
+                $this->setIcon(PATH_site . $relativePath);
+            }
+        } catch (\Exception $ignoredException) {
+            // ignore
+        }
+
         $this->setLabel($this->row['title']);
         $this->setDescription($this->row['description']);
-        $this->setIcon($this->row['previewicon']);
         $this->setFileref($this->row['fileref']);
         $this->setFilerefMtime($this->row['fileref_mtime']);
         $this->setFilerefMD5($this->row['fileref_md5']);
@@ -137,12 +167,7 @@ class Template
      */
     public function getIcon()
     {
-        $icon = '';
-        if ($this->iconFile) {
-            $icon = '../uploads/tx_templavoila/' . $this->iconFile;
-        }
-
-        return $icon;
+        return $this->iconFile;
     }
 
     /**

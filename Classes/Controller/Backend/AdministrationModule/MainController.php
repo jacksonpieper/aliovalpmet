@@ -29,6 +29,8 @@ use TYPO3\CMS\Core\Html\HtmlParser;
 use TYPO3\CMS\Core\Http\Response;
 use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Core\Imaging\Icon;
+use TYPO3\CMS\Core\Imaging\IconProvider\BitmapIconProvider;
+use TYPO3\CMS\Core\Imaging\IconRegistry;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Resource\FileInterface;
 use TYPO3\CMS\Core\Resource\FileRepository;
@@ -852,24 +854,28 @@ class MainController extends AbstractModuleController implements Configurable
         $recordIcon = BackendUtility::wrapClickMenuOnIcon($recordIcon, 'tx_templavoila_tmplobj', $toObj->getKey(), 1, '&callingScriptId=' . rawurlencode($this->doc->scriptID));
 
         // Preview icon:
-        if ($toObj->getIcon()) {
-            if (isset($this->modTSconfig['properties']['toPreviewIconThumb']) && $this->modTSconfig['properties']['toPreviewIconThumb'] != '0') {
-                $path = realpath(dirname(__FILE__) . '/' . preg_replace('/\w+\/\.\.\//', '', $GLOBALS['BACK_PATH'] . $toObj->getIcon()));
-                $path = str_replace(realpath(PATH_site) . '/', PATH_site, $path);
-                if ($path == false) {
-                    $icon = static::getLanguageService()->getLL('noicon', true);
-                } else {
-                    // $icon = BackendUtility::getThumbNail($this->doc->backPath . 'thumbs.php', $path,
-                    //     'hspace="5" vspace="5" border="1"',
-                    //     strpos($this->modTSconfig['properties']['toPreviewIconThumb'], 'x') ? $this->modTSconfig['properties']['toPreviewIconThumb'] : '');
-                    $icon = ''; // todo: fix me
-                }
-            } else {
-                $icon = '<img src="' . $this->doc->backPath . $toObj->getIcon() . '" alt="" />';
-            }
-        } else {
-            $icon = static::getLanguageService()->getLL('noicon', true);
+        $iconIdentifier = 'extensions-templavoila-type-fce';
+
+        $showPreviewIcon = true;
+        if (isset($this->modTSconfig['properties']['toPreviewIconThumb'])) {
+            $showPreviewIcon = (int)$this->modTSconfig['properties']['toPreviewIconThumb'] !== 0;
         }
+
+        if ($showPreviewIcon && $toObj->getIcon()) {
+            $iconIdentifier .= $toObj->getKey();
+
+            /** @var IconRegistry $iconRegistry */
+            $iconRegistry = GeneralUtility::makeInstance(IconRegistry::class);
+            $iconRegistry->registerIcon(
+                $iconIdentifier,
+                BitmapIconProvider::class,
+                [
+                    'source' => $toObj->getIcon()
+                ]
+            );
+        }
+
+        $icon = $this->getModuleTemplate()->getIconFactory()->getIcon($iconIdentifier, Icon::SIZE_LARGE);
 
         // Mapping status / link:
 //        $linkUrl = '../cm1/index.php?table=tx_templavoila_tmplobj&uid=' . $toObj->getKey() . '&_reload_from=1&id=' . $this->getId() . '&returnUrl=' . rawurlencode(GeneralUtility::getIndpEnv('REQUEST_URI'));

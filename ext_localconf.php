@@ -121,3 +121,5 @@ $GLOBALS['TYPO3_CONF_VARS']['SYS']['formEngine']['formDataGroup']['tcaDatabaseRe
 ];
 
 $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_befunc.php']['getFlexFormDSClass'][] = \Schnitzler\Templavoila\Hook\BackendUtilityHook::class;
+
+$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/install']['update']['TemplateObjectPreviewIconMigrationWizard'] = \Schnitzler\Templavoila\Update\TemplateObjectPreviewIconMigrationWizard::class;
