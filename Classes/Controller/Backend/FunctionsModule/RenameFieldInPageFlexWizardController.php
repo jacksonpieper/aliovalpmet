@@ -1,6 +1,6 @@
 <?php
 
-namespace Schnitzler\Templavoila\Controller;
+namespace Schnitzler\Templavoila\Controller\Backend\FunctionsModule;
 
 /*
  * This file is part of the TYPO3 CMS project.

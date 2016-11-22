@@ -90,13 +90,13 @@ if (TYPO3_MODE === 'BE') {
 
     \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::insertModuleFunction(
         'web_func',
-        'Schnitzler\\Templavoila\\Controller\\ReferenceElementWizardController',
+        \Schnitzler\Templavoila\Controller\Backend\FunctionsModule\ReferenceElementWizardController::class,
         null,
         'LLL:EXT:templavoila/Resources/Private/Language/locallang.xlf:wiz_refElements'
     );
     \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::insertModuleFunction(
         'web_func',
-        'Schnitzler\\Templavoila\\Controller\\RenameFieldInPageFlexWizardController',
+        \Schnitzler\Templavoila\Controller\Backend\FunctionsModule\RenameFieldInPageFlexWizardController::class,
         null,
         'LLL:EXT:templavoila/Resources/Private/Language/locallang.xlf:wiz_renameFieldsInPage'
     );

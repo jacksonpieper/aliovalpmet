@@ -19,10 +19,10 @@
 				<source>Pages using this element -&gt;</source>
 			</trans-unit>
 			<trans-unit id="wiz_refElements" xml:space="preserve">
-				<source>Reference unused content elements (templavoila)</source>
+				<source>(TemplaVoilà) Reference unused content elements</source>
 			</trans-unit>
 			<trans-unit id="wiz_renameFieldsInPage" xml:space="preserve">
-				<source>Rename a field in pages.tx_templavoila_flex</source>
+				<source>(TemplaVoilà) Rename a field in pages.tx_templavoila_flex</source>
 			</trans-unit>
 			<trans-unit id="field_sourceField" xml:space="preserve">
 				<source>source field</source>
