@@ -9,7 +9,7 @@ return [
     'tv_mod_admin_file' => [
         'path' => '/templavoila/admininstration/file',
         'access' => 'public',
-        'target' => \Schnitzler\Templavoila\Controller\Backend\Module\Administration\FileController::class . '::processRequest'
+        'target' => \Schnitzler\Templavoila\Controller\Backend\AdministrationModule\FileController::class . '::processRequest'
     ],
     'tv_mod_admin_wizard' => [
         'path' => '/templavoila/admininstration/wizard',

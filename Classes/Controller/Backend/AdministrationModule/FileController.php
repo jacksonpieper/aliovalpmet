@@ -12,30 +12,24 @@
  * The TYPO3 project - inspiring people to share!
  */
 
-namespace Schnitzler\Templavoila\Controller\Backend\Module\Administration;
+namespace Schnitzler\Templavoila\Controller\Backend\AdministrationModule;
 
 use Psr\Http\Message\ResponseInterface;
 use Schnitzler\Templavoila\Controller\Backend\AbstractModuleController;
 use Schnitzler\Templavoila\Controller\Backend\Configurable;
 use Schnitzler\Templavoila\Domain\Model\HtmlMarkup;
+use Schnitzler\Templavoila\Exception\FileIsEmptyException;
+use Schnitzler\Templavoila\Exception\FileNotFoundException;
 use TYPO3\CMS\Core\Html\HtmlParser;
 use TYPO3\CMS\Core\Http\Response;
 use TYPO3\CMS\Core\Http\ServerRequest;
-use TYPO3\CMS\Core\Resource\FileInterface;
-use TYPO3\CMS\Core\Resource\FileRepository;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
- * Class Schnitzler\Templavoila\Controller\Backend\Module\Administration\FileController
+ * Class Schnitzler\Templavoila\Controller\Backend\AdministrationModule\FileController
  */
 class FileController extends AbstractModuleController implements Configurable
 {
-
-    /**
-     * @var
-     */
-    private $show;
-
     /**
      * @var string
      */
@@ -70,139 +64,147 @@ class FileController extends AbstractModuleController implements Configurable
      * @param Response $response
      *
      * @return ResponseInterface
-     *
-     * @throws \InvalidArgumentException
      */
     public function index(ServerRequest $request, Response $response)
     {
-        $fileRepository = GeneralUtility::makeInstance(FileRepository::class);
+        return $this->_404($response);
+    }
 
-        $this->show = GeneralUtility::_GP('show');
-        $preview = GeneralUtility::_GP('preview');
-        $limitTags = GeneralUtility::_GP('limitTags');
-        $path = GeneralUtility::_GP('path');
-        $fileUid = (int)$request->getQueryParams()['file'];
-
-//        $this->sessionKey = '_mappingInfo:' . $this->_load_ds_xml_to;
-
-        try {
-            /** @var FileInterface $file */
-            $file = $fileRepository->findByIdentifier($fileUid);
-
-            if ($file->getSize() === 0) {
-                $this->displayFrameError(static::getLanguageService()->getLL('errorNoContentInFile') . ': <em>' . htmlspecialchars($file) . '</em>');
-                exit;
-            }
-
-//            $relPathFix = $GLOBALS['BACK_PATH'] . '../' . dirname(substr($file, strlen(PATH_site))) . '/';
-
-            if ($preview) {
-                $content = $this->displayFileContentWithPreview($file->getContents(), $relPathFix);
-            } else {
-                $content = $this->displayFileContentWithMarkup($file->getContents(), $path, $relPathFix, $limitTags);
-            }
-
-            $response->getBody()->write($content);
-        } catch (\Exception $e) {
-            $this->displayFrameError(static::getLanguageService()->getLL('errorNoFileToDisplay'));
+    /**
+     * @param string $path
+     * @return string
+     * @throws FileIsEmptyException
+     * @throws FileNotFoundException
+     */
+    private function getFileContent($path)
+    {
+        if (!file_exists($path) || !is_file($path) || ($absolutePath = GeneralUtility::getFileAbsFileName($path)) === '') {
+            throw new FileNotFoundException(
+                sprintf('File "%s" not found', $path),
+                1479904333951
+            );
         }
 
+        $content = GeneralUtility::getUrl($absolutePath);
+        if ($content === false || $content === '') {
+            throw new FileIsEmptyException(
+                sprintf('File "%s" is empty', $path),
+                1479904675357
+            );
+        }
+
+        return $content;
+    }
+
+    /**
+     * @param ServerRequest $request
+     * @param Response $response
+     *
+     * @return ResponseInterface
+     */
+    public function mapping(ServerRequest $request, Response $response)
+    {
+        $path = $request->getQueryParams()['path'];
+        $allowedTags = $request->getQueryParams()['allowedTags'];
+        $show = (bool)$request->getQueryParams()['show'];
+        $splitPath = $request->getQueryParams()['splitPath'];
+        $source = (bool)$request->getQueryParams()['source'];
+        $mode = $source ? 'source' : '';
+
+        try {
+            $fileContent = $this->getFileContent($path);
+        } catch (FileNotFoundException $e) {
+            return $this->_404($response);
+        } catch (FileIsEmptyException $e) {
+            return $this->_500($response, $path);
+        }
+
+        /** @var HtmlMarkup $htmlMarkup */
+        $htmlMarkup = GeneralUtility::makeInstance(HtmlMarkup::class);
+        $htmlMarkup->gnyfImgAdd = $show ? '' : 'onclick="return parent.updPath(\'###PATH###\');"';
+        $htmlMarkup->pathPrefix = $splitPath ? $splitPath . '|' : '';
+        $htmlMarkup->onlyElements = $allowedTags;
+
+        $cParts = $htmlMarkup->splitByPath($fileContent, $splitPath);
+        if (!is_array($cParts)) {
+            return $this->_500($response, $path);
+        }
+
+        $cParts[1] = $htmlMarkup->markupHTMLcontent(
+            $cParts[1],
+            $GLOBALS['BACK_PATH'],
+            '',
+            implode(',', array_keys($htmlMarkup->tags)),
+            $mode
+        );
+        $cParts[0] = $htmlMarkup->passthroughHTMLcontent(
+            $cParts[0], '',
+            $mode
+        );
+        $cParts[2] = $htmlMarkup->passthroughHTMLcontent(
+            $cParts[2], '',
+            $mode
+        );
+        if (trim($cParts[0])) {
+            $cParts[1] = '<a name="_MARKED_UP_ELEMENT"></a>' . $cParts[1];
+        }
+
+        $markup = implode('', $cParts);
+        $styleBlock = '<style type="text/css">' . self::$gnyfStyleBlock . '</style>';
+        if (preg_match('/<\/head/i', $markup)) {
+            $finalMarkup = preg_replace('/(<\/head)/i', $styleBlock . '\1', $markup);
+        } else {
+            $finalMarkup = $styleBlock . $markup;
+        }
+
+        $response->getBody()->write($finalMarkup);
         return $response;
     }
 
     /**
-     * This will mark up the part of the HTML file which is pointed to by $path
+     * @param ServerRequest $request
+     * @param Response $response
      *
-     * @param string $content The file content as a string
-     * @param string $path The "HTML-path" to split by
-     * @param string $relPathFix The rel-path string to fix images/links with.
-     * @param string $limitTags List of tags to show
-     *
-     * @return string
-     *
-     * @throws \InvalidArgumentException
-     *
-     * @see main_display()
+     * @return ResponseInterface
      */
-    public function displayFileContentWithMarkup($content, $path, $relPathFix, $limitTags)
+    public function preview(ServerRequest $request, Response $response)
     {
-        $markupObj = GeneralUtility::makeInstance(HtmlMarkup::class);
-        $markupObj->gnyfImgAdd = $this->show ? '' : 'onclick="return parent.updPath(\'###PATH###\');"';
-        $markupObj->pathPrefix = $path ? $path . '|' : '';
-        $markupObj->onlyElements = $limitTags;
+        $path = $request->getQueryParams()['path'];
+        $source = (bool)$request->getQueryParams()['source'];
 
-//        $markupObj->setTagsFromXML($content);
-
-        $cParts = $markupObj->splitByPath($content, $path);
-        if (is_array($cParts)) {
-            $cParts[1] = $markupObj->markupHTMLcontent(
-                $cParts[1],
-                $GLOBALS['BACK_PATH'],
-                $relPathFix,
-                implode(',', array_keys($markupObj->tags)),
-                $this->MOD_SETTINGS['displayMode']
-            );
-            $cParts[0] = $markupObj->passthroughHTMLcontent($cParts[0], $relPathFix,
-                $this->MOD_SETTINGS['displayMode']);
-            $cParts[2] = $markupObj->passthroughHTMLcontent($cParts[2], $relPathFix,
-                $this->MOD_SETTINGS['displayMode']);
-            if (trim($cParts[0])) {
-                $cParts[1] = '<a name="_MARKED_UP_ELEMENT"></a>' . $cParts[1];
-            }
-
-            $markup = implode('', $cParts);
-            $styleBlock = '<style type="text/css">' . self::$gnyfStyleBlock . '</style>';
-            if (preg_match('/<\/head/i', $markup)) {
-                $finalMarkup = preg_replace('/(<\/head)/i', $styleBlock . '\1', $markup);
-            } else {
-                $finalMarkup = $styleBlock . $markup;
-            }
-
-            return $finalMarkup;
+        try {
+            $fileContent = $this->getFileContent($path);
+        } catch (FileNotFoundException $e) {
+            return $this->_404($response);
+        } catch (FileIsEmptyException $e) {
+            return $this->_500($response, $path);
         }
-        $this->displayFrameError($cParts);
 
-        return '';
-    }
-
-    /**
-     * This will add preview data to the HTML file used as a template according to the currentMappingInfo
-     *
-     * @param string $content The file content as a string
-     * @param string $relPathFix The rel-path string to fix images/links with.
-     *
-     * @return string
-     *
-     * @throws \InvalidArgumentException
-     *
-     * @see main_display()
-     */
-    public function displayFileContentWithPreview($content, $relPathFix = '')
-    {
         // Getting session data to get currentMapping info:
-        $sesDat = static::getBackendUser()->getSessionData($this->sessionKey);
-        $currentMappingInfo = is_array($sesDat['currentMappingInfo']) ? $sesDat['currentMappingInfo'] : [];
+        $sessionData = static::getBackendUser()->getSessionData($this->sessionKey); // todo: inject session
+        $currentMappingInfo = is_array($sessionData['currentMappingInfo']) ? $sessionData['currentMappingInfo'] : [];
 
         // Init mark up object.
-        $markupObject = GeneralUtility::makeInstance(HtmlMarkup::class);
-        $markupObject->htmlParse = GeneralUtility::makeInstance(HtmlParser::class);
+        /** @var HtmlMarkup $htmlMarkup */
+        $htmlMarkup = GeneralUtility::makeInstance(HtmlMarkup::class);
+        $htmlMarkup->htmlParse = GeneralUtility::makeInstance(HtmlParser::class);
 
         // Splitting content, adding a random token for the part to be previewed:
-        $contentSplittedByMapping = $markupObject->splitContentToMappingInfo($content, $currentMappingInfo);
+        $contentSplittedByMapping = $htmlMarkup->splitContentToMappingInfo($fileContent, $currentMappingInfo);
         $token = md5(microtime());
-        $content = $markupObject->mergeSampleDataIntoTemplateStructure(
-            $sesDat['dataStruct'],
+        $fileContent = $htmlMarkup->mergeSampleDataIntoTemplateStructure(
+            $sessionData['dataStruct'],
             $contentSplittedByMapping,
             $token
         );
 
         // Exploding by that token and traverse content:
-        $pp = explode($token, $content);
+        $pp = explode($token, $fileContent);
         foreach ($pp as $key => &$value) {
-            $value = $markupObject->passthroughHTMLcontent(
+            $value = $htmlMarkup->passthroughHTMLcontent(
                 $value,
-                $relPathFix,
-                $this->getSetting('displayMode'),
+                '',
+                $source ? 'source' : '',
                 (int)$key === 1 ? 'font-size:11px; color:#000066;' : ''
             );
         }
@@ -222,29 +224,51 @@ class FileController extends AbstractModuleController implements Configurable
             $finalMarkup = $styleBlock . $markup;
         }
 
-        return $finalMarkup;
+        $response->getBody()->write($finalMarkup);
+        return $response;
     }
 
     /**
-     * Outputs a simple HTML page with an error message
-     *
-     * @param string Error message for output in <h2> tags
+     * @param string
      */
-    public function displayFrameError($error)
+    private function getErrorFrameContent($error)
     {
-        echo '
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
-
+        return '
+<!doctype html>
 <html>
 <head>
     <title>Untitled</title>
 </head>
-
 <body bgcolor="#eeeeee">
-<h2>ERROR: ' . $error . '</h2>
+    <h2>ERROR: ' . $error . '</h2>
 </body>
 </html>
             ';
+    }
+
+    /**
+     * @param Response $response
+     *
+     * @return ResponseInterface
+     */
+    private function _404(Response $response)
+    {
+        $response->getBody()->write($this->getErrorFrameContent(static::getLanguageService()->getLL('errorNoFileToDisplay')));
+        return $response->withStatus(404);
+    }
+
+    /**
+     * @param Response $response
+     * @param string $path
+     *
+     * @return ResponseInterface
+     */
+    private function _500(Response $response, $path)
+    {
+        $response->getBody()->write($this->getErrorFrameContent(
+            static::getLanguageService()->getLL('errorNoContentInFile') . ': <em>' . htmlspecialchars($path) . '</em>'
+        ));
+        return $response->withStatus(500, 'Internal Server Error');
     }
 
     /**
@@ -260,6 +284,6 @@ class FileController extends AbstractModuleController implements Configurable
      */
     public function getModuleName()
     {
-        return 'xMOD_tx_templavoila_cm1';
+        return 'tv_mod_admin_file';
     }
 }

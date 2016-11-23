@@ -122,13 +122,6 @@ class MappingController extends AbstractModuleController implements Configurable
     public $storageFolders_pidList = 0;
 
     /**
-     * Looking for "&mode", which defines if we draw a frameset (default), the module (mod) or display (display)
-     *
-     * @var string
-     */
-    public $mode;
-
-    /**
      * (GPvar "file", shared with DISPLAY mode!) The file to display, if file is referenced directly from filelist module. Takes precedence over displayTable/displayUid
      *
      * @var string
@@ -288,27 +281,6 @@ class MappingController extends AbstractModuleController implements Configurable
     public $staticDS = false;
 
     /**
-     * @var string
-     */
-    public static $gnyfStyleBlock = '
-    .gnyfBox { position:relative; }
-    .gnyfElement {    color: black; font-family:monospace;font-size:12px !important; line-height:1.3em !important; font-weight:normal; text-transform:none; letter-spacing:auto; cursor: pointer; margin: 0; padding:0 7px; overflow: hidden; text-align: center; position: absolute;  border-radius: 0.4em; -o-border-radius: 0.4em; -moz-border-radius: 0.4em; -webkit-border-radius: 0.4em; background-color: #ffffff;    }
-    .dso_table .gnyfElement { position: relative; }
-    span.gnyfElement:hover {    z-index: 100;    box-shadow: rgba(0, 0, 0, 0.5) 0 0 4px 2px;    -o-box-shadow: rgba(0, 0, 0, 0.5) 0 0 4px 2px;    -moz-box-shadow: rgba(0, 0, 0, 0.5) 0 0 4px 2px;    -webkit-box-shadow: rgba(0, 0, 0, 0.5) 0 0 4px 2px;    }
-    a > span.gnyfElement, td > span.gnyfElement {    position:relative;    }
-    a > .gnyfElement:hover, td > .gnyfElement:hover  { box-shadow: none;    -o-box-shadow: none;    -moz-box-shadow: none;    -webkit-box-shadow: none;    }
-    .gnyfRoot { background-color:#9bff9b; }
-    .gnyfDocument { background-color:#788cff; }
-    .gnyfText { background-color:#ffff64; }
-    .gnyfGrouping { background-color:#ff9650; }
-    .gnyfForm { background-color:#64ff64; }
-    .gnyfSections { background-color:#a0afff; }
-    .gnyfInterative { background-color:#0096ff; }
-    .gnyfTable { background-color:#ff9664; }
-    .gnyfEmbedding { background-color:#ff96ff; }
-    .gnyfInteractive { background-color: #d3d3d3; }
-';
-    /**
      * Generally used for accumulating the output content of backend modules
      *
      * @var string
@@ -432,18 +404,7 @@ class MappingController extends AbstractModuleController implements Configurable
         $this->extConf = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf'][Templavoila::EXTKEY]);
         $this->staticDS = ($this->extConf['staticDS.']['enable']);
 
-        // Setting GPvars:
-        $this->mode = GeneralUtility::_GP('mode');
-
-        // Selecting display or module mode:
-        switch ((string) $this->mode) {
-            case 'display':
-                $this->main_display();
-                break;
-            default:
-                $this->main_mode();
-                break;
-        }
+        $this->main_mode();
 
         $view = $this->getStandaloneView('Backend/AdministrationModule/Mapping');
         $view->assign('action', $this->getModuleUrl());
@@ -2486,20 +2447,19 @@ class MappingController extends AbstractModuleController implements Configurable
     public function makeIframeForVisual($file, $path, $limitTags, $showOnly, $preview = false)
     {
         $params = [
-            'id' => $this->getId(),
-            'mode' => 'display',
-            'file' => $file,
-            'path' => $path,
-            'preview' => $preview ? 1 : 0,
+            'action' => $preview ? 'preview' : 'mapping',
+            'path' => $file,
+            'source' => $this->getSetting('displayMode') === 'source',
+            'splitPath' => $path,
         ];
 
         if ($showOnly) {
             $params['show'] = 1;
         } else {
-            $params['limitTags'] = $limitTags;
+            $params['allowedTags'] = $limitTags;
         }
 
-        return '<iframe id="templavoila-frame-visual" style="min-height:600px" src="' . BackendUtility::getModuleUrl($this->getModuleName(), $params) . '#_MARKED_UP_ELEMENT"></iframe>';
+        return '<iframe id="templavoila-frame-visual" style="min-height:600px" src="' . BackendUtility::getModuleUrl('tv_mod_admin_file', $params) . '#_MARKED_UP_ELEMENT"></iframe>';
     }
 
     /**
@@ -2608,174 +2568,6 @@ class MappingController extends AbstractModuleController implements Configurable
         $sysFolderPIDs = array_keys($this->storageFolders);
         $sysFolderPIDs[] = 0;
         $this->storageFolders_pidList = implode(',', $sysFolderPIDs);
-    }
-
-    /*****************************************
-     *
-     * DISPLAY mode
-     *
-     *****************************************/
-
-    /**
-     * Outputs the display of a marked-up HTML file in the IFRAME
-     *
-     * @see makeIframeForVisual()
-     */
-    public function main_display()
-    {
-
-        // Setting GPvars:
-        $this->displayFile = GeneralUtility::_GP('file');
-        $this->show = GeneralUtility::_GP('show');
-        $this->preview = GeneralUtility::_GP('preview');
-        $this->limitTags = GeneralUtility::_GP('limitTags');
-        $this->path = GeneralUtility::_GP('path');
-
-        // Checking if the displayFile parameter is set:
-        if (@is_file($this->displayFile) && GeneralUtility::getFileAbsFileName($this->displayFile)) { // FUTURE: grabbing URLS?:         .... || substr($this->displayFile,0,7)=='http://'
-            $content = GeneralUtility::getUrl($this->displayFile);
-            if ($content) {
-                $relPathFix = $GLOBALS['BACK_PATH'] . '../' . dirname(substr($this->displayFile, strlen(PATH_site))) . '/';
-
-                if ($this->preview) { // In preview mode, merge preview data into the template:
-                    // Add preview data to file:
-                    $content = $this->displayFileContentWithPreview($content, $relPathFix);
-                } else {
-                    // Markup file:
-                    $content = $this->displayFileContentWithMarkup($content, $this->path, $relPathFix, $this->limitTags);
-                }
-                // Output content:
-                echo $content;
-            } else {
-                $this->displayFrameError(static::getLanguageService()->getLL('errorNoContentInFile') . ': <em>' . htmlspecialchars($this->displayFile) . '</em>');
-            }
-        } else {
-            $this->displayFrameError(static::getLanguageService()->getLL('errorNoFileToDisplay'));
-        }
-
-        // Exit since a full page has been outputted now.
-        exit;
-    }
-
-    /**
-     * This will mark up the part of the HTML file which is pointed to by $path
-     *
-     * @param string $content The file content as a string
-     * @param string $path The "HTML-path" to split by
-     * @param string $relPathFix The rel-path string to fix images/links with.
-     * @param string $limitTags List of tags to show
-     *
-     * @return string
-     *
-     * @see main_display()
-     */
-    public function displayFileContentWithMarkup($content, $path, $relPathFix, $limitTags)
-    {
-        $markupObj = GeneralUtility::makeInstance(HtmlMarkup::class);
-        $markupObj->gnyfImgAdd = $this->show ? '' : 'onclick="return parent.updPath(\'###PATH###\');"';
-        $markupObj->pathPrefix = $path ? $path . '|' : '';
-        $markupObj->onlyElements = $limitTags;
-
-//        $markupObj->setTagsFromXML($content);
-
-        $cParts = $markupObj->splitByPath($content, $path);
-        if (is_array($cParts)) {
-            $cParts[1] = $markupObj->markupHTMLcontent(
-                $cParts[1],
-                $GLOBALS['BACK_PATH'],
-                $relPathFix,
-                implode(',', array_keys($markupObj->tags)),
-                $this->getSetting('displayMode')
-            );
-            $cParts[0] = $markupObj->passthroughHTMLcontent($cParts[0], $relPathFix, $this->getSetting('displayMode'));
-            $cParts[2] = $markupObj->passthroughHTMLcontent($cParts[2], $relPathFix, $this->getSetting('displayMode'));
-            if (trim($cParts[0])) {
-                $cParts[1] = '<a name="_MARKED_UP_ELEMENT"></a>' . $cParts[1];
-            }
-
-            $markup = implode('', $cParts);
-            $styleBlock = '<style type="text/css">' . self::$gnyfStyleBlock . '</style>';
-            if (preg_match('/<\/head/i', $markup)) {
-                $finalMarkup = preg_replace('/(<\/head)/i', $styleBlock . '\1', $markup);
-            } else {
-                $finalMarkup = $styleBlock . $markup;
-            }
-
-            return $finalMarkup;
-        }
-        $this->displayFrameError($cParts);
-
-        return '';
-    }
-
-    /**
-     * This will add preview data to the HTML file used as a template according to the currentMappingInfo
-     *
-     * @param string $content The file content as a string
-     * @param string $relPathFix The rel-path string to fix images/links with.
-     *
-     * @return string
-     *
-     * @see main_display()
-     */
-    public function displayFileContentWithPreview($content, $relPathFix)
-    {
-
-        // Getting session data to get currentMapping info:
-        $sesDat = static::getBackendUser()->getSessionData($this->sessionKey);
-        $currentMappingInfo = is_array($sesDat['currentMappingInfo']) ? $sesDat['currentMappingInfo'] : [];
-
-        // Init mark up object.
-        $this->markupObj = GeneralUtility::makeInstance(HtmlMarkup::class);
-        $this->markupObj->htmlParse = GeneralUtility::makeInstance(HtmlParser::class);
-
-        // Splitting content, adding a random token for the part to be previewed:
-        $contentSplittedByMapping = $this->markupObj->splitContentToMappingInfo($content, $currentMappingInfo);
-        $token = md5(microtime());
-        $content = $this->markupObj->mergeSampleDataIntoTemplateStructure($sesDat['dataStruct'], $contentSplittedByMapping, $token);
-
-        // Exploding by that token and traverse content:
-        $pp = explode($token, $content);
-        foreach ($pp as $kk => $vv) {
-            $pp[$kk] = $this->markupObj->passthroughHTMLcontent($vv, $relPathFix, $this->getSetting('displayMode'), $kk == 1 ? 'font-size:11px; color:#000066;' : '');
-        }
-
-        // Adding a anchor point (will work in most cases unless put into a table/tr tag etc).
-        if (trim($pp[0])) {
-            $pp[1] = '<a name="_MARKED_UP_ELEMENT"></a>' . $pp[1];
-        }
-        // Implode content and return it:
-        $markup = implode('', $pp);
-        $styleBlock = '<style type="text/css">' . self::$gnyfStyleBlock . '</style>';
-        if (preg_match('/<\/head/i', $markup)) {
-            $finalMarkup = preg_replace('/(<\/head)/i', $styleBlock . '\1', $markup);
-        } else {
-            $finalMarkup = $styleBlock . $markup;
-        }
-
-        return $finalMarkup;
-    }
-
-    /**
-     * Outputs a simple HTML page with an error message
-     *
-     * @param string Error message for output in <h2> tags
-     */
-    public function displayFrameError($error)
-    {
-        echo '
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
-
-<html>
-<head>
-    <title>Untitled</title>
-</head>
-
-<body bgcolor="#eeeeee">
-<h2>ERROR: ' . $error . '</h2>
-</body>
-</html>
-            ';
     }
 
     /**
