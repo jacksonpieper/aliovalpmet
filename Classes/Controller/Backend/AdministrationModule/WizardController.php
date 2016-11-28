@@ -125,7 +125,7 @@ class WizardController extends AbstractModuleController implements Configurable
                 'path' => $path,
                 'templateObjectCount' => $templateObjectCount,
                 'url' => BackendUtility::getModuleUrl(
-                    $this->getModuleName(),
+                    static::getModuleName(),
                     [
                         'step' => ++$this->step,
                         'file' => $path
@@ -161,14 +161,14 @@ class WizardController extends AbstractModuleController implements Configurable
             $this->updateSetting('file', '');
 
             return $response->withHeader('Location', BackendUtility::getModuleUrl(
-                $this->getModuleName()
+                static::getModuleName()
             ));
         }
 
         $view = $this->getStandaloneView('Backend/AdministationModule/WizardController/EnterDefaultValues');
         $view->assign('file', '/' . $file);
         $view->assign('action', BackendUtility::getModuleUrl(
-            $this->getModuleName(),
+            static::getModuleName(),
             [
                 'step' => ++$this->step
             ]
@@ -202,7 +202,7 @@ class WizardController extends AbstractModuleController implements Configurable
             );
 
             return $response->withHeader('Location', BackendUtility::getModuleUrl(
-                $this->getModuleName(),
+                static::getModuleName(),
                 [
                     'step' => --$this->step
                 ]
@@ -217,7 +217,7 @@ class WizardController extends AbstractModuleController implements Configurable
             );
 
             return $response->withHeader('Location', BackendUtility::getModuleUrl(
-                $this->getModuleName(),
+                static::getModuleName(),
                 [
                     'step' => --$this->step
                 ]
@@ -259,7 +259,7 @@ class WizardController extends AbstractModuleController implements Configurable
             }
 
             return $response->withHeader('Location', BackendUtility::getModuleUrl(
-                $this->getModuleName(),
+                static::getModuleName(),
                 [
                     'step' => --$this->step
                 ]
@@ -380,7 +380,7 @@ class WizardController extends AbstractModuleController implements Configurable
     /**
      * @return string
      */
-    public function getModuleName()
+    public static function getModuleName()
     {
         return 'tv_mod_admin_wizard';
     }

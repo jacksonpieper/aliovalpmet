@@ -282,7 +282,7 @@ class FileController extends AbstractModuleController implements Configurable
     /**
      * @return string
      */
-    public function getModuleName()
+    public static function getModuleName()
     {
         return 'tv_mod_admin_file';
     }

@@ -84,7 +84,7 @@ abstract class AbstractModuleController extends AbstractModule
             $userSettings = BackendUtility::getModuleData(
                 $defaultSettings,
                 $request->getQueryParams()['SET'] ?: [],
-                $this->getModuleName()
+                static::getModuleName()
             );
 
             ArrayUtility::mergeRecursiveWithOverrule($defaultSettings, $userSettings);
@@ -150,7 +150,7 @@ abstract class AbstractModuleController extends AbstractModule
             $this->settings = BackendUtility::getModuleData(
                 $this->getDefaultSettings(),
                 [$key => $value],
-                $this->getModuleName()
+                static::getModuleName()
             );
         }
     }

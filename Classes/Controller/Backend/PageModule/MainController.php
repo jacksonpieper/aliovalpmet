@@ -283,7 +283,7 @@ class MainController extends AbstractModuleController implements Configurable
     /**
      * @return string
      */
-    public function getModuleName()
+    public static function getModuleName()
     {
         return 'web_txtemplavoilaM1';
     }
@@ -500,7 +500,7 @@ class MainController extends AbstractModuleController implements Configurable
         }
 
         return BackendUtility::getModuleUrl(
-            $this->getModuleName(),
+            static::getModuleName(),
             $defaultParams
         );
     }

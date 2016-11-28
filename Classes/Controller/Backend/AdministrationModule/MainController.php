@@ -128,7 +128,7 @@ class MainController extends AbstractModuleController implements Configurable
     /**
      * @return string
      */
-    public function getModuleName()
+    public static function getModuleName()
     {
         return 'web_txtemplavoilaM2';
     }
@@ -137,7 +137,7 @@ class MainController extends AbstractModuleController implements Configurable
      */
     public function init()
     {
-        $this->modTSconfig = BackendUtility::getModTSconfig($this->getId(), 'mod.' . $this->getModuleName());
+        $this->modTSconfig = BackendUtility::getModTSconfig($this->getId(), 'mod.' . static::getModuleName());
         $this->extConf = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf'][Templavoila::EXTKEY]);
     }
 
@@ -461,7 +461,7 @@ class MainController extends AbstractModuleController implements Configurable
 
         foreach ($list as $pid) {
             $link = BackendUtility::getModuleUrl(
-                $this->getModuleName(),
+                static::getModuleName(),
                 [
                     'id' => $pid
                 ]

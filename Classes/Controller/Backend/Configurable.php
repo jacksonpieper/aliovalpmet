@@ -23,7 +23,7 @@ interface Configurable
     /**
      * @return string
      */
-    public function getModuleName();
+    public static function getModuleName();
 
     /**
      * @return array

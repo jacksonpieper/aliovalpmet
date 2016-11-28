@@ -2644,7 +2644,7 @@ class MappingController extends AbstractModuleController implements Configurable
     /**
      * @return string
      */
-    public function getModuleName()
+    public static function getModuleName()
     {
         return 'tv_mod_admin_mapping';
     }
@@ -2681,7 +2681,7 @@ class MappingController extends AbstractModuleController implements Configurable
         }
 
         return BackendUtility::getModuleUrl(
-            $this->getModuleName(),
+            static::getModuleName(),
             $defaultParams
         );
     }
