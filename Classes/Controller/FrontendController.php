@@ -304,7 +304,6 @@ class FrontendController extends AbstractPlugin
 
             // Init mark up object.
             $this->markupObj = GeneralUtility::makeInstance(HtmlMarkup::class);
-            $this->markupObj->htmlParse = GeneralUtility::makeInstance(HtmlParser::class);
 
             // Get template record:
             if ($row['tx_templavoila_to']) {

@@ -1,0 +1,38 @@
+{namespace tv=Schnitzler\Templavoila\ViewHelpers}
+
+<h1>Create or update existing Template Object (& Data Structure)</h1>
+
+<div class="row">
+    <div class="col-xs-12 col-sm-6">
+        <form action="{action.create}" method="post">
+            <h4>Create Template Object (& Data Structure)</h4>
+            <div class="form-group">
+                <label>Title</label>
+                <input type="text" name="title" class="form-control" />
+            </div>
+            <div class="form-group">
+                <label>Type</label>
+                {templateTypeSelectBox->f:format.raw()}
+            </div>
+            <div class="form-group">
+                <label>Store in PID</label>
+                <select name="pid" class="form-control">
+                    <f:for each="{storageFolders}" key="uid" as="title">
+                        <option value="{uid}">{title} (PID: {uid})</option>
+                    </f:for>
+                </select>
+            </div>
+            <button type="submit" class="btn btn-default">Create</button>
+        </form>
+    </div>
+    <div class="col-xs-12 col-sm-6">
+        <form>
+            <h4>Update existing Template Object (& Data Structure)</h4>
+            <div class="form-group">
+                <label>Template Object</label>
+                {templateObjectSelectBox->f:format.raw()}
+            </div>
+            <button type="submit" class="btn btn-default">Update</button>
+        </form>
+    </div>
+</div>

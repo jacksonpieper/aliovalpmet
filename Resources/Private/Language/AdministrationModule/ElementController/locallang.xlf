@@ -75,6 +75,23 @@
 			<trans-unit id="dsTypes_notmapped" xml:space="preserve">
 				<source>Not Mapped</source>
 			</trans-unit>
+
+			<trans-unit id="sc" xml:space="preserve">
+				<source>Section</source>
+			</trans-unit>
+			<trans-unit id="co" xml:space="preserve">
+				<source>Container</source>
+			</trans-unit>
+			<trans-unit id="at" xml:space="preserve">
+				<source>Attribute</source>
+			</trans-unit>
+			<trans-unit id="el" xml:space="preserve">
+				<source>Element</source>
+			</trans-unit>
+			<trans-unit id="no" xml:space="preserve">
+				<source>Not Mapped</source>
+			</trans-unit>
+
 			<trans-unit id="buttonGoBack" xml:space="preserve">
 				<source>Go back</source>
 			</trans-unit>

@@ -1,0 +1,67 @@
+{namespace core=TYPO3\CMS\Core\ViewHelpers}
+{namespace tv=Schnitzler\Templavoila\ViewHelpers}
+
+<h1>{tv:ll( index:'renderDSO_DSO' )}</h1>
+
+{dataStructureIcon->f:format.raw()} <strong>{dataStructureTitle->f:format.raw()}</strong>
+
+<div id="c-ds">
+    <h4>{tv:ll( index:'renderDSO_dataStructure' )}:</h4>
+    <table class="table dso_table">
+        <tr class="bgColor5">
+            <td nowrap="nowrap">
+                <f:be.buttons.csh table="xMOD_tx_templavoila" field="mapping_head_dataElement" wrap="<strong>{tv:ll( index:'mapDataElement' )}:</strong>" />
+            </td>
+            <td nowrap="nowrap">
+                <f:be.buttons.csh table="xMOD_tx_templavoila" field="mapping_head_mapping_instructions" wrap="<strong>{tv:ll( index:'mapInstructions' )}:</strong>" />
+            </td>
+            <td nowrap="nowrap">
+                <f:be.buttons.csh table="xMOD_tx_templavoila" field="mapping_head_Rules" wrap="<strong>{tv:ll( index:'mapRules' )}:</strong>" />
+            </td>
+        </tr>
+
+        <f:render partial="Backend/AdministrationModule/Element/Row" arguments="{ds:ds}" />
+    </table>
+</div>
+
+<f:be.buttons.csh table="xMOD_tx_templavoila" field="mapping_ds" />
+
+<div id="c-to">
+    <h4>{tv:ll( index:'renderDSO_usedTO' )}:</h4>
+    <table class="table dso_table">
+        <tr class="bgColor5">
+            <td><strong>{tv:ll( index:'renderDSO_uid' )}:</strong></td>
+            <td><strong>{tv:ll( index:'renderDSO_title' )}:</strong></td>
+            <td><strong>{tv:ll( index:'renderDSO_fileRef' )}:</strong></td>
+            <td><strong>{tv:ll( index:'renderDSO_dataLgd' )}:</strong></td>
+        </tr>
+
+        <f:for each="{templateObjects}" as="templateObject">
+            <tr class="bgColor4">
+                <td>[{templateObject.uid}]</td>
+                <td>
+                    {templateObject.clickMenuIcon->f:format.raw()}
+                    <a href="{templateObject.title.url}">
+                        {templateObject.title.text}
+                    </a>
+                </td>
+                <td>
+                    {templateObject.file.path}
+                    {templateObject.file.status}
+                </td>
+                <td>
+                    {templateObject.mappingDataLength}
+                </td>
+            </tr>
+        </f:for>
+    </table>
+</div>
+
+<f:be.buttons.csh table="xMOD_tx_templavoila" field="mapping_ds_to" />
+
+<div id="c-dsxml">
+    <h3>{tv:ll( index:'renderDSO_XML' )}:</h3>
+    <pre>{xml->f:format.raw()}</pre>
+</div>
+
+<f:be.buttons.csh table="xMOD_tx_templavoila" field="mapping_ds_showXML" />

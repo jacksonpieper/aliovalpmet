@@ -20,7 +20,6 @@ use Schnitzler\Templavoila\Controller\Backend\Configurable;
 use Schnitzler\Templavoila\Domain\Model\HtmlMarkup;
 use Schnitzler\Templavoila\Exception\FileIsEmptyException;
 use Schnitzler\Templavoila\Exception\FileNotFoundException;
-use TYPO3\CMS\Core\Html\HtmlParser;
 use TYPO3\CMS\Core\Http\Response;
 use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -56,7 +55,7 @@ class FileController extends AbstractModuleController implements Configurable
     {
         parent::__construct();
 
-        static::getLanguageService()->includeLLFile('EXT:templavoila/Resources/Private/Language/AdministrationModule/MappingController/locallang.xlf');
+        static::getLanguageService()->includeLLFile('EXT:templavoila/Resources/Private/Language/AdministrationModule/ElementController/locallang.xlf');
     }
 
     /**
@@ -108,8 +107,8 @@ class FileController extends AbstractModuleController implements Configurable
         $allowedTags = $request->getQueryParams()['allowedTags'];
         $show = (bool)$request->getQueryParams()['show'];
         $splitPath = $request->getQueryParams()['splitPath'];
-        $source = (bool)$request->getQueryParams()['source'];
-        $mode = $source ? 'source' : '';
+        $explosive = (bool)$request->getQueryParams()['explosive'];
+        $mode = $explosive ? '' : 'source';
 
         try {
             $fileContent = $this->getFileContent($path);
@@ -187,7 +186,6 @@ class FileController extends AbstractModuleController implements Configurable
         // Init mark up object.
         /** @var HtmlMarkup $htmlMarkup */
         $htmlMarkup = GeneralUtility::makeInstance(HtmlMarkup::class);
-        $htmlMarkup->htmlParse = GeneralUtility::makeInstance(HtmlParser::class);
 
         // Splitting content, adding a random token for the part to be previewed:
         $contentSplittedByMapping = $htmlMarkup->splitContentToMappingInfo($fileContent, $currentMappingInfo);

@@ -1,0 +1,301 @@
+{namespace core=TYPO3\CMS\Core\ViewHelpers}
+{namespace tv=Schnitzler\Templavoila\ViewHelpers}
+
+<f:for each="{ds.rows}" as="row">
+    <tr>
+        <td nowrap="nowrap" valign="top">
+            <span style="padding-left:{row.padding-left}px">
+                <span title="{tv:ll( index:'{row.type}' )}" class="absmiddle">
+                    <core:icon identifier="{row.icon.identifier}" size="{row.icon.size}" />
+                </span>
+                {row.title.text}
+                <f:if condition="{row.title.isTranslated}">
+                    <sup title="{tv:ll( index:'displayDSTitleTranslated' )}">*</sup>
+                </f:if>
+            </span>
+        </td>
+        <f:if condition="{row.isInEditMode}">
+            <td nowrap="nowrap">{row.key}</td>
+        </f:if>
+        <td>{row.description}</td>
+        <f:if condition="{row.isInMappingMode}">
+            <td nowrap="nowrap">
+                <f:if condition="{row.htmlPath}">
+                    <core:icon identifier="{row.htmlPath.icon.identifier}" size="{row.htmlPath.icon.size}" />
+                    {row.htmlPath.tag->f:format.raw()}
+                    {row.htmlPath.text}
+                </f:if>
+            </td>
+            <td>
+                <div class="btn-group" role="group">
+                    <f:if condition="{row.mappingButtons}">
+                        <div class="btn-group btn-group-sm" role="group">
+                            <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                Set Mode
+                                <span class="caret"></span>
+                            </button>
+                            <ul class="dropdown-menu">
+                                <f:for each="{row.mappingButtons}" as="button">
+                                    <li><a href="{button.url}">{button.label}</a></li>
+                                </f:for>
+                            </ul>
+                        </div>
+                    </f:if>
+                    <f:for each="{row.buttons}" as="button">
+                        <a class="btn btn-default btn-sm" title="{button.title}" href="{button.url}">
+                            {button.label}
+                        </a>
+                    </f:for>
+                </div>
+            </td>
+        </f:if>
+        <td>
+            <f:if condition="{row.tag.rules}">
+                <f:then>
+                    <f:for each="{row.tag.rules}" as="rule">
+                        {rule}<br>
+                    </f:for>
+                </f:then>
+                <f:else>
+                    {tv:ll( index:'all' )}
+                </f:else>
+            </f:if>
+        </td>
+        <f:if condition="{row.isInEditMode}">
+        <td>
+            <f:if condition="{row.links.edit}">
+                <a href="{row.links.edit.url}">
+                    <core:icon identifier="{row.links.edit.icon.identifier}" size="{row.links.edit.icon.size}" />
+                </a>
+            </f:if>
+            <f:if condition="{row.links.delete}">
+                <a href="{row.links.delete.url}">
+                    <core:icon identifier="{row.links.delete.icon.identifier}" size="{row.links.delete.icon.size}" />
+                </a>
+            </f:if>
+        </td>
+        </f:if>
+    </tr>
+
+    <f:if condition="{row.form.edit}">
+        <form action="{row.form.edit.action}" method="post">
+            <tr class="bgColor4">
+                <td style="vertical-align:top;">
+                    <div style="padding-left:{row.padding-left}px;">
+                        <div class="form-group">
+                            <label>{row.form.edit.input.type.label}</label>
+                            {row.form.edit.input.type.html->f:format.raw()}
+                        </div>
+
+                        <strong>{row.form.edit.fieldname}</strong>
+
+                        <ul class="list-unstyled" id="panel-control">
+                            <li>
+                                <a href="#" data-id="panel-general" title="{tv:ll( index:'mapEditConfiguration' )}">
+                                    {tv:ll( index:'mapConfiguration' )}
+                                </a>
+                                <ul>
+                                    <li>
+                                        <a href="#" data-id="panel-typoscript" title="{tv:ll( index:'mapEditTyposcript' )}">
+                                            {tv:ll( index:'mapTyposcript' )}
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="#" data-id="panel-extra" title="{tv:ll( index:'mapEditExtra' )}">
+                                            {tv:ll( index:'mapExtra' )}
+                                        </a>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li>
+                                <a href="#" data-id="panel-tceforms" title="{tv:ll( index:'mapEditTCEform' )}">
+                                    {tv:ll( index:'mapTCEform' )}
+                                </a>
+                            </li>
+                        </ul>
+
+                        <f:be.buttons.csh table="xMOD_tx_templavoila" field="mapping_editform" />
+                    </div>
+                </td>
+                <td style="vertical-align:top" colspan="2" id="panels">
+                    <div id="panel-general">
+                        <div class="form-group">
+                            <label>{row.form.edit.input.title.label}</label>
+                            {row.form.edit.input.title.html->f:format.raw()}
+                        </div>
+
+                        <div class="form-group">
+                            <label>{row.form.edit.input.description.label}</label>
+                            {row.form.edit.input.description.html->f:format.raw()}
+                        </div>
+
+                        <f:if condition="{row.form.edit.input.sample_data}">
+                            <div class="form-group">
+                                <label>{row.form.edit.input.sample_data.label}</label>
+                                {row.form.edit.input.sample_data.html->f:format.raw()}
+                            </div>
+                        </f:if>
+
+                        <f:if condition="{row.form.edit.input.elementType}">
+                            <div class="form-group">
+                                <label>{row.form.edit.input.elementType.label}</label>
+                                {row.form.edit.input.elementType.html->f:format.raw()}
+                                <span class="help-block">{tv:ll( index:'mapWarningElementChange' )}</span>
+                            </div>
+                        </f:if>
+
+                        <f:if condition="{row.form.edit.input.elementTypeBefore}">
+                            {row.form.edit.input.elementTypeBefore.html->f:format.raw()}
+                        </f:if>
+
+                        <div class="form-group">
+                            <label>{row.form.edit.input.tags.label}</label>
+                            {row.form.edit.input.tags.html->f:format.raw()}
+                        </div>
+                    </div>
+
+                    <div id="panel-tceforms">
+                        <div class="form-group">
+                            <label>{row.form.edit.input.TCEforms.label.label}</label>
+                            {row.form.edit.input.TCEforms.label.html->f:format.raw()}
+                        </div>
+                        <div class="form-group">
+                            <label>{row.form.edit.input.TCEforms.config.label}</label>
+                            {row.form.edit.input.TCEforms.config.html->f:format.raw()}
+                        </div>
+                        <div class="form-group">
+                            <label>{row.form.edit.input.TCEforms.defaultExtras.label}</label>
+                            {row.form.edit.input.TCEforms.defaultExtras.html->f:format.raw()}
+                        </div>
+                    </div>
+
+                    <div id="panel-typoscript">
+                        <f:if condition="{row.form.edit.input.TypoScriptObjPath}">
+                            <div class="form-group">
+                                <label>{row.form.edit.input.TypoScriptObjPath.label}</label>
+                                {row.form.edit.input.TypoScriptObjPath.html->f:format.raw()}
+                            </div>
+                        </f:if>
+
+                        <f:if condition="{row.form.edit.input.TypoScript_constants}">
+                            <div class="form-group">
+                                <label>{row.form.edit.input.TypoScript_constants.label}</label>
+                                {row.form.edit.input.TypoScript_constants.html->f:format.raw()}
+                            </div>
+                        </f:if>
+                        <f:if condition="{row.form.edit.input.TypoScript}">
+                            <div class="form-group">
+                                <label>{row.form.edit.input.TypoScript.label}</label>
+                                {row.form.edit.input.TypoScript.html->f:format.raw()}
+                            </div>
+                        </f:if>
+                    </div>
+
+                    <div id="panel-extra">
+                        <f:if condition="{row.form.edit.input.proc.stdWrap}">
+                            <div class="form-group">
+                                <label>{row.form.edit.input.proc.stdWrap.label}</label>
+                                {row.form.edit.input.proc.stdWrap.html->f:format.raw()}
+                            </div>
+                        </f:if>
+
+                        <f:if condition="{row.form.edit.input.proc.label}">
+                            <div class="form-group">
+                                <label>{row.form.edit.input.proc.label}</label>
+                                <div class="checkbox">
+                                    <label>
+                                        {row.form.edit.input.proc.int.html->f:format.raw()} {row.form.edit.input.proc.int.label}
+                                    </label>
+                                </div>
+                                <div class="checkbox">
+                                    <label>
+                                        {row.form.edit.input.proc.hsc.html->f:format.raw()} {row.form.edit.input.proc.hsc.label}
+                                    </label>
+                                </div>
+                            </div>
+                        </f:if>
+
+                        <f:if condition="{row.form.edit.input.preview.label}">
+                            <div class="form-group">
+                                <label>{row.form.edit.input.preview.label}</label>
+                                <div class="radio">
+                                    <label>
+                                        {row.form.edit.input.preview.radio.enable.html->f:format.raw()} {row.form.edit.input.preview.radio.enable.label}
+                                    </label>
+                                </div>
+                                <div class="radio">
+                                    <label>
+                                        {row.form.edit.input.preview.radio.disable.html->f:format.raw()} {row.form.edit.input.preview.radio.disable.label}
+                                    </label>
+                                </div>
+                            </div>
+                        </f:if>
+
+                        <f:if condition="{row.form.edit.input.oldStyleColumnNumber}">
+                            <div class="form-group">
+                                <label>{row.form.edit.input.oldStyleColumnNumber.label}</label>
+                                {row.form.edit.input.oldStyleColumnNumber.html->f:format.raw()}
+                            </div>
+                        </f:if>
+
+                        <f:if condition="{row.form.edit.input.enableDragDrop}">
+                            <div class="form-group">
+                                <label>{row.form.edit.input.enableDragDrop.label}</label>
+                                {row.form.edit.input.enableDragDrop.html->f:format.raw()}
+                            </div>
+                        </f:if>
+                    </div>
+                </td>
+                <td style="vertical-align:top">
+
+                </td>
+                <td style="vertical-align:top">
+
+                </td>
+                <td style="vertical-align:top">
+
+                </td>
+                <td style="vertical-align:top">
+
+                </td>
+            </tr>
+            <tr class="bgColor4">
+                <td>
+                    &nbsp;
+                </td>
+                <td colspan="6">
+                    <div class="btn-group">
+                        {row.form.edit.input.DS_element.html->f:format.raw()}
+                        {row.form.edit.submit.update->f:format.raw()}
+                        {row.form.edit.submit.cancel->f:format.raw()}
+                    </div>
+                </td>
+            </tr>
+        </form>
+    </f:if>
+
+    <f:for each="{row.children}" as="child">
+        <f:render partial="Backend/AdministrationModule/Element/Row" arguments="{ds:child,isInEditMode:isInEditMode}" />
+    </f:for>
+
+    <f:if condition="{0:isInEditMode,1:row.type} == {0:'true',1:'co'}">
+        <tr class="bgColor4">
+            <td colspan="7">
+                <form action="{row.form.create.action}" method="post" style="margin: 0">
+                    <div class="input-group" style="margin-left:{row.form.create.input.margin-left}px;">
+                        <input
+                            type="text"
+                            name="fieldName"
+                            value="[{row.form.create.input.value}]"
+                            id="newField"
+                            class="form-control"
+                        />
+                        <span class="input-group-btn">
+                            <input type="submit" name="_" value="Add" class="btn btn-default btn-small"/>
+                        </span>
+                    </div>
+                </form>
+            </td>
+        </tr>
+    </f:if>
+</f:for>

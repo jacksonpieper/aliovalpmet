@@ -16,10 +16,20 @@ return [
         'access' => 'public',
         'target' => \Schnitzler\Templavoila\Controller\Backend\AdministrationModule\WizardController::class . '::processRequest'
     ],
-    'tv_mod_admin_mapping' => [
-        'path' => '/templavoila/admininstration/mapping',
+    'tv_mod_admin_element' => [
+        'path' => '/templavoila/admininstration/element',
         'access' => 'public',
-        'target' => \Schnitzler\Templavoila\Controller\Backend\AdministrationModule\MappingController::class . '::processRequest'
+        'target' => \Schnitzler\Templavoila\Controller\Backend\AdministrationModule\ElementController::class . '::processRequest'
+    ],
+    'tv_mod_admin_templateobject' => [
+        'path' => '/templavoila/admininstration/templateobject',
+        'access' => 'public',
+        'target' => \Schnitzler\Templavoila\Controller\Backend\AdministrationModule\TemplateObjectController::class . '::processRequest'
+    ],
+    'tv_mod_admin_datastructure' => [
+        'path' => '/templavoila/admininstration/datastructure',
+        'access' => 'public',
+        'target' => \Schnitzler\Templavoila\Controller\Backend\AdministrationModule\DataStructureController::class . '::processRequest'
     ],
     'tv_mod_xmlcontroller' => [
         'path' => '/templavoila/xml/show',

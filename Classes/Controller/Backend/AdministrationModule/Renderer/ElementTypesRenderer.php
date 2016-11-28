@@ -13,33 +13,21 @@ namespace Schnitzler\Templavoila\Controller\Backend\AdministrationModule\Rendere
  *
  * The TYPO3 project - inspiring people to share!
  */
-use Schnitzler\Templavoila\Controller\Backend\AdministrationModule\MappingController;
+use Schnitzler\Templavoila\Controller\Backend\AdministrationModule\ElementController;
 use Schnitzler\Templavoila\Templavoila;
 use Schnitzler\Templavoila\Traits\BackendUser;
 use Schnitzler\Templavoila\Traits\LanguageService;
+use TYPO3\CMS\Core\SingletonInterface;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Class Schnitzler\Templavoila\Controller\Backend\AdministrationModule\Renderer\ElementTypesRenderer
  */
-class ElementTypesRenderer
+class ElementTypesRenderer implements SingletonInterface
 {
     use BackendUser;
     use LanguageService;
-
-    /**
-     * @var MappingController
-     */
-    public $pObj;
-
-    /**
-     * @param MappingController $controller
-     */
-    public function __construct(MappingController $controller)
-    {
-        $this->pObj = $controller;
-    }
 
     /**
      * When mapping HTML files to DS the field types are selected amount some presets - this function converts these presets into the actual settings needed in the DS
@@ -54,6 +42,10 @@ class ElementTypesRenderer
      */
     public function substEtypeWithRealStuff(&$elArray, $v_sub = [], $scope = 0)
     {
+        if ($v_sub === null) {
+            $v_sub = [];
+        }
+
         // Traverse array
         foreach ($elArray as $key => $value) {
             // this MUST not ever enter the XMLs (it will break TV)
@@ -66,10 +58,10 @@ class ElementTypesRenderer
 
             // put these into array-form for preset-completition
             if (!is_array($elArray[$key]['tx_templavoila']['TypoScript_constants'])) {
-                $elArray[$key]['tx_templavoila']['TypoScript_constants'] = $this->pObj->unflattenarray($elArray[$key]['tx_templavoila']['TypoScript_constants']);
+                $elArray[$key]['tx_templavoila']['TypoScript_constants'] = ElementController::unflattenarray($elArray[$key]['tx_templavoila']['TypoScript_constants']);
             }
             if (!is_array($elArray[$key]['TCEforms']['config'])) {
-                $elArray[$key]['TCEforms']['config'] = $this->pObj->unflattenarray($elArray[$key]['TCEforms']['config']);
+                $elArray[$key]['TCEforms']['config'] = ElementController::unflattenarray($elArray[$key]['TCEforms']['config']);
             }
 
             /* ---------------------------------------------------------------------- */

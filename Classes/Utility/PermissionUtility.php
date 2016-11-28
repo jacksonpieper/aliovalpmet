@@ -16,9 +16,11 @@ namespace Schnitzler\Templavoila\Utility;
  */
 
 use Schnitzler\Templavoila\Traits\BackendUser;
+use Schnitzler\Templavoila\Traits\DatabaseConnection;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Type\Bitmask\Permission;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Frontend\Page\PageRepository;
 
 /**
  * Class Schnitzler\Templavoila\Utility\PermissionUtility
@@ -26,6 +28,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 final class PermissionUtility
 {
     use BackendUser;
+    use DatabaseConnection;
 
     /**
      * @var array
@@ -98,6 +101,38 @@ final class PermissionUtility
         }
 
         return $denyItems;
+    }
+
+    /**
+     * @return array
+     */
+    public static function getAccessibleStorageFolders()
+    {
+        $storageFolders = [];
+
+        /** @var PageRepository $pageRepository */
+        $pageRepository = GeneralUtility::makeInstance(PageRepository::class);
+        $pages = static::getDatabaseConnection()->exec_SELECTgetRows(
+            '*',
+            'pages',
+            'doktype = ' . PageRepository::DOKTYPE_SYSFOLDER . BackendUtility::deleteClause('pages')
+        );
+
+        foreach ($pages as $page) {
+            if (!PermissionUtility::hasBasicEditRights('pages', $page)) {
+                continue;
+            }
+            $pid = (int)$page['uid'];
+            $rootline = $pageRepository->getRootLine($pid);
+
+            $label = implode(' / ' , array_map(function($page) {
+                return $page['title'];
+            }, array_reverse($rootline)));
+
+            $storageFolders[$pid] = $label;
+        }
+
+        return $storageFolders;
     }
 
     private function __construct()

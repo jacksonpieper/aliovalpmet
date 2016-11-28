@@ -1,0 +1,30 @@
+{namespace tv=Schnitzler\Templavoila\ViewHelpers}
+
+<h3>{title}</h3>
+
+<table class="table" id="c-headerParts">
+    <tr>
+        <th><strong>{tv:ll( index:'include' )}:</strong></th>
+        <th><strong>{tv:ll( index:'tag' )}:</strong></th>
+        <th><strong>{tv:ll( index:'tagContent' )}:</strong></th>
+    </tr>
+    {rows->f:format.raw()}
+    <f:if condition="{bodyTag.show}">
+        <tr>
+            <td>{bodyTag.checkbox->f:format.raw()}</td>
+            <td>{bodyTag.tag->f:format.raw()}</td>
+            <td><pre>{bodyTag.tagContent->f:format.raw()}</pre></td>
+        </tr>
+    </f:if>
+</table>
+
+<f:be.buttons.csh
+    table="xMOD_tx_templavoila"
+    field="mapping_to_headerParts_buttons"
+    wrap="{f:form.submit(
+        class:'btn btn-default btn-sm',
+        name:'_save_data_mapping',
+        value:'{tv:ll( index:\'buttonSet\' )}',
+        title:'{tv:ll( index:\'buttonSetTitle\' )}'
+    )}"
+/>

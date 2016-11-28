@@ -632,12 +632,10 @@ class MainController extends AbstractModuleController implements Configurable
         }
 
         $linkUrl = BackendUtility::getModuleUrl(
-            'tv_mod_admin_mapping',
+            'tv_mod_admin_templateobject',
             [
-                'uid' => $toObj->getKey(),
-                'table' => 'tx_templavoila_tmplobj',
-//                'file' => $fileRecord['uid'],
-                '_reload_from' => 1,
+                'templateObjectUid' => $toObj->getKey(),
+                'action' => 'reset',
                 'returnUrl' => GeneralUtility::getIndpEnv('REQUEST_URI')
             ]
         );

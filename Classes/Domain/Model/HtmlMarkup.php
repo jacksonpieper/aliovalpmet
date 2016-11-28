@@ -290,6 +290,7 @@ class HtmlMarkup
     {
         // kept for compatibility reasons since references to this->tags are still present
         $this->tags = self::$tagConf;
+        $this->htmlParse = GeneralUtility::makeInstance(HtmlParser::class);
     }
 
     /**
@@ -948,10 +949,6 @@ class HtmlMarkup
      */
     public function init()
     {
-        // HTML parser object initialized.
-        $this->htmlParse = GeneralUtility::makeInstance(HtmlParser::class);
-        /* @var $this ->htmlParse \TYPO3\CMS\Core\Html\HtmlParser */
-
         // Resetting element count array
         $this->elCountArray = [];
         $this->elParentLevel = [];

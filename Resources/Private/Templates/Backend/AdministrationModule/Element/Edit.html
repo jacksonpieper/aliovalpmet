@@ -1,0 +1,54 @@
+{namespace tv=Schnitzler\Templavoila\ViewHelpers}
+
+<f:if condition="{accessibleStorageFolders->f:count()} == 0">
+    <f:be.infobox title="{tv:ll( index:'error' )}" state="2">
+        {tv:ll( index:'errorNoStorageFolder' )}
+    </f:be.infobox>
+</f:if>
+
+<table clas="table" id="c-toHeader">
+    <tr>
+        <td>
+            <f:be.buttons.csh table="xMOD_tx_templavoila" field="mapping_file" />
+        </td>
+        <td>
+            <strong>{tv:ll( index:'templateFile' )}:</strong>
+        </td>
+        <td>
+            <a href="#" onclick="{templateFile.onclick}">{templateFile.path}</a>
+        </td>
+    </tr>
+    <tr>
+        <td>&nbsp;</td>
+        <td>
+            <strong>{tv:ll( index:'templateObject' )}:</strong>
+        </td>
+        <td>{templateObject.title}</td>
+    </tr>
+    <f:if condition="{isStatic}">
+        <f:then>
+            <tr>
+                <td>&nbsp;</td>
+                <td>
+                    <strong>{tv:ll( index:'renderDSO_XML' )}:</strong>
+                </td>
+                <td>
+                    <a href="#" onclick="{dataStructureFile.onclick}">{dataStructureFile.path}</a>
+                </td>
+            </tr>
+        </f:then>
+        <f:else>
+            <tr>
+                <td>&nbsp;</td>
+                <td>
+                    <strong>{tv:ll( index:'renderTO_dsRecord' )}:</strong>
+                </td>
+                <td>{dataStructure.title}</td>
+            </tr>
+        </f:else>
+    </f:if>
+</table>
+
+<h3><f:be.buttons.csh table="xMOD_tx_templavoila" field="mapping_file" wrap="{tv:ll( index:'buildingDS' )}:" /></h3>
+
+{content->f:format.raw()}

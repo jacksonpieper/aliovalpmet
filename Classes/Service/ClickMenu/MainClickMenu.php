@@ -77,7 +77,7 @@ class MainClickMenu
                 && File::is_xmlFile($table)
             ) {
                 $url = BackendUtility::getModuleUrl(
-                    'tv_mod_admin_mapping',
+                    'tv_mod_admin_element',
                     [
                         'file' => $table
                     ]
@@ -95,10 +95,9 @@ class MainClickMenu
                 || $table === 'tx_templavoila_content'
             ) {
                 $url = BackendUtility::getModuleUrl(
-                    'tv_mod_admin_mapping',
+                    'tv_mod_admin_datastructure',
                     [
                         'uid' => $uid,
-                        'table' => $table,
                         '_reload_from' => 1
                     ]
                 );
@@ -157,7 +156,7 @@ class MainClickMenu
                 // Adding link for "View: DS/TO" (admin only):
                 if (MathUtility::canBeInterpretedAsInteger($clickMenu->rec['tx_templavoila_ds'])) {
                     $url = BackendUtility::getModuleUrl(
-                        'tv_mod_admin_mapping',
+                        'tv_mod_admin_element',
                         [
                             'uid' => $clickMenu->rec['tx_templavoila_ds'],
                             'table' => 'tx_templavoila_datastructure'

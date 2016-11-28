@@ -1,0 +1,37 @@
+{namespace tv=Schnitzler\Templavoila\ViewHelpers}
+
+<h3>{title}</h3>
+
+<table class="table" id="c-toHeader">
+    <tr>
+        <td colspan="2">
+            <f:be.buttons.csh table="xMOD_tx_templavoila" field="mapping_to" wrap="<strong>{tv:ll( index:'renderTO_toDetails' )}</strong>" />
+        </td>
+    </tr>
+    <tr>
+        <td>{tv:ll( index:'templateObject' )}:</td>
+        <td>{templateObject.icon->f:format.raw()} {templateObject.title}</td>
+    </tr>
+    <tr>
+        <td>{tv:ll( index:'templateFile' )}:</td>
+        <td><a href="#" onclick="{templateFile.onclick}">{templateFile.relativeTemplateFilePath}</a></td>
+    </tr>
+    <tr>
+        <td>{tv:ll( index:'renderTO_dsRecord' )}:</td>
+        <td>{dataStructure.icon->f:format.raw()} {dataStructure.title}</td>
+    </tr>
+    <tr>
+        <td>
+            <f:be.buttons.csh table="xMOD_tx_templavoila" field="mapping_to_modifyDSTO" />
+        </td>
+        <td>
+            <a class="btn btn-default btn-sm t3js-modal-trigger"
+                data-severity="warning"
+                data-title="Warning"
+                data-content="{tv:ll( index:'renderTO_updateWarningConfirm' )}"
+                data-button-close-text="Cancel"
+                href="{url}"
+            >{tv:ll( index:'renderTO_editDSTO' )}</a>
+        </td>
+    </tr>
+</table>

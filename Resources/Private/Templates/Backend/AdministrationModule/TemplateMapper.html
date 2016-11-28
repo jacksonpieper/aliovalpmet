@@ -1,0 +1,87 @@
+{namespace core=TYPO3\CMS\Core\ViewHelpers}
+{namespace tv=Schnitzler\Templavoila\ViewHelpers}
+
+<table class="table dso_table">
+    <tr class="bgColor5">
+        <td nowrap="nowrap">
+            <f:be.buttons.csh table="xMOD_tx_templavoila" field="mapping_head_dataElement" wrap="<strong>{tv:ll( index:'mapDataElement' )}:</strong>" />
+         </td>
+        <f:if condition="{isInEditMode}">
+            <td>
+                <f:be.buttons.csh table="xMOD_tx_templavoila" field="mapping_head_Field" wrap="<strong>{tv:ll( index:'mapField' )}:</strong>" />
+            </td>
+        </f:if>
+        <td nowrap="nowrap">
+            <f:if condition="{_preview}">
+                <f:then>
+                    <f:be.buttons.csh table="xMOD_tx_templavoila" field="mapping_head_sample_data" wrap="<strong>{tv:ll( index:'mapSampleData' )}:</strong>" />
+                </f:then>
+                <f:else>
+                    <f:be.buttons.csh table="xMOD_tx_templavoila" field="mapping_head_mapping_instructions" wrap="<strong>{tv:ll( index:'mapInstructions' )}:</strong>" />
+                </f:else>
+            </f:if>
+        </td>
+        <td nowrap="nowrap">
+            <f:be.buttons.csh table="xMOD_tx_templavoila" field="mapping_head_HTMLpath" wrap="<strong>{tv:ll( index:'mapHTMLpath' )}:</strong>" />
+        </td>
+        <td nowrap="nowrap">
+            <f:be.buttons.csh table="xMOD_tx_templavoila" field="mapping_head_Action" wrap="<strong>{tv:ll( index:'mapAction' )}:</strong>" />
+        </td>
+        <td nowrap="nowrap">
+            <f:be.buttons.csh table="xMOD_tx_templavoila" field="mapping_head_Rules" wrap="<strong>{tv:ll( index:'mapRules' )}:</strong>" />
+        </td>
+        <f:if condition="{isInEditMode}">
+            <td nowrap="nowrap">
+                <f:be.buttons.csh table="xMOD_tx_templavoila" field="mapping_head_Edit" wrap="<strong>{tv:ll( index:'mapEdit' )}:</strong>" />
+            </td>
+        </f:if>
+    </tr>
+
+    <f:render partial="Backend/AdministrationModule/Element/Row" arguments="{ds:ds,isInEditMode:isInEditMode}" />
+</table>
+
+<f:be.buttons.csh table="xMOD_tx_templavoila" field="mapping_basics" />
+
+<f:if condition="{preview}">
+    <f:then>
+        <h3>{tv:ll( index:'mapMappingWindow' )}:</h3>
+
+        {select->f:format.raw()}
+
+        <table class="table" id="c-mapInfo">
+            <tr class="bgColor5">
+                <td>
+                    <f:be.buttons.csh table="xMOD_tx_templavoila" field="mapping_window_help" wrap="<strong>{tv:ll( index:'mapPreviewInfo' )}:</strong>" />
+                </td>
+            </tr>
+        </table>
+    </f:then>
+    <f:else>
+        <table class="table" id="c-mapInfo">
+            <!--<f:if condition="showPathOnly">-->
+                <!--<f:then>-->
+                    <!--<tr class="bgColor4">-->
+                        <!--<td class="bgColor5"><strong>{tv:ll( index:'mapHTMLpath' )}:</strong></td>-->
+                        <!--<td>' . htmlspecialchars(str_replace('~~~', ' ', $path)) . '</td>-->
+                    <!--</tr>-->
+                <!--</f:then>-->
+                <!--<f:else>-->
+                    <!--<tr class="bgColor4">-->
+                        <!--<td class="bgColor5"><strong>{tv:ll( index:'mapDSelement' )}:</strong></td>-->
+                        <!--<td>' . $this->elNames[$this->mapElPath]['tx_templavoila']['title'] . '</td>-->
+                    <!--</tr>-->
+                    <!--<tr class="bgColor4">-->
+                        <!--<td class="bgColor5"><strong>{tv:ll( index:'mapLimitToTags' )}:</strong></td>-->
+                        <!--<td>' . htmlspecialchars(($limitTags ? strtoupper($limitTags) : '(ALL TAGS)')) . '</td>-->
+                    <!--</tr>-->
+                    <!--<tr class="bgColor4">-->
+                        <!--<td class="bgColor5"><strong>{tv:ll( index:'mapInstructions' )}:</strong></td>-->
+                        <!--<td>' . htmlspecialchars($this->elNames[$this->mapElPath]['tx_templavoila']['description']) . '</td>-->
+                    <!--</tr>-->
+                <!--</f:else>-->
+            <!--</f:if>-->
+        </table>
+    </f:else>
+</f:if>
+
+{iframe->f:format.raw()}
