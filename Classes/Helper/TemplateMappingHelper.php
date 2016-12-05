@@ -19,6 +19,9 @@ namespace Schnitzler\Templavoila\Helper;
  */
 final class TemplateMappingHelper
 {
+    /**
+     * @codeCoverageIgnore
+     */
     private function __construct()
     {
         // deliberately private

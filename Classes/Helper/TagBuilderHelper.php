@@ -21,6 +21,10 @@ use TYPO3\CMS\Fluid\Core\ViewHelper\TagBuilder;
  */
 final class TagBuilderHelper
 {
+
+    /**
+     * @codeCoverageIgnore
+     */
     private function __construct()
     {
         // deliberately private
