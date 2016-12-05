@@ -242,12 +242,10 @@ class FrontendController extends AbstractPlugin
      */
     public function renderElement($row, $table)
     {
-        global $TYPO3_CONF_VARS;
-
         // First prepare user defined objects (if any) for hooks which extend this function:
         $hookObjectsArr = [];
-        if (is_array($TYPO3_CONF_VARS['EXTCONF'][Templavoila::EXTKEY]['pi1']['renderElementClass'])) {
-            foreach ($TYPO3_CONF_VARS['EXTCONF'][Templavoila::EXTKEY]['pi1']['renderElementClass'] as $classRef) {
+        if (is_array($GLOBALS['TYPO3_CONF_VARS']['EXTCONF'][Templavoila::EXTKEY]['pi1']['renderElementClass'])) {
+            foreach ($GLOBALS['TYPO3_CONF_VARS']['EXTCONF'][Templavoila::EXTKEY]['pi1']['renderElementClass'] as $classRef) {
                 $hookObjectsArr[] = & GeneralUtility::getUserObj($classRef);
             }
         }
