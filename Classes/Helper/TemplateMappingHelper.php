@@ -31,12 +31,26 @@ final class TemplateMappingHelper
      * @param array $currentMappingInfo
      * @param array $dataStructure
      */
-    public static function removeElementsThatDoNotExistInDataStructure(array &$currentMappingInfo, $dataStructure)
+    public static function removeElementsThatDoNotExistInDataStructure(array &$currentMappingInfo, array $dataStructure)
     {
         foreach ($currentMappingInfo as $key => $value) {
             if (!isset($dataStructure[$key])) {
                 unset($currentMappingInfo[$key]);
-            } elseif (is_array($dataStructure[$key]['el']) && is_array($currentMappingInfo[$key]['el'])) {
+                continue;
+            }
+
+            if (isset($currentMappingInfo[$key]['el'])
+                && (
+                    !isset($dataStructure[$key]['el'])
+                    || !is_array($dataStructure[$key]['el'])
+                    || (is_array($dataStructure[$key]['el']) && count($dataStructure[$key]['el']) === 0)
+                )
+            ) {
+                unset($currentMappingInfo[$key]['el']);
+                continue;
+            }
+
+            if (is_array($currentMappingInfo[$key]['el']) && is_array($dataStructure[$key]['el'])) {
                 static::removeElementsThatDoNotExistInDataStructure($currentMappingInfo[$key]['el'], $dataStructure[$key]['el']);
             }
         }
