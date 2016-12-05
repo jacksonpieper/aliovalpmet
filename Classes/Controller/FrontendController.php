@@ -70,7 +70,7 @@ class FrontendController extends AbstractPlugin
      *
      * @var HtmlMarkup
      */
-    public $markupObj;
+    public $htmlMarkup;
 
     /**
      * Main function for rendering of Flexible Content elements of TemplaVoila
@@ -244,31 +244,31 @@ class FrontendController extends AbstractPlugin
     public function renderElement($row, $table)
     {
         // First prepare user defined objects (if any) for hooks which extend this function:
-        $hookObjectsArr = [];
+        $hooks = [];
         if (is_array($GLOBALS['TYPO3_CONF_VARS']['EXTCONF'][Templavoila::EXTKEY]['pi1']['renderElementClass'])) {
             foreach ($GLOBALS['TYPO3_CONF_VARS']['EXTCONF'][Templavoila::EXTKEY]['pi1']['renderElementClass'] as $classRef) {
-                $hookObjectsArr[] = & GeneralUtility::getUserObj($classRef);
+                $hooks[] = & GeneralUtility::getUserObj($classRef);
             }
         }
 
         // Hook: renderElement_preProcessRow
-        foreach ($hookObjectsArr as $hookObj) {
-            if (method_exists($hookObj, 'renderElement_preProcessRow')) {
-                $hookObj->renderElement_preProcessRow($row, $table, $this);
+        foreach ($hooks as $hook) {
+            if (method_exists($hook, 'renderElement_preProcessRow')) {
+                $hook->renderElement_preProcessRow($row, $table, $this);
             }
         }
 
         try {
-            $dsRepo = GeneralUtility::makeInstance(DataStructureRepository::class);
+            $dataStructureRepository = GeneralUtility::makeInstance(DataStructureRepository::class);
             try {
                 /** @var \Schnitzler\Templavoila\Domain\Model\DataStructure $dsObj */
-                $dsObj = $dsRepo->getDatastructureByUidOrFilename($row['tx_templavoila_ds']);
-                $DS = $dsObj->getDataprotArray();
+                $dsObj = $dataStructureRepository->getDatastructureByUidOrFilename($row['tx_templavoila_ds']);
+                $dataStructure = $dsObj->getDataprotArray();
             } catch (\InvalidArgumentException $e) {
-                $DS = null;
+                $dataStructure = null;
             }
 
-            if (!is_array($DS)) {
+            if (!is_array($dataStructure)) {
                 throw new ObjectNotFoundException('
                     Couldn\'t find a Data Structure set for table/row "' . $table . ':' . $row['uid'] . '".
                     Please select a Data Structure and Template Object first.',
@@ -277,18 +277,18 @@ class FrontendController extends AbstractPlugin
             }
 
             // Sheet Selector:
-            if ($DS['meta']['sheetSelector']) {
+            if ($dataStructure['meta']['sheetSelector']) {
                 // <meta><sheetSelector> could be something like "EXT:user_extension/class.user_extension_selectsheet.php:&amp;user_extension_selectsheet"
-                $sheetSelector = & GeneralUtility::getUserObj($DS['meta']['sheetSelector']);
+                $sheetSelector = & GeneralUtility::getUserObj($dataStructure['meta']['sheetSelector']);
                 $renderSheet = $sheetSelector->selectSheet();
             } else {
                 $renderSheet = 'sDEF';
             }
 
             // Initialize:
-            $langChildren = $DS['meta']['langChildren'] ? 1 : 0;
-            $langDisabled = $DS['meta']['langDisable'] ? 1 : 0;
-            list($dataStruct, $sheet, $singleSheet) = GeneralUtility::resolveSheetDefInDS($DS, $renderSheet);
+            $langChildren = $dataStructure['meta']['langChildren'] ? 1 : 0;
+            $langDisabled = $dataStructure['meta']['langDisable'] ? 1 : 0;
+            list($dataStructureSheet, $sheet, $singleSheet) = GeneralUtility::resolveSheetDefInDS($dataStructure, $renderSheet);
 
             // Data from FlexForm field:
             $data = GeneralUtility::xml2array($row['tx_templavoila_flex']);
@@ -296,9 +296,9 @@ class FrontendController extends AbstractPlugin
             $lKey = ($GLOBALS['TSFE']->sys_language_isocode && !$langDisabled && !$langChildren) ? 'l' . $GLOBALS['TSFE']->sys_language_isocode : 'lDEF';
 
             /* Hook to modify language key - e.g. used for EXT:languagevisibility */
-            foreach ($hookObjectsArr as $hookObj) {
-                if (method_exists($hookObj, 'renderElement_preProcessLanguageKey')) {
-                    $lKey = $hookObj->renderElement_preProcessLanguageKey($row, $table, $lKey, $langDisabled, $langChildren, $this);
+            foreach ($hooks as $hook) {
+                if (method_exists($hook, 'renderElement_preProcessLanguageKey')) {
+                    $lKey = $hook->renderElement_preProcessLanguageKey($row, $table, $lKey, $langDisabled, $langChildren, $this);
                 }
             }
 
@@ -308,7 +308,7 @@ class FrontendController extends AbstractPlugin
             }
 
             // Init mark up object.
-            $this->markupObj = GeneralUtility::makeInstance(HtmlMarkup::class);
+            $this->htmlMarkup = GeneralUtility::makeInstance(HtmlMarkup::class);
 
             // Get template record:
             if (!$row['tx_templavoila_to']) {
@@ -321,6 +321,7 @@ class FrontendController extends AbstractPlugin
             }
 
             // Initialize rendering type:
+            $renderType = GeneralUtility::_GP('print') ? 'print' : '';
             if ($this->conf['childTemplate']) {
                 $renderType = $this->conf['childTemplate'];
                 if (strpos($renderSheet, 'USERFUNC:') === 0) {
@@ -330,12 +331,10 @@ class FrontendController extends AbstractPlugin
                     ];
                     $renderType = GeneralUtility::callUserFunction(substr($renderType, 9), $conf, $this);
                 }
-            } else { // Default:
-                $renderType = GeneralUtility::_GP('print') ? 'print' : '';
             }
 
             // Get Template Object record:
-            $TOrec = $this->markupObj->getTemplateRecord($row['tx_templavoila_to'], $renderType, $GLOBALS['TSFE']->sys_language_uid);
+            $TOrec = $this->htmlMarkup->getTemplateRecord($row['tx_templavoila_to'], $renderType, $GLOBALS['TSFE']->sys_language_uid);
             if (!is_array($TOrec)) {
                 throw new ObjectNotFoundException('
                     Couldn\'t find Template Object with UID "' . $row['tx_templavoila_to'] . '".
@@ -370,20 +369,20 @@ class FrontendController extends AbstractPlugin
             $vKey = ($GLOBALS['TSFE']->sys_language_isocode && !$langDisabled && $langChildren) ? 'v' . $GLOBALS['TSFE']->sys_language_isocode : 'vDEF';
 
             /* Hook to modify value key - e.g. used for EXT:languagevisibility */
-            foreach ($hookObjectsArr as $hookObj) {
-                if (method_exists($hookObj, 'renderElement_preProcessValueKey')) {
-                    $vKey = $hookObj->renderElement_preProcessValueKey($row, $table, $vKey, $langDisabled, $langChildren, $this);
+            foreach ($hooks as $hook) {
+                if (method_exists($hook, 'renderElement_preProcessValueKey')) {
+                    $vKey = $hook->renderElement_preProcessValueKey($row, $table, $vKey, $langDisabled, $langChildren, $this);
                 }
             }
 
             $TOlocalProc = $singleSheet ? $TOproc['ROOT']['el'] : $TOproc['sheets'][$sheet]['ROOT']['el'];
             // Store the original data values before the get processed.
             $originalDataValues = $dataValues;
-            $this->processDataValues($dataValues, $dataStruct['ROOT']['el'], $TOlocalProc, $vKey, ($this->conf['renderUnmapped'] !== 'false' ? true : $TO['MappingInfo']['ROOT']['el']));
+            $this->processDataValues($dataValues, $dataStructureSheet['ROOT']['el'], $TOlocalProc, $vKey, ($this->conf['renderUnmapped'] !== 'false' ? true : $TO['MappingInfo']['ROOT']['el']));
 
             // Hook: renderElement_postProcessDataValues
-            foreach ($hookObjectsArr as $hookObj) {
-                if (method_exists($hookObj, 'renderElement_postProcessDataValues')) {
+            foreach ($hooks as $hook) {
+                if (method_exists($hook, 'renderElement_postProcessDataValues')) {
                     $flexformData = [
                         'table' => $table,
                         'row' => $row,
@@ -391,7 +390,7 @@ class FrontendController extends AbstractPlugin
                         'sLang' => $lKey,
                         'vLang' => $vKey
                     ];
-                    $hookObj->renderElement_postProcessDataValues($DS, $dataValues, $originalDataValues, $flexformData);
+                    $hook->renderElement_postProcessDataValues($dataStructure, $dataValues, $originalDataValues, $flexformData);
                 }
             }
 
@@ -405,9 +404,9 @@ class FrontendController extends AbstractPlugin
             }
             // Getting the cached mapping data out (if sheets, then default to "sDEF" if no mapping exists for the specified sheet!)
             $mappingDataBody = $singleSheet ? $TO['MappingData_cached'] : (is_array($TO['MappingData_cached']['sub'][$sheet]) ? $TO['MappingData_cached']['sub'][$sheet] : $TO['MappingData_cached']['sub']['sDEF']);
-            $content = $this->markupObj->mergeFormDataIntoTemplateStructure($dataValues, $mappingDataBody, '', $vKey);
+            $content = $this->htmlMarkup->mergeFormDataIntoTemplateStructure($dataValues, $mappingDataBody, '', $vKey);
 
-            $this->markupObj->setHeaderBodyParts($TO['MappingInfo_head'], $TO['MappingData_head_cached'], $TO['BodyTag_cached'], self::$enablePageRenderer);
+            $this->htmlMarkup->setHeaderBodyParts($TO['MappingInfo_head'], $TO['MappingData_head_cached'], $TO['BodyTag_cached'], self::$enablePageRenderer);
 
             if ($GLOBALS['TT']->LR) {
                 $GLOBALS['TT']->pull();
