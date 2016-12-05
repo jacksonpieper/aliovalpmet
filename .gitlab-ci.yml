@@ -18,7 +18,7 @@ test:5.6:
     MYSQL_ROOT_PASSWORD: root
   script:
     - find . -name \*.php ! -path "./.Build/*" | parallel --gnu php -d display_errors=stderr -l {} > /dev/null \;
-    - php .Build/bin/phpunit --colors -c .Build/vendor/typo3/cms/typo3/sysext/core/Build/UnitTests.xml Tests/Unit
+    - php .Build/bin/phpunit --coverage-text --colors --configuration .Build/Web/typo3conf/ext/templavoila/Tests/Build/UnitTests.xml
 #    - php .Build/bin/phpunit --colors --bootstrap .Build/vendor/typo3/cms/typo3/sysext/core/Build/FunctionalTestsBootstrap.php -c Tests/Build/FunctionalTests.xml
 
 test:7.0:
@@ -29,5 +29,5 @@ test:7.0:
     MYSQL_ROOT_PASSWORD: root
   script:
     - find . -name \*.php ! -path "./.Build/*" | parallel --gnu php -d display_errors=stderr -l {} > /dev/null \;
-    - php .Build/bin/phpunit --colors -c .Build/vendor/typo3/cms/typo3/sysext/core/Build/UnitTests.xml Tests/Unit
+    - php .Build/bin/phpunit --coverage-text --colors --configuration .Build/Web/typo3conf/ext/templavoila/Tests/Build/UnitTests.xml
 #    - php .Build/bin/phpunit --colors --bootstrap .Build/vendor/typo3/cms/typo3/sysext/core/Build/FunctionalTestsBootstrap.php -c Tests/Build/FunctionalTests.xml
