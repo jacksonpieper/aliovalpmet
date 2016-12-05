@@ -273,150 +273,150 @@ class FrontendController extends AbstractPlugin
                 Please select a Data Structure and Template Object first.');
         }
 
-            // Sheet Selector:
-            if ($DS['meta']['sheetSelector']) {
-                // <meta><sheetSelector> could be something like "EXT:user_extension/class.user_extension_selectsheet.php:&amp;user_extension_selectsheet"
-                $sheetSelector = & GeneralUtility::getUserObj($DS['meta']['sheetSelector']);
-                $renderSheet = $sheetSelector->selectSheet();
-            } else {
-                $renderSheet = 'sDEF';
+        // Sheet Selector:
+        if ($DS['meta']['sheetSelector']) {
+            // <meta><sheetSelector> could be something like "EXT:user_extension/class.user_extension_selectsheet.php:&amp;user_extension_selectsheet"
+            $sheetSelector = & GeneralUtility::getUserObj($DS['meta']['sheetSelector']);
+            $renderSheet = $sheetSelector->selectSheet();
+        } else {
+            $renderSheet = 'sDEF';
+        }
+
+        // Initialize:
+        $langChildren = $DS['meta']['langChildren'] ? 1 : 0;
+        $langDisabled = $DS['meta']['langDisable'] ? 1 : 0;
+        list($dataStruct, $sheet, $singleSheet) = GeneralUtility::resolveSheetDefInDS($DS, $renderSheet);
+
+        // Data from FlexForm field:
+        $data = GeneralUtility::xml2array($row['tx_templavoila_flex']);
+
+        $lKey = ($GLOBALS['TSFE']->sys_language_isocode && !$langDisabled && !$langChildren) ? 'l' . $GLOBALS['TSFE']->sys_language_isocode : 'lDEF';
+
+        /* Hook to modify language key - e.g. used for EXT:languagevisibility */
+        foreach ($hookObjectsArr as $hookObj) {
+            if (method_exists($hookObj, 'renderElement_preProcessLanguageKey')) {
+                $lKey = $hookObj->renderElement_preProcessLanguageKey($row, $table, $lKey, $langDisabled, $langChildren, $this);
             }
+        }
 
-            // Initialize:
-            $langChildren = $DS['meta']['langChildren'] ? 1 : 0;
-            $langDisabled = $DS['meta']['langDisable'] ? 1 : 0;
-            list($dataStruct, $sheet, $singleSheet) = GeneralUtility::resolveSheetDefInDS($DS, $renderSheet);
+        $dataValues = [];
+        if (is_array($data) && isset($data['data'][$sheet][$lKey]) && is_array($data['data'][$sheet][$lKey])) {
+            $dataValues = $data['data'][$sheet][$lKey];
+        }
 
-            // Data from FlexForm field:
-            $data = GeneralUtility::xml2array($row['tx_templavoila_flex']);
+        // Init mark up object.
+        $this->markupObj = GeneralUtility::makeInstance(HtmlMarkup::class);
 
-            $lKey = ($GLOBALS['TSFE']->sys_language_isocode && !$langDisabled && !$langChildren) ? 'l' . $GLOBALS['TSFE']->sys_language_isocode : 'lDEF';
+        // Get template record:
+        if (!$row['tx_templavoila_to']) {
+            return $this->formatError('You haven\'t selected a Template Object yet for table/uid "' . $table . '/' . $row['uid'] . '".
+                Without a Template Object TemplaVoila cannot map the XML content into HTML.
+                Please select a Template Object now.');
+        }
 
-            /* Hook to modify language key - e.g. used for EXT:languagevisibility */
-            foreach ($hookObjectsArr as $hookObj) {
-                if (method_exists($hookObj, 'renderElement_preProcessLanguageKey')) {
-                    $lKey = $hookObj->renderElement_preProcessLanguageKey($row, $table, $lKey, $langDisabled, $langChildren, $this);
-                }
+        // Initialize rendering type:
+        if ($this->conf['childTemplate']) {
+            $renderType = $this->conf['childTemplate'];
+            if (strpos($renderSheet, 'USERFUNC:') === 0) {
+                $conf = [
+                    'conf' => is_array($this->conf['childTemplate.']) ? $this->conf['childTemplate.'] : [],
+                    'toRecord' => $row
+                ];
+                $renderType = GeneralUtility::callUserFunction(substr($renderType, 9), $conf, $this);
             }
+        } else { // Default:
+            $renderType = GeneralUtility::_GP('print') ? 'print' : '';
+        }
 
-            $dataValues = [];
-            if (is_array($data) && isset($data['data'][$sheet][$lKey]) && is_array($data['data'][$sheet][$lKey])) {
-                $dataValues = $data['data'][$sheet][$lKey];
+        // Get Template Object record:
+        $TOrec = $this->markupObj->getTemplateRecord($row['tx_templavoila_to'], $renderType, $GLOBALS['TSFE']->sys_language_uid);
+        if (!is_array($TOrec)) {
+            return $this->formatError('Couldn\'t find Template Object with UID "' . $row['tx_templavoila_to'] . '".
+                Please make sure a Template Object is accessible.');
+        }
+
+        // Get mapping information from Template Record:
+        $TO = unserialize($TOrec['templatemapping']);
+        if (!is_array($TO)) {
+            return $this->formatError('Template Object could not be unserialized successfully.
+                Are you sure you saved mapping information into Template Object with UID "' . $row['tx_templavoila_to'] . '"?');
+        }
+
+        // Get local processing:
+        $TOproc = [];
+        if ($TOrec['localprocessing']) {
+            $TOproc = GeneralUtility::xml2array($TOrec['localprocessing']);
+            if (!is_array($TOproc)) {
+                // Must be a error!
+                // TODO log to TT the content of $TOproc (it is a error message now)
+                $TOproc = [];
             }
+        }
+        // Processing the data array:
+        if ($GLOBALS['TT']->LR) {
+            $GLOBALS['TT']->push('Processing data');
+        }
+        $vKey = ($GLOBALS['TSFE']->sys_language_isocode && !$langDisabled && $langChildren) ? 'v' . $GLOBALS['TSFE']->sys_language_isocode : 'vDEF';
 
-            // Init mark up object.
-            $this->markupObj = GeneralUtility::makeInstance(HtmlMarkup::class);
-
-            // Get template record:
-            if (!$row['tx_templavoila_to']) {
-                return $this->formatError('You haven\'t selected a Template Object yet for table/uid "' . $table . '/' . $row['uid'] . '".
-                    Without a Template Object TemplaVoila cannot map the XML content into HTML.
-                    Please select a Template Object now.');
+        /* Hook to modify value key - e.g. used for EXT:languagevisibility */
+        foreach ($hookObjectsArr as $hookObj) {
+            if (method_exists($hookObj, 'renderElement_preProcessValueKey')) {
+                $vKey = $hookObj->renderElement_preProcessValueKey($row, $table, $vKey, $langDisabled, $langChildren, $this);
             }
+        }
 
-                // Initialize rendering type:
-                if ($this->conf['childTemplate']) {
-                    $renderType = $this->conf['childTemplate'];
-                    if (strpos($renderSheet, 'USERFUNC:') === 0) {
-                        $conf = [
-                            'conf' => is_array($this->conf['childTemplate.']) ? $this->conf['childTemplate.'] : [],
-                            'toRecord' => $row
-                        ];
-                        $renderType = GeneralUtility::callUserFunction(substr($renderType, 9), $conf, $this);
-                    }
-                } else { // Default:
-                    $renderType = GeneralUtility::_GP('print') ? 'print' : '';
-                }
+        $TOlocalProc = $singleSheet ? $TOproc['ROOT']['el'] : $TOproc['sheets'][$sheet]['ROOT']['el'];
+        // Store the original data values before the get processed.
+        $originalDataValues = $dataValues;
+        $this->processDataValues($dataValues, $dataStruct['ROOT']['el'], $TOlocalProc, $vKey, ($this->conf['renderUnmapped'] !== 'false' ? true : $TO['MappingInfo']['ROOT']['el']));
 
-                // Get Template Object record:
-                $TOrec = $this->markupObj->getTemplateRecord($row['tx_templavoila_to'], $renderType, $GLOBALS['TSFE']->sys_language_uid);
-                if (!is_array($TOrec)) {
-                    return $this->formatError('Couldn\'t find Template Object with UID "' . $row['tx_templavoila_to'] . '".
-                        Please make sure a Template Object is accessible.');
-                }
+        // Hook: renderElement_postProcessDataValues
+        foreach ($hookObjectsArr as $hookObj) {
+            if (method_exists($hookObj, 'renderElement_postProcessDataValues')) {
+                $flexformData = [
+                    'table' => $table,
+                    'row' => $row,
+                    'sheet' => $renderSheet,
+                    'sLang' => $lKey,
+                    'vLang' => $vKey
+                ];
+                $hookObj->renderElement_postProcessDataValues($DS, $dataValues, $originalDataValues, $flexformData);
+            }
+        }
 
-                    // Get mapping information from Template Record:
-                    $TO = unserialize($TOrec['templatemapping']);
-                    if (!is_array($TO)) {
-                        return $this->formatError('Template Object could not be unserialized successfully.
-                            Are you sure you saved mapping information into Template Object with UID "' . $row['tx_templavoila_to'] . '"?');
-                    }
+        if ($GLOBALS['TT']->LR) {
+            $GLOBALS['TT']->pull();
+        }
 
-                        // Get local processing:
-                        $TOproc = [];
-                        if ($TOrec['localprocessing']) {
-                            $TOproc = GeneralUtility::xml2array($TOrec['localprocessing']);
-                            if (!is_array($TOproc)) {
-                                // Must be a error!
-                                // TODO log to TT the content of $TOproc (it is a error message now)
-                                $TOproc = [];
-                            }
-                        }
-                        // Processing the data array:
-                        if ($GLOBALS['TT']->LR) {
-                            $GLOBALS['TT']->push('Processing data');
-                        }
-                        $vKey = ($GLOBALS['TSFE']->sys_language_isocode && !$langDisabled && $langChildren) ? 'v' . $GLOBALS['TSFE']->sys_language_isocode : 'vDEF';
+        // Merge the processed data into the cached template structure:
+        if ($GLOBALS['TT']->LR) {
+            $GLOBALS['TT']->push('Merge data and TO');
+        }
+        // Getting the cached mapping data out (if sheets, then default to "sDEF" if no mapping exists for the specified sheet!)
+        $mappingDataBody = $singleSheet ? $TO['MappingData_cached'] : (is_array($TO['MappingData_cached']['sub'][$sheet]) ? $TO['MappingData_cached']['sub'][$sheet] : $TO['MappingData_cached']['sub']['sDEF']);
+        $content = $this->markupObj->mergeFormDataIntoTemplateStructure($dataValues, $mappingDataBody, '', $vKey);
 
-                        /* Hook to modify value key - e.g. used for EXT:languagevisibility */
-                        foreach ($hookObjectsArr as $hookObj) {
-                            if (method_exists($hookObj, 'renderElement_preProcessValueKey')) {
-                                $vKey = $hookObj->renderElement_preProcessValueKey($row, $table, $vKey, $langDisabled, $langChildren, $this);
-                            }
-                        }
+        $this->markupObj->setHeaderBodyParts($TO['MappingInfo_head'], $TO['MappingData_head_cached'], $TO['BodyTag_cached'], self::$enablePageRenderer);
 
-                        $TOlocalProc = $singleSheet ? $TOproc['ROOT']['el'] : $TOproc['sheets'][$sheet]['ROOT']['el'];
-                        // Store the original data values before the get processed.
-                        $originalDataValues = $dataValues;
-                        $this->processDataValues($dataValues, $dataStruct['ROOT']['el'], $TOlocalProc, $vKey, ($this->conf['renderUnmapped'] !== 'false' ? true : $TO['MappingInfo']['ROOT']['el']));
+        if ($GLOBALS['TT']->LR) {
+            $GLOBALS['TT']->pull();
+        }
 
-                        // Hook: renderElement_postProcessDataValues
-                        foreach ($hookObjectsArr as $hookObj) {
-                            if (method_exists($hookObj, 'renderElement_postProcessDataValues')) {
-                                $flexformData = [
-                                    'table' => $table,
-                                    'row' => $row,
-                                    'sheet' => $renderSheet,
-                                    'sLang' => $lKey,
-                                    'vLang' => $vKey
-                                ];
-                                $hookObj->renderElement_postProcessDataValues($DS, $dataValues, $originalDataValues, $flexformData);
-                            }
-                        }
+        // Edit icon (frontend editing):
+        $eIconf = ['styleAttribute' => 'position:absolute;'];
+        if ($table === 'pages') {
+            $eIconf['beforeLastTag'] = -1;
+        } // For "pages", set icon in top, not after.
+        $content = $this->pi_getEditIcon($content, 'tx_templavoila_flex', 'Edit element', $row, $table, $eIconf);
 
-                        if ($GLOBALS['TT']->LR) {
-                            $GLOBALS['TT']->pull();
-                        }
+        // Visual identification aids:
 
-                        // Merge the processed data into the cached template structure:
-                        if ($GLOBALS['TT']->LR) {
-                            $GLOBALS['TT']->push('Merge data and TO');
-                        }
-                        // Getting the cached mapping data out (if sheets, then default to "sDEF" if no mapping exists for the specified sheet!)
-                        $mappingDataBody = $singleSheet ? $TO['MappingData_cached'] : (is_array($TO['MappingData_cached']['sub'][$sheet]) ? $TO['MappingData_cached']['sub'][$sheet] : $TO['MappingData_cached']['sub']['sDEF']);
-                        $content = $this->markupObj->mergeFormDataIntoTemplateStructure($dataValues, $mappingDataBody, '', $vKey);
+        $feedit = is_object(static::getBackendUser()) && method_exists(static::getBackendUser(), 'isFrontendEditingActive') && static::getBackendUser()->isFrontendEditingActive();
 
-                        $this->markupObj->setHeaderBodyParts($TO['MappingInfo_head'], $TO['MappingData_head_cached'], $TO['BodyTag_cached'], self::$enablePageRenderer);
-
-                        if ($GLOBALS['TT']->LR) {
-                            $GLOBALS['TT']->pull();
-                        }
-
-                        // Edit icon (frontend editing):
-                        $eIconf = ['styleAttribute' => 'position:absolute;'];
-                        if ($table === 'pages') {
-                            $eIconf['beforeLastTag'] = -1;
-                        } // For "pages", set icon in top, not after.
-                        $content = $this->pi_getEditIcon($content, 'tx_templavoila_flex', 'Edit element', $row, $table, $eIconf);
-
-                        // Visual identification aids:
-
-                        $feedit = is_object(static::getBackendUser()) && method_exists(static::getBackendUser(), 'isFrontendEditingActive') && static::getBackendUser()->isFrontendEditingActive();
-
-                        if ($GLOBALS['TSFE']->fePreview && $GLOBALS['TSFE']->beUserLogin && !$GLOBALS['TSFE']->workspacePreview && !$this->conf['disableExplosivePreview'] && !$feedit) {
-                            throw new \RuntimeException('Further execution of code leads to PHP errors.', 1404750505);
-                            $content = $this->visualID($content, $srcPointer, $DSrec, $TOrec, $row, $table);
-                        }
+        if ($GLOBALS['TSFE']->fePreview && $GLOBALS['TSFE']->beUserLogin && !$GLOBALS['TSFE']->workspacePreview && !$this->conf['disableExplosivePreview'] && !$feedit) {
+            throw new \RuntimeException('Further execution of code leads to PHP errors.', 1404750505);
+            $content = $this->visualID($content, $srcPointer, $DSrec, $TOrec, $row, $table);
+        }
 
         return $content;
     }
