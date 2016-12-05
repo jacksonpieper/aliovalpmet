@@ -267,7 +267,11 @@ class FrontendController extends AbstractPlugin
         }
 
         // If a Data Structure was found:
-        if (is_array($DS)) {
+        if (!is_array($DS)) {
+            return $this->formatError('
+                Couldn\'t find a Data Structure set for table/row "' . $table . ':' . $row['uid'] . '".
+                Please select a Data Structure and Template Object first.');
+        }
 
             // Sheet Selector:
             if ($DS['meta']['sheetSelector']) {
@@ -304,7 +308,11 @@ class FrontendController extends AbstractPlugin
             $this->markupObj = GeneralUtility::makeInstance(HtmlMarkup::class);
 
             // Get template record:
-            if ($row['tx_templavoila_to']) {
+            if (!$row['tx_templavoila_to']) {
+                return $this->formatError('You haven\'t selected a Template Object yet for table/uid "' . $table . '/' . $row['uid'] . '".
+                    Without a Template Object TemplaVoila cannot map the XML content into HTML.
+                    Please select a Template Object now.');
+            }
 
                 // Initialize rendering type:
                 if ($this->conf['childTemplate']) {
@@ -322,11 +330,17 @@ class FrontendController extends AbstractPlugin
 
                 // Get Template Object record:
                 $TOrec = $this->markupObj->getTemplateRecord($row['tx_templavoila_to'], $renderType, $GLOBALS['TSFE']->sys_language_uid);
-                if (is_array($TOrec)) {
+                if (!is_array($TOrec)) {
+                    return $this->formatError('Couldn\'t find Template Object with UID "' . $row['tx_templavoila_to'] . '".
+                        Please make sure a Template Object is accessible.');
+                }
 
                     // Get mapping information from Template Record:
                     $TO = unserialize($TOrec['templatemapping']);
-                    if (is_array($TO)) {
+                    if (!is_array($TO)) {
+                        return $this->formatError('Template Object could not be unserialized successfully.
+                            Are you sure you saved mapping information into Template Object with UID "' . $row['tx_templavoila_to'] . '"?');
+                    }
 
                         // Get local processing:
                         $TOproc = [];
@@ -403,24 +417,6 @@ class FrontendController extends AbstractPlugin
                             throw new \RuntimeException('Further execution of code leads to PHP errors.', 1404750505);
                             $content = $this->visualID($content, $srcPointer, $DSrec, $TOrec, $row, $table);
                         }
-                    } else {
-                        $content = $this->formatError('Template Object could not be unserialized successfully.
-                            Are you sure you saved mapping information into Template Object with UID "' . $row['tx_templavoila_to'] . '"?');
-                    }
-                } else {
-                    $content = $this->formatError('Couldn\'t find Template Object with UID "' . $row['tx_templavoila_to'] . '".
-                        Please make sure a Template Object is accessible.');
-                }
-            } else {
-                $content = $this->formatError('You haven\'t selected a Template Object yet for table/uid "' . $table . '/' . $row['uid'] . '".
-                    Without a Template Object TemplaVoila cannot map the XML content into HTML.
-                    Please select a Template Object now.');
-            }
-        } else {
-            $content = $this->formatError('
-                Couldn\'t find a Data Structure set for table/row "' . $table . ':' . $row['uid'] . '".
-                Please select a Data Structure and Template Object first.');
-        }
 
         return $content;
     }
