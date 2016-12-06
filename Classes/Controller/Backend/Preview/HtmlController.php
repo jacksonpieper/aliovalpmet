@@ -1,6 +1,6 @@
 <?php
 
-namespace Schnitzler\Templavoila\Controller\Preview;
+namespace Schnitzler\Templavoila\Controller\Backend\Preview;
 
 /*
  * This file is part of the TYPO3 CMS project.
@@ -15,18 +15,11 @@ namespace Schnitzler\Templavoila\Controller\Preview;
  * The TYPO3 project - inspiring people to share!
  */
 
-use TYPO3\CMS\Backend\Utility\BackendUtility;
-
 /**
- * Menu controller
+ * HTML controller
  */
-class MenuController extends TextController
+class HtmlController extends TextController
 {
-
-    /**
-     * @var string
-     */
-    protected $previewField = 'menu_type';
 
     /**
      * @param array $row
@@ -35,6 +28,6 @@ class MenuController extends TextController
      */
     protected function getPreviewData($row)
     {
-        return static::getLanguageService()->sL(BackendUtility::getLabelFromItemlist('tt_content', $this->previewField, $row[$this->previewField]));
+        return $this->preparePreviewData($row[$this->previewField], null, false);
     }
 }

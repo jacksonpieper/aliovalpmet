@@ -85,26 +85,26 @@ $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['lowlevel']['cleanerModules']['tx_templav
 $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['l10nmgr']['indexFilter']['tx_templavoila_usedCE'] = ['EXT:templavoila/Classes/Service/UserFunc/UsedContentElement.php:Schnitzler\Templavoila\Service\UserFunc\UsedContentElement'];
 
 // Register Preview Classes for Page Module
-$GLOBALS['TYPO3_CONF_VARS']['EXTCONF'][$_EXTKEY]['mod1']['renderPreviewContent']['default'] = 'EXT:templavoila/Classes/Controller/Preview/DefaultController.php:Schnitzler\Templavoila\Controller\Preview\DefaultController';
-$GLOBALS['TYPO3_CONF_VARS']['EXTCONF'][$_EXTKEY]['mod1']['renderPreviewContent']['text'] = 'EXT:templavoila/Classes/Controller/Preview/TextController.php:Schnitzler\Templavoila\Controller\Preview\TextController';
-$GLOBALS['TYPO3_CONF_VARS']['EXTCONF'][$_EXTKEY]['mod1']['renderPreviewContent']['table'] = 'EXT:templavoila/Classes/Controller/Preview/TextController.php:Schnitzler\Templavoila\Controller\Preview\TextController';
-$GLOBALS['TYPO3_CONF_VARS']['EXTCONF'][$_EXTKEY]['mod1']['renderPreviewContent']['mailform'] = 'EXT:templavoila/Classes/Controller/Preview/TextController.php:Schnitzler\Templavoila\Controller\Preview\TextController';
-$GLOBALS['TYPO3_CONF_VARS']['EXTCONF'][$_EXTKEY]['mod1']['renderPreviewContent']['header'] = 'EXT:templavoila/Classes/Controller/Preview/HeaderController.php:Schnitzler\Templavoila\Controller\Preview\HeaderController';
-$GLOBALS['TYPO3_CONF_VARS']['EXTCONF'][$_EXTKEY]['mod1']['renderPreviewContent']['multimedia'] = 'EXT:templavoila/Classes/Controller/Preview/MultimediaController.php:Schnitzler\Templavoila\Controller\Preview\MultimediaController';
-$GLOBALS['TYPO3_CONF_VARS']['EXTCONF'][$_EXTKEY]['mod1']['renderPreviewContent']['media'] = 'EXT:templavoila/Classes/Controller/Preview/MediaController.php:Schnitzler\Templavoila\Controller\Preview\MediaController';
-$GLOBALS['TYPO3_CONF_VARS']['EXTCONF'][$_EXTKEY]['mod1']['renderPreviewContent']['uploads'] = 'EXT:templavoila/Classes/Controller/Preview/UploadsController.php:Schnitzler\Templavoila\Controller\Preview\UploadsController';
-$GLOBALS['TYPO3_CONF_VARS']['EXTCONF'][$_EXTKEY]['mod1']['renderPreviewContent']['textpic'] = 'EXT:templavoila/Classes/Controller/Preview/TextpicController.php:Schnitzler\Templavoila\Controller\Preview\TextpicController';
-$GLOBALS['TYPO3_CONF_VARS']['EXTCONF'][$_EXTKEY]['mod1']['renderPreviewContent']['splash'] = 'EXT:templavoila/Classes/Controller/Preview/TextpicController.php:Schnitzler\Templavoila\Controller\Preview\TextpicController';
-$GLOBALS['TYPO3_CONF_VARS']['EXTCONF'][$_EXTKEY]['mod1']['renderPreviewContent']['image'] = 'EXT:templavoila/Classes/Controller/Preview/ImageController.php:Schnitzler\Templavoila\Controller\Preview\ImageController';
-$GLOBALS['TYPO3_CONF_VARS']['EXTCONF'][$_EXTKEY]['mod1']['renderPreviewContent']['bullets'] = 'EXT:templavoila/Classes/Controller/Preview/BulletsController.php:Schnitzler\Templavoila\Controller\Preview\BulletsController';
-$GLOBALS['TYPO3_CONF_VARS']['EXTCONF'][$_EXTKEY]['mod1']['renderPreviewContent']['html'] = 'EXT:templavoila/Classes/Controller/Preview/HtmlController.php:Schnitzler\Templavoila\Controller\Preview\HtmlController';
-$GLOBALS['TYPO3_CONF_VARS']['EXTCONF'][$_EXTKEY]['mod1']['renderPreviewContent']['menu'] = 'EXT:templavoila/Classes/Controller/Preview/MenuController.php:Schnitzler\Templavoila\Controller\Preview\MenuController';
-$GLOBALS['TYPO3_CONF_VARS']['EXTCONF'][$_EXTKEY]['mod1']['renderPreviewContent']['list'] = 'EXT:templavoila/Classes/Controller/Preview/ListController.php:Schnitzler\Templavoila\Controller\Preview\ListController';
-$GLOBALS['TYPO3_CONF_VARS']['EXTCONF'][$_EXTKEY]['mod1']['renderPreviewContent']['search'] = 'EXT:templavoila/Classes/Controller/Preview/NullController.php:Schnitzler\Templavoila\Controller\Preview\NullController';
-$GLOBALS['TYPO3_CONF_VARS']['EXTCONF'][$_EXTKEY]['mod1']['renderPreviewContent']['login'] = 'EXT:templavoila/Classes/Controller/Preview/NullController.php:Schnitzler\Templavoila\Controller\Preview\NullController';
-$GLOBALS['TYPO3_CONF_VARS']['EXTCONF'][$_EXTKEY]['mod1']['renderPreviewContent']['shortcut'] = 'EXT:templavoila/Classes/Controller/Preview/NullController.php:Schnitzler\Templavoila\Controller\Preview\NullController';
-$GLOBALS['TYPO3_CONF_VARS']['EXTCONF'][$_EXTKEY]['mod1']['renderPreviewContent']['div'] = 'EXT:templavoila/Classes/Controller/Preview/NullController.php:Schnitzler\Templavoila\Controller\Preview\NullController';
-$GLOBALS['TYPO3_CONF_VARS']['EXTCONF'][$_EXTKEY]['mod1']['renderPreviewContent']['templavoila_pi1'] = 'EXT:templavoila/Classes/Controller/Preview/NullController.php:Schnitzler\Templavoila\Controller\Preview\NullController';
+$GLOBALS['TYPO3_CONF_VARS']['EXTCONF'][$_EXTKEY]['mod1']['renderPreviewContent']['default'] = Schnitzler\Templavoila\Controller\Backend\Preview\DefaultController::class;
+$GLOBALS['TYPO3_CONF_VARS']['EXTCONF'][$_EXTKEY]['mod1']['renderPreviewContent']['text'] = Schnitzler\Templavoila\Controller\Backend\Preview\TextController::class;
+$GLOBALS['TYPO3_CONF_VARS']['EXTCONF'][$_EXTKEY]['mod1']['renderPreviewContent']['table'] = Schnitzler\Templavoila\Controller\Backend\Preview\TextController::class;
+$GLOBALS['TYPO3_CONF_VARS']['EXTCONF'][$_EXTKEY]['mod1']['renderPreviewContent']['mailform'] = Schnitzler\Templavoila\Controller\Backend\Preview\TextController::class;
+$GLOBALS['TYPO3_CONF_VARS']['EXTCONF'][$_EXTKEY]['mod1']['renderPreviewContent']['header'] = Schnitzler\Templavoila\Controller\Backend\Preview\HeaderController::class;
+$GLOBALS['TYPO3_CONF_VARS']['EXTCONF'][$_EXTKEY]['mod1']['renderPreviewContent']['multimedia'] = Schnitzler\Templavoila\Controller\Backend\Preview\MultimediaController::class;
+$GLOBALS['TYPO3_CONF_VARS']['EXTCONF'][$_EXTKEY]['mod1']['renderPreviewContent']['media'] = Schnitzler\Templavoila\Controller\Backend\Preview\MediaController::class;
+$GLOBALS['TYPO3_CONF_VARS']['EXTCONF'][$_EXTKEY]['mod1']['renderPreviewContent']['uploads'] = Schnitzler\Templavoila\Controller\Backend\Preview\UploadsController::class;
+$GLOBALS['TYPO3_CONF_VARS']['EXTCONF'][$_EXTKEY]['mod1']['renderPreviewContent']['textpic'] = Schnitzler\Templavoila\Controller\Backend\Preview\TextpicController::class;
+$GLOBALS['TYPO3_CONF_VARS']['EXTCONF'][$_EXTKEY]['mod1']['renderPreviewContent']['splash'] = Schnitzler\Templavoila\Controller\Backend\Preview\TextpicController::class;
+$GLOBALS['TYPO3_CONF_VARS']['EXTCONF'][$_EXTKEY]['mod1']['renderPreviewContent']['image'] = Schnitzler\Templavoila\Controller\Backend\Preview\ImageController::class;
+$GLOBALS['TYPO3_CONF_VARS']['EXTCONF'][$_EXTKEY]['mod1']['renderPreviewContent']['bullets'] = Schnitzler\Templavoila\Controller\Backend\Preview\BulletsController::class;
+$GLOBALS['TYPO3_CONF_VARS']['EXTCONF'][$_EXTKEY]['mod1']['renderPreviewContent']['html'] = Schnitzler\Templavoila\Controller\Backend\Preview\HtmlController::class;
+$GLOBALS['TYPO3_CONF_VARS']['EXTCONF'][$_EXTKEY]['mod1']['renderPreviewContent']['menu'] = Schnitzler\Templavoila\Controller\Backend\Preview\MenuController::class;
+$GLOBALS['TYPO3_CONF_VARS']['EXTCONF'][$_EXTKEY]['mod1']['renderPreviewContent']['list'] = Schnitzler\Templavoila\Controller\Backend\Preview\ListController::class;
+$GLOBALS['TYPO3_CONF_VARS']['EXTCONF'][$_EXTKEY]['mod1']['renderPreviewContent']['search'] = Schnitzler\Templavoila\Controller\Backend\Preview\NullController::class;
+$GLOBALS['TYPO3_CONF_VARS']['EXTCONF'][$_EXTKEY]['mod1']['renderPreviewContent']['login'] = Schnitzler\Templavoila\Controller\Backend\Preview\NullController::class;
+$GLOBALS['TYPO3_CONF_VARS']['EXTCONF'][$_EXTKEY]['mod1']['renderPreviewContent']['shortcut'] = Schnitzler\Templavoila\Controller\Backend\Preview\NullController::class;
+$GLOBALS['TYPO3_CONF_VARS']['EXTCONF'][$_EXTKEY]['mod1']['renderPreviewContent']['div'] = Schnitzler\Templavoila\Controller\Backend\Preview\NullController::class;
+$GLOBALS['TYPO3_CONF_VARS']['EXTCONF'][$_EXTKEY]['mod1']['renderPreviewContent']['templavoila_pi1'] = Schnitzler\Templavoila\Controller\Backend\Preview\NullController::class;
 
 $GLOBALS['TYPO3_CONF_VARS']['LOG']['Extension']['Templavoila']['Service']['ApiService']['writerConfiguration'] = [
     \TYPO3\CMS\Core\Log\LogLevel::DEBUG => [

@@ -1,6 +1,6 @@
 <?php
 
-namespace Schnitzler\Templavoila\Controller\Preview;
+namespace Schnitzler\Templavoila\Controller\Backend\Preview;
 
 /*
  * This file is part of the TYPO3 CMS project.
@@ -16,18 +16,13 @@ namespace Schnitzler\Templavoila\Controller\Preview;
  */
 
 /**
- * HTML controller
+ * Multimedia controller
  */
-class HtmlController extends TextController
+class MultimediaController extends UploadsController
 {
 
     /**
-     * @param array $row
-     *
-     * @return string
+     * @var string
      */
-    protected function getPreviewData($row)
-    {
-        return $this->preparePreviewData($row[$this->previewField], null, false);
-    }
+    protected $previewField = 'multimedia';
 }
