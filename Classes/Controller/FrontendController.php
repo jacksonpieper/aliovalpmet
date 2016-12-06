@@ -64,7 +64,7 @@ class FrontendController extends AbstractPlugin
     /**
      * @var Logger
      */
-    private static $logger;
+    private $logger;
 
     /**
      * @param DatabaseConnection $databaseConnection
@@ -77,11 +77,9 @@ class FrontendController extends AbstractPlugin
         $this->prefixId = 'tx_templavoila_pi1';
         $this->scriptRelPath = 'pi1/class.tx_templavoila_pi1.php';
 
-        if (!static::$logger instanceof Logger) {
-            /** @var LogManager $logManager */
-            $logManager = GeneralUtility::makeInstance(LogManager::class);
-            static::$logger = $logManager->getLogger(__CLASS__);
-        }
+        /** @var LogManager $logManager */
+        $logManager = GeneralUtility::makeInstance(LogManager::class);
+        $this->logger = $logManager->getLogger(__CLASS__);
     }
 
     /**
@@ -327,7 +325,7 @@ class FrontendController extends AbstractPlugin
                 try {
                     $hook->renderElement_preProcessRow($row, $table, $this);
                 } catch (\Exception $e) {
-                    static::getLogger()->error(
+                    $this->getLogger()->error(
                         sprintf('Caught exception during processing hook "%s::renderElement_preProcessRow"', get_class($hook)),
                         [
                             'message' => $e->getMessage(),
@@ -382,7 +380,7 @@ class FrontendController extends AbstractPlugin
                     try {
                         $lKey = $hook->renderElement_preProcessLanguageKey($row, $table, $lKey, $langDisabled, $langChildren, $this);
                     } catch (\Exception $e) {
-                        static::getLogger()->error(
+                        $this->getLogger()->error(
                             sprintf('Caught exception during processing hook "%s::renderElement_preProcessLanguageKey"', get_class($hook)),
                             [
                                 'message' => $e->getMessage(),
@@ -465,7 +463,7 @@ class FrontendController extends AbstractPlugin
                     try {
                         $vKey = $hook->renderElement_preProcessValueKey($row, $table, $vKey, $langDisabled, $langChildren, $this);
                     } catch (\Exception $e) {
-                        static::getLogger()->error(
+                        $this->getLogger()->error(
                             sprintf('Caught exception during processing hook "%s::renderElement_preProcessValueKey"', get_class($hook)),
                             [
                                 'message' => $e->getMessage(),
@@ -494,7 +492,7 @@ class FrontendController extends AbstractPlugin
                     try {
                         $hook->renderElement_postProcessDataValues($dataStructure, $dataValues, $originalDataValues, $flexformData);
                     } catch (\Exception $e) {
-                        static::getLogger()->error(
+                        $this->getLogger()->error(
                             sprintf('Caught exception during processing hook "%s::renderElement_postProcessDataValues"', get_class($hook)),
                             [
                                 'message' => $e->getMessage(),
@@ -858,7 +856,7 @@ class FrontendController extends AbstractPlugin
                 $returnValue .= $dV[$valueKey];
             }
         } catch (\Exception $e) {
-            static::getLogger()->error($e->getMessage());
+            $this->getLogger()->error($e->getMessage());
         }
 
         return $returnValue;
@@ -1007,8 +1005,8 @@ class FrontendController extends AbstractPlugin
     /**
      * @return Logger
      */
-    protected static function getLogger()
+    protected function getLogger()
     {
-        return static::$logger;
+        return $this->logger;
     }
 }

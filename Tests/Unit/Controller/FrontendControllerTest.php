@@ -14,6 +14,7 @@ namespace Schnitzler\Templavoila\Tests\Unit\Controller;
  *
  * The TYPO3 project - inspiring people to share!
  */
+use Psr\Log\NullLogger;
 use Schnitzler\Templavoila\Controller\FrontendController;
 use TYPO3\CMS\Core\Tests\AccessibleObjectInterface;
 use TYPO3\CMS\Core\Tests\UnitTestCase;
@@ -32,9 +33,12 @@ class FrontendControllerTest extends UnitTestCase
      */
     public function inheritValueResultsWithParamMatrix($data, $expected)
     {
+        $logger = new NullLogger();
+
         /** @var $mockObject FrontendController | \PHPUnit_Framework_MockObject_MockObject | AccessibleObjectInterface  */
-        $mockObject = $this->getAccessibleMock(FrontendController::class, ['log'], [], '', false);
+        $mockObject = $this->getAccessibleMock(FrontendController::class, ['getLogger'], [], '', false);
         $mockObject->initVars(['dontInheritValueFromDefault' => false]);
+        $mockObject->expects($this->any())->method('getLogger')->willReturn($logger);
 
         list($dataValues, $valueKey, $overlayMode) = array_values($data);
 
