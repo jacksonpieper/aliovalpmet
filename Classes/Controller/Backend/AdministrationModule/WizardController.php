@@ -111,7 +111,7 @@ class WizardController extends AbstractModuleController implements Configurable
             );
         }
 
-        $view = $this->getStandaloneView('Backend/AdministationModule/WizardController/SelectTemplate');
+        $view = $this->getStandaloneView('Backend/AdministrationModule/WizardController/SelectTemplate');
         $view->assign('files', array_map(function ($hash, $path) {
             $templateObjectCount = (int)static::getDatabaseConnection()->exec_SELECTcountRows(
                 'uid',
@@ -165,7 +165,7 @@ class WizardController extends AbstractModuleController implements Configurable
             ));
         }
 
-        $view = $this->getStandaloneView('Backend/AdministationModule/WizardController/EnterDefaultValues');
+        $view = $this->getStandaloneView('Backend/AdministrationModule/WizardController/EnterDefaultValues');
         $view->assign('file', '/' . $file);
         $view->assign('action', BackendUtility::getModuleUrl(
             static::getModuleName(),
@@ -316,7 +316,7 @@ class WizardController extends AbstractModuleController implements Configurable
         $this->updateSetting('typoScriptTemplateID', BackendUtility::wsMapId('sys_template', $import->import_mapId['sys_template'][1]));
         $this->updateSetting('step', --$this->step); // todo: This needs to be removed, currently only prevents a loop
 
-        $view = $this->getStandaloneView('Backend/AdministationModule/WizardController/Map');
+        $view = $this->getStandaloneView('Backend/AdministrationModule/WizardController/Map');
         $view->assign('src', ExtensionManagementUtility::extRelPath(Templavoila::EXTKEY) . 'Resources/Public/Image/mapbody_animation.gif');
         $this->moduleTemplate->setContent($view->render());
         $response->getBody()->write($this->moduleTemplate->renderContent());
