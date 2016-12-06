@@ -86,6 +86,19 @@ class FrontendController extends AbstractPlugin
     }
 
     /**
+     * Will set up various stuff in the class based on input TypoScript
+     *
+     * @param array $conf TypoScript options
+     */
+    public function initVars($conf)
+    {
+        $this->inheritValueFromDefault = $conf['dontInheritValueFromDefault'] ? 0 : 1;
+        // naming choosen to fit the regular TYPO3 integrators needs ;)
+        self::$enablePageRenderer = isset($conf['advancedHeaderInclusion']) ? $conf['advancedHeaderInclusion'] : self::$enablePageRenderer;
+        $this->conf = $conf;
+    }
+
+    /**
      * Main function for rendering of Flexible Content elements of TemplaVoila
      *
      * @param string $content Standard content input. Ignore.
@@ -233,16 +246,60 @@ class FrontendController extends AbstractPlugin
     }
 
     /**
-     * Will set up various stuff in the class based on input TypoScript
+     * Render section index for TV
      *
-     * @param array $conf TypoScript options
+     * @param string $content
+     * @param array $conf config of tt_content.menu.20.3
+     *
+     * @return string rendered section index
      */
-    public function initVars($conf)
+    public function renderSectionIndex($content, $conf)
     {
-        $this->inheritValueFromDefault = $conf['dontInheritValueFromDefault'] ? 0 : 1;
-        // naming choosen to fit the regular TYPO3 integrators needs ;)
-        self::$enablePageRenderer = isset($conf['advancedHeaderInclusion']) ? $conf['advancedHeaderInclusion'] : self::$enablePageRenderer;
-        $this->conf = $conf;
+        $ceField = $this->cObj->stdWrap($conf['indexField'], $conf['indexField.']);
+        $pids = isset($conf['select.']['pidInList.'])
+            ? trim($this->cObj->stdWrap($conf['select.']['pidInList'], $conf['select.']['pidInList.']))
+            : trim($conf['select.']['pidInList']);
+        $contentIds = [];
+        if ($pids) {
+            $pageIds = GeneralUtility::trimExplode(',', $pids);
+            foreach ($pageIds as $pageId) {
+                $page = $this->frontendController->sys_page->checkRecord('pages', $pageId);
+                if (isset($page, $page['tx_templavoila_flex'])) {
+                    $flex = [];
+                    $this->cObj->readFlexformIntoConf($page['tx_templavoila_flex'], $flex);
+                    $contentIds = array_merge($contentIds, GeneralUtility::trimExplode(',', $flex[$ceField]));
+                }
+            }
+        } else {
+            $flex = [];
+            $this->cObj->readFlexformIntoConf($this->frontendController->page['tx_templavoila_flex'], $flex);
+            $contentIds = array_merge($contentIds, GeneralUtility::trimExplode(',', $flex[$ceField]));
+        }
+
+        if (count($contentIds) > 0) {
+            $conf['source'] = implode(',', $contentIds);
+            $conf['tables'] = 'tt_content';
+            $conf['conf.'] = [
+                'tt_content' => $conf['renderObj'],
+                'tt_content.' => $conf['renderObj.'],
+            ];
+            $conf['dontCheckPid'] = 1;
+            unset($conf['renderObj']);
+            unset($conf['renderObj.']);
+        }
+
+        // tiny trink to include the section index element itself too
+        $this->frontendController->recordRegister[$this->frontendController->currentRecord] = -1;
+        $renderedIndex = $this->cObj->cObjGetSingle('RECORDS', $conf);
+
+        $wrap = isset($conf['wrap.'])
+            ? $this->cObj->stdWrap($conf['wrap'], $conf['wrap.'])
+            : $conf['wrap'];
+        if ($wrap) {
+            $renderedIndex = $this->cObj->wrap($renderedIndex, $wrap);
+        }
+
+        return $renderedIndex;
     }
 
     /**
@@ -907,63 +964,6 @@ class FrontendController extends AbstractPlugin
             '</div>';
 
         return $content;
-    }
-
-    /**
-     * Render section index for TV
-     *
-     * @param string $content
-     * @param array $conf config of tt_content.menu.20.3
-     *
-     * @return string rendered section index
-     */
-    public function renderSectionIndex($content, $conf)
-    {
-        $ceField = $this->cObj->stdWrap($conf['indexField'], $conf['indexField.']);
-        $pids = isset($conf['select.']['pidInList.'])
-            ? trim($this->cObj->stdWrap($conf['select.']['pidInList'], $conf['select.']['pidInList.']))
-            : trim($conf['select.']['pidInList']);
-        $contentIds = [];
-        if ($pids) {
-            $pageIds = GeneralUtility::trimExplode(',', $pids);
-            foreach ($pageIds as $pageId) {
-                $page = $this->frontendController->sys_page->checkRecord('pages', $pageId);
-                if (isset($page, $page['tx_templavoila_flex'])) {
-                    $flex = [];
-                    $this->cObj->readFlexformIntoConf($page['tx_templavoila_flex'], $flex);
-                    $contentIds = array_merge($contentIds, GeneralUtility::trimExplode(',', $flex[$ceField]));
-                }
-            }
-        } else {
-            $flex = [];
-            $this->cObj->readFlexformIntoConf($this->frontendController->page['tx_templavoila_flex'], $flex);
-            $contentIds = array_merge($contentIds, GeneralUtility::trimExplode(',', $flex[$ceField]));
-        }
-
-        if (count($contentIds) > 0) {
-            $conf['source'] = implode(',', $contentIds);
-            $conf['tables'] = 'tt_content';
-            $conf['conf.'] = [
-                'tt_content' => $conf['renderObj'],
-                'tt_content.' => $conf['renderObj.'],
-            ];
-            $conf['dontCheckPid'] = 1;
-            unset($conf['renderObj']);
-            unset($conf['renderObj.']);
-        }
-
-        // tiny trink to include the section index element itself too
-        $this->frontendController->recordRegister[$this->frontendController->currentRecord] = -1;
-        $renderedIndex = $this->cObj->cObjGetSingle('RECORDS', $conf);
-
-        $wrap = isset($conf['wrap.'])
-            ? $this->cObj->stdWrap($conf['wrap'], $conf['wrap.'])
-            : $conf['wrap'];
-        if ($wrap) {
-            $renderedIndex = $this->cObj->wrap($renderedIndex, $wrap);
-        }
-
-        return $renderedIndex;
     }
 
     /**
