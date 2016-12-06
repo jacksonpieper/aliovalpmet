@@ -24,7 +24,6 @@ use Schnitzler\Templavoila\Templavoila;
 use Schnitzler\Templavoila\Traits\BackendUser;
 use TYPO3\CMS\Core\Configuration\FlexForm\FlexFormTools;
 use TYPO3\CMS\Core\Database\DatabaseConnection;
-use TYPO3\CMS\Core\Html\HtmlParser;
 use TYPO3\CMS\Core\Log\Logger;
 use TYPO3\CMS\Core\Log\LogManager;
 use TYPO3\CMS\Core\TypoScript\Parser\TypoScriptParser;
@@ -1008,7 +1007,8 @@ class FrontendController extends AbstractPlugin
     /**
      * @return Logger
      */
-    protected static function getLogger() {
+    protected static function getLogger()
+    {
         return static::$logger;
     }
 }

@@ -22,7 +22,6 @@ use TYPO3\CMS\Core\Tests\UnitTestCase;
  */
 class TagBuilderHelperTest extends UnitTestCase
 {
-
     public function testGetCheckbox()
     {
         $tag = TagBuilderHelper::getCheckbox();

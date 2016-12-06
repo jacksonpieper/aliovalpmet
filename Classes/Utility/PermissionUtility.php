@@ -119,13 +119,13 @@ final class PermissionUtility
         );
 
         foreach ($pages as $page) {
-            if (!PermissionUtility::hasBasicEditRights('pages', $page)) {
+            if (!self::hasBasicEditRights('pages', $page)) {
                 continue;
             }
             $pid = (int)$page['uid'];
             $rootline = $pageRepository->getRootLine($pid);
 
-            $label = implode(' / ' , array_map(function($page) {
+            $label = implode(' / ', array_map(function ($page) {
                 return $page['title'];
             }, array_reverse($rootline)));
 

@@ -996,7 +996,8 @@ class ElementController extends AbstractModuleController implements Configurable
     /**
      * @return string
      */
-    private function getSessionKey() {
+    private function getSessionKey()
+    {
         return static::getModuleName() . '_mappingInfo:' . $this->templateObjectUid;
     }
 }

@@ -18,7 +18,6 @@ namespace Schnitzler\Templavoila\Domain\Model;
 use Schnitzler\Templavoila\Traits\BackendUser;
 use Schnitzler\Templavoila\Utility\PermissionUtility;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Class to provide unique access to datastructure
