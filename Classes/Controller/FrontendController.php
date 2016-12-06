@@ -533,12 +533,12 @@ class FrontendController extends AbstractPlugin
 
             // Visual identification aids:
 
-            $feedit = is_object(static::getBackendUser()) && method_exists(static::getBackendUser(), 'isFrontendEditingActive') && static::getBackendUser()->isFrontendEditingActive();
-
-            if ($this->frontendController->fePreview && $this->frontendController->beUserLogin && !$this->frontendController->workspacePreview && !$this->conf['disableExplosivePreview'] && !$feedit) {
-                throw new \RuntimeException('Further execution of code leads to PHP errors.', 1404750505);
-                $content = $this->visualID($content, $srcPointer, $DSrec, $TOrec, $row, $table);
-            }
+            //$feedit = is_object(static::getBackendUser()) && method_exists(static::getBackendUser(), 'isFrontendEditingActive') && static::getBackendUser()->isFrontendEditingActive();
+            //
+            //if ($this->frontendController->fePreview && $this->frontendController->beUserLogin && !$this->frontendController->workspacePreview && !$this->conf['disableExplosivePreview'] && !$feedit) {
+            //    throw new \RuntimeException('Further execution of code leads to PHP errors.', 1404750505);
+            //    $content = $this->visualID($content, $srcPointer, $DSrec, $TOrec, $row, $table);
+            //}
         } catch (ObjectNotFoundException $e) {
             $content = $this->formatError($e->getMessage());
         } catch (SerializationException $e) {
