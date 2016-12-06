@@ -146,7 +146,7 @@ class FrontendController extends AbstractPlugin
         $values = [];
         foreach ($data as $k => $v) {
             // Make correct language identifiers here!
-            if ($GLOBALS['TSFE']->sys_language_isocode) {
+            if ($this->frontendController->sys_language_isocode) {
                 try {
                     $dsObj = $dsRepo->getDatastructureByUidOrFilename($data['tx_templavoila_ds']);
                     $DS = $dsObj->getDataprotArray();
@@ -156,8 +156,8 @@ class FrontendController extends AbstractPlugin
                 if (is_array($DS)) {
                     $langChildren = $DS['meta']['langChildren'] ? 1 : 0;
                     $langDisabled = $DS['meta']['langDisable'] ? 1 : 0;
-                    $lKey = (!$langDisabled && !$langChildren) ? 'l' . $GLOBALS['TSFE']->sys_language_isocode : 'lDEF';
-                    $vKey = (!$langDisabled && $langChildren) ? 'v' . $GLOBALS['TSFE']->sys_language_isocode : 'vDEF';
+                    $lKey = (!$langDisabled && !$langChildren) ? 'l' . $this->frontendController->sys_language_isocode : 'lDEF';
+                    $vKey = (!$langDisabled && $langChildren) ? 'v' . $this->frontendController->sys_language_isocode : 'vDEF';
                 } else {
                     return $this->formatError('
                         Couldn\'t find a Data Structure set with uid/file=' . $conf['ds'] . '
@@ -188,11 +188,11 @@ class FrontendController extends AbstractPlugin
         $this->initVars($conf);
 
         // Current page record which we MIGHT manipulate a little:
-        $pageRecord = $GLOBALS['TSFE']->page;
+        $pageRecord = $this->frontendController->page;
 
         // Find DS and Template in root line IF there is no Data Structure set for the current page:
         if (!$pageRecord['tx_templavoila_ds']) {
-            foreach ($GLOBALS['TSFE']->tmpl->rootLine as $pRec) {
+            foreach ($this->frontendController->tmpl->rootLine as $pRec) {
                 if ($pageRecord['uid'] != $pRec['uid']) {
                     if ($pRec['tx_templavoila_next_ds']) { // If there is a next-level DS:
                         $pageRecord['tx_templavoila_ds'] = $pRec['tx_templavoila_next_ds'];
@@ -211,7 +211,7 @@ class FrontendController extends AbstractPlugin
         if ($pageRecord['content_from_pid']) {
             $ds = $pageRecord['tx_templavoila_ds'];
             $to = $pageRecord['tx_templavoila_to'];
-            $pageRecord = $GLOBALS['TSFE']->sys_page->getPage($pageRecord['content_from_pid']);
+            $pageRecord = $this->frontendController->sys_page->getPage($pageRecord['content_from_pid']);
             $pageRecord['tx_templavoila_ds'] = $ds;
             $pageRecord['tx_templavoila_to'] = $to;
         }
@@ -293,7 +293,7 @@ class FrontendController extends AbstractPlugin
             // Data from FlexForm field:
             $data = GeneralUtility::xml2array($row['tx_templavoila_flex']);
 
-            $lKey = ($GLOBALS['TSFE']->sys_language_isocode && !$langDisabled && !$langChildren) ? 'l' . $GLOBALS['TSFE']->sys_language_isocode : 'lDEF';
+            $lKey = ($this->frontendController->sys_language_isocode && !$langDisabled && !$langChildren) ? 'l' . $this->frontendController->sys_language_isocode : 'lDEF';
 
             /* Hook to modify language key - e.g. used for EXT:languagevisibility */
             foreach ($hooks as $hook) {
@@ -334,7 +334,7 @@ class FrontendController extends AbstractPlugin
             }
 
             // Get Template Object record:
-            $TOrec = $this->htmlMarkup->getTemplateRecord($row['tx_templavoila_to'], $renderType, $GLOBALS['TSFE']->sys_language_uid);
+            $TOrec = $this->htmlMarkup->getTemplateRecord($row['tx_templavoila_to'], $renderType, $this->frontendController->sys_language_uid);
             if (!is_array($TOrec)) {
                 throw new ObjectNotFoundException('
                     Couldn\'t find Template Object with UID "' . $row['tx_templavoila_to'] . '".
@@ -366,7 +366,7 @@ class FrontendController extends AbstractPlugin
             if ($GLOBALS['TT']->LR) {
                 $GLOBALS['TT']->push('Processing data');
             }
-            $vKey = ($GLOBALS['TSFE']->sys_language_isocode && !$langDisabled && $langChildren) ? 'v' . $GLOBALS['TSFE']->sys_language_isocode : 'vDEF';
+            $vKey = ($this->frontendController->sys_language_isocode && !$langDisabled && $langChildren) ? 'v' . $this->frontendController->sys_language_isocode : 'vDEF';
 
             /* Hook to modify value key - e.g. used for EXT:languagevisibility */
             foreach ($hooks as $hook) {
@@ -423,7 +423,7 @@ class FrontendController extends AbstractPlugin
 
             $feedit = is_object(static::getBackendUser()) && method_exists(static::getBackendUser(), 'isFrontendEditingActive') && static::getBackendUser()->isFrontendEditingActive();
 
-            if ($GLOBALS['TSFE']->fePreview && $GLOBALS['TSFE']->beUserLogin && !$GLOBALS['TSFE']->workspacePreview && !$this->conf['disableExplosivePreview'] && !$feedit) {
+            if ($this->frontendController->fePreview && $this->frontendController->beUserLogin && !$this->frontendController->workspacePreview && !$this->conf['disableExplosivePreview'] && !$feedit) {
                 throw new \RuntimeException('Further execution of code leads to PHP errors.', 1404750505);
                 $content = $this->visualID($content, $srcPointer, $DSrec, $TOrec, $row, $table);
             }
@@ -490,14 +490,14 @@ class FrontendController extends AbstractPlugin
                 $checksum = md5(serialize($tArray));
 
                 $sameParent = false;
-                if (isset($GLOBALS['TSFE']->register['tx_templavoila_pi1.parentRec.__SERIAL'])) {
-                    $sameParent = ($checksum === $GLOBALS['TSFE']->register['tx_templavoila_pi1.parentRec.__SERIAL']);
+                if (isset($this->frontendController->register['tx_templavoila_pi1.parentRec.__SERIAL'])) {
+                    $sameParent = ($checksum === $this->frontendController->register['tx_templavoila_pi1.parentRec.__SERIAL']);
                 }
 
                 if (!$sameParent) {
                     // Step 1: save previous parent records from registers. This happens when pi1 is called for FCEs on a page.
                     $unsetKeys = [];
-                    foreach ($GLOBALS['TSFE']->register as $dkey => $dvalue) {
+                    foreach ($this->frontendController->register as $dkey => $dvalue) {
                         if (preg_match('/^tx_templavoila_pi1\.parentRec\./', $dkey)) {
                             $savedParentInfo[$dkey] = $dvalue;
                             $unsetKeys[] = $dkey;
@@ -509,7 +509,7 @@ class FrontendController extends AbstractPlugin
 
                     // Step 2: unset previous parent info
                     foreach ($unsetKeys as $dkey) {
-                        unset($GLOBALS['TSFE']->register[$dkey]);
+                        unset($this->frontendController->register[$dkey]);
                     }
                     unset($unsetKeys); // free memory
 
@@ -517,11 +517,11 @@ class FrontendController extends AbstractPlugin
                     $registerKeys = [];
                     foreach ($this->cObj->data as $dkey => $dvalue) {
                         $registerKeys[] = $tkey = 'tx_templavoila_pi1.parentRec.' . $dkey;
-                        $GLOBALS['TSFE']->register[$tkey] = $dvalue;
+                        $this->frontendController->register[$tkey] = $dvalue;
                     }
 
                     // Step 4: update checksum
-                    $GLOBALS['TSFE']->register['tx_templavoila_pi1.parentRec.__SERIAL'] = $checksum;
+                    $this->frontendController->register['tx_templavoila_pi1.parentRec.__SERIAL'] = $checksum;
                     $registerKeys[] = 'tx_templavoila_pi1.parentRec.__SERIAL';
                 }
             }
@@ -530,11 +530,11 @@ class FrontendController extends AbstractPlugin
             foreach ($DSelements as $key => $dsConf) {
                 // Store key of DS element and the parents being handled in global register
                 if (isset($savedParentInfo['nested_fields'])) {
-                    $GLOBALS['TSFE']->register['tx_templavoila_pi1.nested_fields'] = $savedParentInfo['nested_fields'] . ',' . $key;
+                    $this->frontendController->register['tx_templavoila_pi1.nested_fields'] = $savedParentInfo['nested_fields'] . ',' . $key;
                 } else {
-                    $GLOBALS['TSFE']->register['tx_templavoila_pi1.nested_fields'] = $key;
+                    $this->frontendController->register['tx_templavoila_pi1.nested_fields'] = $key;
                 }
-                $GLOBALS['TSFE']->register['tx_templavoila_pi1.current_field'] = $key;
+                $this->frontendController->register['tx_templavoila_pi1.current_field'] = $key;
 
                 // Array/Section:
                 if ($DSelements[$key]['type'] === 'array') {
@@ -551,10 +551,10 @@ class FrontendController extends AbstractPlugin
                         if ($DSelements[$key]['section'] && is_array($dataValues[$key]['el'])) {
                             $registerCounter = 1;
                             foreach ($dataValues[$key]['el'] as $ik => $el) {
-                                $GLOBALS['TSFE']->register['tx_templavoila_pi1.sectionPos'] = $registerCounter;
-                                $GLOBALS['TSFE']->register['tx_templavoila_pi1.sectionCount'] = count($dataValues[$key]['el']);
-                                $GLOBALS['TSFE']->register['tx_templavoila_pi1.sectionIsFirstItem'] = ($registerCounter == 1);
-                                $GLOBALS['TSFE']->register['tx_templavoila_pi1.sectionIsLastItem'] = count($dataValues[$key]['el']) == $registerCounter;
+                                $this->frontendController->register['tx_templavoila_pi1.sectionPos'] = $registerCounter;
+                                $this->frontendController->register['tx_templavoila_pi1.sectionCount'] = count($dataValues[$key]['el']);
+                                $this->frontendController->register['tx_templavoila_pi1.sectionIsFirstItem'] = ($registerCounter == 1);
+                                $this->frontendController->register['tx_templavoila_pi1.sectionIsLastItem'] = count($dataValues[$key]['el']) == $registerCounter;
                                 $registerCounter++;
                                 if (is_array($el)) {
                                     $theKey = key($el);
@@ -598,7 +598,7 @@ class FrontendController extends AbstractPlugin
                     if ($DSelements[$key]['TCEforms']['config']['type'] === 'select'
                         && strpos($dataValues[$key][$valueKey], 'LLL:') === 0
                     ) {
-                        $tempLangVal = $GLOBALS['TSFE']->sL($dataValues[$key][$valueKey]);
+                        $tempLangVal = $this->frontendController->sL($dataValues[$key][$valueKey]);
                         if ($tempLangVal != '') {
                             $dataValues[$key][$valueKey] = $tempLangVal;
                         }
@@ -618,15 +618,15 @@ class FrontendController extends AbstractPlugin
                                         $objPath = substr(trim($value), 2, -1);
 
                                         // If no value for this object path reference was found, get value:
-                                        if (!isset($GLOBALS['TSFE']->applicationData['tx_templavoila']['TO_constantCache'][$objPath])) {
+                                        if (!isset($this->frontendController->applicationData['tx_templavoila']['TO_constantCache'][$objPath])) {
                                             // Get value from object path:
                                             $cF = GeneralUtility::makeInstance(TypoScriptParser::class);
-                                            list($objPathValue) = $cF->getVal($objPath, $GLOBALS['TSFE']->tmpl->setup);
+                                            list($objPathValue) = $cF->getVal($objPath, $this->frontendController->tmpl->setup);
                                             // Set value in cache table:
-                                            $GLOBALS['TSFE']->applicationData['tx_templavoila']['TO_constantCache'][$objPath] .= '' . $objPathValue;
+                                            $this->frontendController->applicationData['tx_templavoila']['TO_constantCache'][$objPath] .= '' . $objPathValue;
                                         }
                                         // Setting value to the value of the TypoScript Setup object path referred to:
-                                        $value = $GLOBALS['TSFE']->applicationData['tx_templavoila']['TO_constantCache'][$objPath];
+                                        $value = $this->frontendController->applicationData['tx_templavoila']['TO_constantCache'][$objPath];
                                     }
 
                                     // Substitute constant:
@@ -645,8 +645,8 @@ class FrontendController extends AbstractPlugin
                             }
 
                             // Copy current global TypoScript configuration except numerical objects:
-                            if (is_array($GLOBALS['TSFE']->tmpl->setup)) {
-                                foreach ($GLOBALS['TSFE']->tmpl->setup as $tsObjectKey => $tsObjectValue) {
+                            if (is_array($this->frontendController->tmpl->setup)) {
+                                foreach ($this->frontendController->tmpl->setup as $tsObjectKey => $tsObjectValue) {
                                     if ($tsObjectKey !== (int)$tsObjectKey) {
                                         $tsparserObj->setup[$tsObjectKey] = $tsObjectValue;
                                     }
@@ -657,7 +657,7 @@ class FrontendController extends AbstractPlugin
                             $dataValues[$key][$valueKey] = $cObj->cObjGet($tsparserObj->setup, 'TemplaVoila_Proc.');
                         }
                         if (trim($LP[$key]['TypoScriptObjPath'])) {
-                            list($name, $conf) = $tsparserObj->getVal(trim($LP[$key]['TypoScriptObjPath']), $GLOBALS['TSFE']->tmpl->setup);
+                            list($name, $conf) = $tsparserObj->getVal(trim($LP[$key]['TypoScriptObjPath']), $this->frontendController->tmpl->setup);
                             $dataValues[$key][$valueKey] = $cObj->cObjGetSingle($name, $conf, 'TemplaVoila_ProcObjPath--' . str_replace('.', '*', $LP[$key]['TypoScriptObjPath']) . '.');
                         }
                     }
@@ -684,12 +684,12 @@ class FrontendController extends AbstractPlugin
 
             // Unset curent parent record info
             foreach ($registerKeys as $dkey) {
-                unset($GLOBALS['TSFE']->register[$dkey]);
+                unset($this->frontendController->register[$dkey]);
             }
 
             // Restore previous parent record info if necessary
             foreach ($savedParentInfo as $dkey => $dvalue) {
-                $GLOBALS['TSFE']->register[$dkey] = $dvalue;
+                $this->frontendController->register[$dkey] = $dvalue;
             }
         }
     }
@@ -768,7 +768,7 @@ class FrontendController extends AbstractPlugin
     {
 
         // Set no-cache since the error message shouldn't be cached of course...
-        $GLOBALS['TSFE']->set_no_cache();
+        $this->frontendController->set_no_cache();
 
         if ((int)$this->conf['disableErrorMessages']) {
             return '';
@@ -914,7 +914,7 @@ class FrontendController extends AbstractPlugin
         if ($pids) {
             $pageIds = GeneralUtility::trimExplode(',', $pids);
             foreach ($pageIds as $pageId) {
-                $page = $GLOBALS['TSFE']->sys_page->checkRecord('pages', $pageId);
+                $page = $this->frontendController->sys_page->checkRecord('pages', $pageId);
                 if (isset($page, $page['tx_templavoila_flex'])) {
                     $flex = [];
                     $this->cObj->readFlexformIntoConf($page['tx_templavoila_flex'], $flex);
@@ -923,7 +923,7 @@ class FrontendController extends AbstractPlugin
             }
         } else {
             $flex = [];
-            $this->cObj->readFlexformIntoConf($GLOBALS['TSFE']->page['tx_templavoila_flex'], $flex);
+            $this->cObj->readFlexformIntoConf($this->frontendController->page['tx_templavoila_flex'], $flex);
             $contentIds = array_merge($contentIds, GeneralUtility::trimExplode(',', $flex[$ceField]));
         }
 
@@ -940,7 +940,7 @@ class FrontendController extends AbstractPlugin
         }
 
         // tiny trink to include the section index element itself too
-        $GLOBALS['TSFE']->recordRegister[$GLOBALS['TSFE']->currentRecord] = -1;
+        $this->frontendController->recordRegister[$this->frontendController->currentRecord] = -1;
         $renderedIndex = $this->cObj->cObjGetSingle('RECORDS', $conf);
 
         $wrap = isset($conf['wrap.'])
