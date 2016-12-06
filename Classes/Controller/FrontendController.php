@@ -323,8 +323,18 @@ class FrontendController extends AbstractPlugin
 
         // Hook: renderElement_preProcessRow
         foreach ($hooks as $hook) {
-            if (method_exists($hook, 'renderElement_preProcessRow')) {
-                $hook->renderElement_preProcessRow($row, $table, $this);
+            if (is_callable([$hook, 'renderElement_preProcessRow'])) {
+                try {
+                    $hook->renderElement_preProcessRow($row, $table, $this);
+                } catch (\Exception $e) {
+                    static::getLogger()->error(
+                        sprintf('Caught exception during processing hook "%s::renderElement_preProcessRow"', get_class($hook)),
+                        [
+                            'message' => $e->getMessage(),
+                            'code' => $e->getCode()
+                        ]
+                    );
+                }
             }
         }
 
@@ -366,9 +376,20 @@ class FrontendController extends AbstractPlugin
             $lKey = ($this->frontendController->sys_language_isocode && !$langDisabled && !$langChildren) ? 'l' . $this->frontendController->sys_language_isocode : 'lDEF';
 
             /* Hook to modify language key - e.g. used for EXT:languagevisibility */
+
             foreach ($hooks as $hook) {
-                if (method_exists($hook, 'renderElement_preProcessLanguageKey')) {
-                    $lKey = $hook->renderElement_preProcessLanguageKey($row, $table, $lKey, $langDisabled, $langChildren, $this);
+                if (is_callable([$hook, 'renderElement_preProcessLanguageKey'])) {
+                    try {
+                        $lKey = $hook->renderElement_preProcessLanguageKey($row, $table, $lKey, $langDisabled, $langChildren, $this);
+                    } catch (\Exception $e) {
+                        static::getLogger()->error(
+                            sprintf('Caught exception during processing hook "%s::renderElement_preProcessLanguageKey"', get_class($hook)),
+                            [
+                                'message' => $e->getMessage(),
+                                'code' => $e->getCode()
+                            ]
+                        );
+                    }
                 }
             }
 
@@ -440,8 +461,18 @@ class FrontendController extends AbstractPlugin
 
             /* Hook to modify value key - e.g. used for EXT:languagevisibility */
             foreach ($hooks as $hook) {
-                if (method_exists($hook, 'renderElement_preProcessValueKey')) {
-                    $vKey = $hook->renderElement_preProcessValueKey($row, $table, $vKey, $langDisabled, $langChildren, $this);
+                if (is_callable([$hook, 'renderElement_preProcessValueKey'])) {
+                    try {
+                        $vKey = $hook->renderElement_preProcessValueKey($row, $table, $vKey, $langDisabled, $langChildren, $this);
+                    } catch (\Exception $e) {
+                        static::getLogger()->error(
+                            sprintf('Caught exception during processing hook "%s::renderElement_preProcessValueKey"', get_class($hook)),
+                            [
+                                'message' => $e->getMessage(),
+                                'code' => $e->getCode()
+                            ]
+                        );
+                    }
                 }
             }
 
@@ -451,16 +482,26 @@ class FrontendController extends AbstractPlugin
             $this->processDataValues($dataValues, $dataStructureSheet['ROOT']['el'], $TOlocalProc, $vKey, ($this->conf['renderUnmapped'] !== 'false' ? true : $TO['MappingInfo']['ROOT']['el']));
 
             // Hook: renderElement_postProcessDataValues
+            $flexformData = [
+                'table' => $table,
+                'row' => $row,
+                'sheet' => $renderSheet,
+                'sLang' => $lKey,
+                'vLang' => $vKey
+            ];
             foreach ($hooks as $hook) {
-                if (method_exists($hook, 'renderElement_postProcessDataValues')) {
-                    $flexformData = [
-                        'table' => $table,
-                        'row' => $row,
-                        'sheet' => $renderSheet,
-                        'sLang' => $lKey,
-                        'vLang' => $vKey
-                    ];
-                    $hook->renderElement_postProcessDataValues($dataStructure, $dataValues, $originalDataValues, $flexformData);
+                if (is_callable([$hook, 'renderElement_postProcessDataValues'])) {
+                    try {
+                        $hook->renderElement_postProcessDataValues($dataStructure, $dataValues, $originalDataValues, $flexformData);
+                    } catch (\Exception $e) {
+                        static::getLogger()->error(
+                            sprintf('Caught exception during processing hook "%s::renderElement_postProcessDataValues"', get_class($hook)),
+                            [
+                                'message' => $e->getMessage(),
+                                'code' => $e->getCode()
+                            ]
+                        );
+                    }
                 }
             }
 
