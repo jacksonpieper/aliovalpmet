@@ -461,16 +461,30 @@ class TemplateObjectController extends AbstractModuleController implements Linka
         }
 
         $checkboxElement = $request->getParsedBody()['checkboxElement'];
-        $addBodyTag = (bool)$request->getParsedBody()['addBodyTag'];
-        $inputData = $request->getParsedBody()['dataMappingForm'];
+        $addBodyTag = $request->getParsedBody()['addBodyTag'];
+
+        $inputData = [];
+        $inputDataGet = (array)$request->getQueryParams()['dataMappingForm'];
+        $inputDataPost = (array)$request->getParsedBody()['dataMappingForm'];
+
+        ArrayUtility::mergeRecursiveWithOverrule($inputData, $inputDataGet);
+        ArrayUtility::mergeRecursiveWithOverrule($inputData, $inputDataPost);
 
         $sessionKey = static::getModuleName() . '_validatorInfo:' . $templateObjectRecord['uid'];
         $sessionData = static::getBackendUser()->getSessionData($sessionKey);
 
-        $sessionData['currentMappingInfo_head'] = $currentMappingInfo_head = [
-            'headElementPaths' => $checkboxElement,
-            'addBodyTag' => $addBodyTag ? 1 : 0
-        ];
+        if (is_array($checkboxElement)) {
+            if (count($checkboxElement) > 1) {
+                array_pop($checkboxElement);
+                $sessionData['currentMappingInfo_head']['headElementPaths'] = $checkboxElement;
+            } else {
+                $sessionData['currentMappingInfo_head']['headElementPaths'] = [];
+            }
+        }
+
+        if ($addBodyTag !== null) {
+            $sessionData['currentMappingInfo_head']['addBodyTag'] = (int)$addBodyTag;
+        }
 
         if (is_array($inputData)) {
             $currentMappingInfo = is_array($sessionData['currentMappingInfo']) ? $sessionData['currentMappingInfo'] : [];
