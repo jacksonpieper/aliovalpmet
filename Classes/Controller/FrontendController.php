@@ -90,7 +90,7 @@ class FrontendController extends AbstractPlugin
      *
      * @param array $conf TypoScript options
      */
-    public function initVars($conf)
+    public function initVars(array $conf)
     {
         $this->inheritValueFromDefault = $conf['dontInheritValueFromDefault'] ? 0 : 1;
         // naming choosen to fit the regular TYPO3 integrators needs ;)
@@ -106,7 +106,7 @@ class FrontendController extends AbstractPlugin
      *
      * @return string HTML content for the Flexible Content elements.
      */
-    public function main($content, $conf)
+    public function main($content, array $conf)
     {
         $this->initVars($conf);
 
@@ -154,7 +154,7 @@ class FrontendController extends AbstractPlugin
      * @todo Create TS element with this functionality?
      * @todo Support sheet selector?
      */
-    public function renderRecord($content, $conf)
+    public function renderRecord($content, array $conf)
     {
         $this->initVars($conf);
 
@@ -209,7 +209,7 @@ class FrontendController extends AbstractPlugin
      *
      * @return string HTML content for the Page Template elements.
      */
-    public function renderPage($content, $conf)
+    public function renderPage($content, array $conf)
     {
         $this->initVars($conf);
 
@@ -219,7 +219,7 @@ class FrontendController extends AbstractPlugin
         // Find DS and Template in root line IF there is no Data Structure set for the current page:
         if (!$pageRecord['tx_templavoila_ds']) {
             foreach ($this->frontendController->tmpl->rootLine as $pRec) {
-                if ($pageRecord['uid'] != $pRec['uid']) {
+                if ($pageRecord['uid'] !== $pRec['uid']) {
                     if ($pRec['tx_templavoila_next_ds']) { // If there is a next-level DS:
                         $pageRecord['tx_templavoila_ds'] = $pRec['tx_templavoila_next_ds'];
                         $pageRecord['tx_templavoila_to'] = $pRec['tx_templavoila_next_to'];
@@ -253,7 +253,7 @@ class FrontendController extends AbstractPlugin
      *
      * @return string rendered section index
      */
-    public function renderSectionIndex($content, $conf)
+    public function renderSectionIndex($content, array $conf)
     {
         $ceField = $this->cObj->stdWrap($conf['indexField'], $conf['indexField.']);
         $pids = isset($conf['select.']['pidInList.'])
@@ -264,7 +264,8 @@ class FrontendController extends AbstractPlugin
             $pageIds = GeneralUtility::trimExplode(',', $pids);
             foreach ($pageIds as $pageId) {
                 $page = $this->frontendController->sys_page->checkRecord('pages', $pageId);
-                if (isset($page, $page['tx_templavoila_flex'])) {
+                /** @var array $page */
+                if (is_array($page) && isset($page['tx_templavoila_flex'])) {
                     $flex = [];
                     $this->cObj->readFlexformIntoConf($page['tx_templavoila_flex'], $flex);
                     $contentIds = array_merge($contentIds, GeneralUtility::trimExplode(',', $flex[$ceField]));
@@ -311,7 +312,7 @@ class FrontendController extends AbstractPlugin
      *
      * @return string HTML output.
      */
-    protected function renderElement($row, $table)
+    protected function renderElement(array $row, $table)
     {
         // First prepare user defined objects (if any) for hooks which extend this function:
         $hooks = [];
@@ -563,7 +564,7 @@ class FrontendController extends AbstractPlugin
      * @param string $valueKey Value key
      * @param mixed $mappingInfo Mapping information
      */
-    protected function processDataValues(&$dataValues, $DSelements, $TOelements, $valueKey = 'vDEF', $mappingInfo = true)
+    protected function processDataValues(array &$dataValues, array $DSelements, $TOelements, $valueKey = 'vDEF', $mappingInfo = true)
     {
         if (is_array($DSelements) && is_array($dataValues)) {
 
@@ -664,8 +665,8 @@ class FrontendController extends AbstractPlugin
                             foreach ($dataValues[$key]['el'] as $ik => $el) {
                                 $this->frontendController->register['tx_templavoila_pi1.sectionPos'] = $registerCounter;
                                 $this->frontendController->register['tx_templavoila_pi1.sectionCount'] = count($dataValues[$key]['el']);
-                                $this->frontendController->register['tx_templavoila_pi1.sectionIsFirstItem'] = ($registerCounter == 1);
-                                $this->frontendController->register['tx_templavoila_pi1.sectionIsLastItem'] = count($dataValues[$key]['el']) == $registerCounter;
+                                $this->frontendController->register['tx_templavoila_pi1.sectionIsFirstItem'] = ($registerCounter === 1);
+                                $this->frontendController->register['tx_templavoila_pi1.sectionIsLastItem'] = count($dataValues[$key]['el']) === $registerCounter;
                                 $registerCounter++;
                                 if (is_array($el)) {
                                     $theKey = key($el);
@@ -710,7 +711,7 @@ class FrontendController extends AbstractPlugin
                         && strpos($dataValues[$key][$valueKey], 'LLL:') === 0
                     ) {
                         $tempLangVal = $this->frontendController->sL($dataValues[$key][$valueKey]);
-                        if ($tempLangVal != '') {
+                        if ($tempLangVal !== '') {
                             $dataValues[$key][$valueKey] = $tempLangVal;
                         }
                         unset($tempLangVal);
@@ -815,7 +816,7 @@ class FrontendController extends AbstractPlugin
      *
      * @return string|array The value
      */
-    protected function inheritValue($dV, $valueKey, $overlayMode = '')
+    protected function inheritValue(array $dV, $valueKey, $overlayMode = '')
     {
         $returnValue = '';
 
