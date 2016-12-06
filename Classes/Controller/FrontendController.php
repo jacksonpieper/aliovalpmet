@@ -566,243 +566,240 @@ class FrontendController extends AbstractPlugin
      */
     protected function processDataValues(array &$dataValues, array $DSelements, $TOelements, $valueKey = 'vDEF', $mappingInfo = true)
     {
-        if (is_array($DSelements) && is_array($dataValues)) {
-
-            // Create local processing information array:
-            $LP = [];
-            foreach ($DSelements as $key => $dsConf) {
-                if ($mappingInfo === true || array_key_exists($key, $mappingInfo)) {
-                    if ($DSelements[$key]['type'] !== 'array') { // For all non-arrays:
-                        // Set base configuration:
-                        $LP[$key] = $DSelements[$key]['tx_templavoila'];
-                        // Overlaying local processing:
-                        if (is_array($TOelements[$key]['tx_templavoila'])) {
-                            if (is_array($LP[$key])) {
-                                $LP[$key] = GeneralUtility::array_merge_recursive_overrule($LP[$key], $TOelements[$key]['tx_templavoila']);
-                            } else {
-                                $LP[$key] = $TOelements[$key]['tx_templavoila'];
-                            }
-                        }
-                    }
-                }
-            }
-
-            // Prepare a fake data record for cObj (important to do now before processing takes place):
-            $dataRecord = [];
-            foreach ($dataValues as $key => $values) {
-                $dataRecord[$key] = $this->inheritValue($dataValues[$key], $valueKey, $LP[$key]['langOverlayMode']);
-            }
-
-            // Check if information about parent record should be set. Note: we do not push/pop registers here because it may break LOAD_REGISTER/RESTORE_REGISTER data transfer between FCEs!
-            $savedParentInfo = [];
-            $registerKeys = [];
-            if (is_array($this->cObj->data)) {
-                $tArray = $this->cObj->data;
-                ksort($tArray);
-                $checksum = md5(serialize($tArray));
-
-                $sameParent = false;
-                if (isset($this->frontendController->register['tx_templavoila_pi1.parentRec.__SERIAL'])) {
-                    $sameParent = ($checksum === $this->frontendController->register['tx_templavoila_pi1.parentRec.__SERIAL']);
-                }
-
-                if (!$sameParent) {
-                    // Step 1: save previous parent records from registers. This happens when pi1 is called for FCEs on a page.
-                    $unsetKeys = [];
-                    foreach ($this->frontendController->register as $dkey => $dvalue) {
-                        if (preg_match('/^tx_templavoila_pi1\.parentRec\./', $dkey)) {
-                            $savedParentInfo[$dkey] = $dvalue;
-                            $unsetKeys[] = $dkey;
-                        }
-                        if (preg_match('/^tx_templavoila_pi1\.(nested_fields|current_field)/', $dkey)) {
-                            $savedParentInfo[$dkey] = $dvalue;
-                        }
-                    }
-
-                    // Step 2: unset previous parent info
-                    foreach ($unsetKeys as $dkey) {
-                        unset($this->frontendController->register[$dkey]);
-                    }
-                    unset($unsetKeys); // free memory
-
-                    // Step 3: set new parent record to register
-                    $registerKeys = [];
-                    foreach ($this->cObj->data as $dkey => $dvalue) {
-                        $registerKeys[] = $tkey = 'tx_templavoila_pi1.parentRec.' . $dkey;
-                        $this->frontendController->register[$tkey] = $dvalue;
-                    }
-
-                    // Step 4: update checksum
-                    $this->frontendController->register['tx_templavoila_pi1.parentRec.__SERIAL'] = $checksum;
-                    $registerKeys[] = 'tx_templavoila_pi1.parentRec.__SERIAL';
-                }
-            }
-
-            // For each DS element:
-            foreach ($DSelements as $key => $dsConf) {
-                // Store key of DS element and the parents being handled in global register
-                if (isset($savedParentInfo['nested_fields'])) {
-                    $this->frontendController->register['tx_templavoila_pi1.nested_fields'] = $savedParentInfo['nested_fields'] . ',' . $key;
-                } else {
-                    $this->frontendController->register['tx_templavoila_pi1.nested_fields'] = $key;
-                }
-                $this->frontendController->register['tx_templavoila_pi1.current_field'] = $key;
-
-                // Array/Section:
-                if ($DSelements[$key]['type'] === 'array') {
-                    /* no DS-childs: bail out
-                     * no EL-childs: progress (they may all be TypoScript elements without visual representation)
-                     */
-                    if (is_array($DSelements[$key]['el']) /* &&
-                        is_array($TOelements[$key]['el'])*/
-                    ) {
-                        if (!isset($dataValues[$key]['el'])) {
-                            $dataValues[$key]['el'] = [];
-                        }
-
-                        if ($DSelements[$key]['section'] && is_array($dataValues[$key]['el'])) {
-                            $registerCounter = 1;
-                            foreach ($dataValues[$key]['el'] as $ik => $el) {
-                                $this->frontendController->register['tx_templavoila_pi1.sectionPos'] = $registerCounter;
-                                $this->frontendController->register['tx_templavoila_pi1.sectionCount'] = count($dataValues[$key]['el']);
-                                $this->frontendController->register['tx_templavoila_pi1.sectionIsFirstItem'] = ($registerCounter === 1);
-                                $this->frontendController->register['tx_templavoila_pi1.sectionIsLastItem'] = count($dataValues[$key]['el']) === $registerCounter;
-                                $registerCounter++;
-                                if (is_array($el)) {
-                                    $theKey = key($el);
-                                    if (is_array($dataValues[$key]['el'][$ik][$theKey]['el'])) {
-                                        $this->processDataValues($dataValues[$key]['el'][$ik][$theKey]['el'], $DSelements[$key]['el'][$theKey]['el'], $TOelements[$key]['el'][$theKey]['el'], $valueKey);
-
-                                        // If what was an array is returned as a non-array (eg. string "__REMOVE") then unset the whole thing:
-                                        if (!is_array($dataValues[$key]['el'][$ik][$theKey]['el'])) {
-                                            unset($dataValues[$key]['el'][$ik]);
-                                        }
-                                    }
-                                }
-                            }
+        // Create local processing information array:
+        $LP = [];
+        foreach ($DSelements as $key => $dsConf) {
+            if ($mappingInfo === true || array_key_exists($key, $mappingInfo)) {
+                if ($DSelements[$key]['type'] !== 'array') { // For all non-arrays:
+                    // Set base configuration:
+                    $LP[$key] = $DSelements[$key]['tx_templavoila'];
+                    // Overlaying local processing:
+                    if (is_array($TOelements[$key]['tx_templavoila'])) {
+                        if (is_array($LP[$key])) {
+                            $LP[$key] = GeneralUtility::array_merge_recursive_overrule($LP[$key], $TOelements[$key]['tx_templavoila']);
                         } else {
-                            $this->processDataValues($dataValues[$key]['el'], $DSelements[$key]['el'], $TOelements[$key]['el'], $valueKey);
-                        }
-                    }
-                } else {
-
-                    // Language inheritance:
-                    if ($valueKey !== 'vDEF') {
-                        $dataValues[$key][$valueKey] = $this->inheritValue($dataValues[$key], $valueKey, $LP[$key]['langOverlayMode']);
-
-                        // The value "__REMOVE" will trigger removal of the item!
-                        if (is_array($dataValues[$key][$valueKey]) && !strcmp($dataValues[$key][$valueKey]['ERROR'], '__REMOVE')) {
-                            $dataValues = '__REMOVE';
-
-                            return;
-                        }
-                    }
-
-                    $tsparserObj = GeneralUtility::makeInstance(TypoScriptParser::class);
-
-                    $cObj = GeneralUtility::makeInstance(ContentObjectRenderer::class);
-                    $cObj->setParent($this->cObj->data, $this->cObj->currentRecord);
-                    $cObj->start($dataRecord, '_NO_TABLE');
-
-                    $cObj->setCurrentVal($dataValues[$key][$valueKey]);
-
-                    // Render localized labels for 'select' elements:
-                    if ($DSelements[$key]['TCEforms']['config']['type'] === 'select'
-                        && strpos($dataValues[$key][$valueKey], 'LLL:') === 0
-                    ) {
-                        $tempLangVal = $this->frontendController->sL($dataValues[$key][$valueKey]);
-                        if ($tempLangVal !== '') {
-                            $dataValues[$key][$valueKey] = $tempLangVal;
-                        }
-                        unset($tempLangVal);
-                    }
-
-                    // TypoScript / TypoScriptObjPath:
-                    if (trim($LP[$key]['TypoScript']) || trim($LP[$key]['TypoScriptObjPath'])) {
-                        if (trim($LP[$key]['TypoScript'])) {
-
-                            // If constants were found locally/internally in DS/TO:
-                            if (is_array($LP[$key]['TypoScript_constants'])) {
-                                foreach ($LP[$key]['TypoScript_constants'] as $constant => $value) {
-
-                                    // First, see if the constant is itself a constant referring back to TypoScript Setup Object Tree:
-                                    if (strpos(trim($value), '{$') === 0 && substr(trim($value), -1) === '}') {
-                                        $objPath = substr(trim($value), 2, -1);
-
-                                        // If no value for this object path reference was found, get value:
-                                        if (!isset($this->frontendController->applicationData['tx_templavoila']['TO_constantCache'][$objPath])) {
-                                            // Get value from object path:
-                                            $cF = GeneralUtility::makeInstance(TypoScriptParser::class);
-                                            list($objPathValue) = $cF->getVal($objPath, $this->frontendController->tmpl->setup);
-                                            // Set value in cache table:
-                                            $this->frontendController->applicationData['tx_templavoila']['TO_constantCache'][$objPath] .= '' . $objPathValue;
-                                        }
-                                        // Setting value to the value of the TypoScript Setup object path referred to:
-                                        $value = $this->frontendController->applicationData['tx_templavoila']['TO_constantCache'][$objPath];
-                                    }
-
-                                    // Substitute constant:
-                                    $LP[$key]['TypoScript'] = str_replace('{$' . $constant . '}', $value, $LP[$key]['TypoScript']);
-                                }
-                            }
-
-                            // If constants were found in Plugin configuration, "plugins.tx_templavoila_pi1.TSconst":
-                            if (is_array($this->conf['TSconst.'])) {
-                                foreach ($this->conf['TSconst.'] as $constant => $value) {
-                                    if (!is_array($value)) {
-                                        // Substitute constant:
-                                        $LP[$key]['TypoScript'] = str_replace('{$TSconst.' . $constant . '}', $value, $LP[$key]['TypoScript']);
-                                    }
-                                }
-                            }
-
-                            // Copy current global TypoScript configuration except numerical objects:
-                            if (is_array($this->frontendController->tmpl->setup)) {
-                                foreach ($this->frontendController->tmpl->setup as $tsObjectKey => $tsObjectValue) {
-                                    if ($tsObjectKey !== (int)$tsObjectKey) {
-                                        $tsparserObj->setup[$tsObjectKey] = $tsObjectValue;
-                                    }
-                                }
-                            }
-
-                            $tsparserObj->parse($LP[$key]['TypoScript']);
-                            $dataValues[$key][$valueKey] = $cObj->cObjGet($tsparserObj->setup, 'TemplaVoila_Proc.');
-                        }
-                        if (trim($LP[$key]['TypoScriptObjPath'])) {
-                            list($name, $conf) = $tsparserObj->getVal(trim($LP[$key]['TypoScriptObjPath']), $this->frontendController->tmpl->setup);
-                            $dataValues[$key][$valueKey] = $cObj->cObjGetSingle($name, $conf, 'TemplaVoila_ProcObjPath--' . str_replace('.', '*', $LP[$key]['TypoScriptObjPath']) . '.');
-                        }
-                    }
-
-                    // Various local quick-processing options:
-                    $pOptions = $LP[$key]['proc'];
-                    if (is_array($pOptions)) {
-                        if ($pOptions['int']) {
-                            $dataValues[$key][$valueKey] = (int)$dataValues[$key][$valueKey];
-                        }
-                        // HSC of all values by default:
-                        if ($pOptions['HSC']) {
-                            $dataValues[$key][$valueKey] = htmlspecialchars($dataValues[$key][$valueKey]);
-                        }
-                        if (trim($pOptions['stdWrap'])) {
-                            $tsparserObj = GeneralUtility::makeInstance(TypoScriptParser::class);
-                            // BUG HERE: should convert array to TypoScript...
-                            $tsparserObj->parse($pOptions['stdWrap']);
-                            $dataValues[$key][$valueKey] = $cObj->stdWrap($dataValues[$key][$valueKey], $tsparserObj->setup);
+                            $LP[$key] = $TOelements[$key]['tx_templavoila'];
                         }
                     }
                 }
             }
+        }
 
-            // Unset curent parent record info
-            foreach ($registerKeys as $dkey) {
-                unset($this->frontendController->register[$dkey]);
+        // Prepare a fake data record for cObj (important to do now before processing takes place):
+        $dataRecord = [];
+        foreach ($dataValues as $key => $values) {
+            $dataRecord[$key] = $this->inheritValue($dataValues[$key], $valueKey, $LP[$key]['langOverlayMode']);
+        }
+
+        // Check if information about parent record should be set. Note: we do not push/pop registers here because it may break LOAD_REGISTER/RESTORE_REGISTER data transfer between FCEs!
+        $savedParentInfo = [];
+        $registerKeys = [];
+        if (is_array($this->cObj->data)) {
+            $tArray = $this->cObj->data;
+            ksort($tArray);
+            $checksum = md5(serialize($tArray));
+
+            $sameParent = false;
+            if (isset($this->frontendController->register['tx_templavoila_pi1.parentRec.__SERIAL'])) {
+                $sameParent = ($checksum === $this->frontendController->register['tx_templavoila_pi1.parentRec.__SERIAL']);
             }
 
-            // Restore previous parent record info if necessary
-            foreach ($savedParentInfo as $dkey => $dvalue) {
-                $this->frontendController->register[$dkey] = $dvalue;
+            if (!$sameParent) {
+                // Step 1: save previous parent records from registers. This happens when pi1 is called for FCEs on a page.
+                $unsetKeys = [];
+                foreach ($this->frontendController->register as $dkey => $dvalue) {
+                    if (preg_match('/^tx_templavoila_pi1\.parentRec\./', $dkey)) {
+                        $savedParentInfo[$dkey] = $dvalue;
+                        $unsetKeys[] = $dkey;
+                    }
+                    if (preg_match('/^tx_templavoila_pi1\.(nested_fields|current_field)/', $dkey)) {
+                        $savedParentInfo[$dkey] = $dvalue;
+                    }
+                }
+
+                // Step 2: unset previous parent info
+                foreach ($unsetKeys as $dkey) {
+                    unset($this->frontendController->register[$dkey]);
+                }
+                unset($unsetKeys); // free memory
+
+                // Step 3: set new parent record to register
+                $registerKeys = [];
+                foreach ($this->cObj->data as $dkey => $dvalue) {
+                    $registerKeys[] = $tkey = 'tx_templavoila_pi1.parentRec.' . $dkey;
+                    $this->frontendController->register[$tkey] = $dvalue;
+                }
+
+                // Step 4: update checksum
+                $this->frontendController->register['tx_templavoila_pi1.parentRec.__SERIAL'] = $checksum;
+                $registerKeys[] = 'tx_templavoila_pi1.parentRec.__SERIAL';
             }
+        }
+
+        // For each DS element:
+        foreach ($DSelements as $key => $dsConf) {
+            // Store key of DS element and the parents being handled in global register
+            if (isset($savedParentInfo['nested_fields'])) {
+                $this->frontendController->register['tx_templavoila_pi1.nested_fields'] = $savedParentInfo['nested_fields'] . ',' . $key;
+            } else {
+                $this->frontendController->register['tx_templavoila_pi1.nested_fields'] = $key;
+            }
+            $this->frontendController->register['tx_templavoila_pi1.current_field'] = $key;
+
+            // Array/Section:
+            if ($DSelements[$key]['type'] === 'array') {
+                /* no DS-childs: bail out
+                 * no EL-childs: progress (they may all be TypoScript elements without visual representation)
+                 */
+                if (is_array($DSelements[$key]['el']) /* &&
+                    is_array($TOelements[$key]['el'])*/
+                ) {
+                    if (!isset($dataValues[$key]['el'])) {
+                        $dataValues[$key]['el'] = [];
+                    }
+
+                    if ($DSelements[$key]['section'] && is_array($dataValues[$key]['el'])) {
+                        $registerCounter = 1;
+                        foreach ($dataValues[$key]['el'] as $ik => $el) {
+                            $this->frontendController->register['tx_templavoila_pi1.sectionPos'] = $registerCounter;
+                            $this->frontendController->register['tx_templavoila_pi1.sectionCount'] = count($dataValues[$key]['el']);
+                            $this->frontendController->register['tx_templavoila_pi1.sectionIsFirstItem'] = ($registerCounter === 1);
+                            $this->frontendController->register['tx_templavoila_pi1.sectionIsLastItem'] = count($dataValues[$key]['el']) === $registerCounter;
+                            $registerCounter++;
+                            if (is_array($el)) {
+                                $theKey = key($el);
+                                if (is_array($dataValues[$key]['el'][$ik][$theKey]['el'])) {
+                                    $this->processDataValues($dataValues[$key]['el'][$ik][$theKey]['el'], $DSelements[$key]['el'][$theKey]['el'], $TOelements[$key]['el'][$theKey]['el'], $valueKey);
+
+                                    // If what was an array is returned as a non-array (eg. string "__REMOVE") then unset the whole thing:
+                                    if (!is_array($dataValues[$key]['el'][$ik][$theKey]['el'])) {
+                                        unset($dataValues[$key]['el'][$ik]);
+                                    }
+                                }
+                            }
+                        }
+                    } else {
+                        $this->processDataValues($dataValues[$key]['el'], $DSelements[$key]['el'], $TOelements[$key]['el'], $valueKey);
+                    }
+                }
+            } else {
+
+                // Language inheritance:
+                if ($valueKey !== 'vDEF') {
+                    $dataValues[$key][$valueKey] = $this->inheritValue($dataValues[$key], $valueKey, $LP[$key]['langOverlayMode']);
+
+                    // The value "__REMOVE" will trigger removal of the item!
+                    if (is_array($dataValues[$key][$valueKey]) && !strcmp($dataValues[$key][$valueKey]['ERROR'], '__REMOVE')) {
+                        $dataValues = '__REMOVE';
+
+                        return;
+                    }
+                }
+
+                $tsparserObj = GeneralUtility::makeInstance(TypoScriptParser::class);
+
+                $cObj = GeneralUtility::makeInstance(ContentObjectRenderer::class);
+                $cObj->setParent($this->cObj->data, $this->cObj->currentRecord);
+                $cObj->start($dataRecord, '_NO_TABLE');
+
+                $cObj->setCurrentVal($dataValues[$key][$valueKey]);
+
+                // Render localized labels for 'select' elements:
+                if ($DSelements[$key]['TCEforms']['config']['type'] === 'select'
+                    && strpos($dataValues[$key][$valueKey], 'LLL:') === 0
+                ) {
+                    $tempLangVal = $this->frontendController->sL($dataValues[$key][$valueKey]);
+                    if ($tempLangVal !== '') {
+                        $dataValues[$key][$valueKey] = $tempLangVal;
+                    }
+                    unset($tempLangVal);
+                }
+
+                // TypoScript / TypoScriptObjPath:
+                if (trim($LP[$key]['TypoScript']) || trim($LP[$key]['TypoScriptObjPath'])) {
+                    if (trim($LP[$key]['TypoScript'])) {
+
+                        // If constants were found locally/internally in DS/TO:
+                        if (is_array($LP[$key]['TypoScript_constants'])) {
+                            foreach ($LP[$key]['TypoScript_constants'] as $constant => $value) {
+
+                                // First, see if the constant is itself a constant referring back to TypoScript Setup Object Tree:
+                                if (strpos(trim($value), '{$') === 0 && substr(trim($value), -1) === '}') {
+                                    $objPath = substr(trim($value), 2, -1);
+
+                                    // If no value for this object path reference was found, get value:
+                                    if (!isset($this->frontendController->applicationData['tx_templavoila']['TO_constantCache'][$objPath])) {
+                                        // Get value from object path:
+                                        $cF = GeneralUtility::makeInstance(TypoScriptParser::class);
+                                        list($objPathValue) = $cF->getVal($objPath, $this->frontendController->tmpl->setup);
+                                        // Set value in cache table:
+                                        $this->frontendController->applicationData['tx_templavoila']['TO_constantCache'][$objPath] .= '' . $objPathValue;
+                                    }
+                                    // Setting value to the value of the TypoScript Setup object path referred to:
+                                    $value = $this->frontendController->applicationData['tx_templavoila']['TO_constantCache'][$objPath];
+                                }
+
+                                // Substitute constant:
+                                $LP[$key]['TypoScript'] = str_replace('{$' . $constant . '}', $value, $LP[$key]['TypoScript']);
+                            }
+                        }
+
+                        // If constants were found in Plugin configuration, "plugins.tx_templavoila_pi1.TSconst":
+                        if (is_array($this->conf['TSconst.'])) {
+                            foreach ($this->conf['TSconst.'] as $constant => $value) {
+                                if (!is_array($value)) {
+                                    // Substitute constant:
+                                    $LP[$key]['TypoScript'] = str_replace('{$TSconst.' . $constant . '}', $value, $LP[$key]['TypoScript']);
+                                }
+                            }
+                        }
+
+                        // Copy current global TypoScript configuration except numerical objects:
+                        if (is_array($this->frontendController->tmpl->setup)) {
+                            foreach ($this->frontendController->tmpl->setup as $tsObjectKey => $tsObjectValue) {
+                                if ($tsObjectKey !== (int)$tsObjectKey) {
+                                    $tsparserObj->setup[$tsObjectKey] = $tsObjectValue;
+                                }
+                            }
+                        }
+
+                        $tsparserObj->parse($LP[$key]['TypoScript']);
+                        $dataValues[$key][$valueKey] = $cObj->cObjGet($tsparserObj->setup, 'TemplaVoila_Proc.');
+                    }
+                    if (trim($LP[$key]['TypoScriptObjPath'])) {
+                        list($name, $conf) = $tsparserObj->getVal(trim($LP[$key]['TypoScriptObjPath']), $this->frontendController->tmpl->setup);
+                        $dataValues[$key][$valueKey] = $cObj->cObjGetSingle($name, $conf, 'TemplaVoila_ProcObjPath--' . str_replace('.', '*', $LP[$key]['TypoScriptObjPath']) . '.');
+                    }
+                }
+
+                // Various local quick-processing options:
+                $pOptions = $LP[$key]['proc'];
+                if (is_array($pOptions)) {
+                    if ($pOptions['int']) {
+                        $dataValues[$key][$valueKey] = (int)$dataValues[$key][$valueKey];
+                    }
+                    // HSC of all values by default:
+                    if ($pOptions['HSC']) {
+                        $dataValues[$key][$valueKey] = htmlspecialchars($dataValues[$key][$valueKey]);
+                    }
+                    if (trim($pOptions['stdWrap'])) {
+                        $tsparserObj = GeneralUtility::makeInstance(TypoScriptParser::class);
+                        // BUG HERE: should convert array to TypoScript...
+                        $tsparserObj->parse($pOptions['stdWrap']);
+                        $dataValues[$key][$valueKey] = $cObj->stdWrap($dataValues[$key][$valueKey], $tsparserObj->setup);
+                    }
+                }
+            }
+        }
+
+        // Unset curent parent record info
+        foreach ($registerKeys as $dkey) {
+            unset($this->frontendController->register[$dkey]);
+        }
+
+        // Restore previous parent record info if necessary
+        foreach ($savedParentInfo as $dkey => $dvalue) {
+            $this->frontendController->register[$dkey] = $dvalue;
         }
     }
 
