@@ -1,6 +1,6 @@
 <?php
 
-namespace Schnitzler\Templavoila\Controller\Backend\Preview;
+namespace Schnitzler\Templavoila\Controller\Backend\PageModule\Renderer\ContentElementRenderer;
 
 /*
  * This file is part of the TYPO3 CMS project.
@@ -15,27 +15,25 @@ namespace Schnitzler\Templavoila\Controller\Backend\Preview;
  * The TYPO3 project - inspiring people to share!
  */
 
-use Schnitzler\Templavoila\Traits\LanguageService;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 
 /**
- * Default controller
+ * Menu controller
  */
-class DefaultController
+class MenuRenderer extends TextRenderer
 {
-    use LanguageService;
+    public function __construct()
+    {
+        $this->previewField = 'menu_type';
+    }
 
     /**
      * @param array $row
-     * @param string $table
-     * @param string $output
-     * @param bool $alreadyRendered
-     * @param object $ref
      *
      * @return string
      */
-    public function render_previewContent($row, $table, $output, $alreadyRendered, &$ref)
+    protected function getPreviewData($row)
     {
-        return '<strong>' . static::getLanguageService()->sL(BackendUtility::getLabelFromItemlist('tt_content', 'CType', $row['CType'])) . '</strong>';
+        return static::getLanguageService()->sL(BackendUtility::getLabelFromItemlist('tt_content', $this->previewField, $row[$this->previewField]));
     }
 }

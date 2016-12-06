@@ -1,6 +1,6 @@
 <?php
 
-namespace Schnitzler\Templavoila\Controller\Backend\Preview;
+namespace Schnitzler\Templavoila\Controller\Backend\PageModule\Renderer\ContentElementRenderer;
 
 /*
  * This file is part of the TYPO3 CMS project.
@@ -16,13 +16,12 @@ namespace Schnitzler\Templavoila\Controller\Backend\Preview;
  */
 
 /**
- * Multimedia controller
+ * Header controller
  */
-class MultimediaController extends UploadsController
+class HeaderRenderer extends TextRenderer
 {
-
-    /**
-     * @var string
-     */
-    protected $previewField = 'multimedia';
+    public function __construct()
+    {
+        $this->previewField = 'header';
+    }
 }

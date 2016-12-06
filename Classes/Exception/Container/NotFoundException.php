@@ -1,7 +1,5 @@
 <?php
 
-namespace Schnitzler\Templavoila\Controller\Backend\Preview;
-
 /*
  * This file is part of the TYPO3 CMS project.
  *
@@ -15,14 +13,13 @@ namespace Schnitzler\Templavoila\Controller\Backend\Preview;
  * The TYPO3 project - inspiring people to share!
  */
 
-/**
- * Header controller
- */
-class HeaderController extends TextController
-{
+namespace Schnitzler\Templavoila\Exception\Container;
 
-    /**
-     * @var string
-     */
-    protected $previewField = 'header';
+use Schnitzler\Templavoila\Exception;
+
+/**
+ * Class Schnitzler\Templavoila\Exception\Container\NotFoundException
+ */
+class NotFoundException extends Exception
+{
 }

@@ -85,26 +85,27 @@ $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['lowlevel']['cleanerModules']['tx_templav
 $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['l10nmgr']['indexFilter']['tx_templavoila_usedCE'] = ['EXT:templavoila/Classes/Service/UserFunc/UsedContentElement.php:Schnitzler\Templavoila\Service\UserFunc\UsedContentElement'];
 
 // Register Preview Classes for Page Module
-$GLOBALS['TYPO3_CONF_VARS']['EXTCONF'][$_EXTKEY]['mod1']['renderPreviewContent']['default'] = Schnitzler\Templavoila\Controller\Backend\Preview\DefaultController::class;
-$GLOBALS['TYPO3_CONF_VARS']['EXTCONF'][$_EXTKEY]['mod1']['renderPreviewContent']['text'] = Schnitzler\Templavoila\Controller\Backend\Preview\TextController::class;
-$GLOBALS['TYPO3_CONF_VARS']['EXTCONF'][$_EXTKEY]['mod1']['renderPreviewContent']['table'] = Schnitzler\Templavoila\Controller\Backend\Preview\TextController::class;
-$GLOBALS['TYPO3_CONF_VARS']['EXTCONF'][$_EXTKEY]['mod1']['renderPreviewContent']['mailform'] = Schnitzler\Templavoila\Controller\Backend\Preview\TextController::class;
-$GLOBALS['TYPO3_CONF_VARS']['EXTCONF'][$_EXTKEY]['mod1']['renderPreviewContent']['header'] = Schnitzler\Templavoila\Controller\Backend\Preview\HeaderController::class;
-$GLOBALS['TYPO3_CONF_VARS']['EXTCONF'][$_EXTKEY]['mod1']['renderPreviewContent']['multimedia'] = Schnitzler\Templavoila\Controller\Backend\Preview\MultimediaController::class;
-$GLOBALS['TYPO3_CONF_VARS']['EXTCONF'][$_EXTKEY]['mod1']['renderPreviewContent']['media'] = Schnitzler\Templavoila\Controller\Backend\Preview\MediaController::class;
-$GLOBALS['TYPO3_CONF_VARS']['EXTCONF'][$_EXTKEY]['mod1']['renderPreviewContent']['uploads'] = Schnitzler\Templavoila\Controller\Backend\Preview\UploadsController::class;
-$GLOBALS['TYPO3_CONF_VARS']['EXTCONF'][$_EXTKEY]['mod1']['renderPreviewContent']['textpic'] = Schnitzler\Templavoila\Controller\Backend\Preview\TextpicController::class;
-$GLOBALS['TYPO3_CONF_VARS']['EXTCONF'][$_EXTKEY]['mod1']['renderPreviewContent']['splash'] = Schnitzler\Templavoila\Controller\Backend\Preview\TextpicController::class;
-$GLOBALS['TYPO3_CONF_VARS']['EXTCONF'][$_EXTKEY]['mod1']['renderPreviewContent']['image'] = Schnitzler\Templavoila\Controller\Backend\Preview\ImageController::class;
-$GLOBALS['TYPO3_CONF_VARS']['EXTCONF'][$_EXTKEY]['mod1']['renderPreviewContent']['bullets'] = Schnitzler\Templavoila\Controller\Backend\Preview\BulletsController::class;
-$GLOBALS['TYPO3_CONF_VARS']['EXTCONF'][$_EXTKEY]['mod1']['renderPreviewContent']['html'] = Schnitzler\Templavoila\Controller\Backend\Preview\HtmlController::class;
-$GLOBALS['TYPO3_CONF_VARS']['EXTCONF'][$_EXTKEY]['mod1']['renderPreviewContent']['menu'] = Schnitzler\Templavoila\Controller\Backend\Preview\MenuController::class;
-$GLOBALS['TYPO3_CONF_VARS']['EXTCONF'][$_EXTKEY]['mod1']['renderPreviewContent']['list'] = Schnitzler\Templavoila\Controller\Backend\Preview\ListController::class;
-$GLOBALS['TYPO3_CONF_VARS']['EXTCONF'][$_EXTKEY]['mod1']['renderPreviewContent']['search'] = Schnitzler\Templavoila\Controller\Backend\Preview\NullController::class;
-$GLOBALS['TYPO3_CONF_VARS']['EXTCONF'][$_EXTKEY]['mod1']['renderPreviewContent']['login'] = Schnitzler\Templavoila\Controller\Backend\Preview\NullController::class;
-$GLOBALS['TYPO3_CONF_VARS']['EXTCONF'][$_EXTKEY]['mod1']['renderPreviewContent']['shortcut'] = Schnitzler\Templavoila\Controller\Backend\Preview\NullController::class;
-$GLOBALS['TYPO3_CONF_VARS']['EXTCONF'][$_EXTKEY]['mod1']['renderPreviewContent']['div'] = Schnitzler\Templavoila\Controller\Backend\Preview\NullController::class;
-$GLOBALS['TYPO3_CONF_VARS']['EXTCONF'][$_EXTKEY]['mod1']['renderPreviewContent']['templavoila_pi1'] = Schnitzler\Templavoila\Controller\Backend\Preview\NullController::class;
+$elementRendererContainer = ElementRendererContainer::getInstance();
+$elementRendererContainer->add('generic', new \Schnitzler\Templavoila\Controller\Backend\PageModule\Renderer\ContentElementRenderer\GenericRenderer());
+$elementRendererContainer->add('text', new \Schnitzler\Templavoila\Controller\Backend\PageModule\Renderer\ContentElementRenderer\TextRenderer());
+$elementRendererContainer->add('table', new \Schnitzler\Templavoila\Controller\Backend\PageModule\Renderer\ContentElementRenderer\TextRenderer());
+$elementRendererContainer->add('mailform', new \Schnitzler\Templavoila\Controller\Backend\PageModule\Renderer\ContentElementRenderer\TextRenderer());
+$elementRendererContainer->add('header', new \Schnitzler\Templavoila\Controller\Backend\PageModule\Renderer\ContentElementRenderer\HeaderRenderer());
+$elementRendererContainer->add('multimedia', new \Schnitzler\Templavoila\Controller\Backend\PageModule\Renderer\ContentElementRenderer\MultimediaRenderer());
+$elementRendererContainer->add('media', new \Schnitzler\Templavoila\Controller\Backend\PageModule\Renderer\ContentElementRenderer\MediaRenderer());
+$elementRendererContainer->add('uploads', new \Schnitzler\Templavoila\Controller\Backend\PageModule\Renderer\ContentElementRenderer\UploadsRenderer());
+$elementRendererContainer->add('textpic', new \Schnitzler\Templavoila\Controller\Backend\PageModule\Renderer\ContentElementRenderer\TextpicRenderer());
+$elementRendererContainer->add('splash', new \Schnitzler\Templavoila\Controller\Backend\PageModule\Renderer\ContentElementRenderer\TextpicRenderer());
+$elementRendererContainer->add('image', new \Schnitzler\Templavoila\Controller\Backend\PageModule\Renderer\ContentElementRenderer\ImageRenderer());
+$elementRendererContainer->add('bullets', new \Schnitzler\Templavoila\Controller\Backend\PageModule\Renderer\ContentElementRenderer\BulletsRenderer());
+$elementRendererContainer->add('html', new \Schnitzler\Templavoila\Controller\Backend\PageModule\Renderer\ContentElementRenderer\HtmlRenderer());
+$elementRendererContainer->add('menu', new \Schnitzler\Templavoila\Controller\Backend\PageModule\Renderer\ContentElementRenderer\MenuRenderer());
+$elementRendererContainer->add('list', new \Schnitzler\Templavoila\Controller\Backend\PageModule\Renderer\ContentElementRenderer\ListRenderer());
+$elementRendererContainer->add('search', new \Schnitzler\Templavoila\Controller\Backend\PageModule\Renderer\ContentElementRenderer\NullRenderer());
+$elementRendererContainer->add('login', new \Schnitzler\Templavoila\Controller\Backend\PageModule\Renderer\ContentElementRenderer\NullRenderer());
+$elementRendererContainer->add('shortcut', new \Schnitzler\Templavoila\Controller\Backend\PageModule\Renderer\ContentElementRenderer\NullRenderer());
+$elementRendererContainer->add('div', new \Schnitzler\Templavoila\Controller\Backend\PageModule\Renderer\ContentElementRenderer\NullRenderer());
+$elementRendererContainer->add('templavoila_pi1', new \Schnitzler\Templavoila\Controller\Backend\PageModule\Renderer\ContentElementRenderer\NullRenderer());
 
 $GLOBALS['TYPO3_CONF_VARS']['LOG']['Extension']['Templavoila']['Service']['ApiService']['writerConfiguration'] = [
     \TYPO3\CMS\Core\Log\LogLevel::DEBUG => [

@@ -1,6 +1,6 @@
 <?php
 
-namespace Schnitzler\Templavoila\Controller\Backend\Preview;
+namespace Schnitzler\Templavoila\Controller\Backend\PageModule\Renderer\ContentElementRenderer;
 
 /*
  * This file is part of the TYPO3 CMS project.
@@ -15,6 +15,7 @@ namespace Schnitzler\Templavoila\Controller\Backend\Preview;
  * The TYPO3 project - inspiring people to share!
  */
 
+use Schnitzler\Templavoila\Controller\Backend\PageModule\Renderer\AbstractContentElementRenderer;
 use Schnitzler\Templavoila\Traits\LanguageService;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -22,7 +23,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 /**
  * Text controller
  */
-class TextController
+class TextRenderer extends AbstractContentElementRenderer
 {
     use LanguageService;
 
@@ -35,27 +36,6 @@ class TextController
      * @var mixed
      */
     protected $parentObj;
-
-    /**
-     * @param array $row
-     * @param string $table
-     * @param string $output
-     * @param bool $alreadyRendered
-     * @param object $ref
-     *
-     * @return string
-     */
-    public function render_previewContent($row, $table, $output, $alreadyRendered, &$ref)
-    {
-        $this->parentObj = $ref;
-        $label = $this->getPreviewLabel();
-        $data = $this->getPreviewData($row);
-        if ($ref->currentElementBelongsToCurrentPage) {
-            return $ref->link_edit('<strong>' . $label . '</strong> ' . $data, 'tt_content', $row['uid']);
-        } else {
-            return '<strong>' . $label . '</strong> ' . $data;
-        }
-    }
 
     /**
      * @return string
@@ -88,23 +68,21 @@ class TextController
     {
         //Enable to omit that parameter
         if ($max === null) {
-            if (isset($this->parentObj->modTSconfig['properties']['previewDataMaxLen'])) {
-                $max = (int)$this->parentObj->modTSconfig['properties']['previewDataMaxLen'];
-            } else {
-                $max = 2000;
+            $max = 2000;
+            if (isset($this->ref->modTSconfig['properties']['previewDataMaxLen'])) {
+                $max = (int)$this->ref->modTSconfig['properties']['previewDataMaxLen'];
             }
         }
+
+        $newStr = $str;
         if ($stripTags) {
             //remove tags but avoid that the output is concatinated without spaces (#8375)
             $newStr = strip_tags(preg_replace('/(\S)<\//', '\1 </', $str));
-        } else {
-            $newStr = $str;
         }
 
-        if (isset($this->parentObj->modTSconfig['properties']['previewDataMaxWordLen'])) {
-            $wordLen = (int)$this->parentObj->modTSconfig['properties']['previewDataMaxWordLen'];
-        } else {
-            $wordLen = 75;
+        $wordLen = 75;
+        if (isset($this->ref->modTSconfig['properties']['previewDataMaxWordLen'])) {
+            $wordLen = (int)$this->ref->modTSconfig['properties']['previewDataMaxWordLen'];
         }
 
         if ($wordLen) {
@@ -112,5 +90,19 @@ class TextController
         }
 
         return htmlspecialchars(GeneralUtility::fixed_lgd_cs(trim($newStr), $max));
+    }
+
+    /**
+     * @return string
+     */
+    public function render()
+    {
+        $label = $this->getPreviewLabel();
+        $data = $this->getPreviewData($this->row);
+        if ($this->ref->currentElementBelongsToCurrentPage) {
+            return $this->ref->link_edit('<strong>' . $label . '</strong> ' . $data, 'tt_content', $this->row['uid']);
+        } else {
+            return '<strong>' . $label . '</strong> ' . $data;
+        }
     }
 }

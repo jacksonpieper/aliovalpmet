@@ -1,6 +1,6 @@
 <?php
 
-namespace Schnitzler\Templavoila\Controller\Backend\Preview;
+namespace Schnitzler\Templavoila\Controller\Backend\PageModule\Renderer\ContentElementRenderer;
 
 /*
  * This file is part of the TYPO3 CMS project.
@@ -16,22 +16,18 @@ namespace Schnitzler\Templavoila\Controller\Backend\Preview;
  */
 
 /**
- * Null controller
+ * HTML controller
  */
-class NullController
+class HtmlRenderer extends TextRenderer
 {
 
     /**
      * @param array $row
-     * @param string $table
-     * @param string $output
-     * @param bool $alreadyRendered
-     * @param object $ref
      *
      * @return string
      */
-    public function render_previewContent($row, $table, $output, $alreadyRendered, &$ref)
+    protected function getPreviewData($row)
     {
-        return $output;
+        return $this->preparePreviewData($row[$this->previewField], null, false);
     }
 }

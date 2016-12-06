@@ -1,6 +1,6 @@
 <?php
 
-namespace Schnitzler\Templavoila\Controller\Backend\Preview;
+namespace Schnitzler\Templavoila\Controller\Backend\PageModule\Renderer\ContentElementRenderer;
 
 /*
  * This file is part of the TYPO3 CMS project.
@@ -15,6 +15,7 @@ namespace Schnitzler\Templavoila\Controller\Backend\Preview;
  * The TYPO3 project - inspiring people to share!
  */
 
+use Schnitzler\Templavoila\Controller\Backend\PageModule\Renderer\AbstractContentElementRenderer;
 use Schnitzler\Templavoila\Traits\LanguageService;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -22,7 +23,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 /**
  * Media controller
  */
-class MediaController
+class MediaRenderer extends AbstractContentElementRenderer
 {
     use LanguageService;
 
@@ -30,27 +31,6 @@ class MediaController
      * @var string
      */
     protected $previewField = 'media';
-
-    /**
-     * @param array $row
-     * @param string $table
-     * @param string $output
-     * @param bool $alreadyRendered
-     * @param object $ref
-     *
-     * @return string
-     */
-    public function render_previewContent($row, $table, $output, $alreadyRendered, &$ref)
-    {
-        $label = $this->getPreviewLabel();
-        $data = $this->getPreviewData($row);
-
-        if ($ref->currentElementBelongsToCurrentPage) {
-            return $ref->link_edit('<strong>' . $label . '</strong> ' . $data, 'tt_content', $row['uid']);
-        } else {
-            return '<strong>' . $label . '</strong> ' . $data;
-        }
-    }
 
     /**
      * @param array $row
@@ -76,5 +56,20 @@ class MediaController
     protected function getPreviewLabel()
     {
         return static::getLanguageService()->sL(BackendUtility::getLabelFromItemlist('tt_content', 'CType', $this->previewField));
+    }
+
+    /**
+     * @return string
+     */
+    public function render()
+    {
+        $label = $this->getPreviewLabel();
+        $data = $this->getPreviewData($this->row);
+
+        if ($this->ref->currentElementBelongsToCurrentPage) {
+            return $this->ref->link_edit('<strong>' . $label . '</strong> ' . $data, 'tt_content', $this->row['uid']);
+        } else {
+            return '<strong>' . $label . '</strong> ' . $data;
+        }
     }
 }

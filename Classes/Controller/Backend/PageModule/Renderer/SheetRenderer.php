@@ -14,6 +14,7 @@
 
 namespace Schnitzler\Templavoila\Controller\Backend\PageModule\Renderer;
 
+use Schnitzler\Templavoila\Container\ElementRendererContainer;
 use Schnitzler\Templavoila\Controller\Backend\PageModule\MainController;
 use Schnitzler\Templavoila\Controller\Backend\PageModule\Renderer\SheetRenderer\Column;
 use Schnitzler\Templavoila\Controller\Backend\PageModule\Renderer\SheetRenderer\Sheet;
@@ -929,11 +930,26 @@ class SheetRenderer implements Renderable
                 $this->renderPreviewObjects = $this->controller->hooks_prepareObjectsArray('renderPreviewContent');
             }
 
-            if (isset($this->renderPreviewObjects[$row['CType']]) && method_exists($this->renderPreviewObjects[$row['CType']], 'render_previewContent')) {
-                $output .= $this->renderPreviewObjects[$row['CType']]->render_previewContent($row, 'tt_content', $output, $alreadyRendered, $this->controller);
-            } elseif (isset($this->renderPreviewObjects['default']) && method_exists($this->renderPreviewObjects['default'], 'render_previewContent')) {
-                $output .= $this->renderPreviewObjects['default']->render_previewContent($row, 'tt_content', $output, $alreadyRendered, $this->controller);
-            } else {
+            try {
+                $elementRendererContainer = ElementRendererContainer::getInstance();
+                $renderer = $elementRendererContainer->get($row['CType']);
+
+                if ($renderer instanceof AbstractContentElementRenderer) {
+                    $renderer->setRow($row);
+                    $renderer->setTable($row);
+                    $renderer->setOutput($row);
+                    $renderer->setAlreadyRendered($alreadyRendered);
+                    $renderer->setRef($this->controller);
+                    $output .= $renderer->render();
+                } else {
+                    GeneralUtility::deprecationLog(sprintf(
+                        'Hook "%s::%s" is deprecated from 7.6.0 on, will be removed in 8.0.0',
+                        get_class($renderer),
+                        'render_previewContent'
+                    ));
+                    $output .= call_user_func_array([$renderer, 'render_previewContent'], [$row, 'tt_content', $output, $alreadyRendered, &$this->controller]);
+                }
+            } catch (\Exception $e) {
                 // nothing is left to render the preview - happens if someone broke the configuration
             }
         }

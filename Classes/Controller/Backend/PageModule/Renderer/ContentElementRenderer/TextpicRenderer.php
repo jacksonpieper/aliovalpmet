@@ -1,6 +1,6 @@
 <?php
 
-namespace Schnitzler\Templavoila\Controller\Backend\Preview;
+namespace Schnitzler\Templavoila\Controller\Backend\PageModule\Renderer\ContentElementRenderer;
 
 /*
  * This file is part of the TYPO3 CMS project.
@@ -20,37 +20,23 @@ use TYPO3\CMS\Backend\Utility\BackendUtility;
 /**
  * Textpic controller
  */
-class TextpicController extends TextController
+class TextpicRenderer extends TextRenderer
 {
-
     /**
-     * @var string
-     */
-    protected $previewField = 'bodytext';
-
-    /**
-     * @param array $row
-     * @param string $table
-     * @param string $output
-     * @param bool $alreadyRendered
-     * @param object $ref
-     *
      * @return string
      */
-    public function render_previewContent($row, $table, $output, $alreadyRendered, &$ref)
+    public function render()
     {
-        $this->parentObj = $ref;
-
-        $uploadDir = $GLOBALS['TCA']['tt_content']['columns']['image']['config']['internal_type'] == 'file_reference' ? '' : null;
+        $uploadDir = $GLOBALS['TCA']['tt_content']['columns']['image']['config']['internal_type'] === 'file_reference' ? '' : null;
 
         $thumbnail = '<strong>' . static::getLanguageService()->sL(BackendUtility::getItemLabel('tt_content', 'image'), 1) . '</strong><br />';
-        $thumbnail .= BackendUtility::thumbCode($row, 'tt_content', 'image', $ref->doc->backPath, '', $uploadDir);
+        $thumbnail .= BackendUtility::thumbCode($this->row, 'tt_content', 'image', '', '', $uploadDir);
 
         $label = $this->getPreviewLabel();
-        $data = $this->getPreviewData($row);
+        $data = $this->getPreviewData($this->row);
 
-        if ($ref->currentElementBelongsToCurrentPage) {
-            $text = $ref->link_edit('<strong>' . $label . '</strong> ' . $data, 'tt_content', $row['uid']);
+        if ($this->ref->currentElementBelongsToCurrentPage) {
+            $text = $this->ref->link_edit('<strong>' . $label . '</strong> ' . $data, 'tt_content', $this->row['uid']);
         } else {
             $text = '<strong>' . $label . '</strong> ' . $data;
         }

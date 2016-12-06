@@ -1,7 +1,5 @@
 <?php
 
-namespace Schnitzler\Templavoila\Controller\Backend\Preview;
-
 /*
  * This file is part of the TYPO3 CMS project.
  *
@@ -14,20 +12,28 @@ namespace Schnitzler\Templavoila\Controller\Backend\Preview;
  *
  * The TYPO3 project - inspiring people to share!
  */
+namespace Schnitzler\Templavoila;
+
+use Schnitzler\Templavoila\Exception\Container\NotFoundException;
 
 /**
- * HTML controller
+ * Interface Schnitzler\Templavoila\ContainerInterface
  */
-class HtmlController extends TextController
+interface ContainerInterface
 {
+    /**
+     * @param string $id
+     *
+     * @throws NotFoundException
+     *
+     * @return mixed
+     */
+    public function get($id);
 
     /**
-     * @param array $row
+     * @param string $id
      *
-     * @return string
+     * @return bool
      */
-    protected function getPreviewData($row)
-    {
-        return $this->preparePreviewData($row[$this->previewField], null, false);
-    }
+    public function has($id);
 }

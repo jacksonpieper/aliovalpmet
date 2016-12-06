@@ -1,6 +1,6 @@
 <?php
 
-namespace Schnitzler\Templavoila\Controller\Backend\Preview;
+namespace Schnitzler\Templavoila\Controller\Backend\PageModule\Renderer\ContentElementRenderer;
 
 /*
  * This file is part of the TYPO3 CMS project.
@@ -22,14 +22,14 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 /**
  * List controller
  */
-class ListController extends TextController
+class ListRenderer extends TextRenderer
 {
     use LanguageService;
 
-    /**
-     * @var string
-     */
-    protected $previewField = 'list_type';
+    public function __construct()
+    {
+        $this->previewField = 'list_type';
+    }
 
     /**
      * @param array $row
@@ -53,12 +53,11 @@ class ListController extends TextController
      */
     protected function getExtraInfo($row)
     {
+        $hookArr = [];
         if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['cms/layout/class.tx_cms_layout.php']['list_type_Info'][$row['list_type']])) {
             $hookArr = $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['cms/layout/class.tx_cms_layout.php']['list_type_Info'][$row['list_type']];
         } elseif (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['cms/layout/class.tx_cms_layout.php']['list_type_Info']['_DEFAULT'])) {
             $hookArr = $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['cms/layout/class.tx_cms_layout.php']['list_type_Info']['_DEFAULT'];
-        } else {
-            $hookArr = [];
         }
 
         $extraInfo = '';
@@ -69,6 +68,6 @@ class ListController extends TextController
             }
         }
 
-        return $extraInfo ? $extraInfo : '';
+        return $extraInfo ?: '';
     }
 }

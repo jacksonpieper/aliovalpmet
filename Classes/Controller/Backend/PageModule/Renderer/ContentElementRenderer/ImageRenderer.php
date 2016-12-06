@@ -1,6 +1,6 @@
 <?php
 
-namespace Schnitzler\Templavoila\Controller\Backend\Preview;
+namespace Schnitzler\Templavoila\Controller\Backend\PageModule\Renderer\ContentElementRenderer;
 
 /*
  * This file is part of the TYPO3 CMS project.
@@ -20,33 +20,26 @@ use TYPO3\CMS\Backend\Utility\BackendUtility;
 /**
  * Image controller
  */
-class ImageController extends TextController
+class ImageRenderer extends TextRenderer
 {
+    public function __construct()
+    {
+        $this->previewField = 'image';
+    }
 
     /**
-     * @var string
-     */
-    protected $previewField = 'image';
-
-    /**
-     * @param array $row
-     * @param string $table
-     * @param string $output
-     * @param bool $alreadyRendered
-     * @param object $ref
-     *
      * @return string
      */
-    public function render_previewContent($row, $table, $output, $alreadyRendered, &$ref)
+    public function render()
     {
         $label = $this->getPreviewLabel();
 
-        if ($ref->currentElementBelongsToCurrentPage) {
-            $text = $ref->link_edit('<strong>' . $label . '</strong>', 'tt_content', $row['uid']);
+        if ($this->ref->currentElementBelongsToCurrentPage) {
+            $text = $this->ref->link_edit('<strong>' . $label . '</strong>', 'tt_content', $this->row['uid']);
         } else {
             $text = '<strong>' . $label . '</strong>';
         }
-        $text .= BackendUtility::thumbCode($row, 'tt_content', 'image', $ref->doc->backPath);
+        $text .= BackendUtility::thumbCode($this->row, 'tt_content', 'image');
 
         return $text;
     }

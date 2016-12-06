@@ -1,6 +1,6 @@
 <?php
 
-namespace Schnitzler\Templavoila\Controller\Backend\Preview;
+namespace Schnitzler\Templavoila\Controller\Backend\PageModule\Renderer\ContentElementRenderer;
 
 /*
  * This file is part of the TYPO3 CMS project.
@@ -20,14 +20,8 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 /**
  * Bullets controller
  */
-class BulletsController extends TextController
+class BulletsRenderer extends TextRenderer
 {
-
-    /**
-     * @var string
-     */
-    protected $previewField = 'bodytext';
-
     /**
      * @param array $row
      *
@@ -35,11 +29,11 @@ class BulletsController extends TextController
      */
     protected function getPreviewData($row)
     {
-        if (isset($this->parentObj->modTSconfig['properties']['previewDataMaxLen'])) {
-            $max = (int)$this->parentObj->modTSconfig['properties']['previewDataMaxLen'];
-        } else {
-            $max = 2000;
+        $max = 2000;
+        if (isset($this->ref->modTSconfig['properties']['previewDataMaxLen'])) {
+            $max = (int)$this->ref->modTSconfig['properties']['previewDataMaxLen'];
         }
+
         $htmlBullets = '';
         $bulletsArr = explode("\n", $this->preparePreviewData($row['bodytext']));
         if (is_array($bulletsArr)) {
