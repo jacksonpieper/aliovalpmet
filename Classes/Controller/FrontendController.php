@@ -23,10 +23,14 @@ use Schnitzler\Templavoila\Exception\Serialization\SerializationException;
 use Schnitzler\Templavoila\Templavoila;
 use Schnitzler\Templavoila\Traits\BackendUser;
 use TYPO3\CMS\Core\Configuration\FlexForm\FlexFormTools;
+use TYPO3\CMS\Core\Database\DatabaseConnection;
 use TYPO3\CMS\Core\Html\HtmlParser;
+use TYPO3\CMS\Core\Log\Logger;
+use TYPO3\CMS\Core\Log\LogManager;
 use TYPO3\CMS\Core\TypoScript\Parser\TypoScriptParser;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
+use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 use TYPO3\CMS\Frontend\Plugin\AbstractPlugin;
 
 /**
@@ -71,6 +75,26 @@ class FrontendController extends AbstractPlugin
      * @var HtmlMarkup
      */
     public $htmlMarkup;
+
+    /**
+     * @var Logger
+     */
+    private static $logger;
+
+    /**
+     * @param DatabaseConnection $databaseConnection
+     * @param TypoScriptFrontendController $frontendController
+     */
+    public function __construct(DatabaseConnection $databaseConnection = null, TypoScriptFrontendController $frontendController = null)
+    {
+        parent::__construct($databaseConnection, $frontendController);
+
+        if (!static::$logger instanceof Logger) {
+            /** @var LogManager $logManager */
+            $logManager = GeneralUtility::makeInstance(LogManager::class);
+            static::$logger = $logManager->getLogger(__CLASS__);
+        }
+    }
 
     /**
      * Main function for rendering of Flexible Content elements of TemplaVoila
@@ -750,7 +774,7 @@ class FrontendController extends AbstractPlugin
                 $returnValue .= $dV[$valueKey];
             }
         } catch (\Exception $e) {
-            $this->log($e->getMessage(),  GeneralUtility::SYSLOG_SEVERITY_ERROR);
+            static::getLogger()->error($e->getMessage());
         }
 
         return $returnValue;
@@ -954,11 +978,9 @@ class FrontendController extends AbstractPlugin
     }
 
     /**
-     * @param string $message
-     * @param int $severity \TYPO3\CMS\Core\Utility\GeneralUtility::SYSLOG_SEVERITY_* constant
+     * @return Logger
      */
-    public function log($message, $severity)
-    {
-        GeneralUtility::sysLog($message, Templavoila::EXTKEY, $severity);
+    protected static function getLogger() {
+        return static::$logger;
     }
 }

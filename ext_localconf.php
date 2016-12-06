@@ -114,6 +114,20 @@ $GLOBALS['TYPO3_CONF_VARS']['LOG']['Extension']['Templavoila']['Service']['ApiSe
     ]
 ];
 
+$GLOBALS['TYPO3_CONF_VARS']['LOG']['Schnitzler']['Templavoila']['Controller']['FrontendController']['writerConfiguration'] = [
+    \TYPO3\CMS\Core\Log\LogLevel::DEBUG => [
+        \TYPO3\CMS\Core\Log\Writer\NullWriter::class => []
+    ]
+];
+
+if (\TYPO3\CMS\Core\Utility\GeneralUtility::getApplicationContext()->isDevelopment()) {
+    $GLOBALS['TYPO3_CONF_VARS']['LOG']['Schnitzler']['Templavoila']['Controller']['FrontendController']['writerConfiguration'][\TYPO3\CMS\Core\Log\LogLevel::DEBUG] = [
+        \TYPO3\CMS\Core\Log\Writer\FileWriter::class => [
+            'logFile' => 'typo3temp/logs/templavoila/frontend.log'
+        ]
+    ];
+}
+
 $GLOBALS['TYPO3_CONF_VARS']['SYS']['formEngine']['formDataGroup']['tcaDatabaseRecord'][\Schnitzler\Templavoila\Form\FormDataProvider\BeforeTcaFlexPrepare::class] = [
     'before' => [
         TYPO3\CMS\Backend\Form\FormDataProvider\TcaFlexPrepare::class,
