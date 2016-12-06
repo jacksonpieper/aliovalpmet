@@ -44,20 +44,6 @@ class FrontendController extends AbstractPlugin
     use BackendUser;
 
     /**
-     * Same as class name
-     *
-     * @var string
-     */
-    public $prefixId = 'tx_templavoila_pi1';
-
-    /**
-     * Path to this script relative to the extension dir.
-     *
-     * @var string
-     */
-    public $scriptRelPath = 'pi1/class.tx_templavoila_pi1.php';
-
-    /**
      * If set, children-translations will take the value from the default if "false" (zero or blank)
      *
      * @var int
@@ -88,6 +74,9 @@ class FrontendController extends AbstractPlugin
     public function __construct(DatabaseConnection $databaseConnection = null, TypoScriptFrontendController $frontendController = null)
     {
         parent::__construct($databaseConnection, $frontendController);
+
+        $this->prefixId = 'tx_templavoila_pi1';
+        $this->scriptRelPath = 'pi1/class.tx_templavoila_pi1.php';
 
         if (!static::$logger instanceof Logger) {
             /** @var LogManager $logManager */
