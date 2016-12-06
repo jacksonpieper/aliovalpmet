@@ -311,7 +311,7 @@ class FrontendController extends AbstractPlugin
      *
      * @return string HTML output.
      */
-    public function renderElement($row, $table)
+    protected function renderElement($row, $table)
     {
         // First prepare user defined objects (if any) for hooks which extend this function:
         $hooks = [];
@@ -522,7 +522,7 @@ class FrontendController extends AbstractPlugin
      * @param string $valueKey Value key
      * @param mixed $mappingInfo Mapping information
      */
-    public function processDataValues(&$dataValues, $DSelements, $TOelements, $valueKey = 'vDEF', $mappingInfo = true)
+    protected function processDataValues(&$dataValues, $DSelements, $TOelements, $valueKey = 'vDEF', $mappingInfo = true)
     {
         if (is_array($DSelements) && is_array($dataValues)) {
 
@@ -774,7 +774,7 @@ class FrontendController extends AbstractPlugin
      *
      * @return string|array The value
      */
-    public function inheritValue($dV, $valueKey, $overlayMode = '')
+    protected function inheritValue($dV, $valueKey, $overlayMode = '')
     {
         $returnValue = '';
 
@@ -834,7 +834,7 @@ class FrontendController extends AbstractPlugin
      * @return string Error message output
      * @string string Error message input
      */
-    public function formatError($string)
+    protected function formatError($string)
     {
 
         // Set no-cache since the error message shouldn't be cached of course...
@@ -872,7 +872,7 @@ class FrontendController extends AbstractPlugin
      *
      * @return string
      */
-    public function visualID($content, $srcPointer, $DSrec, $TOrec, $row, $table)
+    protected function visualID($content, $srcPointer, $DSrec, $TOrec, $row, $table)
     {
 
         // Create table rows:

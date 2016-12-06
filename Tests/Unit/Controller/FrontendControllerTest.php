@@ -14,6 +14,8 @@ namespace Schnitzler\Templavoila\Tests\Unit\Controller;
  *
  * The TYPO3 project - inspiring people to share!
  */
+use Schnitzler\Templavoila\Controller\FrontendController;
+use TYPO3\CMS\Core\Tests\AccessibleObjectInterface;
 use TYPO3\CMS\Core\Tests\UnitTestCase;
 
 /**
@@ -21,40 +23,22 @@ use TYPO3\CMS\Core\Tests\UnitTestCase;
  */
 class FrontendControllerTest extends UnitTestCase
 {
-
-    /**
-     * @test
-     */
-    public function inheritValueLogsErrorIfFirstParamNotAnArray()
-    {
-        /** @var $mockObject \tx_templavoila_pi1 | \PHPUnit_Framework_MockObject_MockObject  */
-        $mockObject = $this->getMock('tx_templavoila_pi1', ['log']);
-        $mockObject->expects($this->once())->method('log');
-        $mockObject->inheritValue(null, null);
-    }
-
-    /**
-     * @test
-     */
-    public function inheritValueLogsErrorIfvDefIsNotAKeyOfFirstParam()
-    {
-        /** @var $mockObject \tx_templavoila_pi1 | \PHPUnit_Framework_MockObject_MockObject  */
-        $mockObject = $this->getMock('tx_templavoila_pi1', ['log']);
-        $mockObject->expects($this->once())->method('log')->with('Key "vDEF" of array "$dV" doesn\'t exist');
-        $mockObject->inheritValue([], 'vDEF');
-    }
-
     /**
      * @test
      * @dataProvider inheritValueDataProvider
+     *
+     * @param array $data
+     * @param string $expected
      */
     public function inheritValueResultsWithParamMatrix($data, $expected)
     {
-        /** @var $mockObject \tx_templavoila_pi1 | \PHPUnit_Framework_MockObject_MockObject  */
-        $mockObject = $this->getMock('tx_templavoila_pi1', ['log']);
-        $mockObject->inheritValueFromDefault = true;
+        /** @var $mockObject FrontendController | \PHPUnit_Framework_MockObject_MockObject | AccessibleObjectInterface  */
+        $mockObject = $this->getAccessibleMock(FrontendController::class, ['log'], [], '', false);
+        $mockObject->initVars(['dontInheritValueFromDefault' => false]);
 
-        $this->assertSame($expected, call_user_func_array([$mockObject, 'inheritValue'], $data));
+        list($dataValues, $valueKey, $overlayMode) = array_values($data);
+
+        $this->assertSame($expected, $mockObject->_call('inheritValue', $dataValues, $valueKey, $overlayMode));
     }
 
     /**
