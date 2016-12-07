@@ -15,11 +15,9 @@ namespace Schnitzler\Templavoila\Domain\Model;
  * The TYPO3 project - inspiring people to share!
  */
 
-use Schnitzler\Templavoila\Templavoila;
 use Schnitzler\Templavoila\Traits\DatabaseConnection;
 use TYPO3\CMS\Core\Html\HtmlParser;
 use TYPO3\CMS\Core\Page\PageRenderer;
-use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
 use TYPO3\CMS\Frontend\Page\PageGenerator;
@@ -708,31 +706,6 @@ class HtmlMarkup
     }
 
     /**
-     * For use in both frontend and backend
-     *
-     * @param int $uid
-     *
-     * @return string|bool
-     */
-    public function getTemplateArrayForTO($uid)
-    {
-        global $TCA;
-        if (isset($TCA['tx_templavoila_tmplobj'])) {
-            $res = static::getDatabaseConnection()->exec_SELECTquery(
-                '*',
-                'tx_templavoila_tmplobj',
-                'uid=' . (int)$uid . ($TCA['tx_templavoila_tmplobj']['ctrl']['delete'] ? ' AND NOT ' . $TCA['tx_templavoila_tmplobj']['ctrl']['delete'] : '')
-            );
-            $row = static::getDatabaseConnection()->sql_fetch_assoc($res);
-            $this->tDat = unserialize($row['templatemapping']);
-
-            return $this->tDat['MappingData_cached'];
-        }
-
-        return false;
-    }
-
-    /**
      * @param array $TA
      * @param array $data
      *
@@ -751,106 +724,6 @@ class HtmlMarkup
         }
 
         return false;
-    }
-
-    /**
-     * Returns the right template record for the current display
-     * Requires the extension "TemplaVoila"
-     *
-     * @param int $uid The UID of the template record
-     * @param string $renderType
-     * @param int $langUid
-     *
-     * @return mixed The record array or <code>false</code>
-     */
-    public function getTemplateRecord($uid, $renderType, $langUid)
-    {
-        if (ExtensionManagementUtility::isLoaded(Templavoila::EXTKEY)) {
-            $rec = $GLOBALS['TSFE']->sys_page->checkRecord('tx_templavoila_tmplobj', $uid);
-            $parentUid = $rec['uid'];
-            $rendertype_ref = $rec['rendertype_ref'] ? $GLOBALS['TSFE']->sys_page->checkRecord('tx_templavoila_tmplobj', $rec['rendertype_ref']) : false;
-
-            if (is_array($rec)) {
-                if ($renderType) { // If print-flag try to find a proper print-record. If the lang-uid is also set, try to find a combined print/lang record, but if not found, the print rec. will take precedence.
-
-                    // Look up print-row for default language:
-                    $printRow = $this->getTemplateRecord_query($parentUid, 'AND rendertype=' . static::getDatabaseConnection()->fullQuoteStr($renderType, 'tx_templavoila_tmplobj') . ' AND sys_language_uid=0');
-                    if (is_array($printRow)) {
-                        $rec = $printRow;
-                    } elseif ($rendertype_ref) { // Look in rendertype_ref record:
-                        $printRow = $this->getTemplateRecord_query($rendertype_ref['uid'], 'AND rendertype=' . static::getDatabaseConnection()->fullQuoteStr($renderType, 'tx_templavoila_tmplobj') . ' AND sys_language_uid=0');
-                        if (is_array($printRow)) {
-                            $rec = $printRow;
-                        }
-                    }
-
-                    if ($langUid) { // If lang_uid is set, try to look up for current language:
-                        $printRow = $this->getTemplateRecord_query($parentUid, 'AND rendertype=' . static::getDatabaseConnection()->fullQuoteStr($renderType, 'tx_templavoila_tmplobj') . ' AND sys_language_uid=' . (int)$langUid);
-                        if (is_array($printRow)) {
-                            $rec = $printRow;
-                        } elseif ($rendertype_ref) { // Look in rendertype_ref record:
-                            $printRow = $this->getTemplateRecord_query($rendertype_ref['uid'], 'AND rendertype=' . static::getDatabaseConnection()->fullQuoteStr($renderType, 'tx_templavoila_tmplobj') . ' AND sys_language_uid=' . (int)$langUid);
-                            if (is_array($printRow)) {
-                                $rec = $printRow;
-                            }
-                        }
-                    }
-                } elseif ($langUid) { // If the language uid is set, then try to find a regular record with sys_language_uid
-                    $printRow = $this->getTemplateRecord_query($parentUid, 'AND rendertype=\'\' AND sys_language_uid=' . (int)$langUid);
-                    if (is_array($printRow)) {
-                        $rec = $printRow;
-                    } elseif ($rendertype_ref) { // Look in rendertype_ref record:
-                        $printRow = $this->getTemplateRecord_query($rendertype_ref['uid'], 'AND rendertype=\'\' AND sys_language_uid=' . (int)$langUid);
-                        if (is_array($printRow)) {
-                            $rec = $printRow;
-                        }
-                    }
-                }
-            }
-
-            return $rec;
-        }
-
-        return false;
-    }
-
-    /**
-     * @param int $uid
-     * @param string $renderType
-     * @param int $langUid
-     * @param string $sheet
-     *
-     * @return mixed
-     */
-    public function getTemplateMappingArray($uid, $renderType, $langUid, $sheet)
-    {
-        $row = $this->getTemplateRecord($uid, $renderType, $langUid);
-        $tDat = unserialize($row['templatemapping']);
-
-        return $sheet ? $tDat['MappingData_cached']['sub'][$sheet] : $tDat['MappingData_cached'];
-    }
-
-    /**
-     * Helper function to build the query for searching print/language templates.
-     *
-     * @param int $uid The UID of the template record
-     * @param string $where The where clause.
-     *
-     * @return mixed An array if a record is found, otherwise null
-     *
-     * @see getTemplateRecord()
-     */
-    public function getTemplateRecord_query($uid, $where)
-    {
-        global $TSFE;
-
-        $res = static::getDatabaseConnection()->exec_SELECTquery(
-            '*',
-            'tx_templavoila_tmplobj',
-            'parent=' . (int)$uid . ' ' . $where . $TSFE->sys_page->enableFields('tx_templavoila_tmplobj')
-        );
-
-        return static::getDatabaseConnection()->sql_fetch_assoc($res);
     }
 
     /**

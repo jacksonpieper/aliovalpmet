@@ -99,6 +99,32 @@ class TemplateRepository
     }
 
     /**
+     * @param int $parent
+     * @param string $renderType
+     * @param int $sysLanguageUid
+     */
+    public function findByParentAndRenderTypeAndSysLanguageUid($parent, $renderType, $sysLanguageUid)
+    {
+        /** @var PageRepository $pageRepository */
+        $pageRepository = GeneralUtility::makeInstance(PageRepository::class);
+
+        $row = static::getDatabaseConnection()->exec_SELECTgetSingleRow(
+            '*',
+            'tx_templavoila_tmplobj',
+            'parent = ' . $parent
+            . ' and rendertype = ' . static::getDatabaseConnection()->fullQuoteStr($renderType, 'tx_templavoila_tmplobj')
+            . ' and sys_language_uid = ' . $sysLanguageUid
+            . $pageRepository->enableFields('tx_templavoila_tmplobj')
+        );
+
+        if (!is_array($row)) {
+            $row = [];
+        }
+
+        return $row;
+    }
+
+    /**
      * Retrieve template objects with a certain scope within the given storage folder
      *
      * @param int $storagePid

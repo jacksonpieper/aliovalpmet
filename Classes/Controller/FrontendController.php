@@ -17,6 +17,7 @@ namespace Schnitzler\Templavoila\Controller;
 
 use Schnitzler\Templavoila\Domain\Model\HtmlMarkup;
 use Schnitzler\Templavoila\Domain\Repository\DataStructureRepository;
+use Schnitzler\Templavoila\Domain\Repository\TemplateRepository;
 use Schnitzler\Templavoila\Exception\Data\ObjectNotFoundException;
 use Schnitzler\Templavoila\Exception\RuntimeException;
 use Schnitzler\Templavoila\Exception\Serialization\SerializationException;
@@ -30,6 +31,7 @@ use TYPO3\CMS\Core\TypoScript\Parser\TypoScriptParser;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
+use TYPO3\CMS\Frontend\Page\PageRepository;
 use TYPO3\CMS\Frontend\Plugin\AbstractPlugin;
 
 /**
@@ -423,7 +425,7 @@ class FrontendController extends AbstractPlugin
             }
 
             // Get Template Object record:
-            $TOrec = $this->htmlMarkup->getTemplateRecord($row['tx_templavoila_to'], $renderType, $this->frontendController->sys_language_uid);
+            $TOrec = $this->getTemplateRecord($row['tx_templavoila_to'], $renderType, $this->frontendController->sys_language_uid);
             if (!is_array($TOrec)) {
                 throw new ObjectNotFoundException('
                     Couldn\'t find Template Object with UID "' . $row['tx_templavoila_to'] . '".
@@ -1000,6 +1002,78 @@ class FrontendController extends AbstractPlugin
             '</div>';
 
         return $content;
+    }
+
+    /**
+     * Returns the right template record for the current display
+     * Requires the extension "TemplaVoila"
+     *
+     * @param int $uid The UID of the template record
+     * @param string $renderType
+     * @param int $langUid
+     *
+     * @return mixed The record array or <code>false</code>
+     */
+    protected function getTemplateRecord($uid, $renderType, $langUid)
+    {
+        /** @var PageRepository $pageRepository */
+        $pageRepository = GeneralUtility::makeInstance(PageRepository::class);
+        $rec = $pageRepository->checkRecord('tx_templavoila_tmplobj', $uid);
+
+        /** @var array $rec */
+        if (is_array($rec) && isset($rec['uid'])) {
+            $parentUid = (int)$rec['uid'];
+
+            $rendertype_ref = [];
+            if (isset($rec['rendertype_ref'])) {
+                $rendertype_ref = $pageRepository->checkRecord('tx_templavoila_tmplobj', $rec['rendertype_ref']);
+                $rendertype_ref = is_array($rendertype_ref) ? $rendertype_ref : [];
+                /** @var array $rendertype_ref */
+            }
+
+            /** @var TemplateRepository $templateRepository */
+            $templateRepository = GeneralUtility::makeInstance(TemplateRepository::class);
+
+            $renderType = (string)$renderType !== '' ? (string)$renderType : '';
+            $langUid = (int)$langUid > 0 ? (int)$langUid : 0;
+
+            if ($renderType !== '') { // If print-flag try to find a proper print-record. If the lang-uid is also set, try to find a combined print/lang record, but if not found, the print rec. will take precedence.
+                // Look up print-row for default language:
+                $printRow = $templateRepository->findByParentAndRenderTypeAndSysLanguageUid((int)$parentUid, $renderType, 0);
+                if (count($printRow) > 0) {
+                    $rec = $printRow;
+                } elseif (isset($rendertype_ref['uid'])) { // Look in rendertype_ref record:
+                    $printRow = $templateRepository->findByParentAndRenderTypeAndSysLanguageUid((int)$rendertype_ref['uid'], $renderType, 0);
+                    if (count($printRow) > 0) {
+                        $rec = $printRow;
+                    }
+                }
+
+                if ($langUid > 0) { // If lang_uid is set, try to look up for current language:
+                    $printRow = $templateRepository->findByParentAndRenderTypeAndSysLanguageUid((int)$parentUid, $renderType, (int)$langUid);
+                    if (count($printRow) > 0) {
+                        $rec = $printRow;
+                    } elseif (isset($rendertype_ref['uid'])) { // Look in rendertype_ref record:
+                        $printRow = $templateRepository->findByParentAndRenderTypeAndSysLanguageUid((int)$rendertype_ref['uid'], $renderType, (int)$langUid);
+                        if (count($printRow) > 0) {
+                            $rec = $printRow;
+                        }
+                    }
+                }
+            } elseif ($langUid > 0) { // If the language uid is set, then try to find a regular record with sys_language_uid
+                $printRow = $templateRepository->findByParentAndRenderTypeAndSysLanguageUid((int)$parentUid, '', (int)$langUid);
+                if (count($printRow) > 0) {
+                    $rec = $printRow;
+                } elseif (isset($rendertype_ref['uid'])) { // Look in rendertype_ref record:
+                    $printRow = $templateRepository->findByParentAndRenderTypeAndSysLanguageUid((int)$rendertype_ref['uid'], '', (int)$langUid);
+                    if (count($printRow) > 0) {
+                        $rec = $printRow;
+                    }
+                }
+            }
+        }
+
+        return $rec;
     }
 
     /**

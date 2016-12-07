@@ -75,7 +75,7 @@ class ApiServiceTest extends FunctionalTestCase
             'tx_templavoila_tmplobj',
         ];
 
-        $fixtureRootPath = ORIGINAL_ROOT . 'typo3conf/ext/templavoila/Tests/Functional/Fixtures/';
+        $fixtureRootPath = ORIGINAL_ROOT . 'typo3conf/ext/templavoila/Tests/Functional/Service/ApiServiceTestFixtures';
 
         foreach ($fixtureTables as $table) {
             $this->getDatabaseConnection()->exec_TRUNCATEquery($table);
