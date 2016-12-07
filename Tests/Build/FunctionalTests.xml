@@ -1,6 +1,7 @@
 <phpunit
     backupGlobals="true"
     backupStaticAttributes="false"
+    bootstrap="../../.Build/vendor/typo3/cms/typo3/sysext/core/Build/FunctionalTestsBootstrap.php"
     colors="true"
     convertErrorsToExceptions="true"
     convertWarningsToExceptions="true"
@@ -17,4 +18,15 @@
             <directory>../Functional/</directory>
         </testsuite>
     </testsuites>
+
+    <filter>
+        <whitelist processUncoveredFilesFromWhitelist="true">
+            <directory suffix=".php">../../Classes/</directory>
+            <directory suffix=".php">../../Compatibility/</directory>
+            <exclude>
+                <directory suffix=".php">../../Classes/Traits/</directory>
+                <directory suffix=".php">../../Classes/Update/</directory>
+            </exclude>
+        </whitelist>
+    </filter>
 </phpunit>
