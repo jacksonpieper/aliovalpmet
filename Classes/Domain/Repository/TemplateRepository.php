@@ -18,6 +18,7 @@ namespace Schnitzler\Templavoila\Domain\Repository;
 use Schnitzler\Templavoila\Domain\Model\AbstractDataStructure;
 use Schnitzler\Templavoila\Domain\Model\Template;
 use Schnitzler\Templavoila\Traits\DatabaseConnection;
+use Schnitzler\Templavoila\Traits\DataHandler;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
@@ -29,6 +30,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 class TemplateRepository
 {
     use DatabaseConnection;
+    use DataHandler;
 
     /**
      * Retrieve a single templateobject by uid or xml-file path
@@ -250,5 +252,35 @@ class TemplateRepository
     public function countByPid($pid)
     {
         return $this->getTemplateCountForPid($pid);
+    }
+
+    /**
+     * @param int $uid
+     * @param array $updates
+     */
+    public function update($uid, array $updates)
+    {
+        $data = [];
+        $data[Template::TABLE][$uid] = $updates;
+
+        $dataHandler = static::getDataHandler();
+        $dataHandler->start($data, []);
+        $dataHandler->process_datamap();
+    }
+
+    /**
+     * @param array $inserts
+     * @return int
+     */
+    public function create(array $inserts)
+    {
+        $data = [];
+        $data[Template::TABLE]['NEW'] = $inserts;
+
+        $dataHandler = static::getDataHandler();
+        $dataHandler->start($data, []);
+        $dataHandler->process_datamap();
+
+        return (int)$dataHandler->substNEWwithIDs['NEW'];
     }
 }

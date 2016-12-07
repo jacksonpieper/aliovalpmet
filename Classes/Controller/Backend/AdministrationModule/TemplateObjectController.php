@@ -20,10 +20,10 @@ use Schnitzler\Templavoila\Controller\Backend\AbstractModuleController;
 use Schnitzler\Templavoila\Controller\Backend\Linkable;
 use Schnitzler\Templavoila\Domain\Model\DataStructure;
 use Schnitzler\Templavoila\Domain\Model\HtmlMarkup;
+use Schnitzler\Templavoila\Domain\Repository\TemplateRepository;
 use Schnitzler\Templavoila\Helper\TemplateMappingHelper;
 use TYPO3\CMS\Backend\Template\Components\ButtonBar;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
-use TYPO3\CMS\Core\DataHandling\DataHandler;
 use TYPO3\CMS\Core\Html\HtmlParser;
 use TYPO3\CMS\Core\Http\Response;
 use TYPO3\CMS\Core\Http\ServerRequest;
@@ -417,15 +417,17 @@ class TemplateObjectController extends AbstractModuleController implements Linka
         $templatemapping['BodyTag_cached'] = $currentMappingInfo_head['addBodyTag'] ? $reg[0] : '';
 
         $templateObjectUid = BackendUtility::wsMapId('tx_templavoila_tmplobj', $templateObjectRecord['uid']);
-        $data['tx_templavoila_tmplobj'][$templateObjectUid]['templatemapping'] = serialize($templatemapping);
-        $data['tx_templavoila_tmplobj'][$templateObjectUid]['fileref_mtime'] = @filemtime($absoluteTemplateFilePath);
-        $data['tx_templavoila_tmplobj'][$templateObjectUid]['fileref_md5'] = @md5_file($absoluteTemplateFilePath);
 
-        $dataHandler = GeneralUtility::makeInstance(DataHandler::class);
-        $dataHandler->stripslashes_values = 0;
-        $dataHandler->start($data, []);
-        $dataHandler->process_datamap();
-        unset($dataHandler);
+        /** @var TemplateRepository $templateRepository */
+        $templateRepository = GeneralUtility::makeInstance(TemplateRepository::class);
+        $templateRepository->update(
+            $templateObjectUid,
+            [
+                'templatemapping' => serialize($templatemapping),
+                'fileref_mtime' => @filemtime($absoluteTemplateFilePath),
+                'fileref_md5' => @md5_file($absoluteTemplateFilePath)
+            ]
+        );
 
         $this->moduleTemplate->addFlashMessage(
             static::getLanguageService()->getLL('msgMappingSaved'),

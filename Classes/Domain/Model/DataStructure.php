@@ -26,6 +26,8 @@ use TYPO3\CMS\Backend\Utility\BackendUtility;
  */
 class DataStructure extends AbstractDataStructure
 {
+    const TABLE = 'tx_templavoila_datastructure';
+
     use BackendUser;
 
     /**

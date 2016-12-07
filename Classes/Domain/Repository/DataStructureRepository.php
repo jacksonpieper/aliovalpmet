@@ -15,8 +15,10 @@ namespace Schnitzler\Templavoila\Domain\Repository;
  * The TYPO3 project - inspiring people to share!
  */
 
+use Schnitzler\Templavoila\Domain\Model\DataStructure;
 use Schnitzler\Templavoila\Templavoila;
 use Schnitzler\Templavoila\Traits\DatabaseConnection;
+use Schnitzler\Templavoila\Traits\DataHandler;
 use Schnitzler\Templavoila\Utility\StaticDataStructure\ToolsUtility;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -29,6 +31,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 class DataStructureRepository
 {
     use DatabaseConnection;
+    use DataHandler;
 
     /**
      * @var bool
@@ -354,5 +357,35 @@ class DataStructureRepository
     public function countByPid($pid)
     {
         return $this->getDatastructureCountForPid($pid);
+    }
+
+    /**
+     * @param int $uid
+     * @param array $updates
+     */
+    public function update($uid, array $updates)
+    {
+        $data = [];
+        $data[DataStructure::TABLE][$uid] = $updates;
+
+        $dataHandler = static::getDataHandler();
+        $dataHandler->start($data, []);
+        $dataHandler->process_datamap();
+    }
+
+    /**
+     * @param array $inserts
+     * @return int
+     */
+    public function create(array $inserts)
+    {
+        $data = [];
+        $data[DataStructure::TABLE]['NEW'] = $inserts;
+
+        $dataHandler = static::getDataHandler();
+        $dataHandler->start($data, []);
+        $dataHandler->process_datamap();
+
+        return (int)$dataHandler->substNEWwithIDs['NEW'];
     }
 }

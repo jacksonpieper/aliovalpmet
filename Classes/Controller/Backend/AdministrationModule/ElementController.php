@@ -22,6 +22,8 @@ use Schnitzler\Templavoila\Controller\Backend\Linkable;
 use Schnitzler\Templavoila\Domain\Model\DataStructure;
 use Schnitzler\Templavoila\Domain\Model\File;
 use Schnitzler\Templavoila\Domain\Model\HtmlMarkup;
+use Schnitzler\Templavoila\Domain\Repository\DataStructureRepository;
+use Schnitzler\Templavoila\Domain\Repository\TemplateRepository;
 use Schnitzler\Templavoila\Helper\TagBuilderHelper;
 use Schnitzler\Templavoila\Helper\TemplateMappingHelper;
 use Schnitzler\Templavoila\Templavoila;
@@ -29,7 +31,6 @@ use Schnitzler\Templavoila\Utility\PermissionUtility;
 use TYPO3\CMS\Backend\Template\Components\ButtonBar;
 use TYPO3\CMS\Backend\Template\Components\Buttons\AbstractButton;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
-use TYPO3\CMS\Core\DataHandling\DataHandler;
 use TYPO3\CMS\Core\Html\HtmlParser;
 use TYPO3\CMS\Core\Http\Response;
 use TYPO3\CMS\Core\Http\ServerRequest;
@@ -424,22 +425,18 @@ class ElementController extends AbstractModuleController implements Configurable
             $structure['meta']['langDisable'] = '1';
         }
 
-        $data = [];
-        $data['tx_templavoila_datastructure']['NEW']['pid'] = (int)$post['pid'];
-        $data['tx_templavoila_datastructure']['NEW']['title'] = $post['title'];
-        $data['tx_templavoila_datastructure']['NEW']['scope'] = (int)$post['scope'];
-        $data['tx_templavoila_datastructure']['NEW']['dataprot'] = GeneralUtility::array2xml_cs(
-            $structure,
-            'T3DataStructure',
-            ['useCDATA' => 1]
-        );
-
-        /** @var DataHandler $dataHandler */
-        $dataHandler = GeneralUtility::makeInstance(DataHandler::class);
-        $dataHandler->stripslashes_values = 0;
-        $dataHandler->start($data, []);
-        $dataHandler->process_datamap();
-        $dataStructureUid = (int)$dataHandler->substNEWwithIDs['NEW'];
+        /** @var DataStructureRepository $dataStructureRepository */
+        $dataStructureRepository = GeneralUtility::makeInstance(DataStructureRepository::class);
+        $dataStructureUid = $dataStructureRepository->create([
+            'pid' => (int)$post['pid'],
+            'title' => $post['title'],
+            'scope' => (int)$post['scope'],
+            'dataprot' => GeneralUtility::array2xml_cs(
+                $structure,
+                'T3DataStructure',
+                ['useCDATA' => 1]
+            )
+        ]);
 
         if ($dataStructureUid <= 0) {
             $this->moduleTemplate->addFlashMessage(
@@ -453,20 +450,19 @@ class ElementController extends AbstractModuleController implements Configurable
             ]));
         }
 
-        $data = [];
-        $data['tx_templavoila_tmplobj']['NEW']['pid'] = (int)$post['pid'];
-        $data['tx_templavoila_tmplobj']['NEW']['title'] = $post['title'] . ' [Template]';
-        $data['tx_templavoila_tmplobj']['NEW']['datastructure'] = $dataStructureUid;
-        $data['tx_templavoila_tmplobj']['NEW']['fileref'] = substr($this->file, strlen(PATH_site));
-        $data['tx_templavoila_tmplobj']['NEW']['templatemapping'] = serialize($mapping);
-        $data['tx_templavoila_tmplobj']['NEW']['fileref_mtime'] = @filemtime($this->file);
-        $data['tx_templavoila_tmplobj']['NEW']['fileref_md5'] = @md5_file($this->file);
-
-        $dataHandler = GeneralUtility::makeInstance(DataHandler::class);
-        $dataHandler->stripslashes_values = 0;
-        $dataHandler->start($data, []);
-        $dataHandler->process_datamap();
-        $templateObjectUid = (int)$dataHandler->substNEWwithIDs['NEW'];
+        /** @var TemplateRepository $templateRepository */
+        $templateRepository = GeneralUtility::makeInstance(TemplateRepository::class);
+        $templateObjectUid = $templateRepository->create(
+            [
+                'pid' => (int)$post['pid'],
+                'title' => $post['title'] . ' [Template]',
+                'datastructure' => $dataStructureUid,
+                'fileref' => substr($this->file, strlen(PATH_site)),
+                'templatemapping' => serialize($mapping),
+                'fileref_mtime' => @filemtime($this->file),
+                'fileref_md5' => @md5_file($this->file)
+            ]
+        );
 
         if ($templateObjectUid <= 0) {
             $this->moduleTemplate->addFlashMessage(
@@ -523,28 +519,32 @@ class ElementController extends AbstractModuleController implements Configurable
         $structure = $this->prepareStructureDataToBeStored($structure, $mapping, $datastructureRecord['scope']);
 
         if ((int)$templateObjectRecord['uid'] > 0 && (int)$datastructureRecord['uid'] > 0) {
-            $data = [];
-            $data['tx_templavoila_datastructure'][$datastructureRecord['uid']]['dataprot'] = GeneralUtility::array2xml_cs(
-                $structure,
-                'T3DataStructure', ['useCDATA' => 1]
+
+            /** @var DataStructureRepository $dataStructureRepository */
+            $dataStructureRepository = GeneralUtility::makeInstance(DataStructureRepository::class);
+            $dataStructureRepository->update(
+                $datastructureRecord['uid'],
+                [
+                    'dataprot' => GeneralUtility::array2xml_cs(
+                        $structure,
+                        'T3DataStructure', ['useCDATA' => 1]
+                    )
+                ]
             );
 
-            $dataHandler = GeneralUtility::makeInstance(DataHandler::class);
-            $dataHandler->stripslashes_values = 0;
-            $dataHandler->start($data, []);
-            $dataHandler->process_datamap();
-
             $templateObjectUid = BackendUtility::wsMapId('tx_templavoila_tmplobj', $templateObjectRecord['uid']);
-            $data = [];
-            $data['tx_templavoila_tmplobj'][$templateObjectUid]['fileref'] = substr($this->file, strlen(PATH_site));
-            $data['tx_templavoila_tmplobj'][$templateObjectUid]['templatemapping'] = serialize($mapping);
-            $data['tx_templavoila_tmplobj'][$templateObjectUid]['fileref_mtime'] = @filemtime($this->file);
-            $data['tx_templavoila_tmplobj'][$templateObjectUid]['fileref_md5'] = @md5_file($this->file);
 
-            $dataHandler = GeneralUtility::makeInstance(DataHandler::class);
-            $dataHandler->stripslashes_values = 0;
-            $dataHandler->start($data, []);
-            $dataHandler->process_datamap();
+            /** @var TemplateRepository $templateRepository */
+            $templateRepository = GeneralUtility::makeInstance(TemplateRepository::class);
+            $templateRepository->update(
+                $templateObjectUid,
+                [
+                    'fileref' => substr($this->file, strlen(PATH_site)),
+                    'templatemapping' => serialize($mapping),
+                    'fileref_mtime' => @filemtime($this->file),
+                    'fileref_md5' => @md5_file($this->file)
+                ]
+            );
 
             $this->getModuleTemplate()->addFlashMessage(
                 sprintf(static::getLanguageService()->getLL('msgDSTOUpdated'), $datastructureRecord['uid'], $templateObjectRecord['uid']),
