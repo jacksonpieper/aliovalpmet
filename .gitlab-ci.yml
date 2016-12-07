@@ -3,7 +3,7 @@ before_script:
   - mv Tests/Build/composer.json .
   - php -v
   - composer -V
-  - composer install --no-interaction --no-progress --prefer-source
+  - composer install --no-interaction --no-progress --prefer-dist
   - export TYPO3_PATH_WEB=$PWD/.Build/Web
 #  - export typo3DatabaseHost="mysql"
 #  - export typo3DatabaseUsername="root"
