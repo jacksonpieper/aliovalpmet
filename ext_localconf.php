@@ -85,7 +85,7 @@ $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['lowlevel']['cleanerModules']['tx_templav
 $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['l10nmgr']['indexFilter']['tx_templavoila_usedCE'] = ['EXT:templavoila/Classes/Service/UserFunc/UsedContentElement.php:Schnitzler\Templavoila\Service\UserFunc\UsedContentElement'];
 
 // Register Preview Classes for Page Module
-$elementRendererContainer = ElementRendererContainer::getInstance();
+$elementRendererContainer = \Schnitzler\Templavoila\Container\ElementRendererContainer::getInstance();
 $elementRendererContainer->add('generic', new \Schnitzler\Templavoila\Controller\Backend\PageModule\Renderer\ContentElementRenderer\GenericRenderer());
 $elementRendererContainer->add('text', new \Schnitzler\Templavoila\Controller\Backend\PageModule\Renderer\ContentElementRenderer\TextRenderer());
 $elementRendererContainer->add('table', new \Schnitzler\Templavoila\Controller\Backend\PageModule\Renderer\ContentElementRenderer\TextRenderer());
