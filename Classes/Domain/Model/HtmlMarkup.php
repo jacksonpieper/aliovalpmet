@@ -35,12 +35,12 @@ class HtmlMarkup
     /**
      * @var array
      */
-    protected $rangeEndSearch;
+    private $rangeEndSearch;
 
     /**
      * @var array
      */
-    protected $rangeStartPath;
+    private $rangeStartPath;
 
     /**
      * Determines which mode is used for markup. Options are:
@@ -51,14 +51,14 @@ class HtmlMarkup
      *
      * @var string
      */
-    public $mode = '';
+    private $mode = '';
 
     /**
      * When in source mode the lines are truncated with "..." if longer than this number of characters.
      *
      * @var int
      */
-    public $maxLineLengthInSourceMode = 150;
+    private $maxLineLengthInSourceMode = 150;
 
     /**
      * The mode by which to detect the path of elements
@@ -69,7 +69,7 @@ class HtmlMarkup
      *
      * @var string
      */
-    public $pathMode = '1';
+    private $pathMode = '1';
 
     /**
      * Maximum recursions into the HTML code. Works as a break to avoid run-away function calls if that is potentially possible.
@@ -95,7 +95,7 @@ class HtmlMarkup
     /**
      * @var bool
      */
-    public $textGnyf = false;
+    private $textGnyf = false;
 
     /**
      * This defines which tags can be exploded. Input lists of tags will be limited to those entered here.
@@ -235,14 +235,14 @@ class HtmlMarkup
      *
      * @var string
      */
-    public $backPath = '';
+    private $backPath = '';
 
     /**
      * will contain style-part for gnyf images. (see init())
      *
      * @var string
      */
-    public $gnyfStyle = '';
+    private $gnyfStyle = '';
 
     /**
      * Eg. onclick="return parent.mod.updPath('###PATH###');"
@@ -261,14 +261,14 @@ class HtmlMarkup
     /**
      * @var string
      */
-    public $tDat = '';
+    private $tDat = '';
 
     /**
      * Used to register the paths during parsing the code (see init())
      *
      * @var array
      */
-    public $elCountArray = [];
+    private $elCountArray = [];
 
     /**
      * Used to register the all elements on the same level
@@ -282,7 +282,7 @@ class HtmlMarkup
      *
      * @var array
      */
-    public $searchPaths = [];
+    private $searchPaths = [];
 
     public function __construct()
     {
@@ -363,7 +363,7 @@ class HtmlMarkup
      *
      * @return array Content... (not welldefined yet)
      */
-    public function getContentBasedOnPath($content, $pathStrArr)
+    private function getContentBasedOnPath($content, $pathStrArr)
     {
         $this->init();
         $this->searchPaths = [];
@@ -488,7 +488,7 @@ class HtmlMarkup
      *
      * @return array
      */
-    public function mappingInfoToSearchPath($currentMappingInfo)
+    private function mappingInfoToSearchPath($currentMappingInfo)
     {
         $paths = [];
         $pathsArrays = [];
@@ -530,7 +530,7 @@ class HtmlMarkup
      *
      * @return string HTML .
      */
-    public function mergeSearchpartsIntoContent($content, $searchParts, $token = '')
+    private function mergeSearchpartsIntoContent($content, $searchParts, $token = '')
     {
         foreach ($searchParts as $path => $pathInfo) {
             if ($pathInfo['placeholder']) {
@@ -711,7 +711,7 @@ class HtmlMarkup
      *
      * @return string|bool
      */
-    public function mergeDataArrayToTemplateArray($TA, $data)
+    private function mergeDataArrayToTemplateArray($TA, $data)
     {
         if (is_array($TA['cArray'])) {
             foreach ($data as $key => $value) {
@@ -733,6 +733,7 @@ class HtmlMarkup
      * @param array $MappingData_head_cached ...
      * @param string $BodyTag_cached ...
      * @param bool $pageRenderer try to use the pageRenderer for script and style inclusion
+     * // todo: put into frontend controller
      */
     public function setHeaderBodyParts($MappingInfo_head, $MappingData_head_cached, $BodyTag_cached = '', $pageRenderer = false)
     {
@@ -840,7 +841,7 @@ class HtmlMarkup
      *
      * @return string
      */
-    public function setTagsFromXML($content)
+    private function setTagsFromXML($content)
     {
         $parser = xml_parser_create();
         $vals = [];
@@ -873,7 +874,7 @@ class HtmlMarkup
      *
      * @return array array with two strings, the list of block tags and the list of single tags.
      */
-    public function splitTagTypes($showTags)
+    private function splitTagTypes($showTags)
     {
         $showTagsArr = GeneralUtility::trimExplode(',', strtolower($showTags), 1);
         $showTagsArr = array_flip($showTagsArr);
@@ -910,7 +911,7 @@ class HtmlMarkup
      *
      * @return string HTML
      */
-    public function recursiveBlockSplitting($content, $tagsBlock, $tagsSolo, $mode, $path = '', $recursion = 0)
+    private function recursiveBlockSplitting($content, $tagsBlock, $tagsSolo, $mode, $path = '', $recursion = 0)
     {
 
         // Splitting HTML string by all block-tags
@@ -1052,7 +1053,7 @@ class HtmlMarkup
      *
      * @return string Modified sub HTML code ($v)
      */
-    public function getMarkupCode($mode, $v, $params, $firstTagName, $firstTag, $endTag, $subPath, $recursion)
+    private function getMarkupCode($mode, $v, $params, $firstTagName, $firstTag, $endTag, $subPath, $recursion)
     {
 
         // Get gnyf:
@@ -1144,7 +1145,7 @@ class HtmlMarkup
      *
      * @return string Modified sub HTML code ($v)
      */
-    public function getSearchCode($mode, $v, $params, $firstTagName, $firstTag, $endTag, $subPath, $path, $recursion)
+    private function getSearchCode($mode, $v, $params, $firstTagName, $firstTag, $endTag, $subPath, $path, $recursion)
     {
         if ($this->rangeEndSearch[$recursion]) {
             $this->searchPaths[$this->rangeStartPath[$recursion]]['content'] .= $firstTag . $v . $endTag;
@@ -1229,7 +1230,7 @@ class HtmlMarkup
      *
      * @return string Formatted input.
      */
-    public function sourceDisplay($str, $recursion, $gnyf = '', $valueStr = 0)
+    private function sourceDisplay($str, $recursion, $gnyf = '', $valueStr = 0)
     {
         if (strcmp(trim($str), '')) {
             return str_pad('', $recursion * 2, ' ', STR_PAD_LEFT) .
@@ -1254,7 +1255,7 @@ class HtmlMarkup
      *
      * @return string Formatted input.
      */
-    public function checkboxDisplay($str, $recursion, $path, $gnyf = '', $valueStr = 0)
+    private function checkboxDisplay($str, $recursion, $path, $gnyf = '', $valueStr = 0)
     {
         static $rows = 0;
 
@@ -1284,7 +1285,7 @@ class HtmlMarkup
      *
      * @return string The sub path.
      */
-    public function makePath($path, $firstTagName, $attr)
+    private function makePath($path, $firstTagName, $attr)
     {
         // Detect if pathMode is set and then construct the path based on the mode set.
         $subPath = 'Undefined';
@@ -1317,7 +1318,7 @@ class HtmlMarkup
      *
      * @return string HTML
      */
-    public function getGnyf($firstTagName, $path, $title)
+    private function getGnyf($firstTagName, $path, $title)
     {
         if (!$this->onlyElements || GeneralUtility::inList($this->onlyElements, $firstTagName)) {
             $onclick = str_replace('###PATH###', $this->pathPrefix . $path, $this->gnyfImgAdd);
