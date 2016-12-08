@@ -23,7 +23,6 @@
 	<filter>
 		<whitelist processUncoveredFilesFromWhitelist="true">
 			<directory suffix=".php">../../Classes/</directory>
-			<directory suffix=".php">../../Compatibility/</directory>
 			<exclude>
 				<directory suffix=".php">../../Classes/Traits/</directory>
 				<directory suffix=".php">../../Classes/Update/</directory>
