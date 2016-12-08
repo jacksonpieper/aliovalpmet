@@ -257,11 +257,6 @@ class HtmlMarkup
     public $pathPrefix = '';
 
     /**
-     * @var string
-     */
-    private $tDat = '';
-
-    /**
      * Used to register the paths during parsing the code (see init())
      *
      * @var array
@@ -704,27 +699,6 @@ class HtmlMarkup
     }
 
     /**
-     * @param array $TA
-     * @param array $data
-     *
-     * @return string|bool
-     */
-    private function mergeDataArrayToTemplateArray($TA, $data)
-    {
-        if (is_array($TA['cArray'])) {
-            foreach ($data as $key => $value) {
-                if (isset($TA['cArray'][$key])) {
-                    $TA['cArray'][$key] = $value;
-                }
-            }
-
-            return implode('', $TA['cArray']);
-        }
-
-        return false;
-    }
-
-    /**
      * Various sub processing
      */
 
@@ -741,39 +715,6 @@ class HtmlMarkup
         $style = '';
         $style .= (!GeneralUtility::inList('explode,checkbox', $this->mode) ? 'position:absolute;' : '');
         $this->gnyfStyle = $style ? ' style="' . htmlspecialchars($style) . '"' : '';
-    }
-
-    /**
-     * The idea is to parse the XML in $contnet and set the internal TAG array with all these tags so they can be mapped...
-     * NOT WORKING YET - experiment.
-     *
-     * @param string $content
-     *
-     * @return string
-     */
-    private function setTagsFromXML($content)
-    {
-        $parser = xml_parser_create();
-        $vals = [];
-        $index = [];
-
-        xml_parser_set_option($parser, XML_OPTION_CASE_FOLDING, 0);
-        xml_parser_set_option($parser, XML_OPTION_SKIP_WHITE, 0);
-        xml_parse_into_struct($parser, $content, $vals, $index);
-
-        if (xml_get_error_code($parser)) {
-            return 'Line ' . xml_get_current_line_number($parser) . ': ' . xml_error_string(xml_get_error_code($parser));
-        }
-        xml_parser_free($parser);
-
-        $this->tags = $index;
-        foreach ($index as $idx => $value) {
-            $this->tags[$idx] = [];
-        }
-
-        $this->textGnyf = true;
-
-        return '';
     }
 
     /**
