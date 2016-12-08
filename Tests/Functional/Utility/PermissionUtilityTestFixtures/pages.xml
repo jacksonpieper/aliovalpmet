@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<dataset>
+    <pages>
+        <uid>1</uid>
+        <pid>0</pid>
+        <title>/</title>
+    </pages>
+    <pages>
+        <uid>2</uid>
+        <pid>1</pid>
+        <title>/accessible</title>
+        <perms_groupid>1</perms_groupid>
+        <perms_group>17</perms_group><!-- Permission::PAGE_SHOW (1) & Permission::CONTENT_EDIT (16) -->
+    </pages>
+    <pages>
+        <uid>3</uid>
+        <pid>1</pid>
+        <title>/folder/restricted</title>
+        <doktype>254</doktype>
+    </pages>
+    <pages>
+        <uid>4</uid>
+        <pid>1</pid>
+        <title>/folder/accessible</title>
+        <doktype>254</doktype>
+        <perms_groupid>1</perms_groupid>
+        <perms_group>17</perms_group><!-- Permission::PAGE_SHOW (1) & Permission::CONTENT_EDIT (16) -->
+    </pages>
+</dataset>

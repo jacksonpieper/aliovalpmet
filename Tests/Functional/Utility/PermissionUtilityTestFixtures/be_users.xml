@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<dataset>
+    <be_users>
+        <uid>1</uid>
+        <pid>0</pid>
+        <username>admin</username>
+        <admin>1</admin>
+        <allowed_languages></allowed_languages>
+        <disableIPlock>1</disableIPlock>
+    </be_users>
+    <be_users>
+        <uid>2</uid>
+        <pid>0</pid>
+        <username>editor</username>
+        <admin>0</admin>
+        <allowed_languages>1</allowed_languages>
+        <disableIPlock>1</disableIPlock>
+        <usergroup>1</usergroup>
+        <options>1</options><!-- Inherits webmounts from group -->
+    </be_users>
+    <be_users>
+        <uid>3</uid>
+        <pid>0</pid>
+        <username>guest</username>
+        <admin>0</admin>
+        <disableIPlock>1</disableIPlock>
+    </be_users>
+</dataset>

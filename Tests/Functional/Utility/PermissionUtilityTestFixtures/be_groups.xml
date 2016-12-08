@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<dataset>
+    <be_groups>
+        <uid>1</uid>
+        <pid>0</pid>
+        <title>editors</title>
+        <db_mountpoints>2,4</db_mountpoints>
+        <tables_modify>pages</tables_modify>
+        <non_exclude_fields>pages:tx_templavoila_flex</non_exclude_fields>
+        <tx_templavoila_access>1,2</tx_templavoila_access>
+    </be_groups>
+</dataset>

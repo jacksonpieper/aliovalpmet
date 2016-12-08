@@ -47,10 +47,6 @@ final class PermissionUtility
 
             if (is_array($row)) {
                 $calcPerms = static::getBackendUser()->calcPerms($row);
-
-                if (!static::hasBasicEditRights('pages', $row)) {
-                    $calcPerms &= ~Permission::CONTENT_EDIT;
-                }
             }
 
             static::$compiledPermissions[$pid] = $calcPerms;
@@ -72,7 +68,7 @@ final class PermissionUtility
         }
 
         $id = $record[$table === 'pages' ? 'uid' : 'pid'];
-        $pageRecord = BackendUtility::getRecordWSOL('pages', $id);
+        $pageRecord = BackendUtility::getRecordWSOL($table, $id);
 
         $mayEditPage = static::getBackendUser()->doesUserHaveAccess($pageRecord, Permission::CONTENT_EDIT);
         $mayModifyTable = GeneralUtility::inList(static::getBackendUser()->groupData['tables_modify'], $table);
@@ -135,6 +131,9 @@ final class PermissionUtility
         return $storageFolders;
     }
 
+    /**
+     * @codeCoverageIgnore
+     */
     private function __construct()
     {
         // deliberately private
