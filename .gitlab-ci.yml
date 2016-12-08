@@ -1,14 +1,19 @@
 before_script:
-  - rm composer.json
-  - mv Tests/Build/composer.json .
-  - php -v
-  - composer -V
-  - composer install --no-interaction --no-progress --prefer-dist
+  - export COMPOSER_CACHE_DIR=/cache/composer
   - export TYPO3_PATH_WEB=$PWD/.Build/Web
 #  - export typo3DatabaseHost="mysql"
 #  - export typo3DatabaseUsername="root"
 #  - export typo3DatabasePassword="root"
 #  - export typo3DatabaseName="templavoila"
+  - rm composer.json
+  - mv Tests/Build/composer.json .
+  - php -v
+  - composer -V
+  - composer install --no-interaction --no-progress --prefer-dist
+
+cache:
+  paths:
+    - cache/
 
 test:5.6:
   image: schnitzler/php:5.6-cli
