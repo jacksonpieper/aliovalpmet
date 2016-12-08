@@ -2,6 +2,20 @@
   "name": "schnitzler/templavoila",
   "description": "",
   "license": ["GPL-2.0+"],
+  "repositories": [
+    {
+      "type": "git",
+      "url":  "https://git.typo3.org/Packages/TYPO3.CMS.git"
+    }
+  ],
+  "require": {
+    "php": ">=5.5.0",
+    "typo3/cms": "~7.6"
+  },
+  "require-dev": {
+    "phpunit/phpunit": "~4.8.0",
+    "mikey179/vfsStream": "1.6.0"
+  },
   "autoload": {
     "psr-4": {
       "Schnitzler\\Templavoila\\": ["Classes/", "Interface/"]
@@ -13,15 +27,11 @@
   "autoload-dev": {
     "psr-4": {
       "Schnitzler\\Templavoila\\": "Tests/"
-    }
-  },
-  "require": {
-    "php": ">=5.5.0",
-    "typo3/cms": "~7.6"
-  },
-  "require-dev": {
-    "phpunit/phpunit": "~4.8.0",
-    "mikey179/vfsStream": "1.6.0"
+    },
+    "classmap": [
+      ".Build/vendor/typo3/cms/typo3/sysext/core/Classes/Tests/",
+      ".Build/vendor/typo3/cms/typo3/sysext/core/Tests/"
+    ]
   },
   "config": {
     "vendor-dir": ".Build/vendor",

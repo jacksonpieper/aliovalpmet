@@ -1,22 +1,20 @@
 before_script:
   - export COMPOSER_CACHE_DIR=/cache/composer
   - export TYPO3_PATH_WEB=$PWD/.Build/Web
-#  - export typo3DatabaseHost="mysql"
-#  - export typo3DatabaseUsername="root"
-#  - export typo3DatabasePassword="root"
-#  - export typo3DatabaseName="templavoila"
+  - export typo3DatabaseHost="mysql"
+  - export typo3DatabaseUsername="root"
+  - export typo3DatabasePassword="root"
+  - export typo3DatabaseName="templavoila"
   - rm composer.json
   - mv Tests/Build/composer.json .
   - php -v
   - composer -V
   - composer install --no-interaction --no-progress --prefer-dist
 
-cache:
-  paths:
-    - cache/
-
 test:5.6:
-  image: schnitzler/php:5.6-cli
+  tags:
+    - docker
+    - php56-cli
   services:
     - mysql:5.6
   variables:
@@ -24,10 +22,12 @@ test:5.6:
   script:
     - find . -name \*.php ! -path "./.Build/*" | parallel --gnu php -d display_errors=stderr -l {} > /dev/null \;
     - php .Build/bin/phpunit --coverage-text --colors --configuration .Build/Web/typo3conf/ext/templavoila/Tests/Build/UnitTests.xml
-#    - php .Build/bin/phpunit --colors --bootstrap .Build/vendor/typo3/cms/typo3/sysext/core/Build/FunctionalTestsBootstrap.php -c Tests/Build/FunctionalTests.xml
+    - php .Build/bin/phpunit --coverage-text --colors --configuration .Build/Web/typo3conf/ext/templavoila/Tests/Build/FunctionalTests.xml
 
 test:7.0:
-  image: schnitzler/php:7.0-cli
+  tags:
+    - docker
+    - php70-cli
   services:
     - mysql:5.6
   variables:
@@ -35,4 +35,4 @@ test:7.0:
   script:
     - find . -name \*.php ! -path "./.Build/*" | parallel --gnu php -d display_errors=stderr -l {} > /dev/null \;
     - php .Build/bin/phpunit --coverage-text --colors --configuration .Build/Web/typo3conf/ext/templavoila/Tests/Build/UnitTests.xml
-#    - php .Build/bin/phpunit --colors --bootstrap .Build/vendor/typo3/cms/typo3/sysext/core/Build/FunctionalTestsBootstrap.php -c Tests/Build/FunctionalTests.xml
+    - php .Build/bin/phpunit --coverage-text --colors --configuration .Build/Web/typo3conf/ext/templavoila/Tests/Build/FunctionalTests.xml
