@@ -49,7 +49,7 @@ class HtmlMarkup
      *
      * @var string
      */
-    private $mode = '';
+    protected $mode = '';
 
     /**
      * When in source mode the lines are truncated with "..." if longer than this number of characters.
@@ -481,7 +481,7 @@ class HtmlMarkup
      *
      * @return array
      */
-    private function mappingInfoToSearchPath($currentMappingInfo)
+    protected function mappingInfoToSearchPath($currentMappingInfo)
     {
         $paths = [];
         $pathsArrays = [];
@@ -523,7 +523,7 @@ class HtmlMarkup
      *
      * @return string HTML .
      */
-    private function mergeSearchpartsIntoContent($content, $searchParts, $token = '')
+    protected function mergeSearchpartsIntoContent($content, $searchParts, $token = '')
     {
         foreach ($searchParts as $path => $pathInfo) {
             if ($pathInfo['placeholder']) {
@@ -725,7 +725,7 @@ class HtmlMarkup
      *
      * @return array array with two strings, the list of block tags and the list of single tags.
      */
-    private function splitTagTypes($showTags)
+    protected function splitTagTypes($showTags)
     {
         $showTagsArr = GeneralUtility::trimExplode(',', strtolower($showTags), 1);
         $showTagsArr = array_flip($showTagsArr);
@@ -762,7 +762,7 @@ class HtmlMarkup
      *
      * @return string HTML
      */
-    private function recursiveBlockSplitting($content, $tagsBlock, $tagsSolo, $mode, $path = '', $recursion = 0)
+    protected function recursiveBlockSplitting($content, $tagsBlock, $tagsSolo, $mode, $path = '', $recursion = 0)
     {
 
         // Splitting HTML string by all block-tags
@@ -1136,7 +1136,7 @@ class HtmlMarkup
      *
      * @return string The sub path.
      */
-    private function makePath($path, $firstTagName, $attr)
+    protected function makePath($path, $firstTagName, $attr)
     {
         // Detect if pathMode is set and then construct the path based on the mode set.
         $subPath = 'Undefined';
