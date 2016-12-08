@@ -25,12 +25,15 @@ use Schnitzler\Templavoila\Templavoila;
 use Schnitzler\Templavoila\Traits\BackendUser;
 use TYPO3\CMS\Core\Configuration\FlexForm\FlexFormTools;
 use TYPO3\CMS\Core\Database\DatabaseConnection;
+use TYPO3\CMS\Core\Html\HtmlParser;
 use TYPO3\CMS\Core\Log\Logger;
 use TYPO3\CMS\Core\Log\LogManager;
+use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\TypoScript\Parser\TypoScriptParser;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
+use TYPO3\CMS\Frontend\Page\PageGenerator;
 use TYPO3\CMS\Frontend\Page\PageRepository;
 use TYPO3\CMS\Frontend\Plugin\AbstractPlugin;
 
@@ -517,7 +520,7 @@ class FrontendController extends AbstractPlugin
             $mappingDataBody = $singleSheet ? $TO['MappingData_cached'] : (is_array($TO['MappingData_cached']['sub'][$sheet]) ? $TO['MappingData_cached']['sub'][$sheet] : $TO['MappingData_cached']['sub']['sDEF']);
             $content = $this->htmlMarkup->mergeFormDataIntoTemplateStructure($dataValues, $mappingDataBody, '', $vKey);
 
-            $this->htmlMarkup->setHeaderBodyParts($TO['MappingInfo_head'], $TO['MappingData_head_cached'], $TO['BodyTag_cached'], self::$enablePageRenderer);
+            $this->setHeaderBodyParts($TO['MappingInfo_head'], $TO['MappingData_head_cached'], $TO['BodyTag_cached'], self::$enablePageRenderer);
 
             if ($GLOBALS['TT']->LR) {
                 $GLOBALS['TT']->pull();
@@ -1074,6 +1077,93 @@ class FrontendController extends AbstractPlugin
         }
 
         return $rec;
+    }
+
+    /**
+     * Will set header content and BodyTag for template.
+     *
+     * @param array $MappingInfo_head ...
+     * @param array $MappingData_head_cached ...
+     * @param string $BodyTag_cached ...
+     * @param bool $pageRenderer try to use the pageRenderer for script and style inclusion
+     */
+    private function setHeaderBodyParts($MappingInfo_head, $MappingData_head_cached, $BodyTag_cached = '', $pageRenderer = false)
+    {
+        /* @var $htmlParse HtmlParser */
+        $htmlParse = GeneralUtility::makeInstance(HtmlParser::class);
+
+        $types = [
+            'LINK' => 'text/css',
+            'STYLE' => 'text/css',
+            'SCRIPT' => 'text/javascript'
+        ];
+        // Traversing mapped header parts:
+        if (is_array($MappingInfo_head['headElementPaths'])) {
+            $extraHeaderData = [];
+            foreach (array_keys($MappingInfo_head['headElementPaths']) as $kk) {
+                if (isset($MappingData_head_cached['cArray']['el_' . $kk])) {
+                    $tag = strtoupper($htmlParse->getFirstTagName($MappingData_head_cached['cArray']['el_' . $kk]));
+                    $attr = $htmlParse->get_tag_attributes($MappingData_head_cached['cArray']['el_' . $kk]);
+                    if (isset($GLOBALS['TSFE']) &&
+                        $pageRenderer &&
+                        isset($attr[0]['type']) &&
+                        isset($types[$tag]) &&
+                        $types[$tag] == $attr[0]['type']
+                    ) {
+                        $name = 'templavoila#' . md5($MappingData_head_cached['cArray']['el_' . $kk]);
+                        /** @var PageRenderer $pageRenderer */
+                        $pageRenderer = GeneralUtility::makeInstance(PageRenderer::class);
+                        switch ($tag) {
+                            case 'LINK':
+                                $rel = isset($attr[0]['rel']) ? $attr[0]['rel'] : 'stylesheet';
+                                $media = isset($attr[0]['media']) ? $attr[0]['media'] : 'all';
+                                $pageRenderer->addCssFile($attr[0]['href'], $rel, $media);
+                                break;
+                            case 'STYLE':
+                                $cont = $htmlParse->removeFirstAndLastTag($MappingData_head_cached['cArray']['el_' . $kk]);
+                                if ($GLOBALS['TSFE']->config['config']['inlineStyle2TempFile']) {
+                                    $pageRenderer->addCssFile(PageGenerator::inline2TempFile($cont, 'css'));
+                                } else {
+                                    $pageRenderer->addCssInlineBlock($name, $cont);
+                                }
+                                break;
+                            case 'SCRIPT':
+                                if (isset($attr[0]['src']) && $attr[0]['src']) {
+                                    $pageRenderer->addJsFile($attr[0]['src']);
+                                } else {
+                                    $cont = $htmlParse->removeFirstAndLastTag($MappingData_head_cached['cArray']['el_' . $kk]);
+                                    $pageRenderer->addJsInlineCode($name, $cont);
+                                }
+                                break;
+                            default:
+                                // can't happen due to condition
+                        }
+                    } else {
+                        $uKey = md5(trim($MappingData_head_cached['cArray']['el_' . $kk]));
+                        $extraHeaderData['TV_' . $uKey] = chr(10) . chr(9) . trim($htmlParse->HTMLcleaner($MappingData_head_cached['cArray']['el_' . $kk], [], 1, 0, ['xhtml' => 1]));
+                    }
+                }
+            }
+            // Set 'page.headerData', use the lowest possible free index!
+            // This will make sure that header data appears the very first on the page
+            // but unfortunately after styles from extensions
+            for ($i = 1; $i < PHP_INT_MAX; $i++) {
+                if (!isset($GLOBALS['TSFE']->pSetup['headerData.'][$i])) {
+                    $GLOBALS['TSFE']->pSetup['headerData.'][$i] = 'TEXT';
+                    $GLOBALS['TSFE']->pSetup['headerData.'][$i . '.']['value'] = implode('', $extraHeaderData) . chr(10);
+                    break;
+                }
+            }
+            // Alternative way is to prepend it additionalHeaderData but that
+            // will still put JS/CSS after any page.headerData. So this code is
+            // kept commented here.
+            //$GLOBALS['TSFE']->additionalHeaderData = $extraHeaderData + $GLOBALS['TSFE']->additionalHeaderData;
+        }
+
+        // Body tag:
+        if ($MappingInfo_head['addBodyTag'] && $BodyTag_cached) {
+            $GLOBALS['TSFE']->defaultBodyTag = $BodyTag_cached;
+        }
     }
 
     /**
