@@ -16,7 +16,9 @@ namespace Schnitzler\Templavoila\Controller\Backend\PageModule\Renderer\Sidebar;
 
 use Schnitzler\Templavoila\Controller\Backend\PageModule\MainController;
 use Schnitzler\Templavoila\Controller\Backend\PageModule\Renderer\Renderable;
+use Schnitzler\Templavoila\Helper\LanguagesHelper;
 use Schnitzler\Templavoila\Traits\BackendUser;
+use Schnitzler\Templavoila\Traits\DatabaseConnection;
 use Schnitzler\Templavoila\Traits\LanguageService;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Imaging\Icon;
@@ -30,6 +32,7 @@ class LocalizationTab implements Renderable
 {
     use BackendUser;
     use LanguageService;
+    use DatabaseConnection;
 
     /**
      * @var PageModuleController
@@ -78,23 +81,58 @@ class LocalizationTab implements Renderable
      */
     private function sidebar_renderItem_renderLanguageSelectorbox()
     {
-        $availableLanguagesArr = $this->controller->getPageTranslations();
+        $availableLanguagesArr = LanguagesHelper::getPageLanguages($this->controller->getId());
         $availableTranslationsFlags = '';
-        $newLanguagesArr = $this->controller->getAvailableLanguages(0, false);
         if (count($availableLanguagesArr) <= 1) {
             return false;
         }
 
         $optionsArr = [];
         foreach ($availableLanguagesArr as $languageArr) {
-            unset($newLanguagesArr[$languageArr['uid']]); // Remove this language from possible new translation languages array (PNTLA ;-)
-
             if ($languageArr['uid'] <= 0 || static::getBackendUser()->checkLanguageAccess($languageArr['uid'])) {
+
+                // todo: checking for hidden flag here works for the moment
+                // todo: but this needs to be in a repository.
+                // todo: also, a permission check is needed because we render
+                // todo: edit links for page and page overlay records here
+                $iconState = null;
+                if ((int)$languageArr['uid'] === 0) {
+                    $pageRecord = static::getDatabaseConnection()->exec_SELECTgetSingleRow(
+                        '*',
+                        'pages',
+                        'uid = ' . $this->controller->getId()
+                    );
+
+                    if (is_array($pageRecord)) {
+                        /** @var array $pageRecord */
+                        BackendUtility::workspaceOL('pages', $pageRecord);
+
+                        if ((int)$pageRecord['hidden'] === 1) {
+                            $iconState = new IconState(IconState::STATE_DISABLED);
+                        }
+                    }
+                }
+
+                $pageOverlayRow = static::getDatabaseConnection()->exec_SELECTgetSingleRow(
+                    '*',
+                    'pages_language_overlay',
+                    'pid = ' . $this->controller->getId() . ' AND sys_language_uid = ' . (int)$languageArr['uid']
+                );
+
+                if (is_array($pageOverlayRow)) {
+                    /** @var array $pageOverlayRow */
+                    BackendUtility::workspaceOL('pages_language_overlay', $pageOverlayRow);
+
+                    if ((int)$pageOverlayRow['hidden'] === 1) {
+                        $iconState = new IconState(IconState::STATE_DISABLED);
+                    }
+                }
+
                 $flagIcon = $this->controller->getModuleTemplate()->getIconFactory()->getIcon(
-                    'flags-' . $languageArr['flagIcon'],
+                    $languageArr['flagIconIdentifier'],
                     Icon::SIZE_SMALL,
                     null,
-                    $languageArr['PLO_hidden'] ? new IconState(IconState::STATE_DISABLED) : null
+                    $iconState
                 );
 
                 $url = $this->controller->getReturnUrl(['SET' => ['language' => $languageArr['uid']]]);
@@ -211,12 +249,12 @@ class LocalizationTab implements Renderable
             return false;
         }
 
-        $newLanguagesArr = $this->controller->getAvailableLanguages(0, false);
+        $newLanguagesArr = LanguagesHelper::getNonExistingPageOverlayLanguages($this->controller->getId());
         if (count($newLanguagesArr) < 1) {
             return false;
         }
 
-        $translatedLanguagesArr = $this->controller->getAvailableLanguages($this->controller->getId());
+        $translatedLanguagesArr = LanguagesHelper::getPageLanguages($this->controller->getId());
         $optionsArr = ['<option value=""></option>'];
         foreach ($newLanguagesArr as $language) {
             if (!array_key_exists($language['uid'], $translatedLanguagesArr) && static::getBackendUser()->checkLanguageAccess($language['uid'])) {

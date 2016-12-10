@@ -100,4 +100,28 @@ class SysLanguageRepository
             'sys_language.title'
         );
     }
+
+    /**
+     * @param int $pid
+     * @return array
+     */
+    public function findAllForPossiblePageTranslations($pid)
+    {
+        $where = [
+            'pages_language_overlay.uid is null'
+        ];
+        $where = $this->addExcludeHiddenWhereClause($where);
+        $whereClause = '1=1 and ' . implode(' and ', $where);
+
+        return (array)static::getDatabaseConnection()->exec_SELECTgetRows(
+            'sys_language.*',
+            'sys_language left join pages_language_overlay on sys_language.uid = pages_language_overlay.sys_language_uid'
+            . ' and pages_language_overlay.pid = ' . $pid,
+            $whereClause,
+            '',
+            '',
+            '',
+            'uid'
+        );
+    }
 }

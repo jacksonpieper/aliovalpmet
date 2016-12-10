@@ -16,6 +16,7 @@ namespace Schnitzler\Templavoila\Controller\Backend\PageModule\Renderer\Sidebar;
 
 use Schnitzler\Templavoila\Controller\Backend\PageModule\MainController;
 use Schnitzler\Templavoila\Controller\Backend\PageModule\Renderer\Renderable;
+use Schnitzler\Templavoila\Helper\LanguagesHelper;
 use Schnitzler\Templavoila\Traits\BackendUser;
 use Schnitzler\Templavoila\Traits\DatabaseConnection;
 use Schnitzler\Templavoila\Traits\LanguageService;
@@ -81,10 +82,12 @@ class NonUsedElementsTab implements Renderable
             $elementPointerString = 'tt_content:' . $row['uid'];
 
             // Prepare the language icon:
-            $languageLabel = htmlspecialchars($this->controller->getAllAvailableLanguages()[$row['sys_language_uid']]['title']);
-            if ($this->controller->getAllAvailableLanguages()[(int)$row['sys_language_uid']]['flagIcon']) {
+            $sysLanguageUid = (int)$row['sys_language_uid'];
+
+            $languageLabel = htmlspecialchars(LanguagesHelper::getLanguageTitle($this->controller->getId(), $sysLanguageUid));
+            if (($flagIdentifier = LanguagesHelper::getLanguageFlagIconIdentifier($this->controller->getId(), $sysLanguageUid)) !== '') {
                 $languageIcon = $this->controller->getModuleTemplate()->getIconFactory()->getIcon(
-                    'flags-' . $this->controller->getAllAvailableLanguages()[(int)$row['sys_language_uid']]['flagIcon'],
+                    $flagIdentifier,
                     Icon::SIZE_SMALL
                 )->render();
             } else {

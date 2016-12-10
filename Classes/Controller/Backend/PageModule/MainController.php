@@ -22,7 +22,7 @@ use Schnitzler\Templavoila\Controller\Backend\PageModule\Renderer\DoktypeRendere
 use Schnitzler\Templavoila\Controller\Backend\PageModule\Renderer\OutlineRenderer;
 use Schnitzler\Templavoila\Controller\Backend\PageModule\Renderer\SheetRenderer;
 use Schnitzler\Templavoila\Controller\Backend\PageModule\Renderer\SidebarRenderer;
-use Schnitzler\Templavoila\Domain\Repository\SysLanguageRepository;
+use Schnitzler\Templavoila\Helper\LanguagesHelper;
 use Schnitzler\Templavoila\Service\ApiService;
 use Schnitzler\Templavoila\Templavoila;
 use Schnitzler\Templavoila\Utility\PermissionUtility;
@@ -125,21 +125,6 @@ class MainController extends AbstractModuleController implements Configurable
     private $currentLanguageUid;
 
     /**
-     * Contains records of all available languages (not hidden, with language_isocode), including the default
-     * language and multiple languages. Used for displaying the flags for content elements, set in init().
-     *
-     * @var array
-     */
-    private $allAvailableLanguages = [];
-
-    /**
-     * Select language for which there is a page translation
-     *
-     * @var array
-     */
-    private $translatedLanguagesArr = [];
-
-    /**
      * If this is set, the whole page module scales down functionality so that a translator only needs
      * to look for and click the "Flags" in the interface to localize the page! This flag is set if a
      * user does not have access to the default language; then translator mode is assumed.
@@ -208,11 +193,6 @@ class MainController extends AbstractModuleController implements Configurable
     const DOKTYPE_NORMAL_EDIT = 1;
 
     /**
-     * @var SysLanguageRepository
-     */
-    private $sysLanguageRepository;
-
-    /**
      * @var string
      */
     private $perms_clause;
@@ -230,8 +210,6 @@ class MainController extends AbstractModuleController implements Configurable
         static::getLanguageService()->includeLLFile('EXT:templavoila/Resources/Private/Language/PageModule/MainController/locallang.xlf');
 
         $this->extConf = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf'][Templavoila::EXTKEY]);
-
-        $this->sysLanguageRepository = GeneralUtility::makeInstance(SysLanguageRepository::class);
     }
 
     private function initializeTsConfig()
@@ -314,13 +292,11 @@ class MainController extends AbstractModuleController implements Configurable
         $this->perms_clause = static::getBackendUser()->getPagePermsClause(1);
         $this->versionId = GeneralUtility::_GP('versionId');
         // Fill array allAvailableLanguages and currently selected language (from language selector or from outside)
-        $this->allAvailableLanguages = $this->getAvailableLanguages(0, true, true);
-        $this->currentLanguageKey = strtoupper($this->getAllAvailableLanguages()[$this->getSetting('language')]['language_isocode']);
-        $this->currentLanguageUid = $this->getAllAvailableLanguages()[$this->getSetting('language')]['uid'];
+        $this->currentLanguageUid = (int)$this->getSetting('language');
+        $this->currentLanguageKey = LanguagesHelper::getLanguageIsoCode($this->getId(), $this->currentLanguageUid, true);
 
         // If no translations exist for this page, set the current language to default (as there won't be a language selector)
-        $this->translatedLanguagesArr = $this->getAvailableLanguages($this->getId());
-        if (count($this->translatedLanguagesArr) === 1) { // Only default language exists
+        if (!LanguagesHelper::hasPageTranslations($this->getId())) { // Only default language exists
             $this->currentLanguageKey = 'DEF';
         }
 
@@ -1057,80 +1033,6 @@ class MainController extends AbstractModuleController implements Configurable
      ***********************************************/
 
     /**
-     * @param int $id If zero, the query will select all sys_language records from root level. If set to another value, the query will select all sys_language records that has a pages_language_overlay record on that page (and is not hidden, unless you are admin user)
-     * @param bool $setDefault If set, an array entry for a default language is set.
-     * @param bool $setMulti If set, an array entry for "multiple languages" is added (uid -1)
-     * @return array
-     */
-    public function getAvailableLanguages($id = 0, $setDefault = true, $setMulti = false)
-    {
-        $output = [];
-//        $excludeHidden = static::getBackendUser()->isAdmin() ? '1=1' : 'sys_language.hidden=0';
-
-        try {
-            $rows = $this->sysLanguageRepository->findAllForPid($id);
-        } catch (\InvalidArgumentException $e) {
-            $rows = $this->sysLanguageRepository->findAll();
-        }
-
-        if ($setDefault) {
-            $output[0] = [
-                'uid' => 0,
-                'title' => strlen((string)$this->modSharedTSconfig['properties']['defaultLanguageLabel']) ? $this->modSharedTSconfig['properties']['defaultLanguageLabel'] : static::getLanguageService()->getLL('defaultLanguage'),
-                'language_isocode' => 'DEF',
-                'flagIcon' => strlen((string)$this->modSharedTSconfig['properties']['defaultLanguageFlag']) ? $this->modSharedTSconfig['properties']['defaultLanguageFlag'] : null
-            ];
-        }
-
-        if ($setMulti) {
-            $output[-1] = [
-                'uid' => -1,
-                'title' => static::getLanguageService()->getLL('multipleLanguages'),
-                'language_isocode' => 'DEF',
-                'flagIcon' => 'multiple',
-            ];
-        }
-
-        foreach ($rows as $row) {
-            BackendUtility::workspaceOL('sys_language', $row);
-            if ($id > 0) {
-                $table = 'pages_language_overlay';
-                $enableFields = BackendUtility::BEenableFields($table);
-                if (trim($enableFields) === 'AND') {
-                    $enableFields = '';
-                }
-                $enableFields .= BackendUtility::deleteClause($table);
-                /*
-                 * @todo: check if enable fields should be used in the query
-                 */
-
-                // Selecting overlay record:
-                $pageRow = static::getDatabaseConnection()->exec_SELECTgetSingleRow(
-                    '*',
-                    'pages_language_overlay',
-                    'pid=' . (int)$id . ' AND sys_language_uid=' . (int)$row['uid']
-                );
-                BackendUtility::workspaceOL('pages_language_overlay', $pageRow);
-                $row['PLO_hidden'] = $pageRow['hidden'];
-                $row['PLO_title'] = $pageRow['title'];
-            }
-            $output[$row['uid']] = $row;
-
-            if (strlen($row['flag'])) {
-                $output[$row['uid']]['flagIcon'] = $row['flag'];
-            }
-
-            $disableLanguages = GeneralUtility::trimExplode(',', $this->modSharedTSconfig['properties']['disableLanguages'], 1);
-            foreach ($disableLanguages as $language) {
-                // $language is the uid of a sys_language
-                unset($output[$language]);
-            }
-        }
-
-        return $output;
-    }
-
-    /**
      * Returns an array of registered instantiated classes for a certain hook.
      *
      * @param string $hookName Name of the hook
@@ -1147,16 +1049,6 @@ class MainController extends AbstractModuleController implements Configurable
         }
 
         return $hookObjectsArr;
-    }
-
-    /**
-     * Checks if translation to alternative languages can be applied to this page.
-     *
-     * @return bool <code>true</code> if alternative languages exist
-     */
-    public function alternativeLanguagesDefined()
-    {
-        return count($this->getAllAvailableLanguages()) > 2;
     }
 
     /**
@@ -1218,22 +1110,6 @@ class MainController extends AbstractModuleController implements Configurable
     public function getCurrentLanguageUid()
     {
         return $this->currentLanguageUid;
-    }
-
-    /**
-     * @return array
-     */
-    public function getPageTranslations()
-    {
-        return $this->translatedLanguagesArr;
-    }
-
-    /**
-     * @return array
-     */
-    public function getAllAvailableLanguages()
-    {
-        return $this->allAvailableLanguages;
     }
 
     /**

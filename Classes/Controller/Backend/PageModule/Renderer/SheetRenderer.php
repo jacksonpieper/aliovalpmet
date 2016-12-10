@@ -19,6 +19,7 @@ use Schnitzler\Templavoila\Controller\Backend\PageModule\MainController;
 use Schnitzler\Templavoila\Controller\Backend\PageModule\Renderer\SheetRenderer\Column;
 use Schnitzler\Templavoila\Controller\Backend\PageModule\Renderer\SheetRenderer\Sheet;
 use Schnitzler\Templavoila\Domain\Repository\TemplateRepository;
+use Schnitzler\Templavoila\Helper\LanguagesHelper;
 use Schnitzler\Templavoila\Traits\BackendUser;
 use Schnitzler\Templavoila\Traits\LanguageService;
 use Schnitzler\Templavoila\Utility\PermissionUtility;
@@ -239,40 +240,6 @@ class SheetRenderer implements Renderable
     }
 
     /**
-     * @param int $sysLanguageUid
-     * @return string
-     */
-    private function getLanguageLabel($sysLanguageUid)
-    {
-        if (!isset(static::$languageLabels[$sysLanguageUid])) {
-            if (isset($this->controller->getAllAvailableLanguages()[$sysLanguageUid]['title'])) {
-                static::$languageLabels[$sysLanguageUid] = (string)$this->controller->getAllAvailableLanguages()[$sysLanguageUid]['title'];
-            } else {
-                static::$languageLabels[$sysLanguageUid] = 'Default';
-            }
-        }
-
-        return static::$languageLabels[$sysLanguageUid];
-    }
-
-    /**
-     * @param int $sysLanguageUid
-     * @return string
-     */
-    private function getLanguageFlagIconIdentifier($sysLanguageUid)
-    {
-        if (!isset(static::$languageFlagIcons[$sysLanguageUid])) {
-            if (isset($this->controller->getAllAvailableLanguages()[$sysLanguageUid]['flagIcon'])) {
-                static::$languageFlagIcons[$sysLanguageUid] = 'flags-' . $this->controller->getAllAvailableLanguages()[$sysLanguageUid]['flagIcon'];
-            } else {
-                static::$languageFlagIcons[$sysLanguageUid] = '';
-            }
-        }
-
-        return static::$languageFlagIcons[$sysLanguageUid];
-    }
-
-    /**
      * @param Sheet $sheet
      */
     private function getTitleBarLeftIcons(Sheet $sheet)
@@ -466,8 +433,8 @@ class SheetRenderer implements Renderable
 
         $contentElementView = $this->controller->getStandaloneView('Backend/PageModule/Renderer/SheetRenderer/ContentElement');
         $contentElementView->assignMultiple([
-            'languageLabel' => $this->getLanguageLabel($sheet->getSysLanguageUid()),
-            'languageFlagIconIdentifier' => $this->getLanguageFlagIconIdentifier($sheet->getSysLanguageUid()),
+            'languageLabel' => LanguagesHelper::getLanguageTitle($this->controller->getId(), $sheet->getSysLanguageUid()),
+            'languageFlagIconIdentifier' => LanguagesHelper::getLanguageFlagIconIdentifier($this->controller->getId(), $sheet->getSysLanguageUid()),
             'isInTranslatorMode' => PermissionUtility::isInTranslatorMode(),
             'hash' => md5($this->controller->getApiService()->flexform_getStringFromPointer($this->controller->getCurrentElementParentPointer()) . $sheet->getUid()),
             'titleBarLeftButtons' => $this->getTitleBarLeftIcons($sheet),
@@ -627,7 +594,7 @@ class SheetRenderer implements Renderable
 
             // Traverse the available languages of the page (not default and [All])
             $tRows = [];
-            foreach ($this->controller->getPageTranslations() as $sys_language_uid => $sLInfo) {
+            foreach (LanguagesHelper::getPageLanguages($this->controller->getId()) as $sys_language_uid => $sLInfo) {
                 if (($this->controller->getCurrentLanguageUid() !== $sys_language_uid) && $this->controller->getSetting('langDisplayMode') !== 'default') {
                     continue;
                 }
