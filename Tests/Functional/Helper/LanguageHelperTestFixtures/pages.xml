@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<dataset>
+    <pages>
+        <uid>1</uid>
+        <pid>0</pid>
+        <deleted>0</deleted>
+        <TSconfig><![CDATA[mod.SHARED {
+            defaultLanguageFlag = gb
+            defaultLanguageLabel = English
+        }]]></TSconfig>
+    </pages>
+    <pages>
+        <uid>2</uid>
+        <pid>0</pid>
+        <deleted>0</deleted>
+        <TSconfig><![CDATA[mod.SHARED {
+            disableLanguages = 2
+        }]]></TSconfig>
+    </pages>
+    <pages>
+        <uid>3</uid>
+        <pid>0</pid>
+        <deleted>0</deleted>
+        <TSconfig><![CDATA[mod.SHARED {
+            disableLanguages = 2
+        }]]></TSconfig>
+    </pages>
+</dataset>
