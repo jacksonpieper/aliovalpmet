@@ -61,7 +61,7 @@ class SysLanguageRepository
             'sys_language',
             $whereClause,
             '',
-            'sys_language.title',
+            'sys_language.uid',
             '',
             'uid'
         );
@@ -93,7 +93,7 @@ class SysLanguageRepository
         $whereClause = '1=1 and ' . implode(' and ', $where);
 
         return (array) static::getDatabaseConnection()->exec_SELECTgetRows(
-            'DISTINCT sys_language.*, pages_language_overlay.hidden as PLO_hidden, pages_language_overlay.title as PLO_title',
+            'DISTINCT sys_language.*',
             'pages_language_overlay,sys_language',
             $whereClause,
             '',

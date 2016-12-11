@@ -74,9 +74,14 @@ final class LanguagesHelper
             $sysLanguageRecords = $repository->findAll();
 
             $languages[-1] = [
-                'uid' => -1,
+                'uid' => '-1',
+                'pid' => '0',
+                'tstamp' => '0',
+                'hidden' => '0',
                 'title' => 'All',
+                'flag' => 'multiple',
                 'language_isocode' => 'DEF',
+                'static_lang_isocode' => '0',
                 'flagIconIdentifier' => 'flags-multiple'
             ];
 
@@ -134,11 +139,11 @@ final class LanguagesHelper
                     }
                 }
 
-                static::$nonExistingPageOverlayLanguages = $nonExistingPageOverlayLanguages;
+                static::$nonExistingPageOverlayLanguages[$pageId] = $nonExistingPageOverlayLanguages;
             }
         }
 
-        return static::$nonExistingPageOverlayLanguages;
+        return static::$nonExistingPageOverlayLanguages[$pageId];
     }
 
     /**
@@ -309,14 +314,20 @@ final class LanguagesHelper
     private static function addDefaultLanguageEntry(array $languages, $pageId)
     {
         $languages[0] = [
-            'uid' => 0,
+            'uid' => '0',
+            'pid' => '0',
+            'tstamp' => '0',
+            'hidden' => '0',
             'title' => static::getDefaultLanguageLabel($pageId),
+            'flag' => '',
             'language_isocode' => 'DEF',
+            'static_lang_isocode' => '0',
             'flagIconIdentifier' => ''
         ];
 
         $defaultLanguageIconIdentifier = static::getDefaultLanguageIconIdentifier($pageId);
         if ($defaultLanguageIconIdentifier !== '') {
+            $languages[0]['flag'] = $defaultLanguageIconIdentifier;
             $languages[0]['flagIconIdentifier'] = 'flags-' . $defaultLanguageIconIdentifier;
         }
 
