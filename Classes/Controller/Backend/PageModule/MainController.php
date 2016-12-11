@@ -22,7 +22,7 @@ use Schnitzler\Templavoila\Controller\Backend\PageModule\Renderer\DoktypeRendere
 use Schnitzler\Templavoila\Controller\Backend\PageModule\Renderer\OutlineRenderer;
 use Schnitzler\Templavoila\Controller\Backend\PageModule\Renderer\SheetRenderer;
 use Schnitzler\Templavoila\Controller\Backend\PageModule\Renderer\SidebarRenderer;
-use Schnitzler\Templavoila\Helper\LanguagesHelper;
+use Schnitzler\Templavoila\Helper\LanguageHelper;
 use Schnitzler\Templavoila\Service\ApiService;
 use Schnitzler\Templavoila\Templavoila;
 use Schnitzler\Templavoila\Utility\PermissionUtility;
@@ -293,10 +293,10 @@ class MainController extends AbstractModuleController implements Configurable
         $this->versionId = GeneralUtility::_GP('versionId');
         // Fill array allAvailableLanguages and currently selected language (from language selector or from outside)
         $this->currentLanguageUid = (int)$this->getSetting('language');
-        $this->currentLanguageKey = LanguagesHelper::getLanguageIsoCode($this->getId(), $this->currentLanguageUid, true);
+        $this->currentLanguageKey = LanguageHelper::getLanguageIsoCode($this->getId(), $this->currentLanguageUid, true);
 
         // If no translations exist for this page, set the current language to default (as there won't be a language selector)
-        if (!LanguagesHelper::hasPageTranslations($this->getId())) { // Only default language exists
+        if (!LanguageHelper::hasPageTranslations($this->getId())) { // Only default language exists
             $this->currentLanguageKey = 'DEF';
         }
 

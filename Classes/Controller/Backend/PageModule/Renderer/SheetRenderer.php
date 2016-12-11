@@ -19,7 +19,7 @@ use Schnitzler\Templavoila\Controller\Backend\PageModule\MainController;
 use Schnitzler\Templavoila\Controller\Backend\PageModule\Renderer\SheetRenderer\Column;
 use Schnitzler\Templavoila\Controller\Backend\PageModule\Renderer\SheetRenderer\Sheet;
 use Schnitzler\Templavoila\Domain\Repository\TemplateRepository;
-use Schnitzler\Templavoila\Helper\LanguagesHelper;
+use Schnitzler\Templavoila\Helper\LanguageHelper;
 use Schnitzler\Templavoila\Traits\BackendUser;
 use Schnitzler\Templavoila\Traits\LanguageService;
 use Schnitzler\Templavoila\Utility\PermissionUtility;
@@ -433,8 +433,8 @@ class SheetRenderer implements Renderable
 
         $contentElementView = $this->controller->getStandaloneView('Backend/PageModule/Renderer/SheetRenderer/ContentElement');
         $contentElementView->assignMultiple([
-            'languageLabel' => LanguagesHelper::getLanguageTitle($this->controller->getId(), $sheet->getSysLanguageUid()),
-            'languageFlagIconIdentifier' => LanguagesHelper::getLanguageFlagIconIdentifier($this->controller->getId(), $sheet->getSysLanguageUid()),
+            'languageLabel' => LanguageHelper::getLanguageTitle($this->controller->getId(), $sheet->getSysLanguageUid()),
+            'languageFlagIconIdentifier' => LanguageHelper::getLanguageFlagIconIdentifier($this->controller->getId(), $sheet->getSysLanguageUid()),
             'isInTranslatorMode' => PermissionUtility::isInTranslatorMode(),
             'hash' => md5($this->controller->getApiService()->flexform_getStringFromPointer($this->controller->getCurrentElementParentPointer()) . $sheet->getUid()),
             'titleBarLeftButtons' => $this->getTitleBarLeftIcons($sheet),
@@ -594,7 +594,7 @@ class SheetRenderer implements Renderable
 
             // Traverse the available languages of the page (not default and [All])
             $tRows = [];
-            foreach (LanguagesHelper::getPageLanguages($this->controller->getId()) as $sys_language_uid => $sLInfo) {
+            foreach (LanguageHelper::getPageLanguages($this->controller->getId()) as $sys_language_uid => $sLInfo) {
                 if (($this->controller->getCurrentLanguageUid() !== $sys_language_uid) && $this->controller->getSetting('langDisplayMode') !== 'default') {
                     continue;
                 }

@@ -15,7 +15,7 @@ namespace Schnitzler\Templavoila\Tests\Functional\Service;
  * The TYPO3 project - inspiring people to share!
  */
 
-use Schnitzler\Templavoila\Helper\LanguagesHelper;
+use Schnitzler\Templavoila\Helper\LanguageHelper;
 use TYPO3\CMS\Core\Core\Bootstrap;
 use TYPO3\CMS\Core\Tests\FunctionalTestCase;
 
@@ -118,7 +118,7 @@ class LanguageHelperTest extends FunctionalTestCase
             ]
         ];
 
-        static::assertSame($expected, LanguagesHelper::getAll(0));
+        static::assertSame($expected, LanguageHelper::getAll(0));
     }
 
     public function testGetAllWithDefaultLanguageTypoScriptConfig()
@@ -183,7 +183,7 @@ class LanguageHelperTest extends FunctionalTestCase
             ]
         ];
 
-        static::assertSame($expected, LanguagesHelper::getAll(1));
+        static::assertSame($expected, LanguageHelper::getAll(1));
     }
 
     public function testGetAllWithDisabledLanguagesTypoScriptConfig()
@@ -237,43 +237,43 @@ class LanguageHelperTest extends FunctionalTestCase
             ]
         ];
 
-        static::assertSame($expected, LanguagesHelper::getAll(2));
+        static::assertSame($expected, LanguageHelper::getAll(2));
     }
 
     public function testGetLanguageIsoCode()
     {
         $this->setUpBackendUserFromFixture(1);
 
-        static::assertSame('DEF', LanguagesHelper::getLanguageIsoCode(0, -1));
-        static::assertSame('DEF', LanguagesHelper::getLanguageIsoCode(0, 0));
-        static::assertSame('DE', LanguagesHelper::getLanguageIsoCode(0, 1, true));
-        static::assertSame('FR', LanguagesHelper::getLanguageIsoCode(0, 2, true));
-        static::assertSame('ZH', LanguagesHelper::getLanguageIsoCode(0, 3, true));
-        static::assertSame('', LanguagesHelper::getLanguageIsoCode(0, 4, true)); // non existing language
+        static::assertSame('DEF', LanguageHelper::getLanguageIsoCode(0, -1));
+        static::assertSame('DEF', LanguageHelper::getLanguageIsoCode(0, 0));
+        static::assertSame('DE', LanguageHelper::getLanguageIsoCode(0, 1, true));
+        static::assertSame('FR', LanguageHelper::getLanguageIsoCode(0, 2, true));
+        static::assertSame('ZH', LanguageHelper::getLanguageIsoCode(0, 3, true));
+        static::assertSame('', LanguageHelper::getLanguageIsoCode(0, 4, true)); // non existing language
     }
 
     public function testGetLanguageTitle()
     {
         $this->setUpBackendUserFromFixture(1);
 
-        static::assertSame('All', LanguagesHelper::getLanguageTitle(0, -1));
-        static::assertSame('Default', LanguagesHelper::getLanguageTitle(0, 0));
-        static::assertSame('German', LanguagesHelper::getLanguageTitle(0, 1));
-        static::assertSame('French', LanguagesHelper::getLanguageTitle(0, 2));
-        static::assertSame('Chinese', LanguagesHelper::getLanguageTitle(0, 3));
-        static::assertSame('Undefined', LanguagesHelper::getLanguageTitle(0, 4)); // non existing language
+        static::assertSame('All', LanguageHelper::getLanguageTitle(0, -1));
+        static::assertSame('Default', LanguageHelper::getLanguageTitle(0, 0));
+        static::assertSame('German', LanguageHelper::getLanguageTitle(0, 1));
+        static::assertSame('French', LanguageHelper::getLanguageTitle(0, 2));
+        static::assertSame('Chinese', LanguageHelper::getLanguageTitle(0, 3));
+        static::assertSame('Undefined', LanguageHelper::getLanguageTitle(0, 4)); // non existing language
     }
 
     public function testGetLanguageFlagIconIdentifier()
     {
         $this->setUpBackendUserFromFixture(1);
 
-        static::assertSame('flags-multiple', LanguagesHelper::getLanguageFlagIconIdentifier(0, -1));
-        static::assertSame('', LanguagesHelper::getLanguageFlagIconIdentifier(0, 0));
-        static::assertSame('flags-de', LanguagesHelper::getLanguageFlagIconIdentifier(0, 1));
-        static::assertSame('flags-fr', LanguagesHelper::getLanguageFlagIconIdentifier(0, 2));
-        static::assertSame('flags-cn', LanguagesHelper::getLanguageFlagIconIdentifier(0, 3));
-        static::assertSame('', LanguagesHelper::getLanguageFlagIconIdentifier(0, 4)); // non existing language
+        static::assertSame('flags-multiple', LanguageHelper::getLanguageFlagIconIdentifier(0, -1));
+        static::assertSame('', LanguageHelper::getLanguageFlagIconIdentifier(0, 0));
+        static::assertSame('flags-de', LanguageHelper::getLanguageFlagIconIdentifier(0, 1));
+        static::assertSame('flags-fr', LanguageHelper::getLanguageFlagIconIdentifier(0, 2));
+        static::assertSame('flags-cn', LanguageHelper::getLanguageFlagIconIdentifier(0, 3));
+        static::assertSame('', LanguageHelper::getLanguageFlagIconIdentifier(0, 4)); // non existing language
     }
 
     public function testGetPageLanguages()
@@ -305,7 +305,7 @@ class LanguageHelperTest extends FunctionalTestCase
                     'flagIconIdentifier' => 'flags-de'
                 ]
             ],
-            LanguagesHelper::getPageLanguages(1)
+            LanguageHelper::getPageLanguages(1)
         );
         static::assertSame(
             [
@@ -321,7 +321,7 @@ class LanguageHelperTest extends FunctionalTestCase
                     'flagIconIdentifier' => ''
                 ],
             ],
-            LanguagesHelper::getPageLanguages(2)
+            LanguageHelper::getPageLanguages(2)
         );
     }
 
@@ -329,8 +329,8 @@ class LanguageHelperTest extends FunctionalTestCase
     {
         $this->setUpBackendUserFromFixture(1);
 
-        static::assertTrue(LanguagesHelper::hasPageTranslations(1));
-        static::assertFalse(LanguagesHelper::hasPageTranslations(2));
+        static::assertTrue(LanguageHelper::hasPageTranslations(1));
+        static::assertFalse(LanguageHelper::hasPageTranslations(2));
     }
 
     public function testGetNonExistingPageOverlayLanguages()
@@ -362,7 +362,7 @@ class LanguageHelperTest extends FunctionalTestCase
                     'flagIconIdentifier' => 'flags-cn'
                 ]
             ],
-            LanguagesHelper::getNonExistingPageOverlayLanguages(1)
+            LanguageHelper::getNonExistingPageOverlayLanguages(1)
         );
 
         static::assertSame(
@@ -390,7 +390,7 @@ class LanguageHelperTest extends FunctionalTestCase
                     'flagIconIdentifier' => 'flags-cn'
                 ]
             ],
-            LanguagesHelper::getNonExistingPageOverlayLanguages(2)
+            LanguageHelper::getNonExistingPageOverlayLanguages(2)
         );
 
         static::assertSame(
@@ -418,7 +418,7 @@ class LanguageHelperTest extends FunctionalTestCase
                     'flagIconIdentifier' => 'flags-cn'
                 ]
             ],
-            LanguagesHelper::getNonExistingPageOverlayLanguages(3)
+            LanguageHelper::getNonExistingPageOverlayLanguages(3)
         );
     }
 }

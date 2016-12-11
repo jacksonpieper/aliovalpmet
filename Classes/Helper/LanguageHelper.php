@@ -18,9 +18,9 @@ use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
- * Class Schnitzler\Templavoila\Helper\LanguagesHelper
+ * Class Schnitzler\Templavoila\Helper\LanguageHelper
  */
-final class LanguagesHelper
+final class LanguageHelper
 {
 
     /**

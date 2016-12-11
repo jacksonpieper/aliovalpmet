@@ -16,7 +16,7 @@ namespace Schnitzler\Templavoila\Controller\Backend\PageModule\Renderer\Sidebar;
 
 use Schnitzler\Templavoila\Controller\Backend\PageModule\MainController;
 use Schnitzler\Templavoila\Controller\Backend\PageModule\Renderer\Renderable;
-use Schnitzler\Templavoila\Helper\LanguagesHelper;
+use Schnitzler\Templavoila\Helper\LanguageHelper;
 use Schnitzler\Templavoila\Traits\BackendUser;
 use Schnitzler\Templavoila\Traits\DatabaseConnection;
 use Schnitzler\Templavoila\Traits\LanguageService;
@@ -81,7 +81,7 @@ class LocalizationTab implements Renderable
      */
     private function sidebar_renderItem_renderLanguageSelectorbox()
     {
-        $availableLanguagesArr = LanguagesHelper::getPageLanguages($this->controller->getId());
+        $availableLanguagesArr = LanguageHelper::getPageLanguages($this->controller->getId());
         $availableTranslationsFlags = '';
         if (count($availableLanguagesArr) <= 1) {
             return false;
@@ -249,12 +249,12 @@ class LocalizationTab implements Renderable
             return false;
         }
 
-        $newLanguagesArr = LanguagesHelper::getNonExistingPageOverlayLanguages($this->controller->getId());
+        $newLanguagesArr = LanguageHelper::getNonExistingPageOverlayLanguages($this->controller->getId());
         if (count($newLanguagesArr) < 1) {
             return false;
         }
 
-        $translatedLanguagesArr = LanguagesHelper::getPageLanguages($this->controller->getId());
+        $translatedLanguagesArr = LanguageHelper::getPageLanguages($this->controller->getId());
         $optionsArr = ['<option value=""></option>'];
         foreach ($newLanguagesArr as $language) {
             if (!array_key_exists($language['uid'], $translatedLanguagesArr) && static::getBackendUser()->checkLanguageAccess($language['uid'])) {

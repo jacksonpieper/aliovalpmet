@@ -15,7 +15,7 @@
 namespace Schnitzler\Templavoila\Controller\Backend\PageModule\Renderer;
 
 use Schnitzler\Templavoila\Controller\Backend\PageModule\MainController;
-use Schnitzler\Templavoila\Helper\LanguagesHelper;
+use Schnitzler\Templavoila\Helper\LanguageHelper;
 use Schnitzler\Templavoila\Traits\BackendUser;
 use Schnitzler\Templavoila\Traits\LanguageService;
 use Schnitzler\Templavoila\Utility\PermissionUtility;
@@ -62,7 +62,7 @@ class OutlineRenderer implements Renderable
     {
         // Load possible website languages:
         $this->translatedLanguagesArr_isoCodes = [];
-        foreach (LanguagesHelper::getPageLanguages($this->controller->getId()) as $langInfo) {
+        foreach (LanguageHelper::getPageLanguages($this->controller->getId()) as $langInfo) {
             if ($langInfo['language_isocode']) {
                 $languageIsocode = strtoupper($langInfo['language_isocode']);
                 $this->translatedLanguagesArr_isoCodes['all_lKeys'][] = 'l' . $languageIsocode;
@@ -232,8 +232,8 @@ class OutlineRenderer implements Renderable
         }
 
         // Prepare the language icon:
-        $flagIdentifier = LanguagesHelper::getLanguageFlagIconIdentifier($this->controller->getId(), (int)$languageUid);
-        $languageLabel = htmlspecialchars(LanguagesHelper::getLanguageTitle($this->controller->getId(), (int)$languageUid));
+        $flagIdentifier = LanguageHelper::getLanguageFlagIconIdentifier($this->controller->getId(), (int)$languageUid);
+        $languageLabel = htmlspecialchars(LanguageHelper::getLanguageTitle($this->controller->getId(), (int)$languageUid));
         if ($flagIdentifier !== '') {
             $languageIcon = $this->controller->getModuleTemplate()->getIconFactory()->getIcon($flagIdentifier, Icon::SIZE_SMALL);
         } else {
@@ -304,7 +304,7 @@ class OutlineRenderer implements Renderable
         if ($contentTreeArr['el']['table'] === 'tt_content' && $contentTreeArr['el']['sys_language_uid'] <= 0) {
 
             // Traverse the available languages of the page (not default and [All])
-            foreach (LanguagesHelper::getPageLanguages($this->controller->getId()) as $sys_language_uid => $sLInfo) {
+            foreach (LanguageHelper::getPageLanguages($this->controller->getId()) as $sys_language_uid => $sLInfo) {
                 if ($sys_language_uid > 0 && static::getBackendUser()->checkLanguageAccess($sys_language_uid)) {
                     switch ((string) $contentTreeArr['localizationInfo'][$sys_language_uid]['mode']) {
                         case 'exists':

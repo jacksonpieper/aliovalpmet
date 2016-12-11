@@ -21,7 +21,7 @@ use Schnitzler\Templavoila\Controller\Backend\PageModule\Renderer\Sidebar\Locali
 use Schnitzler\Templavoila\Controller\Backend\PageModule\Renderer\Sidebar\NonUsedElementsTab;
 use Schnitzler\Templavoila\Controller\Backend\PageModule\Renderer\Sidebar\RecordsTab;
 use Schnitzler\Templavoila\Controller\Backend\PageModule\Renderer\Sidebar\VersioningTab;
-use Schnitzler\Templavoila\Helper\LanguagesHelper;
+use Schnitzler\Templavoila\Helper\LanguageHelper;
 use Schnitzler\Templavoila\Traits\BackendUser;
 use Schnitzler\Templavoila\Traits\LanguageService;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
@@ -71,7 +71,7 @@ class SidebarRenderer
             }
         }
 
-        if (LanguagesHelper::hasPageTranslations($controller->getId())) {
+        if (LanguageHelper::hasPageTranslations($controller->getId())) {
             try {
                 $this->addItem(
                     'localization',
