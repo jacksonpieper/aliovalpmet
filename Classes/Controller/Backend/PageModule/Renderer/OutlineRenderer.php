@@ -327,7 +327,7 @@ class OutlineRenderer implements Renderable
                                 'title' => BackendUtility::getRecordTitle('tt_content', $olrow),
                                 'table' => 'tt_content',
                                 'uid' => $olrow['uid'],
-                                'flag' => $flagLink_begin . $this->controller->getModuleTemplate()->getIconFactory()->getIcon('flags-' . ($sLInfo['flagIcon'] ? : 'unknown'), Icon::SIZE_SMALL) . $flagLink_end,
+                                'flag' => $flagLink_begin . $this->controller->getModuleTemplate()->getIconFactory()->getIcon($sLInfo['flagIconIdentifier'], Icon::SIZE_SMALL) . $flagLink_end,
                                 'isNewVersion' => $olrow['_ORIG_uid'] ? true : false,
                             ];
                             break;

@@ -708,7 +708,7 @@ class SheetRenderer implements Renderable
                     if ($l10nInfo && static::getBackendUser()->checkLanguageAccess($sys_language_uid)) {
                         $tRows[] = '
                             <tr class="bgColor4">
-                                <td width="1%">' . $flagLink_begin . $this->controller->getModuleTemplate()->getIconFactory()->getIcon('flags-' . $sLInfo['flagIcon'], Icon::SIZE_SMALL) . $flagLink_end . '</td>
+                                <td width="1%">' . $flagLink_begin . $this->controller->getModuleTemplate()->getIconFactory()->getIcon($sLInfo['flagIconIdentifier'], Icon::SIZE_SMALL) . $flagLink_end . '</td>
                                 <td width="99%">' . $l10nInfo . '</td>
                             </tr>';
                     }
