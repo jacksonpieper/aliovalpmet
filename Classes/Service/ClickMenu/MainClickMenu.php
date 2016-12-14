@@ -15,7 +15,9 @@ namespace Schnitzler\Templavoila\Service\ClickMenu;
  * The TYPO3 project - inspiring people to share!
  */
 
+use Schnitzler\Templavoila\Domain\Model\DataStructure;
 use Schnitzler\Templavoila\Domain\Model\File;
+use Schnitzler\Templavoila\Domain\Model\Template;
 use Schnitzler\Templavoila\Templavoila;
 use Schnitzler\Templavoila\Traits\BackendUser;
 use Schnitzler\Templavoila\Traits\DatabaseConnection;
@@ -89,24 +91,38 @@ class MainClickMenu
                     $clickMenu->urlRefForCM($url, 'returnUrl'),
                     true // Disables the item in the top-bar. Set this to zero if you wish the item to appear in the top bar!
                 );
-            } elseif (
-                $table === 'tx_templavoila_tmplobj'
-                || $table === 'tx_templavoila_datastructure'
-                || $table === 'tx_templavoila_content'
-            ) {
-                $url = BackendUtility::getModuleUrl(
-                    'tv_mod_admin_datastructure',
-                    [
-                        'uid' => $uid,
-                        '_reload_from' => 1
-                    ]
-                );
-                $localItems[] = $clickMenu->linkItem(
-                    static::getLanguageService()->getLLL('cm1_title', $LL, true),
-                    $this->iconFactory->getIcon('extensions-templavoila-logo', Icon::SIZE_SMALL),
-                    $clickMenu->urlRefForCM($url, 'returnUrl'),
-                    true // Disables the item in the top-bar. Set this to zero if you wish the item to appear in the top bar!
-                );
+            } else {
+                if ($table === DataStructure::TABLE) {
+                    $url = BackendUtility::getModuleUrl(
+                        'tv_mod_admin_datastructure',
+                        [
+                            'uid' => $uid,
+                            '_reload_from' => 1
+                        ]
+                    );
+                    $localItems[] = $clickMenu->linkItem(
+                        static::getLanguageService()->getLLL('cm1_title', $LL, true),
+                        $this->iconFactory->getIcon('extensions-templavoila-logo', Icon::SIZE_SMALL),
+                        $clickMenu->urlRefForCM($url, 'returnUrl'),
+                        true // Disables the item in the top-bar. Set this to zero if you wish the item to appear in the top bar!
+                    );
+                }
+
+                if ($table === Template::TABLE) {
+                    $url = BackendUtility::getModuleUrl(
+                        'tv_mod_admin_templateobject',
+                        [
+                            'templateObjectUid' => $uid,
+                            '_reload_from' => 1
+                        ]
+                    );
+                    $localItems[] = $clickMenu->linkItem(
+                        static::getLanguageService()->getLLL('cm1_title', $LL, true),
+                        $this->iconFactory->getIcon('extensions-templavoila-logo', Icon::SIZE_SMALL),
+                        $clickMenu->urlRefForCM($url, 'returnUrl'),
+                        true // Disables the item in the top-bar. Set this to zero if you wish the item to appear in the top bar!
+                    );
+                }
             }
 
             $isTVelement = ('tt_content' === $table && $clickMenu->rec['CType'] === 'templavoila_pi1' || 'pages' === $table) && $clickMenu->rec['tx_templavoila_flex'];
