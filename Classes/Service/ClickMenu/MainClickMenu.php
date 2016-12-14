@@ -127,29 +127,30 @@ class MainClickMenu
 
             $isTVelement = ('tt_content' === $table && $clickMenu->rec['CType'] === 'templavoila_pi1' || 'pages' === $table) && $clickMenu->rec['tx_templavoila_flex'];
 
+            // todo: fix page module with altRoot before enabling this link
             // Adding link for "View: Sub elements":
-            if ($table === 'tt_content' && $isTVelement) {
-                $localItems = [];
-
-                $url = BackendUtility::getModuleUrl(
-                    'web_txtemplavoilaM1',
-                    [
-                        'id' => $clickMenu->rec['pid'],
-                        'altRoot' => [
-                            'uid' => $uid,
-                            'table' => $table,
-                            'field_flex' => 'tx_templavoila_flex'
-                        ]
-                    ]
-                );
-
-                $localItems[] = $clickMenu->linkItem(
-                    static::getLanguageService()->getLLL('cm1_viewsubelements', $LL, true),
-                    $this->iconFactory->getIcon('extensions-templavoila-logo', Icon::SIZE_SMALL),
-                    $clickMenu->urlRefForCM($url, 'returnUrl'),
-                    true // Disables the item in the top-bar. Set this to zero if you wish the item to appear in the top bar!
-                );
-            }
+            // if ($table === 'tt_content' && $isTVelement) {
+            //     $localItems = [];
+            //
+            //     $url = BackendUtility::getModuleUrl(
+            //         'web_txtemplavoilaM1',
+            //         [
+            //             'id' => $clickMenu->rec['pid'],
+            //             'altRoot' => [
+            //                 'uid' => $uid,
+            //                 'table' => $table,
+            //                 'field_flex' => 'tx_templavoila_flex'
+            //             ]
+            //         ]
+            //     );
+            //
+            //     $localItems[] = $clickMenu->linkItem(
+            //         static::getLanguageService()->getLLL('cm1_viewsubelements', $LL, true),
+            //         $this->iconFactory->getIcon('extensions-templavoila-logo', Icon::SIZE_SMALL),
+            //         $clickMenu->urlRefForCM($url, 'returnUrl'),
+            //         true // Disables the item in the top-bar. Set this to zero if you wish the item to appear in the top bar!
+            //     );
+            // }
 
             // Adding link for "View: Flexform XML" (admin only):
             if (static::getBackendUser()->isAdmin() && $isTVelement) {
@@ -169,23 +170,25 @@ class MainClickMenu
                     true // Disables the item in the top-bar. Set this to zero if you wish the item to appear in the top bar!
                 );
 
+                // todo: add file to the url to make this link working again
                 // Adding link for "View: DS/TO" (admin only):
-                if (MathUtility::canBeInterpretedAsInteger($clickMenu->rec['tx_templavoila_ds'])) {
-                    $url = BackendUtility::getModuleUrl(
-                        'tv_mod_admin_element',
-                        [
-                            'uid' => $clickMenu->rec['tx_templavoila_ds'],
-                            'table' => 'tx_templavoila_datastructure'
-                        ]
-                    );
-
-                    $localItems[] = $clickMenu->linkItem(
-                        static::getLanguageService()->getLLL('cm_viewdsto', $LL, true) . ' [' . $clickMenu->rec['tx_templavoila_ds'] . '/' . $clickMenu->rec['tx_templavoila_to'] . ']',
-                        $this->iconFactory->getIcon('extensions-templavoila-logo', Icon::SIZE_SMALL),
-                        $clickMenu->urlRefForCM($url, 'returnUrl'),
-                        true // Disables the item in the top-bar. Set this to zero if you wish the item to appear in the top bar!
-                    );
-                }
+                // if (MathUtility::canBeInterpretedAsInteger($clickMenu->rec['tx_templavoila_ds'])) {
+                //     $url = BackendUtility::getModuleUrl(
+                //         'tv_mod_admin_element',
+                //         [
+                //             'dataStructureUid' => $clickMenu->rec['tx_templavoila_ds'],
+                //             'templateObjectUid' => $clickMenu->rec['tx_templavoila_to'],
+                //             'file' => ''
+                //         ]
+                //     );
+                //
+                //     $localItems[] = $clickMenu->linkItem(
+                //         static::getLanguageService()->getLLL('cm_viewdsto', $LL, true) . ' [' . $clickMenu->rec['tx_templavoila_ds'] . '/' . $clickMenu->rec['tx_templavoila_to'] . ']',
+                //         $this->iconFactory->getIcon('extensions-templavoila-logo', Icon::SIZE_SMALL),
+                //         $clickMenu->urlRefForCM($url, 'returnUrl'),
+                //         true // Disables the item in the top-bar. Set this to zero if you wish the item to appear in the top bar!
+                //     );
+                // }
             }
         } else {
             // @TODO check where this code is used.
