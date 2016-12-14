@@ -313,7 +313,7 @@ class OutlineRenderer implements Renderable
                             $olrow = BackendUtility::getRecordWSOL('tt_content', $contentTreeArr['localizationInfo'][$sys_language_uid]['localization_uid']);
 
                             // Put together the records icon including content sensitive menu link wrapped around it:
-                            $recordIcon_l10n = $this->getRecordStatHookValue('tt_content', $olrow['uid']) . $this->controller->getModuleTemplate()->getIconFactory()->getIconForRecord('tt_content', $olrow);
+                            $recordIcon_l10n = $this->getRecordStatHookValue('tt_content', $olrow['uid']) . $this->controller->getModuleTemplate()->getIconFactory()->getIconForRecord('tt_content', $olrow, Icon::SIZE_SMALL);
                             if (!PermissionUtility::isInTranslatorMode()) {
                                 $recordIcon_l10n = BackendUtility::wrapClickMenuOnIcon($recordIcon_l10n, 'tt_content', $olrow['uid'], 1, '', 'new,copy,cut,pasteinto,pasteafter');
                             }

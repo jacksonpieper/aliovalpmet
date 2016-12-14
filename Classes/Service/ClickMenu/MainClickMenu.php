@@ -187,7 +187,7 @@ class MainClickMenu
                     $pageRecord = BackendUtility::getRecord('pages', $referenceRecord['pid']);
                     // @todo: Display language flag icon and jump to correct language
                     if ($pageRecord !== null) {
-                        $icon = $this->iconFactory->getIconForRecord('pages', $pageRecord);
+                        $icon = $this->iconFactory->getIconForRecord('pages', $pageRecord, Icon::SIZE_SMALL);
                         $menuItems[] = $clickMenu->linkItem(
                             $icon,
                             BackendUtility::getRecordTitle('pages', $pageRecord, true),

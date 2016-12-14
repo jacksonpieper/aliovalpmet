@@ -20,6 +20,7 @@ use Schnitzler\Templavoila\Traits\BackendUser;
 use TYPO3\CMS\Backend\Module\AbstractFunctionModule;
 use TYPO3\CMS\Backend\Tree\View\PageTreeView;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
@@ -100,7 +101,7 @@ class ReferenceElementWizardController extends AbstractFunctionModule
         $tree->init('AND ' . static::getBackendUser()->getPagePermsClause(1));
 
         // Creating top icon; the current page
-        $HTML = $this->iconFactory->getIconForRecord('pages', $treeStartingRecord);
+        $HTML = $this->iconFactory->getIconForRecord('pages', $treeStartingRecord, Icon::SIZE_SMALL);
         $tree->tree[] = [
             'row' => $treeStartingRecord,
             'HTML' => $HTML
