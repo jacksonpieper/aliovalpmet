@@ -1637,49 +1637,49 @@ class MainController extends AbstractModuleController implements Configurable
     public function renderNewSiteWizard_overview()
     {
         $content = '';
-        if (!static::getBackendUser()->isAdmin() || $this->modTSconfig['properties']['hideNewSiteWizard']) {
-            return $content;
-        }
-
-        // Introduction:
-        $outputString = nl2br(sprintf(static::getLanguageService()->getLL('newsitewizard_intro', true), implode('", "', $this->getTemplatePaths(true, false))));
-
-        // Checks:
-        $missingExt = $this->wizard_checkMissingExtensions();
-        $missingConf = $this->wizard_checkConfiguration();
-        $missingDir = $this->wizard_checkDirectory();
-        if (!$missingExt && !$missingConf) {
-            $url = BackendUtility::getModuleUrl(
-                'tv_mod_admin_wizard'
-            );
-
-            $outputString .= '
-            <br/>
-            <br/>
-            <a href="' . $url . '" class="btn btn-primary">' . static::getLanguageService()->getLL('newsitewizard_startnow', true) . '</a>';
-        } else {
-            $outputString .= '<br/><br/>' . static::getLanguageService()->getLL('newsitewizard_problem');
-        }
-
-        // Add output:
-        $content .= $this->getModuleTemplate()->section(static::getLanguageService()->getLL('wiz_title'), $outputString, 0, 1);
-
-        // Missing extension warning:
-        if ($missingExt) {
-            $msg = GeneralUtility::makeInstance(FlashMessage::class, $missingExt, static::getLanguageService()->getLL('newsitewizard_missingext'), FlashMessage::ERROR);
-            $content .= $msg->render();
-        }
-
-        // Missing configuration warning:
-        if ($missingConf) {
-            $msg = GeneralUtility::makeInstance(FlashMessage::class, static::getLanguageService()->getLL('newsitewizard_missingconf_description'), static::getLanguageService()->getLL('newsitewizard_missingconf'), FlashMessage::ERROR);
-            $content .= $msg->render();
-        }
-
-        // Missing directory warning:
-        if ($missingDir) {
-            $content .= $this->getModuleTemplate()->section(static::getLanguageService()->getLL('newsitewizard_missingdir'), $missingDir, 0, 1, 3);
-        }
+        //if (!static::getBackendUser()->isAdmin() || $this->modTSconfig['properties']['hideNewSiteWizard']) {
+        //    return $content;
+        //}
+        //
+        //// Introduction:
+        //$outputString = nl2br(sprintf(static::getLanguageService()->getLL('newsitewizard_intro', true), implode('", "', $this->getTemplatePaths(true, false))));
+        //
+        //// Checks:
+        //$missingExt = $this->wizard_checkMissingExtensions();
+        //$missingConf = $this->wizard_checkConfiguration();
+        //$missingDir = $this->wizard_checkDirectory();
+        //if (!$missingExt && !$missingConf) {
+        //    $url = BackendUtility::getModuleUrl(
+        //        'tv_mod_admin_wizard'
+        //    );
+        //
+        //    $outputString .= '
+        //    <br/>
+        //    <br/>
+        //    <a href="' . $url . '" class="btn btn-primary">' . static::getLanguageService()->getLL('newsitewizard_startnow', true) . '</a>';
+        //} else {
+        //    $outputString .= '<br/><br/>' . static::getLanguageService()->getLL('newsitewizard_problem');
+        //}
+        //
+        //// Add output:
+        //$content .= $this->getModuleTemplate()->section(static::getLanguageService()->getLL('wiz_title'), $outputString, 0, 1);
+        //
+        //// Missing extension warning:
+        //if ($missingExt) {
+        //    $msg = GeneralUtility::makeInstance(FlashMessage::class, $missingExt, static::getLanguageService()->getLL('newsitewizard_missingext'), FlashMessage::ERROR);
+        //    $content .= $msg->render();
+        //}
+        //
+        //// Missing configuration warning:
+        //if ($missingConf) {
+        //    $msg = GeneralUtility::makeInstance(FlashMessage::class, static::getLanguageService()->getLL('newsitewizard_missingconf_description'), static::getLanguageService()->getLL('newsitewizard_missingconf'), FlashMessage::ERROR);
+        //    $content .= $msg->render();
+        //}
+        //
+        //// Missing directory warning:
+        //if ($missingDir) {
+        //    $content .= $this->getModuleTemplate()->section(static::getLanguageService()->getLL('newsitewizard_missingdir'), $missingDir, 0, 1, 3);
+        //}
 
         return $content;
     }
