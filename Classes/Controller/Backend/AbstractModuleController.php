@@ -19,6 +19,7 @@ use Psr\Http\Message\ServerRequestInterface;
 use Schnitzler\Templavoila\Traits\BackendUser;
 use Schnitzler\Templavoila\Traits\DatabaseConnection;
 use Schnitzler\Templavoila\Traits\LanguageService;
+use Schnitzler\Templavoila\Utility\PermissionUtility;
 use TYPO3\CMS\Backend\Module\AbstractModule;
 use TYPO3\CMS\Backend\Template\ModuleTemplate;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
@@ -99,10 +100,19 @@ abstract class AbstractModuleController extends AbstractModule
      *
      * @return bool
      */
-    public function hasAccess($flag = self::ACCESS_READ)
+    public function hasAccess()
     {
-        $pageinfo = BackendUtility::readPageAccess($this->getId(), static::getBackendUser()->getPagePermsClause($flag));
-        return is_array($pageinfo) && isset($pageinfo['uid']) && (int)$pageinfo['uid'] > 0;
+        if ($this->getId() === 0) {
+            return false;
+        }
+
+        $pageRecord = BackendUtility::getRecordWSOL('pages', $this->getId());
+
+        if (!is_array($pageRecord)) {
+            return false;
+        }
+
+        return PermissionUtility::hasBasicEditRights('pages', $pageRecord);
     }
 
     /**

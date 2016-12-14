@@ -140,6 +140,22 @@ class MainController extends AbstractModuleController implements Configurable
     /**
      * @param ServerRequest $request
      * @param Response $response
+     */
+    public function accessDenied(ServerRequest $request, Response $response)
+    {
+        $this->moduleTemplate->addFlashMessage(
+            'You do not have the necessary access rights for the current page that are needed for this module.',
+            'Forbidden',
+            FlashMessage::ERROR
+        );
+
+        $response->getBody()->write($this->moduleTemplate->renderContent());
+        return $response->withStatus(403, 'Forbidden');
+    }
+
+    /**
+     * @param ServerRequest $request
+     * @param Response $response
      *
      * @return ResponseInterface
      *
@@ -151,7 +167,7 @@ class MainController extends AbstractModuleController implements Configurable
     public function index(ServerRequest $request, Response $response)
     {
         if (!$this->hasAccess()) {
-            // todo handle this case
+            return $this->forward('accessDenied', $request, $response);
         }
 
         $countDS = $this->dataStructureRepository->countByPid($this->getId());
