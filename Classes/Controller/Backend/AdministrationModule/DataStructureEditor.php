@@ -165,13 +165,13 @@ class DataStructureEditor
                 continue;
             }
 
-            $array['rows'][$rowIndex]['buttons'] = [];
-
             $type = $this->dsTypeInfo($value);
+            $array['rows'][$rowIndex]['buttons'] = [];
             $array['rows'][$rowIndex]['isInEditMode'] = $this->isModeEnabled(static::MODE_EDIT);
             $array['rows'][$rowIndex]['isInMappingMode'] = $this->isModeEnabled(static::MODE_MAPPING);
-            $array['rows'][$rowIndex]['key'] = $key;
+            $array['rows'][$rowIndex]['isContainer'] = $value['type'] === 'array';
             $array['rows'][$rowIndex]['type'] = $type;
+            $array['rows'][$rowIndex]['key'] = $key;
             $array['rows'][$rowIndex]['icon'] = [
                 'identifier' => 'extensions-templavoila-datastructure-' . $type,
                 'size' => Icon::SIZE_SMALL
@@ -395,7 +395,7 @@ class DataStructureEditor
 
             $array['rows'][$rowIndex]['form']['edit'] = $this->drawDataStructureMap_editItem($formPrefix, $key, $value);
 
-            if (($value['type'] === 'array') || ($value['type'] === 'section')) {
+            if ($value['type'] === 'array') {
                 if (!$this->mapElPath) {
                     $array['rows'][$rowIndex]['form']['create'] = [
                         'action' => $this->controller->getModuleUrl([
@@ -494,12 +494,8 @@ class DataStructureEditor
         $elementTypesRenderer = GeneralUtility::makeInstance(ElementTypesRenderer::class);
         $elementTypesRenderer->substEtypeWithRealStuff($real);
 
-        if ($insertDataArray['type'] === 'array' && $insertDataArray['section']) {
-            $insertDataArray['type'] = 'section';
-        }
-
         $this->addFieldsForAllElementTypes($return, $insertDataArray, $formFieldName);
-        if ($insertDataArray['type'] !== 'array' && $insertDataArray['type'] !== 'section') {
+        if ($insertDataArray['type'] !== 'array') {
             $this->addFieldsForAllButContainerElements($return, $insertDataArray, $formFieldName);
         }
 
@@ -561,11 +557,11 @@ class DataStructureEditor
      */
     private function dsTypeInfo($conf)
     {
-        if ($conf['type'] === 'section') {
+        if ($conf['tx_templavoila']['type'] === 'section') {
             return 'sc';
         }
 
-        if ($conf['type'] === 'array') {
+        if ($conf['tx_templavoila']['type'] === 'array') {
             if (!$conf['section']) {
                 return 'co';
             }
@@ -573,11 +569,11 @@ class DataStructureEditor
             return 'sc';
         }
 
-        if ($conf['type'] === 'attr') {
+        if ($conf['tx_templavoila']['type'] === 'attr') {
             return 'at';
         }
 
-        if ($conf['type'] === 'no_map') {
+        if ($conf['tx_templavoila']['type'] === 'no_map') {
             return 'no';
         }
 
@@ -618,7 +614,7 @@ class DataStructureEditor
          */
         $array['input']['type'] = [
             'label' => 'Type',
-            'html' => $this->renderTypeSelectField($formFieldName, $insertDataArray['type'])
+            'html' => $this->renderTypeSelectField($formFieldName, $insertDataArray['tx_templavoila']['type'])
         ];
 
         /*
@@ -876,7 +872,7 @@ class DataStructureEditor
         $currentType = (string) $currentType;
 
         $select = TagBuilderHelper::getSelect();
-        $select->addAttribute('name', $formFieldName . '[type]');
+        $select->addAttribute('name', $formFieldName . '[tx_templavoila][type]');
         $select->addAttribute('title', 'Mapping Type');
         $select->addAttribute('class', 'form-control');
 

@@ -680,6 +680,7 @@ class TemplateObjectController extends AbstractModuleController implements Linka
                     $dataStructure = [
                         'ROOT' => [
                             'tx_templavoila' => [
+                                'type' => 'array',
                                 'title' => static::getLanguageService()->getLL('rootMultiTemplate_title'),
                                 'description' => static::getLanguageService()->getLL('rootMultiTemplate_description')
                             ],

@@ -653,6 +653,7 @@ class ElementController extends AbstractModuleController implements Configurable
         if (count($tree) <= 1) {
             $dataStructure['ROOT'] = [
                 'tx_templavoila' => [
+                    'type' => 'array',
                     'title' => 'ROOT',
                     'description' => static::getLanguageService()->getLL('rootDescription')
                 ],
@@ -684,6 +685,9 @@ class ElementController extends AbstractModuleController implements Configurable
         $inDS = GeneralUtility::_GP('autoDS');
         if (is_array($inDS)) {
             ArrayUtility::mergeRecursiveWithOverrule($dataStructure, $inDS);
+
+            $this->streamlineStructureRecursive($dataStructure);
+
             $sessionData['dataStruct'] = $sessionData['autoDS'] = $dataStructure;
             static::getBackendUser()->setAndSaveSessionData($this->getSessionKey(), $sessionData);
         }
@@ -691,6 +695,52 @@ class ElementController extends AbstractModuleController implements Configurable
         return $response->withHeader('Location', $this->getModuleUrl([
             'DS_element' => $DS_element
         ]));
+    }
+
+    /**
+     * @param array $element
+     */
+    protected function streamlineStructureRecursive(array &$element)
+    {
+        foreach ($element as $key => &$value)
+        {
+            if ($key === 'meta') {
+                continue;
+            }
+
+            if (isset($value['el']) && is_array($value['el'])) {
+                $this->streamlineStructureRecursive($value['el']);
+            }
+
+            if (isset($value['tx_templavoila']['type'])) {
+                unset($value['type'], $value['section']);
+
+                if ($value['tx_templavoila']['type'] === 'section') {
+                    $value['section'] = 1;
+
+                    /*
+                     * Whenever a section is created/updated and it does not have any children,
+                     * an empty container is created as well, to put the section elements into.
+                     *
+                     * This is necessary as the processing of sections changed in TYPO3 7.
+                     */
+                    if (!isset($value['el']) || (is_array($value['el']) && count($value['el']) === 0)) {
+                        $value['el']['field_container'] = [
+                            'type' => 'array',
+                            'tx_templavoila' => [
+                                'type' => 'array',
+                                'title' => 'Container'
+                            ],
+                            'el' => []
+                        ];
+                    }
+                }
+
+                if ($value['tx_templavoila']['type'] === 'array' || $value['tx_templavoila']['type'] === 'section') {
+                    $value['type'] = 'array';
+                }
+            }
+        }
     }
 
     /**
@@ -970,6 +1020,7 @@ class ElementController extends AbstractModuleController implements Configurable
             ],
             'ROOT' => [
                 'tx_templavoila' => [
+                    'type' => 'array',
                     'title' => 'ROOT',
                     'description' => static::getLanguageService()->getLL('rootDescription')
                 ],

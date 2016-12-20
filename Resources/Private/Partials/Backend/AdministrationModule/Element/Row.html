@@ -278,24 +278,26 @@
         <f:render partial="Backend/AdministrationModule/Element/Row" arguments="{ds:child,isInEditMode:isInEditMode}" />
     </f:for>
 
-    <f:if condition="{0:isInEditMode,1:row.type} == {0:'true',1:'co'}">
-        <tr class="bgColor4">
-            <td colspan="7">
-                <form action="{row.form.create.action}" method="post" style="margin: 0">
-                    <div class="input-group" style="margin-left:{row.form.create.input.margin-left}px;">
-                        <input
-                            type="text"
-                            name="fieldName"
-                            value="[{row.form.create.input.value}]"
-                            id="newField"
-                            class="form-control"
-                        />
-                        <span class="input-group-btn">
-                            <input type="submit" name="_" value="Add" class="btn btn-default btn-small"/>
-                        </span>
-                    </div>
-                </form>
-            </td>
-        </tr>
+    <f:if condition="{isInEditMode}">
+        <f:if condition="{row.isContainer}">
+            <tr class="bgColor4">
+                <td colspan="7">
+                    <form action="{row.form.create.action}" method="post" style="margin: 0">
+                        <div class="input-group" style="margin-left:{row.form.create.input.margin-left}px;">
+                            <input
+                                type="text"
+                                name="fieldName"
+                                value="[{row.form.create.input.value}]"
+                                id="newField"
+                                class="form-control"
+                            />
+                            <span class="input-group-btn">
+                                <input type="submit" name="_" value="Add" class="btn btn-default btn-small"/>
+                            </span>
+                        </div>
+                    </form>
+                </td>
+            </tr>
+        </f:if>
     </f:if>
 </f:for>
