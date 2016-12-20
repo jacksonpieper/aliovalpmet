@@ -136,6 +136,7 @@ class SyntaxHighlightingService
                 $nextApp = $app;
 
                 switch ($app) {
+                    case 'TCEforms':
                     case 'tx_templavoila':
                         $wrap = $this->DS_wrapTags['_applicationContents'];
                         break;
@@ -159,6 +160,7 @@ class SyntaxHighlightingService
                         // Check for application sections in the XML:
                         if ($app == 'el' || $parent == 'ROOT') {
                             switch ($v['tagName']) {
+                                case 'TCEforms':
                                 case 'tx_templavoila':
                                     $nextApp = $v['tagName'];
                                     $wrap = $this->DS_wrapTags['_applicationTag'];

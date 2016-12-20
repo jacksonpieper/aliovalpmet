@@ -1353,7 +1353,7 @@ class MainController extends AbstractModuleController implements Configurable
                          *    <langOverlayMode>    -> ??? (is it the language-key?)
                          * </element>
                          */
-                        if ($tv = $def['tx_templavoila']) {
+                        if (($tv = $def['tx_templavoila'])) {
                             /* The basic XML-structure of an tx_templavoila-entry is:
                              *
                              * <tx_templavoila>
@@ -1535,8 +1535,17 @@ class MainController extends AbstractModuleController implements Configurable
                             $HTML .= '<p>' . static::getLanguageService()->getLL('dsdetails_nobasicdefinitions', true) . '</p>';
                         }
 
-                        if (!$tco && !isset($def['label']) && !isset($def['config'])) {
-                            $HTML .= '<p>' . static::getLanguageService()->getLL('dsdetails_notceformdefinitions', true) . '</p>';
+                        /* The basic XML-structure of an TCEforms-entry is:
+                         *
+                         * <TCEforms>
+                         *     <label>            -> TCE-label for the BE
+                         *     <config>        -> TCE-configuration array
+                         * </TCEforms>
+                         */
+                        if (!($def['TCEforms'])) {
+                            if (!$tco) {
+                                $HTML .= '<p>' . static::getLanguageService()->getLL('dsdetails_notceformdefinitions', true) . '</p>';
+                            }
                         }
                     }
                 }
@@ -1578,10 +1587,10 @@ class MainController extends AbstractModuleController implements Configurable
         if (is_array($DScontent) && is_array($DScontent['ROOT']['el'])) {
             foreach ($DScontent['ROOT']['el'] as $elCfg) {
                 $rootelements++;
-                if (isset($elCfg['config'])) {
+                if (isset($elCfg['TCEforms'])) {
 
                     // Assuming that a reference field for content elements is recognized like this, increment counter. Otherwise assume input field of some sort.
-                    if ($elCfg['config']['type'] === 'group' && $elCfg['config']['allowed'] === 'tt_content') {
+                    if ($elCfg['TCEforms']['config']['type'] === 'group' && $elCfg['TCEforms']['config']['allowed'] === 'tt_content') {
                         $referenceFields++;
                     } else {
                         $inputFields++;
