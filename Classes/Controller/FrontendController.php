@@ -707,7 +707,7 @@ class FrontendController extends AbstractPlugin
                 $cObj->setCurrentVal($dataValues[$key][$valueKey]);
 
                 // Render localized labels for 'select' elements:
-                if ($DSelements[$key]['TCEforms']['config']['type'] === 'select'
+                if ($DSelements[$key]['config']['type'] === 'select'
                     && strpos($dataValues[$key][$valueKey], 'LLL:') === 0
                 ) {
                     $tempLangVal = $this->frontendController->sL($dataValues[$key][$valueKey]);

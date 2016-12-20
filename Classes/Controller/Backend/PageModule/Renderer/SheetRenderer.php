@@ -757,8 +757,8 @@ class SheetRenderer implements Renderable
                 continue;
             }
 
-            $TCEformsConfiguration = $fieldData['TCEforms']['config'];
-            $TCEformsLabel = $this->localizedFFLabel($fieldData['TCEforms']['label'], 1); // title for non-section elements
+            $formEngineConfiguration = $fieldData['config'];
+            $formEngineLabel = $this->localizedFFLabel($fieldData['label'], 1); // title for non-section elements
 
             if ($fieldData['type'] === 'array') { // Making preview for array/section parts of a FlexForm structure:;
                 if (is_array($fieldData['childElements'][$lKey])) {
@@ -770,25 +770,25 @@ class SheetRenderer implements Renderable
             } else { // Preview of flexform fields on top-level:
                 $fieldValue = $fieldData['data'][$lKey][$vKey];
 
-                if ($TCEformsConfiguration['type'] === 'group') {
-                    if ($TCEformsConfiguration['internal_type'] === 'file') {
+                if ($formEngineConfiguration['type'] === 'group') {
+                    if ($formEngineConfiguration['internal_type'] === 'file') {
                         // Render preview for images:
-                        $thumbnail = BackendUtility::thumbCode(['dummyFieldName' => $fieldValue], '', 'dummyFieldName', '', '', $TCEformsConfiguration['uploadfolder']);
-                        $previewContent .= '<strong>' . $TCEformsLabel . '</strong> ' . $thumbnail . '<br />';
-                    } elseif ($TCEformsConfiguration['internal_type'] === 'db') {
+                        $thumbnail = BackendUtility::thumbCode(['dummyFieldName' => $fieldValue], '', 'dummyFieldName', '', '', $formEngineConfiguration['uploadfolder']);
+                        $previewContent .= '<strong>' . $formEngineLabel . '</strong> ' . $thumbnail . '<br />';
+                    } elseif ($formEngineConfiguration['internal_type'] === 'db') {
                         if (!$this->renderPreviewDataObjects) {
                             $this->renderPreviewDataObjects = $this->controller->hooks_prepareObjectsArray('renderPreviewDataClass');
                         }
-                        if (isset($this->renderPreviewDataObjects[$TCEformsConfiguration['allowed']])
-                            && method_exists($this->renderPreviewDataObjects[$TCEformsConfiguration['allowed']], 'render_previewData_typeDb')
+                        if (isset($this->renderPreviewDataObjects[$formEngineConfiguration['allowed']])
+                            && method_exists($this->renderPreviewDataObjects[$formEngineConfiguration['allowed']], 'render_previewData_typeDb')
                         ) {
-                            $previewContent .= $this->renderPreviewDataObjects[$TCEformsConfiguration['allowed']]->render_previewData_typeDb($fieldValue, $fieldData, $row['uid'], $sheet->getTable(), $this);
+                            $previewContent .= $this->renderPreviewDataObjects[$formEngineConfiguration['allowed']]->render_previewData_typeDb($fieldValue, $fieldData, $row['uid'], $sheet->getTable(), $this);
                         }
                     }
                 } else {
-                    if ($TCEformsConfiguration['type'] !== '') {
+                    if ($formEngineConfiguration['type'] !== '') {
                         // Render for everything else:
-                        $previewContent .= '<strong>' . $TCEformsLabel . '</strong> ' . (!$fieldValue ? '' : $this->controller->link_edit(htmlspecialchars(GeneralUtility::fixed_lgd_cs(strip_tags($fieldValue), 200)), $sheet->getTable(), $row['uid'])) . '<br />';
+                        $previewContent .= '<strong>' . $formEngineLabel . '</strong> ' . (!$fieldValue ? '' : $this->controller->link_edit(htmlspecialchars(GeneralUtility::fixed_lgd_cs(strip_tags($fieldValue), 200)), $sheet->getTable(), $row['uid'])) . '<br />';
                     }
                 }
             }
@@ -823,7 +823,7 @@ class SheetRenderer implements Renderable
                 if (isset($fieldValue['data']['el'])) {
                     if ($fieldValue['config']['section']) {
                         $result .= '<strong>';
-                        $label = ($fieldValue['config']['TCEforms']['label'] ? $fieldValue['config']['TCEforms']['label'] : $fieldValue['config']['tx_templavoila']['title']);
+                        $label = ($fieldValue['config']['label'] ? $fieldValue['config']['label'] : $fieldValue['config']['tx_templavoila']['title']);
                         $result .= $this->localizedFFLabel($label, 1);
                         $result .= '</strong>';
                         $result .= '<ul>';
@@ -840,20 +840,20 @@ class SheetRenderer implements Renderable
                 }
             } else {
                 $label = $data = '';
-                if (isset($fieldValue['config']['TCEforms']['config']['type']) && $fieldValue['config']['TCEforms']['config']['type'] === 'group') {
-                    if ($fieldValue['config']['TCEforms']['config']['internal_type'] === 'file') {
+                if (isset($fieldValue['config']['config']['type']) && $fieldValue['config']['config']['type'] === 'group') {
+                    if ($fieldValue['config']['config']['internal_type'] === 'file') {
                         // Render preview for images:
-                        $thumbnail = BackendUtility::thumbCode(['dummyFieldName' => $fieldValue['data'][$vKey]], '', 'dummyFieldName', '', '', $fieldValue['config']['TCEforms']['config']['uploadfolder']);
-                        if (isset($fieldValue['config']['TCEforms']['label'])) {
-                            $label = $this->localizedFFLabel($fieldValue['config']['TCEforms']['label'], 1);
+                        $thumbnail = BackendUtility::thumbCode(['dummyFieldName' => $fieldValue['data'][$vKey]], '', 'dummyFieldName', '', '', $fieldValue['config']['config']['uploadfolder']);
+                        if (isset($fieldValue['config']['label'])) {
+                            $label = $this->localizedFFLabel($fieldValue['config']['label'], 1);
                         }
                         $data = $thumbnail;
                     }
                 } else {
-                    if (isset($fieldValue['config']['TCEforms']['config']['type']) && $fieldValue['config']['TCEforms']['config']['type'] !== '') {
+                    if (isset($fieldValue['config']['config']['type']) && $fieldValue['config']['config']['type'] !== '') {
                         // Render for everything else:
-                        if (isset($fieldValue['config']['TCEforms']['label'])) {
-                            $label = $this->localizedFFLabel($fieldValue['config']['TCEforms']['label'], 1);
+                        if (isset($fieldValue['config']['label'])) {
+                            $label = $this->localizedFFLabel($fieldValue['config']['label'], 1);
                         }
                         $data = (!$fieldValue['data'][$vKey] ? '' : $this->controller->link_edit(htmlspecialchars(GeneralUtility::fixed_lgd_cs(strip_tags($fieldValue['data'][$vKey]), 200)), $table, $uid));
                     } else {
@@ -1020,7 +1020,7 @@ class SheetRenderer implements Renderable
                         $hasLocalizedValues |= isset($fieldData['data'][$lKey][$vKey])
                             && ($fieldData['data'][$lKey][$vKey] !== null)
                             && ($fieldData['isMapped'] === true)
-                            && (!isset($fieldData['TCEforms']['displayCond']) || $fieldData['TCEforms']['displayCond'] !== 'HIDE_L10N_SIBLINGS');
+                            && (!isset($fieldData['displayCond']) || $fieldData['displayCond'] !== 'HIDE_L10N_SIBLINGS');
                     }
                 } else {
                     if ($adminOnly === 'false') {

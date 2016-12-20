@@ -119,11 +119,11 @@ class Column implements \Countable, \Iterator
      */
     private function setMaxItemsReached(array $configuration)
     {
-        if (!isset($configuration['TCEforms']['config']['maxitems'])) {
+        if (!isset($configuration['config']['maxitems'])) {
             return;
         }
 
-        $this->maxItemsReached = $this->count() >= (int)$configuration['TCEforms']['config']['maxitems'];
+        $this->maxItemsReached = $this->count() >= (int)$configuration['config']['maxitems'];
     }
 
     /**

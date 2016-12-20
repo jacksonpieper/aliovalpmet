@@ -19,6 +19,7 @@ use Schnitzler\Templavoila\Traits\BackendUser;
 use Schnitzler\Templavoila\Traits\LanguageService;
 use TYPO3\CMS\Core\SingletonInterface;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
+use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -60,8 +61,8 @@ class ElementTypesRenderer implements SingletonInterface
             if (!is_array($elArray[$key]['tx_templavoila']['TypoScript_constants'])) {
                 $elArray[$key]['tx_templavoila']['TypoScript_constants'] = ElementController::unflattenarray($elArray[$key]['tx_templavoila']['TypoScript_constants']);
             }
-            if (!is_array($elArray[$key]['TCEforms']['config'])) {
-                $elArray[$key]['TCEforms']['config'] = ElementController::unflattenarray($elArray[$key]['TCEforms']['config']);
+            if (!is_array($elArray[$key]['config'])) {
+                $elArray[$key]['config'] = ElementController::unflattenarray($elArray[$key]['config']);
             }
 
             /* ---------------------------------------------------------------------- */
@@ -112,9 +113,9 @@ class ElementTypesRenderer implements SingletonInterface
                     switch ($eType) {
                         case 'text':
                             /* preserve previous config, if of the right kind */
-                            if ($reset || ($elArray[$key]['TCEforms']['config']['type'] !== 'text')) {
-                                $elArray[$key]['TCEforms']['label'] = $elArray[$key]['tx_templavoila']['title'];
-                                $elArray[$key]['TCEforms']['config'] = $eTypes['eType'][$eType]['TCEforms']['config'];
+                            if ($reset || ($elArray[$key]['config']['type'] !== 'text')) {
+                                $elArray[$key]['label'] = $elArray[$key]['tx_templavoila']['title'];
+                                $elArray[$key]['config'] = $eTypes['eType'][$eType]['config'];
                             }
 
                             if ($reset) {
@@ -124,14 +125,14 @@ class ElementTypesRenderer implements SingletonInterface
                             break;
                         case 'rte':
                             /* preserve previous config, if of the right kind */
-                            if ($reset || ($elArray[$key]['TCEforms']['config']['type'] !== 'text')) {
-                                $elArray[$key]['TCEforms']['label'] = $elArray[$key]['tx_templavoila']['title'];
-                                $elArray[$key]['TCEforms']['config'] = $eTypes['eType'][$eType]['TCEforms']['config'];
+                            if ($reset || ($elArray[$key]['config']['type'] !== 'text')) {
+                                $elArray[$key]['label'] = $elArray[$key]['tx_templavoila']['title'];
+                                $elArray[$key]['config'] = $eTypes['eType'][$eType]['config'];
                             }
 
                             /* preserve previous config, if explicitly set */
-                            if (!$elArray[$key]['TCEforms']['defaultExtras']) {
-                                $elArray[$key]['TCEforms']['defaultExtras'] = $eTypes['eType'][$eType]['TCEforms']['defaultExtras'];
+                            if (!$elArray[$key]['defaultExtras']) {
+                                $elArray[$key]['defaultExtras'] = $eTypes['eType'][$eType]['defaultExtras'];
                             }
 
                             if ($reset) {
@@ -146,9 +147,9 @@ class ElementTypesRenderer implements SingletonInterface
                         case 'image':
                         case 'imagefixed':
                             /* preserve previous config, if of the right kind */
-                            if ($reset || ($elArray[$key]['TCEforms']['config']['type'] !== 'group')) {
-                                $elArray[$key]['TCEforms']['label'] = $elArray[$key]['tx_templavoila']['title'];
-                                $elArray[$key]['TCEforms']['config'] = $eTypes['eType'][$eType]['TCEforms']['config'];
+                            if ($reset || ($elArray[$key]['config']['type'] !== 'group')) {
+                                $elArray[$key]['label'] = $elArray[$key]['tx_templavoila']['title'];
+                                $elArray[$key]['config'] = $eTypes['eType'][$eType]['config'];
                             }
 
                             $maxW = $contentInfo['img']['width'] ? $contentInfo['img']['width'] : $eTypes['eType'][$eType]['maxWdefault'];
@@ -171,9 +172,9 @@ class ElementTypesRenderer implements SingletonInterface
                             break;
                         case 'link':
                             /* preserve previous config, if of the right kind */
-                            if ($reset || ($elArray[$key]['TCEforms']['config']['type'] !== 'input')) {
-                                $elArray[$key]['TCEforms']['label'] = $elArray[$key]['tx_templavoila']['title'];
-                                $elArray[$key]['TCEforms']['config'] = $eTypes['eType'][$eType]['TCEforms']['config'];
+                            if ($reset || ($elArray[$key]['config']['type'] !== 'input')) {
+                                $elArray[$key]['label'] = $elArray[$key]['tx_templavoila']['title'];
+                                $elArray[$key]['config'] = $eTypes['eType'][$eType]['config'];
                             }
 
                             /* preserve previous config, if of the right kind */
@@ -182,7 +183,7 @@ class ElementTypesRenderer implements SingletonInterface
                                 if ($elArray[$key]['type'] === 'attr') {
                                     $elArray[$key]['tx_templavoila']['TypoScript'] .= chr(10) . '10.typolink.returnLast = url';
                                     /* preserve previous config, if explicitly set */
-                                    if (!isset($elArray[$key]['TCEforms']['proc']['HSC'])) {
+                                    if (!isset($elArray[$key]['proc']['HSC'])) {
                                         $elArray[$key]['tx_templavoila']['proc']['HSC'] = 1;
                                     }
                                 }
@@ -193,9 +194,9 @@ class ElementTypesRenderer implements SingletonInterface
                             break;
                         case 'ce':
                             /* preserve previous config, if of the right kind */
-                            if ($reset || ($elArray[$key]['TCEforms']['config']['type'] !== 'group')) {
-                                $elArray[$key]['TCEforms']['label'] = $elArray[$key]['tx_templavoila']['title'];
-                                $elArray[$key]['TCEforms']['config'] = $eTypes['eType'][$eType]['TCEforms']['config'];
+                            if ($reset || ($elArray[$key]['config']['type'] !== 'group')) {
+                                $elArray[$key]['label'] = $elArray[$key]['tx_templavoila']['title'];
+                                $elArray[$key]['config'] = $eTypes['eType'][$eType]['config'];
                             }
 
                             /* preserve previous config, if of the right kind */
@@ -212,9 +213,9 @@ class ElementTypesRenderer implements SingletonInterface
                             break;
                         case 'int':
                             /* preserve previous config, if of the right kind */
-                            if ($reset || ($elArray[$key]['TCEforms']['config']['type'] !== 'input')) {
-                                $elArray[$key]['TCEforms']['label'] = $elArray[$key]['tx_templavoila']['title'];
-                                $elArray[$key]['TCEforms']['config'] = $eTypes['eType'][$eType]['TCEforms']['config'];
+                            if ($reset || ($elArray[$key]['config']['type'] !== 'input')) {
+                                $elArray[$key]['label'] = $elArray[$key]['tx_templavoila']['title'];
+                                $elArray[$key]['config'] = $eTypes['eType'][$eType]['config'];
                             }
                             if ($reset) {
                                 $elArray[$key]['tx_templavoila']['proc']['int'] = 1;
@@ -223,9 +224,9 @@ class ElementTypesRenderer implements SingletonInterface
                             break;
                         case 'select':
                             /* preserve previous config, if of the right kind */
-                            if ($reset || ($elArray[$key]['TCEforms']['config']['type'] !== 'select')) {
-                                $elArray[$key]['TCEforms']['label'] = $elArray[$key]['tx_templavoila']['title'];
-                                $elArray[$key]['TCEforms']['config'] = $eTypes['eType'][$eType]['TCEforms']['config'];
+                            if ($reset || ($elArray[$key]['config']['type'] !== 'select')) {
+                                $elArray[$key]['label'] = $elArray[$key]['tx_templavoila']['title'];
+                                $elArray[$key]['config'] = $eTypes['eType'][$eType]['config'];
                             }
                             if ($reset) {
                                 unset($elArray[$key]['tx_templavoila']['proc']);
@@ -233,9 +234,9 @@ class ElementTypesRenderer implements SingletonInterface
                             break;
                         case 'check':
                             /* preserve previous config, if of the right kind */
-                            if ($reset || ($elArray[$key]['TCEforms']['config']['type'] !== 'check')) {
-                                $elArray[$key]['TCEforms']['label'] = $elArray[$key]['tx_templavoila']['title'];
-                                $elArray[$key]['TCEforms']['config'] = $eTypes['eType'][$eType]['TCEforms']['config'];
+                            if ($reset || ($elArray[$key]['config']['type'] !== 'check')) {
+                                $elArray[$key]['label'] = $elArray[$key]['tx_templavoila']['title'];
+                                $elArray[$key]['config'] = $eTypes['eType'][$eType]['config'];
                             }
                             if ($reset) {
                                 unset($elArray[$key]['tx_templavoila']['proc']);
@@ -245,9 +246,9 @@ class ElementTypesRenderer implements SingletonInterface
                         case 'input_h':
                         case 'input_g':
                             /* preserve previous config, if of the right kind */
-                            if ($reset || ($elArray[$key]['TCEforms']['config']['type'] !== 'input')) {
-                                $elArray[$key]['TCEforms']['label'] = $elArray[$key]['tx_templavoila']['title'];
-                                $elArray[$key]['TCEforms']['config'] = $eTypes['eType'][$eType]['TCEforms']['config'];
+                            if ($reset || ($elArray[$key]['config']['type'] !== 'input')) {
+                                $elArray[$key]['label'] = $elArray[$key]['tx_templavoila']['title'];
+                                $elArray[$key]['config'] = $eTypes['eType'][$eType]['config'];
                             }
 
                             if ($reset || !trim($elArray[$key]['tx_templavoila']['TypoScript'])) {
@@ -292,7 +293,7 @@ class ElementTypesRenderer implements SingletonInterface
                             unset(
                             $elArray[$key]['tx_templavoila']['TypoScript_constants'],
                             $elArray[$key]['tx_templavoila']['TypoScript'],
-                            $elArray[$key]['TCEforms']['config']
+                            $elArray[$key]['config']
                             );
 
                             /* preserve previous config, if of the right kind */
@@ -309,16 +310,16 @@ class ElementTypesRenderer implements SingletonInterface
                             }
                             break;
                         case 'none':
-                            unset($elArray[$key]['TCEforms']['config']);
+                            unset($elArray[$key]['config']);
                             if ($reset) {
                                 unset($elArray[$key]['tx_templavoila']['proc']);
                             }
                             break;
                         default:
                             /* preserve previous config, if of the right kind */
-                            if ($reset || ($elArray[$key]['TCEforms']['config']['type'] !== 'text')) {
-                                $elArray[$key]['TCEforms']['label'] = $elArray[$key]['tx_templavoila']['title'];
-                                $elArray[$key]['TCEforms']['config'] = $eTypes['eType'][$eType]['TCEforms']['config'];
+                            if ($reset || ($elArray[$key]['config']['type'] !== 'text')) {
+                                $elArray[$key]['label'] = $elArray[$key]['tx_templavoila']['title'];
+                                $elArray[$key]['config'] = $eTypes['eType'][$eType]['config'];
                             }
                             if ($reset || !trim($elArray[$key]['tx_templavoila']['TypoScript'])) {
                                 $elArray[$key]['tx_templavoila']['TypoScript'] = $eTypes['eType'][$eType]['Typoscript'];
@@ -344,9 +345,8 @@ class ElementTypesRenderer implements SingletonInterface
                     }
                 }
 
-                // Setting TCEforms title for element if configuration is found:
-                if (!is_array($elArray[$key]['TCEforms']['config'])) {
-                    unset($elArray[$key]['TCEforms']);
+                if (!is_array($elArray[$key]['config'])) {
+                    unset($elArray[$key]);
                 }
             }
 
@@ -360,7 +360,7 @@ class ElementTypesRenderer implements SingletonInterface
                 unset($elArray[$key]['tx_templavoila']['TypoScript_constants']);
                 unset($elArray[$key]['tx_templavoila']['TypoScript']);
                 unset($elArray[$key]['tx_templavoila']['proc']);
-                unset($elArray[$key]['TCEforms']);
+                unset($elArray[$key]);
             }
 
             if (!$elArray[$key]['tx_templavoila']['description']) {
@@ -372,8 +372,8 @@ class ElementTypesRenderer implements SingletonInterface
             if (!$elArray[$key]['tx_templavoila']['TypoScript_constants']) {
                 unset($elArray[$key]['tx_templavoila']['TypoScript_constants']);
             }
-            if (!$elArray[$key]['TCEforms']['defaultExtras']) {
-                unset($elArray[$key]['TCEforms']['defaultExtras']);
+            if (!$elArray[$key]['defaultExtras']) {
+                unset($elArray[$key]['defaultExtras']);
             }
 
             // Run this function recursively if needed:
@@ -441,7 +441,7 @@ class ElementTypesRenderer implements SingletonInterface
         /*  Formfields */
 
         // input
-        $eTypes['eType']['input']['TCEforms']['config'] = [
+        $eTypes['eType']['input']['config'] = [
             'type' => 'input',
             'size' => '48',
             'eval' => 'trim',
@@ -449,14 +449,14 @@ class ElementTypesRenderer implements SingletonInterface
         $eTypes['eType']['input']['label'] = static::getLanguageService()->getLL('mapPresets_plainInput');
 
         // input_h
-        $eTypes['eType']['input_h']['TCEforms']['config'] = $eTypes['eType']['input']['TCEforms']['config'];
+        $eTypes['eType']['input_h']['config'] = $eTypes['eType']['input']['config'];
         $eTypes['eType']['input_h']['label'] = static::getLanguageService()->getLL('mapPresets_headerField');
         $eTypes['eType']['input_h']['Typoscript'] = '
 10 = TEXT
 10.current = 1';
 
         // input_g
-        $eTypes['eType']['input_g']['TCEforms']['config'] = $eTypes['eType']['input']['TCEforms']['config'];
+        $eTypes['eType']['input_g']['config'] = $eTypes['eType']['input']['config'];
         $eTypes['eType']['input_g']['label'] = static::getLanguageService()->getLL('mapPresets_gHederField');
         $eTypes['eType']['input_g']['Typoscript'] = '
 10 = IMAGE
@@ -477,7 +477,7 @@ backColor = #999999
         $eTypes['eType']['image']['maxHdefault'] = 20;
 
         // text
-        $eTypes['eType']['text']['TCEforms']['config'] = [
+        $eTypes['eType']['text']['config'] = [
             'type' => 'text',
             'cols' => '48',
             'rows' => '5',
@@ -485,7 +485,7 @@ backColor = #999999
         $eTypes['eType']['text']['label'] = static::getLanguageService()->getLL('mapPresets_textarea');
 
         // rte
-        $eTypes['eType']['rte']['TCEforms']['config'] = [
+        $eTypes['eType']['rte']['config'] = [
             'type' => 'text',
             'cols' => '48',
             'rows' => '5',
@@ -493,7 +493,7 @@ backColor = #999999
                     $GLOBALS['TCA']['tt_content']['columns']['bodytext']['config']['softref'] :
                     'typolink_tag,images,email[subst],url'),
         ];
-        $eTypes['eType']['rte']['TCEforms']['defaultExtras'] = 'richtext:rte_transform[flag=rte_enabled|mode=ts_css]';
+        $eTypes['eType']['rte']['defaultExtras'] = 'richtext:rte_transform[flag=rte_enabled|mode=ts_css]';
         $eTypes['eType']['rte']['label'] = static::getLanguageService()->getLL('mapPresets_rte');
         $eTypes['eType']['rte']['Typoscript'] = '
 10 = TEXT
@@ -501,7 +501,7 @@ backColor = #999999
 10.parseFunc = < lib.parseFunc_RTE';
 
         // link
-        $eTypes['eType']['link']['TCEforms']['config'] = [
+        $eTypes['eType']['link']['config'] = [
             'type' => 'input',
             'size' => '15',
             'max' => '256',
@@ -524,7 +524,7 @@ backColor = #999999
 10.typolink.parameter.current = 1';
 
         // int
-        $eTypes['eType']['int']['TCEforms']['config'] = [
+        $eTypes['eType']['int']['config'] = [
             'type' => 'input',
             'size' => '4',
             'max' => '4',
@@ -539,7 +539,7 @@ backColor = #999999
         $eTypes['eType']['int']['label'] = static::getLanguageService()->getLL('mapPresets_integer');
 
         // image
-        $eTypes['eType']['image']['TCEforms']['config'] = [
+        $eTypes['eType']['image']['config'] = [
             'type' => 'group',
             'internal_type' => 'file',
             'allowed' => 'gif,png,jpg,jpeg',
@@ -561,7 +561,7 @@ backColor = #999999
         $eTypes['eType']['image']['maxHdefault'] = 150;
 
         // imagefixed
-        $eTypes['eType']['imagefixed']['TCEforms']['config'] = $eTypes['eType']['image']['TCEforms']['config'];
+        $eTypes['eType']['imagefixed']['config'] = $eTypes['eType']['image']['config'];
         $eTypes['eType']['imagefixed']['label'] = static::getLanguageService()->getLL('mapPresets_imageFixed');
         $eTypes['eType']['imagefixed']['Typoscript'] = '
 10 = IMAGE
@@ -577,7 +577,7 @@ backColor = #999999
         $eTypes['eType']['imagefixed']['maxHdefault'] = 150;
 
         // select
-        $eTypes['eType']['select']['TCEforms']['config'] = [
+        $eTypes['eType']['select']['config'] = [
             'type' => 'select',
             'items' => [
                 ['', ''],
@@ -590,14 +590,14 @@ backColor = #999999
         $eTypes['eType']['select']['label'] = static::getLanguageService()->getLL('mapPresets_select');
 
         // check
-        $eTypes['eType']['check']['TCEforms']['config'] = [
+        $eTypes['eType']['check']['config'] = [
             'type' => 'check',
             'default' => 0,
         ];
         $eTypes['eType']['check']['label'] = static::getLanguageService()->getLL('mapPresets_check');
 
         // ce
-        $eTypes['eType']['ce']['TCEforms']['config'] = [
+        $eTypes['eType']['ce']['config'] = [
             'type' => 'group',
             'internal_type' => 'db',
             'allowed' => 'tt_content',

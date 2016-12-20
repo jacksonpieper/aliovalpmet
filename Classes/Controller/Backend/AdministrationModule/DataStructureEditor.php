@@ -484,8 +484,8 @@ class DataStructureEditor
             $insertDataArray['tx_templavoila']['TypoScript_constants']
         );
 
-        $insertDataArray['TCEforms']['config'] = ElementController::unflattenarray(
-            $insertDataArray['TCEforms']['config']
+        $insertDataArray['config'] = ElementController::unflattenarray(
+            $insertDataArray['config']
         );
 
         /* do the preset-completition */
@@ -755,34 +755,34 @@ class DataStructureEditor
             unset($textarea);
 
             $textField = TagBuilderHelper::getTextarea();
-            $textField->addAttribute('name', $formFieldName . '[TCEforms][label]');
-            $textField->addAttribute('value', $this->flattenarray($insertDataArray['TCEforms']['label']));
+            $textField->addAttribute('name', $formFieldName . '[label]');
+            $textField->addAttribute('value', $this->flattenarray($insertDataArray['label']));
             $textField->addAttribute('class', 'form-control');
 
-            $array['input']['TCEforms']['label'] = [
+            $array['input']['label'] = [
                 'label' => static::getLanguageService()->getLL('mapTCElabel'),
                 'html' => $textField->render()
             ];
             unset($textField);
 
             $textarea = TagBuilderHelper::getTextarea();
-            $textarea->addAttribute('name', $formFieldName . '[TCEforms][config]');
+            $textarea->addAttribute('name', $formFieldName . '[config]');
             $textarea->addAttribute('class', 'form-control');
             $textarea->addAttribute('rows', 10);
-            $textarea->setContent(htmlspecialchars($this->flattenarray($insertDataArray['TCEforms']['config'])));
+            $textarea->setContent(htmlspecialchars($this->flattenarray($insertDataArray['config'])));
 
-            $array['input']['TCEforms']['config'] = [
+            $array['input']['config'] = [
                 'label' => static::getLanguageService()->getLL('mapTCEconf'),
                 'html' => $textarea->render()
             ];
             unset($textarea);
 
             $textField = TagBuilderHelper::getTextarea();
-            $textField->addAttribute('name', $formFieldName . '[TCEforms][defaultExtras]');
-            $textField->addAttribute('value', $this->flattenarray($insertDataArray['TCEforms']['defaultExtras']));
+            $textField->addAttribute('name', $formFieldName . '[defaultExtras]');
+            $textField->addAttribute('value', $this->flattenarray($insertDataArray['defaultExtras']));
             $textField->addAttribute('class', 'form-control');
 
-            $array['input']['TCEforms']['defaultExtras'] = [
+            $array['input']['defaultExtras'] = [
                 'label' => static::getLanguageService()->getLL('mapTCEextras'),
                 'html' => $textField->render()
             ];
