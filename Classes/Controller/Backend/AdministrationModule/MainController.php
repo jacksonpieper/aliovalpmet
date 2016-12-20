@@ -483,22 +483,14 @@ class MainController extends AbstractModuleController implements Configurable
             $dsIcon = BackendUtility::wrapClickMenuOnIcon($dsIcon, 'tx_templavoila_datastructure', $dsObj->getKey(), 1, '&callingScriptId=' . rawurlencode($this->doc->scriptID));
         }
 
+        $showPreviewIcon = true;
+        if (isset($this->modTSconfig['properties']['dsPreviewIconThumb'])) {
+            $showPreviewIcon = (int)$this->modTSconfig['properties']['dsPreviewIconThumb'] !== 0;
+        }
+
         // Preview icon:
-        if ($dsObj->getIcon()) {
-            if (isset($this->modTSconfig['properties']['dsPreviewIconThumb']) && $this->modTSconfig['properties']['dsPreviewIconThumb'] != '0') {
-                $path = realpath(dirname(__FILE__) . '/' . preg_replace('/\w+\/\.\.\//', '', $GLOBALS['BACK_PATH'] . $dsObj->getIcon()));
-                $path = str_replace(realpath(PATH_site) . '/', PATH_site, $path);
-                if ($path == false) {
-                    $previewIcon = static::getLanguageService()->getLL('noicon', true);
-                } else {
-                    // $previewIcon = BackendUtility::getThumbNail($this->doc->backPath . 'thumbs.php', $path,
-                    //     'hspace="5" vspace="5" border="1"',
-                    //     strpos($this->modTSconfig['properties']['dsPreviewIconThumb'], 'x') ? $this->modTSconfig['properties']['dsPreviewIconThumb'] : '');
-                    $previewIcon = ''; // todo: fix me
-                }
-            } else {
-                $previewIcon = '<img src="' . $this->doc->backPath . $dsObj->getIcon() . '" alt="" />';
-            }
+        if ($showPreviewIcon && $dsObj->hasIcon()) {
+            $previewIcon = '<img style="margin: 26px 0; " src="' . $dsObj->getIcon() . '" />';
         } else {
             $previewIcon = static::getLanguageService()->getLL('noicon', true);
         }

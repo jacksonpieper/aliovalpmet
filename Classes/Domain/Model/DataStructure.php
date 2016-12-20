@@ -18,6 +18,9 @@ namespace Schnitzler\Templavoila\Domain\Model;
 use Schnitzler\Templavoila\Traits\BackendUser;
 use Schnitzler\Templavoila\Utility\PermissionUtility;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Core\Resource\FileRepository;
+use TYPO3\CMS\Core\Resource\ProcessedFile;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Class to provide unique access to datastructure
@@ -52,10 +55,31 @@ class DataStructure extends AbstractDataStructure
             $this->row = BackendUtility::getRecordWSOL('tx_templavoila_datastructure', $uid);
         }
 
+        try {
+            /** @var FileRepository $sysFileRepository */
+            $fileRepository = GeneralUtility::makeInstance(FileRepository::class);
+            /** @var FileReference[] $fileReferences */
+            $fileReferences = $fileRepository->findByRelation(DataStructure::TABLE, 'previewicon', (int)$this->row['uid']);
+
+            if (count($fileReferences) > 0) {
+                $fileReference = reset($fileReferences);
+
+                $relativePath = $fileReference->getOriginalFile()->process(
+                    ProcessedFile::CONTEXT_IMAGECROPSCALEMASK,
+                    [
+                        'width' => '48m',
+                        'height' => '48'
+                    ]
+                )->getPublicUrl();
+
+                $this->setIcon('/' . $relativePath);
+            }
+        } catch (\Exception $e) {
+        }
+
         $this->setLabel($this->row['title']);
         $this->setScope($this->row['scope']);
         // path relative to typo3 maindir
-        $this->setIcon('../uploads/tx_templavoila/' . $this->row['previewicon']);
         $this->setSortbyField($GLOBALS['TCA']['tx_templavoila_datastructure']['ctrl']['sortby']);
     }
 

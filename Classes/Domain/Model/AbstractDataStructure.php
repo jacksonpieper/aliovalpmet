@@ -55,7 +55,7 @@ abstract class AbstractDataStructure
     /**
      * @var string
      */
-    protected $iconFile = '';
+    protected $icon = '';
 
     /**
      * Retrieve the label of the datastructure
@@ -106,23 +106,27 @@ abstract class AbstractDataStructure
     abstract public function getKey();
 
     /**
-     * Determine the icon and append the path
-     * assuming that the path for the iconFile is relative to the TYPO3 main folder
-     *
+     * @return string
+     */
+    public function hasIcon()
+    {
+        return $this->icon !== '';
+    }
+
+    /**
      * @return string
      */
     public function getIcon()
     {
-        //regex is used to check if there's a filename within the iconFile string
-        return preg_replace('/^.*\/([^\/]+\.(gif|png))?$/i', '\1', $this->iconFile) ? $this->iconFile : '';
+        return $this->icon;
     }
 
     /**
-     * @param string $filename
+     * @param string $icon
      */
-    protected function setIcon($filename)
+    protected function setIcon($icon)
     {
-        $this->iconFile = $filename;
+        $this->icon = $icon;
     }
 
     /**

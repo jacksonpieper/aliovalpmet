@@ -57,17 +57,16 @@ return [
         ],
         'previewicon' => [
             'label' => 'LLL:EXT:templavoila/Resources/Private/Language/locallang_db.xlf:tx_templavoila_tmplobj.previewicon',
-            'config' => [
-                'type' => 'group',
-                'internal_type' => 'file',
-                'allowed' => 'gif,png',
-                'max_size' => '100',
-                'uploadfolder' => 'uploads/tx_templavoila',
-                'show_thumbs' => '1',
-                'size' => '1',
-                'maxitems' => '1',
-                'minitems' => '0'
-            ]
+            'config' => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::getFileFieldTCAConfig(
+                'previewicon',
+                [
+                    'appearance' => [
+                        'useSortable' => false
+                    ],
+                    'maxitems' => 1
+                ],
+                'gif,png'
+            )
         ],
         'backendGridTemplateName' => [
             'exclude' => 1,
