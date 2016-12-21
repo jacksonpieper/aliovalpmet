@@ -38,12 +38,17 @@ class Sheet
     /**
      * @param Column $column
      * @param array $contentTreeData
+     * @throws \RuntimeException
      */
     public function __construct(Column $column, array $contentTreeData, $sheetKey)
     {
         $this->column = $column;
         $this->contentTreeData = $contentTreeData;
         $this->sheetKey = $sheetKey;
+
+        if (!isset($this->contentTreeData['el']['table'])) {
+            throw new \RuntimeException('table is not set', 1478029315398);
+        }
     }
 
     /**
@@ -56,14 +61,9 @@ class Sheet
 
     /**
      * @return string
-     * @throws \RuntimeException
      */
     public function getTable()
     {
-        if (!isset($this->contentTreeData['el']['table'])) {
-            throw new \RuntimeException('table is not set', 1478029315398);
-        }
-
         return (string) $this->contentTreeData['el']['table'];
     }
 

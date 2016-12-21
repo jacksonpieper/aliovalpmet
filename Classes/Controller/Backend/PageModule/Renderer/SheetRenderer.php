@@ -132,15 +132,19 @@ class SheetRenderer implements Renderable
      */
     public function render()
     {
-        $sheet = new Sheet(
-            new Column([], [], $this->controller->getCurrentLanguageKey()),
-            $this->contentTree,
-            'sDEF'
-        );
+        try {
+            $sheet = new Sheet(
+                new Column([], [], $this->controller->getCurrentLanguageKey()),
+                $this->contentTree,
+                'sDEF'
+            );
 
-        $pid = $sheet->getTable() === 'pages' ? $sheet->getUid() : $sheet->getPid();
+            $pid = $sheet->getTable() === 'pages' ? $sheet->getUid() : $sheet->getPid();
 
-        return $this->renderGrid($sheet, PermissionUtility::getCompiledPermissions($pid));
+            return $this->renderGrid($sheet, PermissionUtility::getCompiledPermissions($pid));
+        } catch (\Exception $e) {
+            return '';
+        }
     }
 
     /**
