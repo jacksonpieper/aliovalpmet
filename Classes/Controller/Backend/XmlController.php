@@ -110,6 +110,7 @@ class XmlController extends AbstractModuleController
             );
 
             $diffUtility = GeneralUtility::makeInstance(DiffUtility::class);
+            $diffUtility->stripTags = false;
             $diff = $diffUtility->makeDiffDisplay($currentXml, $cleanXml);
 
             $cleanActionUrl = BackendUtility::getModuleUrl(
