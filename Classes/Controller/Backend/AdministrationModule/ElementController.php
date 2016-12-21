@@ -581,7 +581,6 @@ class ElementController extends AbstractModuleController implements Configurable
         $htmlParser = GeneralUtility::makeInstance(HtmlParser::class);
         /** @var HtmlMarkup $htmlMarkup */
         $htmlMarkup = GeneralUtility::makeInstance(HtmlMarkup::class);
-        $htmlMarkup->tags = static::$head_markUpTags;
 
         $relPathFix = dirname(substr($this->file, strlen(PATH_site))) . '/';
         $fileContent = GeneralUtility::getUrl($this->file);
