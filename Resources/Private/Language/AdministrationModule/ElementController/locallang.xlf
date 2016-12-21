@@ -423,8 +423,11 @@ You risk that manual changes will be removed without further notice!</source>
 			<trans-unit id="mapPresets_integer" xml:space="preserve">
 				<source>Integer value</source>
 			</trans-unit>
+			<trans-unit id="mapPresets_file" xml:space="preserve">
+				<source>File</source>
+			</trans-unit>
 			<trans-unit id="mapPresets_imageFixed" xml:space="preserve">
-				<source>Image field, fixed W+H</source>
+				<source>(Deprecated) Image field, fixed W+H</source>
 			</trans-unit>
 			<trans-unit id="mapPresets_select" xml:space="preserve">
 				<source>Selector box</source>
@@ -433,7 +436,7 @@ You risk that manual changes will be removed without further notice!</source>
 				<source>Check box</source>
 			</trans-unit>
 			<trans-unit id="mapPresets_image" xml:space="preserve">
-				<source>Image field</source>
+				<source>(Deprecated) Image field</source>
 			</trans-unit>
 			<trans-unit id="mapPresets_ce" xml:space="preserve">
 				<source>Page-Content Elements [Pos.: %s]</source>

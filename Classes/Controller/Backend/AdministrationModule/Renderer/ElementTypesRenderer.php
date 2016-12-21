@@ -19,6 +19,7 @@ use Schnitzler\Templavoila\Traits\BackendUser;
 use Schnitzler\Templavoila\Traits\LanguageService;
 use TYPO3\CMS\Core\SingletonInterface;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
+use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -167,6 +168,23 @@ class ElementTypesRenderer implements SingletonInterface
                                     'MAXW' => $maxW,
                                     'MAXH' => $maxH
                                 ]);
+                            }
+                            break;
+                        case 'file':
+                            if ($reset || trim($elArray[$key]['tx_templavoila']['TypoScript']) === '') {
+                                $elArray[$key]['tx_templavoila']['TypoScript'] = str_replace(
+                                    '###fieldname###',
+                                    $key,
+                                    $eTypes['eType'][$eType]['Typoscript']
+                                );
+                            }
+
+                            if ($reset) {
+                                $elArray[$key]['TCEforms']['config'] = $eTypes['eType'][$eType]['TCEforms']['config'];
+                                $elArray[$key]['TCEforms']['config']['foreign_match_fields']['fieldname'] = $key;
+
+                                $elArray[$key]['tx_templavoila']['proc']['int'] = 0;
+                                $elArray[$key]['tx_templavoila']['proc']['HSC'] = 0;
                             }
                             break;
                         case 'link':
@@ -432,7 +450,7 @@ class ElementTypesRenderer implements SingletonInterface
         // misc: custom
 
         $eTypes = [
-            'defaultTypes_formFields' => 'input,input_h,input_g,text,rte,link,int,image,imagefixed,select,check,ce',
+            'defaultTypes_formFields' => 'input,input_h,input_g,text,rte,link,int,file,image,imagefixed,select,check,ce',
             'defaultTypes_typoscriptElements' => 'TypoScriptObject,none',
             'defaultTypes_misc' => 'custom',
             'eType' => [],
@@ -537,6 +555,25 @@ backColor = #999999
             'default' => 0
         ];
         $eTypes['eType']['int']['label'] = static::getLanguageService()->getLL('mapPresets_integer');
+
+        // file
+        $eTypes['eType']['file']['label'] = static::getLanguageService()->getLL('mapPresets_file');
+        $eTypes['eType']['file']['TCEforms']['config'] = ExtensionManagementUtility::getFileFieldTCAConfig('file');
+        $eTypes['eType']['file']['Typoscript'] = '
+10 = FILES
+10 {
+    references {
+        table =
+        uid =
+        fieldName = ###fieldname###
+    }
+
+    renderObj = IMAGE
+    renderObj {
+        file.import.data = file:current:publicUrl
+        altText.data = file:current:title
+    }
+}';
 
         // image
         $eTypes['eType']['image']['TCEforms']['config'] = [
