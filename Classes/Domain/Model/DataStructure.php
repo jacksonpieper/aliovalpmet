@@ -59,7 +59,7 @@ class DataStructure extends AbstractDataStructure
             /** @var FileRepository $sysFileRepository */
             $fileRepository = GeneralUtility::makeInstance(FileRepository::class);
             /** @var FileReference[] $fileReferences */
-            $fileReferences = $fileRepository->findByRelation(DataStructure::TABLE, 'previewicon', (int)$this->row['uid']);
+            $fileReferences = $fileRepository->findByRelation(self::TABLE, 'previewicon', (int)$this->row['uid']);
 
             if (count($fileReferences) > 0) {
                 $fileReference = reset($fileReferences);

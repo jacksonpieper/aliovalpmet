@@ -701,8 +701,7 @@ class ElementController extends AbstractModuleController implements Configurable
      */
     protected function streamlineStructureRecursive(array &$element)
     {
-        foreach ($element as $key => &$value)
-        {
+        foreach ($element as $key => &$value) {
             if ($key === 'meta') {
                 continue;
             }

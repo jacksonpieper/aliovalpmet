@@ -20,7 +20,6 @@ use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Core\Bootstrap;
 use TYPO3\CMS\Core\Tests\FunctionalTestCase;
 use TYPO3\CMS\Core\Type\Bitmask\Permission;
-use TYPO3\CMS\Frontend\Page\PageRepository;
 
 /**
  * Class Schnitzler\Templavoila\Tests\Functional\Service\PermissionUtilityTest

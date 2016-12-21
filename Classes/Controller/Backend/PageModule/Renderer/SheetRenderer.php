@@ -39,16 +39,6 @@ class SheetRenderer implements Renderable
     use LanguageService;
 
     /**
-     * @var array
-     */
-    private static $languageLabels = [];
-
-    /**
-     * @var array
-     */
-    private static $languageFlagIcons;
-
-    /**
      * @var MainController
      */
     private $controller;
@@ -257,7 +247,7 @@ class SheetRenderer implements Renderable
         if (isset($sheetData['el']['iconTag'])) {
             $recordIcon = $sheetData['el']['iconTag'];
         } else {
-//            $recordIcon = '<img' . IconUtility::skinImg('', $sheetData['el']['icon'], '') . ' border="0" title="' . htmlspecialchars('[' . $table . ':' . $uid . ']') . '" alt="" />';
+            // $recordIcon = '<img' . IconUtility::skinImg('', $sheetData['el']['icon'], '') . ' border="0" title="' . htmlspecialchars('[' . $table . ':' . $uid . ']') . '" alt="" />';
             $recordIcon = ''; // todo: fix me
         }
 
