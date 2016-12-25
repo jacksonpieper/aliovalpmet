@@ -40,7 +40,7 @@ class TextRenderer extends AbstractContentElementRenderer
      */
     protected function getPreviewLabel()
     {
-        return static::getLanguageService()->sL(BackendUtility::getItemLabel('tt_content', $this->previewField), 1);
+        return static::getLanguageService()->sL(BackendUtility::getItemLabel('tt_content', $this->previewField));
     }
 
     /**

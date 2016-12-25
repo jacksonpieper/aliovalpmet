@@ -385,7 +385,7 @@ class OutlineRenderer implements Renderable
                             $entries[] = [
                                 'indentLevel' => $indentLevel,
                                 'icon' => '',
-                                'title' => '<b>' . static::getLanguageService()->sL($fieldContent['meta']['title'], 1) . '</b>' . ($specialPath ? ' <em>' . htmlspecialchars($specialPath) . '</em>' : ''),
+                                'title' => '<b>' . static::getLanguageService()->sL($fieldContent['meta']['title']) . '</b>' . ($specialPath ? ' <em>' . htmlspecialchars($specialPath) . '</em>' : ''),
                                 'id' => '<' . $sheet . '><' . $lKey . '><' . $fieldID . '><' . $vKey . '>',
                                 'controls' => $controls,
                                 'elementTitlebarClass' => 'tpm-container tpm-outline-level' . $indentLevel,

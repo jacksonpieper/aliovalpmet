@@ -198,11 +198,7 @@ class LocalizationTab implements Renderable
                     </td><td width="200" style="vertical-align:middle;">
                         ' . static::getLanguageService()->getLL('pageLocalizationMode') . ':
                     </td>
-<<<<<<< HEAD
-                    <td style="vertical-align:middle;"><em>' . static::getLanguageService()->getLL('pageLocalizationMode_' . $this->controller->getLanguageMode(), true) . ($this->controller->getLanguageParadigm() !== 'free' ? (' / ' . static::getLanguageService()->getLL('pageLocalizationParadigm_' . $this->controller->getLanguageParadigm())) : '') . '</em></td>
-=======
-                    <td style="vertical-align:middle;"><em>' . static::getLanguageService()->getLL('pageLocalizationMode_' . $this->controller->getLanguageMode()) . ($this->controller->getLanguageParadigm() != 'free' ? (' / ' . static::getLanguageService()->getLL('pageLocalizationParadigm_' . $this->controller->getLanguageParadigm())) : '') . '</em></td>
->>>>>>> e727c3d... [TASK] Do not call getLL with $hsc true
+                    <td style="vertical-align:middle;"><em>' . static::getLanguageService()->getLL('pageLocalizationMode_' . $this->controller->getLanguageMode()) . ($this->controller->getLanguageParadigm() !== 'free' ? (' / ' . static::getLanguageService()->getLL('pageLocalizationParadigm_' . $this->controller->getLanguageParadigm())) : '') . '</em></td>
                 </tr>
             ';
         }

@@ -27,7 +27,7 @@ class TextpicRenderer extends TextRenderer
     {
         $uploadDir = $GLOBALS['TCA']['tt_content']['columns']['image']['config']['internal_type'] === 'file_reference' ? '' : null;
 
-        $thumbnail = '<strong>' . static::getLanguageService()->sL(BackendUtility::getItemLabel('tt_content', 'image'), 1) . '</strong><br />';
+        $thumbnail = '<strong>' . static::getLanguageService()->sL(BackendUtility::getItemLabel('tt_content', 'image')) . '</strong><br />';
         $thumbnail .= BackendUtility::thumbCode($this->row, 'tt_content', 'image', '', '', $uploadDir);
 
         $label = $this->getPreviewLabel();
