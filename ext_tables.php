@@ -30,11 +30,9 @@ if (TYPO3_MODE === 'BE') {
             'name' => 'web_txtemplavoilaM1',
             'access' => 'group,user',
             'routeTarget' => \Schnitzler\Templavoila\Controller\Backend\PageModule\MainController::class . '::processRequest',
+            'iconIdentifier' => 'extensions-templavoila-module-page',
             'labels' => [
-                'll_ref' => 'LLL:EXT:templavoila/Resources/Private/Language/PageModule/locallang_mod.xlf',
-                'tabs_images' => [
-                    'tab' => 'EXT:templavoila/Resources/Public/Icon/Modules/PageModuleIcon.svg'
-                ]
+                'll_ref' => 'LLL:EXT:templavoila/Resources/Private/Language/PageModule/locallang_mod.xlf'
             ]
         ]
     );
@@ -48,11 +46,9 @@ if (TYPO3_MODE === 'BE') {
             'name' => 'web_txtemplavoilaM2',
             'access' => 'group,user',
             'routeTarget' => \Schnitzler\Templavoila\Controller\Backend\AdministrationModule\MainController::class . '::processRequest',
+            'iconIdentifier' => 'extensions-templavoila-module-administration',
             'labels' => [
-                'll_ref' => 'LLL:EXT:templavoila/Resources/Private/Language/AdministrationModule/locallang_mod.xlf',
-                'tabs_images' => [
-                    'tab' => 'EXT:templavoila/Resources/Public/Icon/Modules/AdministrationModuleIcon.svg'
-                ]
+                'll_ref' => 'LLL:EXT:templavoila/Resources/Private/Language/AdministrationModule/locallang_mod.xlf'
             ]
         ]
     );
@@ -119,6 +115,20 @@ if (TYPO3_MODE === 'BE') {
 
 /** @var \TYPO3\CMS\Core\Imaging\IconRegistry $iconRegistry */
 $iconRegistry = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\Imaging\IconRegistry::class);
+$iconRegistry->registerIcon(
+    'extensions-templavoila-module-page',
+    \TYPO3\CMS\Core\Imaging\IconProvider\SvgIconProvider::class,
+    [
+        'source' => 'EXT:templavoila/Resources/Public/Icon/Modules/PageModuleIcon.svg'
+    ]
+);
+$iconRegistry->registerIcon(
+    'extensions-templavoila-module-administration',
+    \TYPO3\CMS\Core\Imaging\IconProvider\SvgIconProvider::class,
+    [
+        'source' => 'EXT:templavoila/Resources/Public/Icon/Modules/AdministrationModuleIcon.svg'
+    ]
+);
 $iconRegistry->registerIcon(
     'extensions-templavoila-unlink',
     \TYPO3\CMS\Core\Imaging\IconProvider\FontawesomeIconProvider::class,
