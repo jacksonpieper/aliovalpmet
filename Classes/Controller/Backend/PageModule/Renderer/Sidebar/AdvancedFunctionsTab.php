@@ -78,11 +78,11 @@ class AdvancedFunctionsTab implements Renderable
             $showOutlineCheckbox->addAttribute('checked', null);
         }
 
-        $view = $this->controller->getStandaloneView('Backend/PageModule/Renderer/AdvancedFunctionsTab');
+        $view = $this->controller->getStandaloneView('Backend/PageModule/Renderer');
         $view->assign('showHiddenCheckbox', $showHiddenCheckbox->render());
         $view->assign('showOutlineCheckbox', $showOutlineCheckbox->render());
         $view->assign('displayShowOutlineCheckbox', static::getBackendUser()->isAdmin() || $this->controller->modTSconfig['properties']['enableOutlineForNonAdmin']);
 
-        return $view->render();
+        return $view->render('AdvancedFunctionsTab');
     }
 }

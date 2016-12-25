@@ -227,7 +227,7 @@ class TemplateMapper
             }
         }
 
-        return $this->view->render();
+        return $this->view->render('Index');
     }
 
     /**

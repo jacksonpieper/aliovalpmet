@@ -176,7 +176,7 @@ abstract class AbstractModuleController extends AbstractModule
     }
 
     /**
-     * @param $templateName
+     * @param string $controllerName
      *
      * @return StandaloneView
      *
@@ -184,7 +184,7 @@ abstract class AbstractModuleController extends AbstractModule
      * @throws \BadFunctionCallException
      * @throws \InvalidArgumentException
      */
-    public function getStandaloneView($templateName)
+    public function getStandaloneView($controllerName)
     {
         $setup = $this->getTypoScriptSetup();
 
@@ -192,7 +192,7 @@ abstract class AbstractModuleController extends AbstractModule
         $view->setLayoutRootPaths($setup['module.']['tx_templavoila.']['view.']['layoutRootPaths.']);
         $view->setTemplateRootPaths($setup['module.']['tx_templavoila.']['view.']['templateRootPaths.']);
         $view->setPartialRootPaths($setup['module.']['tx_templavoila.']['view.']['partialRootPaths.']);
-        $view->setTemplate($templateName);
+        $view->getRenderingContext()->setControllerName($controllerName);
         $view->assign('settings', $this->settings);
 
         return $view;

@@ -110,7 +110,7 @@ class WizardController extends AbstractModuleController implements Configurable
             );
         }
 
-        $view = $this->getStandaloneView('Backend/AdministrationModule/WizardController/SelectTemplate');
+        $view = $this->getStandaloneView('Backend/AdministrationModule/WizardController');
         $view->assign('files', array_map(function ($hash, $path) {
             $templateObjectCount = (int)static::getDatabaseConnection()->exec_SELECTcountRows(
                 'uid',
@@ -134,7 +134,7 @@ class WizardController extends AbstractModuleController implements Configurable
         }, array_keys($files), GeneralUtility::removePrefixPathFromList($files, PATH_site)));
         $view->assign('paths', implode('", "', GeneralUtility::removePrefixPathFromList($paths, PATH_site)));
 
-        $this->moduleTemplate->setContent($view->render());
+        $this->moduleTemplate->setContent($view->render('SelectTemplate'));
         $response->getBody()->write($this->moduleTemplate->renderContent());
         return $response;
     }
@@ -164,7 +164,7 @@ class WizardController extends AbstractModuleController implements Configurable
             ));
         }
 
-        $view = $this->getStandaloneView('Backend/AdministrationModule/WizardController/EnterDefaultValues');
+        $view = $this->getStandaloneView('Backend/AdministrationModule/WizardController');
         $view->assign('file', '/' . $file);
         $view->assign('action', BackendUtility::getModuleUrl(
             static::getModuleName(),
@@ -176,7 +176,7 @@ class WizardController extends AbstractModuleController implements Configurable
         $view->assign('url', $this->getSetting('url'));
         $view->assign('username', $this->getSetting('username'));
 
-        $this->moduleTemplate->setContent($view->render());
+        $this->moduleTemplate->setContent($view->render('EnterDefaultValues'));
         $response->getBody()->write($this->moduleTemplate->renderContent());
         return $response;
     }
@@ -315,9 +315,9 @@ class WizardController extends AbstractModuleController implements Configurable
         $this->updateSetting('typoScriptTemplateID', BackendUtility::wsMapId('sys_template', $import->import_mapId['sys_template'][1]));
         $this->updateSetting('step', --$this->step); // todo: This needs to be removed, currently only prevents a loop
 
-        $view = $this->getStandaloneView('Backend/AdministrationModule/WizardController/Map');
+        $view = $this->getStandaloneView('Backend/AdministrationModule/WizardController');
         $view->assign('src', ExtensionManagementUtility::extRelPath(Templavoila::EXTKEY) . 'Resources/Public/Image/mapbody_animation.gif');
-        $this->moduleTemplate->setContent($view->render());
+        $this->moduleTemplate->setContent($view->render('Map'));
         $response->getBody()->write($this->moduleTemplate->renderContent());
         return $response;
     }

@@ -167,7 +167,7 @@ class ElementController extends AbstractModuleController implements Configurable
             $dataStructureEditor
         );
 
-        $view = $this->getStandaloneView('Backend/AdministrationModule/Element/Edit');
+        $view = $this->getStandaloneView('Backend/AdministrationModule/Element');
 
         try {
             $templateObjectRecord = $this->getTemplateObjectRecord($this->templateObjectUid);
@@ -229,7 +229,7 @@ class ElementController extends AbstractModuleController implements Configurable
                 'doMappingOfPath' => 1
             ])
         );
-        $this->moduleTemplate->setContent($view->render());
+        $this->moduleTemplate->setContent($view->render('Edit'));
         $response->getBody()->write($this->moduleTemplate->renderContent());
         return $response;
     }
@@ -242,7 +242,7 @@ class ElementController extends AbstractModuleController implements Configurable
      */
     public function saveAs(ServerRequest $request, Response $response)
     {
-        $view = $this->getStandaloneView('Backend/AdministrationModule/Element/SaveAs');
+        $view = $this->getStandaloneView('Backend/AdministrationModule/Element');
 
         $rows = static::getDatabaseConnection()->exec_SELECTgetRows(
             'tx_templavoila_tmplobj.*,tx_templavoila_datastructure.scope',
@@ -338,7 +338,7 @@ class ElementController extends AbstractModuleController implements Configurable
             'update' => $updateUrl
         ]);
 
-        $this->moduleTemplate->setContent($view->render());
+        $this->moduleTemplate->setContent($view->render('SaveAs'));
         $response->getBody()->write($this->moduleTemplate->renderContent());
         return $response;
     }

@@ -96,7 +96,7 @@ class XmlController extends AbstractModuleController
         $cleanXml = $this->flexFormTools->cleanFlexFormXML($this->table, $this->flexformColumnName, $record);
         $currentXmlIsClean = md5($currentXml) === md5($cleanXml);
 
-        $view = $this->getStandaloneView('Backend/Xml/Index');
+        $view = $this->getStandaloneView('Backend/Xml');
         $view->assign('currentXml', $currentXml);
         $view->assign('cleanXml', $cleanXml);
         $view->assign('currentXmlIsClean', $currentXmlIsClean);
@@ -137,7 +137,7 @@ class XmlController extends AbstractModuleController
         }
 
         $this->moduleTemplate->setTitle(static::getLanguageService()->getLL('title'));
-        $this->moduleTemplate->setContent($view->render());
+        $this->moduleTemplate->setContent($view->render('Index'));
 
         $response->getBody()->write($this->moduleTemplate->renderContent());
         return $response;

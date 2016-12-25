@@ -183,7 +183,7 @@ class DataStructureController extends AbstractModuleController implements Linkab
         $view->assign('templateObjects', $templateObjects);
         $view->assign('xml', $syntaxHighightingService->highLight_DS($dataStructureXML));
 
-        $this->getModuleTemplate()->setContent($view->render());
+        $this->getModuleTemplate()->setContent($view->render('Index'));
         $response->getBody()->write($this->getModuleTemplate()->renderContent());
 
         return $response;

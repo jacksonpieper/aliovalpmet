@@ -433,7 +433,7 @@ class SheetRenderer implements Renderable
             && $sheet->getColumn()->isDragAndDropAllowed()
             && (string)$this->controller->modTSconfig['properties']['enableDragDrop'] !== '0';
 
-        $contentElementView = $this->controller->getStandaloneView('Backend/PageModule/Renderer/SheetRenderer/ContentElement');
+        $contentElementView = $this->controller->getStandaloneView('Backend/PageModule/Renderer/SheetRenderer');
         $contentElementView->assignMultiple([
             'languageLabel' => LanguageHelper::getLanguageTitle($this->controller->getId(), $sheet->getSysLanguageUid()),
             'languageFlagIconIdentifier' => LanguageHelper::getLanguageFlagIconIdentifier($this->controller->getId(), $sheet->getSysLanguageUid()),
@@ -457,7 +457,7 @@ class SheetRenderer implements Renderable
             'uid' => $sheet->getUid()
         ]);
 
-        return $contentElementView->render();
+        return $contentElementView->render('ContentElement');
     }
 
     /**
@@ -579,13 +579,16 @@ class SheetRenderer implements Renderable
         }
         unset($column);
 
-        $templateName = $template->hasBackendGridTemplateName() ? $template->getBackendGridTemplateName() : 'Backend/Grid/Default';
-        $contentElementView = $this->controller->getStandaloneView($templateName);
+        $templatePath = $template->hasBackendGridTemplateName() ? $template->getBackendGridTemplateName() : 'Backend/Grid/Default';
+        $templatePathParts = GeneralUtility::trimExplode('/', $templatePath, true);
+        $actionName = array_pop($templatePathParts);
+
+        $contentElementView = $this->controller->getStandaloneView(implode('/', $templatePathParts));
         $contentElementView->assign('columns', $columns);
         $contentElementView->assign('table', $sheet->getTable());
         $contentElementView->assign('uid', $sheet->getUid());
 
-        return $contentElementView->render();
+        return $contentElementView->render($actionName);
     }
 
     /**

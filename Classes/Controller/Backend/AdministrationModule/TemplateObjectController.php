@@ -168,7 +168,7 @@ class TemplateObjectController extends AbstractModuleController implements Linka
         $title = BackendUtility::getRecordTitle('tx_templavoila_tmplobj', $templateObjectRecord);
         $title = BackendUtility::getRecordTitlePrep(static::getLanguageService()->sL($title));
 
-        $informationTabView = $this->getStandaloneView('Backend/AdministrationModule/TemplateObject/Information');
+        $informationTabView = $this->getStandaloneView('Backend/AdministrationModule/TemplateObject');
         $informationTabView->assign('title', static::getLanguageService()->getLL('renderTO_toInfo'));
         $informationTabView->assign('templateObject', [
             'icon' => BackendUtility::wrapClickMenuOnIcon($icon, 'tx_templavoila_tmplobj', $templateObjectRecord['uid']),
@@ -253,7 +253,7 @@ class TemplateObjectController extends AbstractModuleController implements Linka
         $currentMappingInfo = is_array($sessionData['currentMappingInfo']) ? $sessionData['currentMappingInfo'] : [];
         TemplateMappingHelper::removeElementsThatDoNotExistInDataStructure($currentMappingInfo, $dataStruct);
 
-        $mappingTabView = $this->getStandaloneView('Backend/AdministrationModule/TemplateObject/Mapping');
+        $mappingTabView = $this->getStandaloneView('Backend/AdministrationModule/TemplateObject');
         $mappingTabView->assign('title', static::getLanguageService()->getLL('mappingBodyParts'));
         $mappingTabView->assign('content', $this->templateMapper->renderTemplateMapper($absoluteTemplateFilePath, $this->displayPath, $dataStruct, $currentMappingInfo));
 
@@ -261,7 +261,7 @@ class TemplateObjectController extends AbstractModuleController implements Linka
         $content .= $this->getModuleTemplate()->getDynamicTabMenu([
                 [
                     'label' => static::getLanguageService()->getLL('tabTODetails'),
-                    'content' => $informationTabView->render()
+                    'content' => $informationTabView->render('Information')
                 ],
                 [
                     'label' => static::getLanguageService()->getLL('tabHeadParts'),
@@ -269,13 +269,13 @@ class TemplateObjectController extends AbstractModuleController implements Linka
                 ],
                 [
                     'label' => static::getLanguageService()->getLL('tabBodyParts'),
-                    'content' => $mappingTabView->render()
+                    'content' => $mappingTabView->render('Mapping')
                 ]
             ],
             'TEMPLAVOILA:templateModule:' . $this->getId()
         );
 
-        $view = $this->getStandaloneView('Backend/AdministrationModule/TemplateObject');
+        $view = $this->getStandaloneView('Backend/AdministrationModule');
         $view->assign('action', $this->getModuleUrl(['action' => 'set']));
         $view->assign('content', $content);
 
@@ -338,7 +338,7 @@ class TemplateObjectController extends AbstractModuleController implements Linka
         $this->moduleTemplate->getPageRenderer()->loadRequireJsModule('TYPO3/CMS/Backend/Modal');
         $this->moduleTemplate->getPageRenderer()->loadRequireJsModule('TYPO3/CMS/Templavoila/AdministrationModule');
 
-        $this->moduleTemplate->setContent($view->render());
+        $this->moduleTemplate->setContent($view->render('TemplateObject'));
         $response->getBody()->write($this->moduleTemplate->renderContent());
         return $response;
     }
@@ -754,7 +754,7 @@ class TemplateObjectController extends AbstractModuleController implements Linka
             $checkbox->addAttribute('checked', 'checked');
         }
 
-        $view = $this->getStandaloneView('Backend/AdministrationModule/TemplateObject/HeaderParts');
+        $view = $this->getStandaloneView('Backend/AdministrationModule/TemplateObject');
         $view->assign('title', static::getLanguageService()->getLL('mappingHeadParts'));
         $view->assign('rows', $this->htmlMarkup->markupHTMLcontent($html_header, $GLOBALS['BACK_PATH'], '', 'script,style,link,meta', 'checkbox'));
         $view->assign('bodyTag', [
@@ -765,7 +765,7 @@ class TemplateObjectController extends AbstractModuleController implements Linka
         ]);
         $view->assign('checkbox', $checkbox->render());
 
-        return $view->render();
+        return $view->render('HeaderParts');
     }
 
     /**

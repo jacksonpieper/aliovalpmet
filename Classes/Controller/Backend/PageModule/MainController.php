@@ -313,7 +313,7 @@ class MainController extends AbstractModuleController implements Configurable
         $this->rootElementRecord = BackendUtility::getRecordWSOL($this->rootElementTable, $this->rootElementUid, '*');
         $this->clipboardObj = new Clipboard($this);
 
-        $view = $this->getStandaloneView('Backend/PageModule/Main/Index');
+        $view = $this->getStandaloneView('Backend/PageModule/Main');
 
         $doktypeRenderer = new DoktypeRenderer($this);
         $doktype = $this->getDoktype($this->rootElementRecord);
@@ -392,7 +392,7 @@ class MainController extends AbstractModuleController implements Configurable
         $this->moduleTemplate->getPageRenderer()->loadRequireJsModule('TYPO3/CMS/Backend/Tooltip');
         $this->moduleTemplate->getPageRenderer()->loadRequireJsModule('TYPO3/CMS/Templavoila/PageModule');
         $this->moduleTemplate->getPageRenderer()->addInlineSetting('PageModule', 'popupUrl', BackendUtility::getModuleUrl('wizard_element_browser'));
-        $this->moduleTemplate->setContent($view->render());
+        $this->moduleTemplate->setContent($view->render('Index'));
 
         $response->getBody()->write($this->moduleTemplate->renderContent());
         return $response;

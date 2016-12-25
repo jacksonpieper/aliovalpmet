@@ -175,7 +175,7 @@ class MainController extends AbstractModuleController implements Configurable
             return $this->noRecordsAction($request, $response);
         }
 
-        $view = $this->getStandaloneView('Backend/AdministrationModule/Main');
+        $view = $this->getStandaloneView('Backend/AdministrationModule');
         $view->assign('title', $this->moduleTemplate->header(static::getLanguageService()->getLL('title')));
 
         // Traverse scopes of data structures display template records belonging to them:
@@ -266,7 +266,7 @@ class MainController extends AbstractModuleController implements Configurable
         $output = $this->getModuleTemplate()->getDynamicTabMenu($parts, 'TEMPLAVOILA:templateOverviewModule:' . $this->getId(), 1);
 
         $view->assign('content', $output);
-        $this->moduleTemplate->setContent($view->render());
+        $this->moduleTemplate->setContent($view->render('Main'));
         $response->getBody()->write($this->moduleTemplate->renderContent());
         return $response;
     }
@@ -277,14 +277,14 @@ class MainController extends AbstractModuleController implements Configurable
      */
     public function noRecordsAction(ServerRequest $request, Response $response)
     {
-        $view = $this->getStandaloneView('Backend/AdministrationModule/NoRecordsFound');
+        $view = $this->getStandaloneView('Backend/AdministrationModule');
         $view->assign('title', $this->moduleTemplate->header(static::getLanguageService()->getLL('title')));
 
         $content = '';
         $content .= $this->renderModuleContent_searchForTODS();
 
         $view->assign('content', $content);
-        $this->moduleTemplate->setContent($view->render());
+        $this->moduleTemplate->setContent($view->render('NoRecordsFound'));
         $response->getBody()->write($this->moduleTemplate->renderContent());
         return $response;
     }
