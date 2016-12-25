@@ -15,17 +15,18 @@ namespace Schnitzler\Templavoila\ViewHelpers;
 
 use InvalidArgumentException;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface;
 use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
 use TYPO3\CMS\Fluid\Core\ViewHelper\Exception\InvalidVariableException;
-use TYPO3\CMS\Fluid\Core\ViewHelper\Facets\CompilableInterface;
 use TYPO3\CMS\Lang\LanguageService;
+use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
+use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
 
 /**
  * Class Schnitzler\Templavoila\ViewHelpers\LlViewHelper
  */
-class LlViewHelper extends AbstractViewHelper implements CompilableInterface
+class LlViewHelper extends AbstractViewHelper
 {
+    use CompileWithRenderStatic;
 
     /**
      * @var LanguageService
@@ -46,23 +47,11 @@ class LlViewHelper extends AbstractViewHelper implements CompilableInterface
         return static::$languageService;
     }
 
-    /**
-     * @param string $index
-     * @param mixed $arguments
-     *
-     * @throws InvalidVariableException
-     * @throws InvalidArgumentException
-     */
-    public function render($index = null, $arguments = null)
+    public function initializeArguments()
     {
-        return static::renderStatic(
-            [
-                'index' => $index,
-                'arguments' => $arguments
-            ],
-            $this->buildRenderChildrenClosure(),
-            $this->renderingContext
-        );
+        parent::initializeArguments();
+        $this->registerArgument('index', 'string', '', true);
+        $this->registerArgument('arguments', 'array', '', false, []);
     }
 
     /**

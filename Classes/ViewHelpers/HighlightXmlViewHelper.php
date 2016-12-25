@@ -16,33 +16,23 @@ namespace Schnitzler\Templavoila\ViewHelpers;
 use InvalidArgumentException;
 use Schnitzler\Templavoila\Service\SyntaxHighlightingService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface;
 use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
 use TYPO3\CMS\Fluid\Core\ViewHelper\Exception\InvalidVariableException;
-use TYPO3\CMS\Fluid\Core\ViewHelper\Facets\CompilableInterface;
+use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
+use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
 
 /**
  * Class Schnitzler\Templavoila\ViewHelpers\HighlightXmlViewHelper
  */
-class HighlightXmlViewHelper extends AbstractViewHelper implements CompilableInterface
+class HighlightXmlViewHelper extends AbstractViewHelper
 {
-    /**
-     * @param string $xml
-     * @param bool $useLineNumbers
-     *
-     * @throws InvalidVariableException
-     * @throws InvalidArgumentException
-     */
-    public function render($xml, $useLineNumbers = true)
+    use CompileWithRenderStatic;
+
+    public function initializeArguments()
     {
-        return static::renderStatic(
-            [
-                'xml' => $xml,
-                'useLineNumbers' => $useLineNumbers
-            ],
-            $this->buildRenderChildrenClosure(),
-            $this->renderingContext
-        );
+        parent::initializeArguments();
+        $this->registerArgument('xml', 'string', '', true);
+        $this->registerArgument('showIcon', 'bool', '', false, true);
     }
 
     /**
