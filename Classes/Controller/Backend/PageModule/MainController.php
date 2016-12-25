@@ -203,8 +203,8 @@ class MainController extends AbstractModuleController implements Configurable
     public function __construct()
     {
         parent::__construct();
-        static::getLanguageService()->includeLLFile('EXT:lang/locallang_core.xlf');
-        static::getLanguageService()->includeLLFile('EXT:lang/locallang_mod_web_list.xlf');
+        static::getLanguageService()->includeLLFile('EXT:lang/Resources/Private/Language/locallang_core.xlf');
+        static::getLanguageService()->includeLLFile('EXT:lang/Resources/Private/Language/locallang_mod_web_list.xlf');
         static::getLanguageService()->includeLLFile('EXT:templavoila/Resources/Private/Language/PageModule/MainController/locallang.xlf');
 
         $this->extConf = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf'][Templavoila::EXTKEY]);
@@ -772,7 +772,7 @@ class MainController extends AbstractModuleController implements Configurable
 //            'setFormValueOpenBrowser(\'db\',\'browser[communication]|||tt_content\');' .
 //            'return false;';
 //
-//        return '<a title="' . static::getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:labels.browse_db') . '" href="#" class="btn btn-default btn-sm tpm-browse browse" rel="index.php?' . htmlspecialchars($parameters) . '" onclick="' . htmlspecialchars($onClick) . '">' . $label . '</a>';
+//        return '<a title="' . static::getLanguageService()->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:labels.browse_db') . '" href="#" class="btn btn-default btn-sm tpm-browse browse" rel="index.php?' . htmlspecialchars($parameters) . '" onclick="' . htmlspecialchars($onClick) . '">' . $label . '</a>';
     }
 
     /**
