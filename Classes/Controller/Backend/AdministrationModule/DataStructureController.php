@@ -175,7 +175,14 @@ class DataStructureController extends AbstractModuleController implements Linkab
         }
 
         $syntaxHighightingService = GeneralUtility::makeInstance(SyntaxHighlightingService::class);
-        $dataStructureXML = GeneralUtility::array2xml_cs($origDataStruct, 'T3DataStructure', ['useCDATA' => 1]);
+        $dataStructureXML = '<?xml version="1.0" encoding="utf-8" standalone="yes" ?>' . LF . GeneralUtility::array2xml(
+            $origDataStruct,
+            '',
+            0,
+            'T3DataStructure',
+            0,
+            ['useCDATA' => 1]
+        );
 
         $view->assign('dataStructureIcon', $dataStructureIcon);
         $view->assign('dataStructureTitle', $dataStructureTitle);

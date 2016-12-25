@@ -432,9 +432,12 @@ class ElementController extends AbstractModuleController implements Configurable
             'pid' => (int)$post['pid'],
             'title' => $post['title'],
             'scope' => (int)$post['scope'],
-            'dataprot' => GeneralUtility::array2xml_cs(
+            'dataprot' => '<?xml version="1.0" encoding="utf-8" standalone="yes" ?>' . LF . GeneralUtility::array2xml(
                 $structure,
+                '',
+                0,
                 'T3DataStructure',
+                0,
                 ['useCDATA' => 1]
             )
         ]);
@@ -528,9 +531,13 @@ class ElementController extends AbstractModuleController implements Configurable
             $dataStructureRepository->update(
                 $datastructureRecord['uid'],
                 [
-                    'dataprot' => GeneralUtility::array2xml_cs(
+                    'dataprot' => '<?xml version="1.0" encoding="utf-8" standalone="yes" ?>' . LF . GeneralUtility::array2xml(
                         $structure,
-                        'T3DataStructure', ['useCDATA' => 1]
+                        '',
+                        0,
+                        'T3DataStructure',
+                        0,
+                        ['useCDATA' => 1]
                     )
                 ]
             );

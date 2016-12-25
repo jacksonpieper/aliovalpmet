@@ -371,7 +371,14 @@ class Template
      */
     public function getLocalDataprotXML($skipDsDataprot = false)
     {
-        return GeneralUtility::array2xml_cs($this->getLocalDataprotArray($skipDsDataprot), 'T3DataStructure', ['useCDATA' => 1]);
+        return '<?xml version="1.0" encoding="utf-8" standalone="yes" ?>' . LF . GeneralUtility::array2xml(
+            $this->getLocalDataprotArray($skipDsDataprot),
+                '',
+                0,
+                'T3DataStructure',
+                0,
+                ['useCDATA' => 1]
+            );
     }
 
     /**
