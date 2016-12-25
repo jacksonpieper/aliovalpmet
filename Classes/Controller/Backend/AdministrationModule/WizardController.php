@@ -316,7 +316,7 @@ class WizardController extends AbstractModuleController implements Configurable
         $this->updateSetting('step', --$this->step); // todo: This needs to be removed, currently only prevents a loop
 
         $view = $this->getStandaloneView('Backend/AdministrationModule/WizardController');
-        $view->assign('src', ExtensionManagementUtility::extRelPath(Templavoila::EXTKEY) . 'Resources/Public/Image/mapbody_animation.gif');
+        $view->assign('src', ExtensionManagementUtility::siteRelPath(Templavoila::EXTKEY) . 'Resources/Public/Image/mapbody_animation.gif');
         $this->moduleTemplate->setContent($view->render('Map'));
         $response->getBody()->write($this->moduleTemplate->renderContent());
         return $response;

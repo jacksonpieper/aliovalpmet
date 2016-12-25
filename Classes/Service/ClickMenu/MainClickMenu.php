@@ -62,7 +62,7 @@ class MainClickMenu
     public function main(ClickMenu $clickMenu, array $menuItems = [], $table, $uid)
     {
         $localItems = [];
-        $extensionRelativePath = ExtensionManagementUtility::extRelPath(Templavoila::EXTKEY);
+        $extensionRelativePath = ExtensionManagementUtility::siteRelPath(Templavoila::EXTKEY);
         if (!$clickMenu->cmLevel) {
             $LL = static::getLanguageService()->includeLLFile(
                 'EXT:templavoila/Resources/Private/Language/locallang.xlf',
