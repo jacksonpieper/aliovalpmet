@@ -65,9 +65,9 @@ class Link implements Renderable
         }
 
         // check if there is a notice on this URL type
-        $notice = static::getLanguageService()->getLL('cannotedit_externalurl_' . $this->row['urltype'], true);
+        $notice = static::getLanguageService()->getLL('cannotedit_externalurl_' . $this->row['urltype']);
         if (!$notice) {
-            $notice = static::getLanguageService()->getLL('cannotedit_externalurl_1', true);
+            $notice = static::getLanguageService()->getLL('cannotedit_externalurl_1');
         }
 
         $urlInfo = ' <br /><br /><strong><a href="' . $url . '" target="_new">' . htmlspecialchars(sprintf(static::getLanguageService()->getLL('jumptoexternalurl'), $url)) . '</a></strong>';

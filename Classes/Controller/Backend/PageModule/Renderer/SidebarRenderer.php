@@ -61,7 +61,7 @@ class SidebarRenderer
                 $this->addItem(
                     'records',
                     GeneralUtility::makeInstance(RecordsTab::class, $controller, $recordTables),
-                    static::getLanguageService()->getLL('records', true),
+                    static::getLanguageService()->getLL('records'),
                     25,
                     true
                 );
@@ -73,7 +73,7 @@ class SidebarRenderer
             $this->addItem(
                 'localization',
                 GeneralUtility::makeInstance(LocalizationTab::class, $controller),
-                static::getLanguageService()->getLL('localization', true),
+                static::getLanguageService()->getLL('localization'),
                 60,
                 false
             );
@@ -123,7 +123,7 @@ class SidebarRenderer
             $this->addItem(
                 'nonUsedElements',
                 GeneralUtility::makeInstance(NonUsedElementsTab::class, $controller),
-                static::getLanguageService()->getLL('nonusedelements', true),
+                static::getLanguageService()->getLL('nonusedelements'),
                 30,
                 true
             );

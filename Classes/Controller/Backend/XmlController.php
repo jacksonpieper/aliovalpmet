@@ -103,7 +103,7 @@ class XmlController extends AbstractModuleController
 
         if (md5($currentXml) !== md5($cleanXml)) {
             $this->getModuleTemplate()->addFlashMessage(
-                static::getLanguageService()->getLL('needsCleaning', true),
+                static::getLanguageService()->getLL('needsCleaning'),
                 '',
                 FlashMessage::INFO
             );
@@ -131,7 +131,7 @@ class XmlController extends AbstractModuleController
         } else {
             if ($cleanXml) {
                 $this->getModuleTemplate()->addFlashMessage(
-                    static::getLanguageService()->getLL('XMLclean', true)
+                    static::getLanguageService()->getLL('XMLclean')
                 );
             }
         }

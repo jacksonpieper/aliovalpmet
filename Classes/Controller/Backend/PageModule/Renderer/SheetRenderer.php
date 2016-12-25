@@ -694,7 +694,7 @@ class SheetRenderer implements Renderable
                                     $href = BackendUtility::getLinkToDataHandlerAction($params, GeneralUtility::getIndpEnv('REQUEST_URI') . '#c' . md5($this->controller->getApiService()->flexform_getStringFromPointer($parentPointer) . $sheet->getUid() . $sys_language_uid)) . "'; return false;";
                                 }
 
-                                $linkLabel = static::getLanguageService()->getLL('createcopyfortranslation', true) . ' (' . htmlspecialchars($sLInfo['title']) . ')';
+                                $linkLabel = static::getLanguageService()->getLL('createcopyfortranslation') . ' (' . htmlspecialchars($sLInfo['title']) . ')';
 
 //                                $l10nInfo = '<a class="tpm-clipCopyTranslation" href="#" onclick="' . htmlspecialchars($onClick) . '">' . $localizeIcon . '</a>';
                                 $l10nInfo .= ' <em><a href="' . $href . '">' . $linkLabel . '</a></em>';
@@ -736,7 +736,7 @@ class SheetRenderer implements Renderable
             $output = count($tRows) ? '
                 <table border="0" cellpadding="0" cellspacing="1" width="100%" class="lrPadding tpm-localisation-info-table">
                     <tr class="bgColor4-20">
-                        <td colspan="2">' . static::getLanguageService()->getLL('element_localizations', true) . ':</td>
+                        <td colspan="2">' . static::getLanguageService()->getLL('element_localizations') . ':</td>
                     </tr>
                     ' . implode('', $tRows) . '
                 </table>

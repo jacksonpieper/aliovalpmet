@@ -54,15 +54,15 @@ class SysFolder implements Renderable
         if ($this->userHasAccessToListModule()) {
             $listModuleLink = '<br /><br />' .
                 $this->iconFactory->getIcon('actions-system-list-open', Icon::SIZE_SMALL) .
-                ' <strong><a href="javascript:top.goToModule(\'web_list\',1);">' . static::getLanguageService()->getLL('editpage_sysfolder_switchtolistview', true) . '</a></strong>
+                ' <strong><a href="javascript:top.goToModule(\'web_list\',1);">' . static::getLanguageService()->getLL('editpage_sysfolder_switchtolistview') . '</a></strong>
             ';
         } else {
-            $listModuleLink = static::getLanguageService()->getLL('editpage_sysfolder_listview_noaccess', true);
+            $listModuleLink = static::getLanguageService()->getLL('editpage_sysfolder_listview_noaccess');
         }
 
         $flashMessage = GeneralUtility::makeInstance(
             FlashMessage::class,
-            static::getLanguageService()->getLL('editpage_sysfolder_intro', true),
+            static::getLanguageService()->getLL('editpage_sysfolder_intro'),
             '',
             FlashMessage::INFO
         );

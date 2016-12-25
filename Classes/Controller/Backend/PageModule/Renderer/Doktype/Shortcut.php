@@ -62,7 +62,7 @@ class Shortcut implements Renderable
 
             $jumpToShortcutSourceLink = '<strong><a href="' . $link . '">' .
                 $this->iconFactory->getIcon('apps-pagetree-page-shortcut', Icon::SIZE_SMALL) . ' ' .
-                static::getLanguageService()->getLL('jumptoshortcutdestination', true) . '</a></strong>';
+                static::getLanguageService()->getLL('jumptoshortcutdestination') . '</a></strong>';
         } else {
             $shortcutSourcePageRecord = [];
             $shortcutSourcePageRecord['title'] = '';

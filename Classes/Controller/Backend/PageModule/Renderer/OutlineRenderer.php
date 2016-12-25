@@ -76,10 +76,10 @@ class OutlineRenderer implements Renderable
         // Header of table:
         $output = '';
         $output .= '<tr class="bgColor5 tableheader">
-                <td class="nobr">' . static::getLanguageService()->getLL('outline_header_title', true) . '</td>
-                <td class="nobr">' . static::getLanguageService()->getLL('outline_header_controls', true) . '</td>
-                <td class="nobr">' . static::getLanguageService()->getLL('outline_header_status', true) . '</td>
-                <td class="nobr">' . static::getLanguageService()->getLL('outline_header_element', true) . '</td>
+                <td class="nobr">' . static::getLanguageService()->getLL('outline_header_title') . '</td>
+                <td class="nobr">' . static::getLanguageService()->getLL('outline_header_controls') . '</td>
+                <td class="nobr">' . static::getLanguageService()->getLL('outline_header_status') . '</td>
+                <td class="nobr">' . static::getLanguageService()->getLL('outline_header_element') . '</td>
             </tr>';
 
         // Render all entries:
@@ -130,10 +130,10 @@ class OutlineRenderer implements Renderable
 
                     // Render status:
                     if (md5($recRow['tx_templavoila_flex']) !== md5($newXML)) {
-                        $status = $this->controller->getModuleTemplate()->icons(1) . '<a href="' . $xmlUrl . '">' . static::getLanguageService()->getLL('outline_status_dirty', 1) . '</a><br/>';
+                        $status = $this->controller->getModuleTemplate()->icons(1) . '<a href="' . $xmlUrl . '">' . static::getLanguageService()->getLL('outline_status_dirty') . '</a><br/>';
                         $xmlCleanCandidates = true;
                     } else {
-                        $status = $this->controller->getModuleTemplate()->icons(-1) . '<a href="' . $xmlUrl . '">' . static::getLanguageService()->getLL('outline_status_clean', 1) . '</a><br/>';
+                        $status = $this->controller->getModuleTemplate()->icons(-1) . '<a href="' . $xmlUrl . '">' . static::getLanguageService()->getLL('outline_status_clean') . '</a><br/>';
                     }
                 }
             }
@@ -153,7 +153,7 @@ class OutlineRenderer implements Renderable
         if ($xmlCleanCandidates) {
             $output .= '<br/>
                 ' . BackendUtility::cshItem('_MOD_web_txtemplavoilaM1', 'outline_status_cleanall') . '
-                <input type="submit" value="' . static::getLanguageService()->getLL('outline_status_cleanAll', true) . '" name="_CLEAN_XML_ALL" /><br/><br/>
+                <input type="submit" value="' . static::getLanguageService()->getLL('outline_status_cleanAll') . '" name="_CLEAN_XML_ALL" /><br/><br/>
             ';
         }
 

@@ -242,14 +242,14 @@ class MainController extends AbstractModuleController implements Configurable
         if ($lostTOs) {
             // Add parts for Tab menu:
             $parts[] = [
-                'label' => sprintf(static::getLanguageService()->getLL('losttos', true), $lostTOCount),
+                'label' => sprintf(static::getLanguageService()->getLL('losttos'), $lostTOCount),
                 'content' => $lostTOs
             ];
         }
 
         // Complete Template File List
         $parts[] = [
-            'label' => static::getLanguageService()->getLL('templatefiles', true),
+            'label' => static::getLanguageService()->getLL('templatefiles'),
             'content' => $this->completeTemplateFileList()
         ];
 
@@ -306,9 +306,9 @@ class MainController extends AbstractModuleController implements Configurable
         $tRows = [];
         $tRows[] = '
             <tr class="bgColor5 tableheader">
-                <td>' . static::getLanguageService()->getLL('storagefolders', true) . '</td>
-                <td>' . static::getLanguageService()->getLL('datastructures', true) . '</td>
-                <td>' . static::getLanguageService()->getLL('templateobjects', true) . '</td>
+                <td>' . static::getLanguageService()->getLL('storagefolders') . '</td>
+                <td>' . static::getLanguageService()->getLL('datastructures') . '</td>
+                <td>' . static::getLanguageService()->getLL('templateobjects') . '</td>
             </tr>';
 
         foreach ($list as $pid) {
@@ -411,7 +411,7 @@ class MainController extends AbstractModuleController implements Configurable
                         '&edit[tx_templavoila_tmplobj][' . $newPid . ']=new' .
                         '&defVals[tx_templavoila_tmplobj][datastructure]=' . rawurlencode($dsObj->getKey()) .
                         '&defVals[tx_templavoila_tmplobj][title]=' . rawurlencode($newTitle) .
-                        '&defVals[tx_templavoila_tmplobj][fileref]=' . rawurlencode($newFileRef))) . '">' . $this->getModuleTemplate()->getIconFactory()->getIcon('actions-document-new', Icon::SIZE_SMALL) . static::getLanguageService()->getLL('createnewto', true) . '</a>';
+                        '&defVals[tx_templavoila_tmplobj][fileref]=' . rawurlencode($newFileRef))) . '">' . $this->getModuleTemplate()->getIconFactory()->getIcon('actions-document-new', Icon::SIZE_SMALL) . static::getLanguageService()->getLL('createnewto') . '</a>';
 
                 // Render data structure display
                 $rDSDres = $this->renderDataStructureDisplay($dsObj, $scope, $toIdArray);
@@ -437,14 +437,14 @@ class MainController extends AbstractModuleController implements Configurable
         }
 
         if ($index) {
-            $content = '<h4>' . static::getLanguageService()->getLL('overview', true) . '</h4>
+            $content = '<h4>' . static::getLanguageService()->getLL('overview') . '</h4>
                         <table border="0" cellpadding="0" cellspacing="1">
                             <tr class="bgColor5 tableheader">
-                                <td colspan="2">' . static::getLanguageService()->getLL('dstotitle', true) . '</td>
-                                <td>' . static::getLanguageService()->getLL('localization', true) . '</td>
-                                <td>' . static::getLanguageService()->getLL('containerstatus', true) . '</td>
-                                <td>' . static::getLanguageService()->getLL('mappingstatus', true) . '</td>
-                                <td>' . static::getLanguageService()->getLL('usagecount', true) . '</td>
+                                <td colspan="2">' . static::getLanguageService()->getLL('dstotitle') . '</td>
+                                <td>' . static::getLanguageService()->getLL('localization') . '</td>
+                                <td>' . static::getLanguageService()->getLL('containerstatus') . '</td>
+                                <td>' . static::getLanguageService()->getLL('mappingstatus') . '</td>
+                                <td>' . static::getLanguageService()->getLL('usagecount') . '</td>
                             </tr>
                         ' . $index . '
                         </table>' .
@@ -489,7 +489,7 @@ class MainController extends AbstractModuleController implements Configurable
         if ($showPreviewIcon && $dsObj->hasIcon()) {
             $previewIcon = '<img style="margin: 26px 0; " src="' . $dsObj->getIcon() . '" />';
         } else {
-            $previewIcon = static::getLanguageService()->getLL('noicon', true);
+            $previewIcon = static::getLanguageService()->getLL('noicon');
         }
 
         // Links:
@@ -525,7 +525,7 @@ class MainController extends AbstractModuleController implements Configurable
     <tr class="bgColor4">
         <td rowspan="' . ((bool)$this->getSetting('set_details') ? 4 : 2) . '" style="width: 100px; text-align: center;">' . $previewIcon . '</td>
                 ' .
-            ((bool)$this->getSetting('set_details') ? '<td style="width:200px">' . static::getLanguageService()->getLL('templatestatus', true) . '</td>
+            ((bool)$this->getSetting('set_details') ? '<td style="width:200px">' . static::getLanguageService()->getLL('templatestatus') . '</td>
                 <td>' . $this->findDSUsageWithImproperTOs($dsObj, $scope, $toIdArray) . '</td>' : '') .
             '</tr>
             <tr class="bgColor4">
@@ -537,11 +537,11 @@ class MainController extends AbstractModuleController implements Configurable
                 </td>
             </tr>' . ((bool)$this->getSetting('set_details') ? '
             <tr class="bgColor4">
-                <td>' . static::getLanguageService()->getLL('created', true) . '</td>
-                <td>' . BackendUtility::datetime($dsObj->getCrdate()) . ' ' . static::getLanguageService()->getLL('byuser', true) . ' [' . $dsObj->getCruser() . ']</td>
+                <td>' . static::getLanguageService()->getLL('created') . '</td>
+                <td>' . BackendUtility::datetime($dsObj->getCrdate()) . ' ' . static::getLanguageService()->getLL('byuser') . ' [' . $dsObj->getCruser() . ']</td>
             </tr>
             <tr class="bgColor4">
-                <td>' . static::getLanguageService()->getLL('updated', true) . '</td>
+                <td>' . static::getLanguageService()->getLL('updated') . '</td>
                 <td>' . BackendUtility::datetime($dsObj->getTstamp()) . '</td>
             </tr>' : '') . '
         </table>
@@ -558,15 +558,15 @@ class MainController extends AbstractModuleController implements Configurable
         $containerMode = '';
         if ((bool)$this->getSetting('set_details')) {
             if ($XMLinfo['referenceFields']) {
-                $containerMode = static::getLanguageService()->getLL('yes', true);
+                $containerMode = static::getLanguageService()->getLL('yes');
                 if ($XMLinfo['languageMode'] === 'Separate') {
-                    $containerMode .= ' ' . $this->getModuleTemplate()->icons(3) . static::getLanguageService()->getLL('containerwithseparatelocalization', true);
+                    $containerMode .= ' ' . $this->getModuleTemplate()->icons(3) . static::getLanguageService()->getLL('containerwithseparatelocalization');
                 } elseif ($XMLinfo['languageMode'] === 'Inheritance') {
                     $containerMode .= ' ' . $this->getModuleTemplate()->icons(2);
                     if ($XMLinfo['inputFields']) {
-                        $containerMode .= static::getLanguageService()->getLL('mixofcontentandref', true);
+                        $containerMode .= static::getLanguageService()->getLL('mixofcontentandref');
                     } else {
-                        $containerMode .= static::getLanguageService()->getLL('nocontentfields', true);
+                        $containerMode .= static::getLanguageService()->getLL('nocontentfields');
                     }
                 }
             } else {
@@ -687,24 +687,24 @@ class MainController extends AbstractModuleController implements Configurable
             }
             if ($modified) {
                 $mappingStatus = $mappingStatus_index = $this->getModuleTemplate()->getIconFactory()->getIcon('status-dialog-warning', Icon::SIZE_SMALL);
-                $mappingStatus .= sprintf(static::getLanguageService()->getLL('towasupdated', true), BackendUtility::datetime($toObj->getTstamp()));
-                $this->setErrorLog((string)$scope, 'warning', sprintf(static::getLanguageService()->getLL('warning_mappingstatus', true), $mappingStatus, $toObj->getLabel()));
+                $mappingStatus .= sprintf(static::getLanguageService()->getLL('towasupdated'), BackendUtility::datetime($toObj->getTstamp()));
+                $this->setErrorLog((string)$scope, 'warning', sprintf(static::getLanguageService()->getLL('warning_mappingstatus'), $mappingStatus, $toObj->getLabel()));
             } else {
                 $mappingStatus = $mappingStatus_index = $this->getModuleTemplate()->getIconFactory()->getIcon('status-dialog-ok', Icon::SIZE_SMALL);
-                $mappingStatus .= static::getLanguageService()->getLL('mapping_uptodate', true);
+                $mappingStatus .= static::getLanguageService()->getLL('mapping_uptodate');
             }
-            $mappingStatus .= '<br/><a type="button" class="btn btn-default" href="' . $linkUrl . '">' . static::getLanguageService()->getLL('update_mapping', true) . '</a>';
+            $mappingStatus .= '<br/><a type="button" class="btn btn-default" href="' . $linkUrl . '">' . static::getLanguageService()->getLL('update_mapping') . '</a>';
         } elseif (!$fileMtime) {
             $mappingStatus = $mappingStatus_index = $this->getModuleTemplate()->getIconFactory()->getIcon('status-dialog-error', Icon::SIZE_SMALL);
-            $mappingStatus .= static::getLanguageService()->getLL('notmapped', true);
-            $this->setErrorLog((string)$scope, 'fatal', sprintf(static::getLanguageService()->getLL('warning_mappingstatus', true), $mappingStatus, $toObj->getLabel()));
+            $mappingStatus .= static::getLanguageService()->getLL('notmapped');
+            $this->setErrorLog((string)$scope, 'fatal', sprintf(static::getLanguageService()->getLL('warning_mappingstatus'), $mappingStatus, $toObj->getLabel()));
 
             $mappingStatus .= static::getLanguageService()->getLL('updatemapping_info');
-            $mappingStatus .= '<br/><a type="button" class="btn btn-default" href="' . $linkUrl . '">' . static::getLanguageService()->getLL('map', true) . '</a>';
+            $mappingStatus .= '<br/><a type="button" class="btn btn-default" href="' . $linkUrl . '">' . static::getLanguageService()->getLL('map') . '</a>';
         } else {
             $mappingStatus = '';
-            $mappingStatus .= '<a type="button" class="btn btn-default" href="' . $linkUrl . '">' . static::getLanguageService()->getLL('remap', true) . '</a>';
-            $mappingStatus .= '&nbsp;<a type="button" class="btn btn-default" onclick="jumpToUrl(\'' . htmlspecialchars($linkUrl . '&_preview=1') . '\');">' . static::getLanguageService()->getLL('preview', true) . '</a>';
+            $mappingStatus .= '<a type="button" class="btn btn-default" href="' . $linkUrl . '">' . static::getLanguageService()->getLL('remap') . '</a>';
+            $mappingStatus .= '&nbsp;<a type="button" class="btn btn-default" onclick="jumpToUrl(\'' . htmlspecialchars($linkUrl . '&_preview=1') . '\');">' . static::getLanguageService()->getLL('preview') . '</a>';
         }
 
         if ((bool)$this->getSetting('set_details')) {
@@ -746,15 +746,15 @@ class MainController extends AbstractModuleController implements Configurable
         </tr>
         <tr class="bgColor4">
             <td rowspan="' . ((bool)$this->getSetting('set_details') ? 7 : 4) . '" style="width: 100px; text-align: center;">' . $icon . '</td>
-                    <td style="width:200px;">' . static::getLanguageService()->getLL('filereference', true) . ':</td>
+                    <td style="width:200px;">' . static::getLanguageService()->getLL('filereference') . ':</td>
                     <td>' . $fileRef . $fileMsg . '</td>
                 </tr>
                 <tr class="bgColor4">
-                    <td>' . static::getLanguageService()->getLL('description', true) . ':</td>
+                    <td>' . static::getLanguageService()->getLL('description') . ':</td>
                     <td>' . htmlspecialchars($toObj->getDescription()) . '</td>
                 </tr>
                 <tr class="bgColor4">
-                    <td>' . static::getLanguageService()->getLL('mappingstatus', true) . ':</td>
+                    <td>' . static::getLanguageService()->getLL('mappingstatus') . ':</td>
                     <td>' . $mappingStatus . '</td>
                 </tr>
                 <tr class="bgColor4">
@@ -766,15 +766,15 @@ class MainController extends AbstractModuleController implements Configurable
                     </td>
                 </tr>' . ((bool)$this->getSetting('set_details') ? '
                 <tr class="bgColor4">
-                    <td>' . static::getLanguageService()->getLL('usedby', true) . ':</td>
+                    <td>' . static::getLanguageService()->getLL('usedby') . ':</td>
                     <td>' . $fRWTOUres['HTML'] . '</td>
                 </tr>
                 <tr class="bgColor4">
-                    <td>' . static::getLanguageService()->getLL('created', true) . ':</td>
-                    <td>' . BackendUtility::datetime($toObj->getCrdate()) . ' ' . static::getLanguageService()->getLL('byuser', true) . ' [' . $toObj->getCruser() . ']</td>
+                    <td>' . static::getLanguageService()->getLL('created') . ':</td>
+                    <td>' . BackendUtility::datetime($toObj->getCrdate()) . ' ' . static::getLanguageService()->getLL('byuser') . ' [' . $toObj->getCruser() . ']</td>
                 </tr>
                 <tr class="bgColor4">
-                    <td>' . static::getLanguageService()->getLL('updated', true) . ':</td>
+                    <td>' . static::getLanguageService()->getLL('updated') . ':</td>
                     <td>' . BackendUtility::datetime($toObj->getTstamp()) . '</td>
                 </tr>' : '') . '
             </table>
@@ -790,20 +790,25 @@ class MainController extends AbstractModuleController implements Configurable
                 '</td>
         </tr>
         <tr class="bgColor4">
-            <td style="width:200px;">' . static::getLanguageService()->getLL('filereference', true) . ':</td>
+            <td style="width:200px;">' . static::getLanguageService()->getLL('filereference') . ':</td>
                     <td>' . $fileRef . $fileMsg . '</td>
                 </tr>
                 <tr class="bgColor4">
-                    <td>' . static::getLanguageService()->getLL('mappingstatus', true) . ':</td>
+                    <td>' . static::getLanguageService()->getLL('mappingstatus') . ':</td>
                     <td>' . $mappingStatus . '</td>
                 </tr>
                 <tr class="bgColor4">
-                    <td>' . static::getLanguageService()->getLL('rendertype', true) . ':</td>
+                    <td>' . static::getLanguageService()->getLL('rendertype') . ':</td>
                     <td>' . $this->getProcessedValue('tx_templavoila_tmplobj', 'rendertype', $toObj->getRendertype()) . '</td>
                 </tr>
                 <tr class="bgColor4">
+<<<<<<< HEAD
                     <td>' . static::getLanguageService()->getLL('language', true) . ':</td>
                     <td>' . $this->getProcessedValue('tx_templavoila_tmplobj', 'sys_language_uid', (string)$toObj->getSyslang()) . '</td>
+=======
+                    <td>' . static::getLanguageService()->getLL('language') . ':</td>
+                    <td>' . $this->getProcessedValue('tx_templavoila_tmplobj', 'sys_language_uid', $toObj->getSyslang()) . '</td>
+>>>>>>> [TASK] Do not call getLL with $hsc true
                 </tr>
                 <tr class="bgColor4">
                     <td>' . static::getLanguageService()->getLL('localprocessing_xml') . ':</td>
@@ -814,11 +819,11 @@ class MainController extends AbstractModuleController implements Configurable
                     </td>
                 </tr>' . ((bool)$this->getSetting('set_details') ? '
                 <tr class="bgColor4">
-                    <td>' . static::getLanguageService()->getLL('created', true) . ':</td>
-                    <td>' . BackendUtility::datetime($toObj->getCrdate()) . ' ' . static::getLanguageService()->getLL('byuser', true) . ' [' . $toObj->getCruser() . ']</td>
+                    <td>' . static::getLanguageService()->getLL('created') . ':</td>
+                    <td>' . BackendUtility::datetime($toObj->getCrdate()) . ' ' . static::getLanguageService()->getLL('byuser') . ' [' . $toObj->getCruser() . ']</td>
                 </tr>
                 <tr class="bgColor4">
-                    <td>' . static::getLanguageService()->getLL('updated', true) . ':</td>
+                    <td>' . static::getLanguageService()->getLL('updated') . ':</td>
                     <td>' . BackendUtility::datetime($toObj->getTstamp()) . '</td>
                 </tr>' : '') . '
             </table>
@@ -859,10 +864,10 @@ class MainController extends AbstractModuleController implements Configurable
                 // Header:
                 $output[] = '
                             <tr class="bgColor5 tableheader">
-                                <td>' . static::getLanguageService()->getLL('toused_pid', true) . ':</td>
-                                <td>' . static::getLanguageService()->getLL('toused_title', true) . ':</td>
-                                <td>' . static::getLanguageService()->getLL('toused_path', true) . ':</td>
-                                <td>' . static::getLanguageService()->getLL('toused_workspace', true) . ':</td>
+                                <td>' . static::getLanguageService()->getLL('toused_pid') . ':</td>
+                                <td>' . static::getLanguageService()->getLL('toused_title') . ':</td>
+                                <td>' . static::getLanguageService()->getLL('toused_path') . ':</td>
+                                <td>' . static::getLanguageService()->getLL('toused_workspace') . ':</td>
                             </tr>';
 
                 // Main templates:
@@ -903,7 +908,7 @@ class MainController extends AbstractModuleController implements Configurable
                                 <td nowrap="nowrap">' .
                             htmlspecialchars($pRow['uid']) .
                             '</td>
-                        <td><em>' . static::getLanguageService()->getLL('noaccess', true) . '</em></td>
+                        <td><em>' . static::getLanguageService()->getLL('noaccess') . '</em></td>
                                 <td>-</td>
                                 <td>-</td>
                             </tr>';
@@ -928,10 +933,10 @@ class MainController extends AbstractModuleController implements Configurable
                 // Header:
                 $output[] = '
                             <tr class="bgColor5 tableheader">
-                                <td>' . static::getLanguageService()->getLL('toused_uid', true) . ':</td>
-                                <td>' . static::getLanguageService()->getLL('toused_header', true) . ':</td>
-                                <td>' . static::getLanguageService()->getLL('toused_path', true) . ':</td>
-                                <td>' . static::getLanguageService()->getLL('toused_workspace', true) . ':</td>
+                                <td>' . static::getLanguageService()->getLL('toused_uid') . ':</td>
+                                <td>' . static::getLanguageService()->getLL('toused_header') . ':</td>
+                                <td>' . static::getLanguageService()->getLL('toused_path') . ':</td>
+                                <td>' . static::getLanguageService()->getLL('toused_workspace') . ':</td>
                             </tr>';
 
                 // Elements:
@@ -961,7 +966,7 @@ class MainController extends AbstractModuleController implements Configurable
                                 <td nowrap="nowrap">' .
                             htmlspecialchars($pRow['uid']) .
                             '</td>
-                        <td><em>' . static::getLanguageService()->getLL('noaccess', true) . '</em></td>
+                        <td><em>' . static::getLanguageService()->getLL('noaccess') . '</em></td>
                                 <td>-</td>
                                 <td>-</td>
                             </tr>';
@@ -975,13 +980,13 @@ class MainController extends AbstractModuleController implements Configurable
         $outputString = '';
         if (count($output)) {
             if (count($output) > 1) {
-                $outputString = sprintf(static::getLanguageService()->getLL('toused_usedin', true), count($output) - 1) . '
+                $outputString = sprintf(static::getLanguageService()->getLL('toused_usedin'), count($output) - 1) . '
                     <table border="0" cellspacing="1" cellpadding="1" class="lrPadding">'
                     . implode('', $output) . '
                 </table>';
             } else {
                 $outputString = $this->getModuleTemplate()->getIconFactory()->getIcon('status-dialog-warning', Icon::SIZE_SMALL) . 'No usage!';
-                $this->setErrorLog((string)$scope, 'warning', sprintf(static::getLanguageService()->getLL('warning_mappingstatus', true), $outputString, $toObj->getLabel()));
+                $this->setErrorLog((string)$scope, 'warning', sprintf(static::getLanguageService()->getLL('warning_mappingstatus'), $outputString, $toObj->getLabel()));
             }
         }
 
@@ -1006,8 +1011,8 @@ class MainController extends AbstractModuleController implements Configurable
                 // Header:
                 $output[] = '
                             <tr class="bgColor5 tableheader">
-                                <td>' . static::getLanguageService()->getLL('toused_title', true) . ':</td>
-                                <td>' . static::getLanguageService()->getLL('toused_path', true) . ':</td>
+                                <td>' . static::getLanguageService()->getLL('toused_title') . ':</td>
+                                <td>' . static::getLanguageService()->getLL('toused_path') . ':</td>
                             </tr>';
 
                 // Main templates:
@@ -1038,7 +1043,7 @@ class MainController extends AbstractModuleController implements Configurable
                     } else {
                         $output[] = '
                             <tr class="bgColor4-20">
-                                <td><em>' . static::getLanguageService()->getLL('noaccess', true) . '</em></td>
+                                <td><em>' . static::getLanguageService()->getLL('noaccess') . '</em></td>
                                 <td>-</td>
                             </tr>';
                     }
@@ -1062,8 +1067,8 @@ class MainController extends AbstractModuleController implements Configurable
                 // Header:
                 $output[] = '
                             <tr class="bgColor5 tableheader">
-                                <td>' . static::getLanguageService()->getLL('toused_header', true) . ':</td>
-                                <td>' . static::getLanguageService()->getLL('toused_path', true) . ':</td>
+                                <td>' . static::getLanguageService()->getLL('toused_header') . ':</td>
+                                <td>' . static::getLanguageService()->getLL('toused_path') . ':</td>
                             </tr>';
 
                 // Elements:
@@ -1084,7 +1089,7 @@ class MainController extends AbstractModuleController implements Configurable
                     } else {
                         $output[] = '
                             <tr class="bgColor4-20">
-                                <td><em>' . static::getLanguageService()->getLL('noaccess', true) . '</em></td>
+                                <td><em>' . static::getLanguageService()->getLL('noaccess') . '</em></td>
                                 <td>-</td>
                             </tr>';
                     }
@@ -1098,13 +1103,13 @@ class MainController extends AbstractModuleController implements Configurable
         if (count($output)) {
             if (count($output) > 1) {
                 $outputString = $this->getModuleTemplate()->getIconFactory()->getIcon('status-dialog-error', Icon::SIZE_SMALL) .
-                    sprintf(static::getLanguageService()->getLL('invalidtemplatevalues', true), count($output) - 1);
+                    sprintf(static::getLanguageService()->getLL('invalidtemplatevalues'), count($output) - 1);
                 $this->setErrorLog((string)$scope, 'fatal', $outputString);
 
                 $outputString .= '<table border="0" cellspacing="1" cellpadding="1" class="lrPadding">' . implode('', $output) . '</table>';
             } else {
                 $outputString = $this->getModuleTemplate()->getIconFactory()->getIcon('status-dialog-ok', Icon::SIZE_SMALL) .
-                    static::getLanguageService()->getLL('noerrorsfound', true);
+                    static::getLanguageService()->getLL('noerrorsfound');
             }
         }
 
@@ -1147,9 +1152,9 @@ class MainController extends AbstractModuleController implements Configurable
             $tRows = [];
             $tRows[] = '
                 <tr class="bgColor5 tableheader">
-                    <td>' . static::getLanguageService()->getLL('file', true) . '</td>
-                    <td align="center">' . static::getLanguageService()->getLL('usagecount', true) . '</td>
-                    <td>' . static::getLanguageService()->getLL('newdsto', true) . '</td>
+                    <td>' . static::getLanguageService()->getLL('file') . '</td>
+                    <td align="center">' . static::getLanguageService()->getLL('usagecount') . '</td>
+                    <td>' . static::getLanguageService()->getLL('newdsto') . '</td>
                 </tr>';
 
             $i = 0;
@@ -1170,7 +1175,7 @@ class MainController extends AbstractModuleController implements Configurable
 
             if (count($tRows) > 1) {
                 $output .= '
-                <h3>' . static::getLanguageService()->getLL('usedfiles', true) . ':</h3>
+                <h3>' . static::getLanguageService()->getLL('usedfiles') . ':</h3>
                 <table border="0" cellpadding="1" cellspacing="1" class="typo3-dblist">
                     ' . implode('', $tRows) . '
                 </table>
@@ -1184,9 +1189,9 @@ class MainController extends AbstractModuleController implements Configurable
                 $tRows = [];
                 $tRows[] = '
                     <tr class="bgColor5 tableheader">
-                        <td>' . static::getLanguageService()->getLL('file', true) . '</td>
-                        <td align="center">' . static::getLanguageService()->getLL('usagecount', true) . '</td>
-                        <td>' . static::getLanguageService()->getLL('newdsto', true) . '</td>
+                        <td>' . static::getLanguageService()->getLL('file') . '</td>
+                        <td align="center">' . static::getLanguageService()->getLL('usagecount') . '</td>
+                        <td>' . static::getLanguageService()->getLL('newdsto') . '</td>
                     </tr>';
 
                 $i = 0;
@@ -1207,7 +1212,7 @@ class MainController extends AbstractModuleController implements Configurable
 
                 if (count($tRows) > 1) {
                     $output .= '
-                    <h3>' . static::getLanguageService()->getLL('templatearchive', true) . ':</h3>
+                    <h3>' . static::getLanguageService()->getLL('templatearchive') . ':</h3>
                     <table border="0" cellpadding="1" cellspacing="1" class="typo3-dblist">
                         ' . implode('', $tRows) . '
                     </table>
@@ -1273,13 +1278,13 @@ class MainController extends AbstractModuleController implements Configurable
         if (is_array($this->errorsWarnings[$scope])) {
             if (is_array($this->errorsWarnings[$scope]['warning'])) {
                 $errStat['count'] = count($this->errorsWarnings[$scope]['warning']);
-                $errStat['content'] = '<h3>' . static::getLanguageService()->getLL('warnings', true) . '</h3>' . implode('<hr/>', $this->errorsWarnings[$scope]['warning']);
+                $errStat['content'] = '<h3>' . static::getLanguageService()->getLL('warnings') . '</h3>' . implode('<hr/>', $this->errorsWarnings[$scope]['warning']);
                 $errStat['iconCode'] = 2;
             }
 
             if (is_array($this->errorsWarnings[$scope]['fatal'])) {
                 $errStat['count'] = count($this->errorsWarnings[$scope]['fatal']) . ($errStat['count'] ? '/' . $errStat['count'] : '');
-                $errStat['content'] .= '<h3>' . static::getLanguageService()->getLL('fatalerrors', true) . '</h3>' . implode('<hr/>', $this->errorsWarnings[$scope]['fatal']);
+                $errStat['content'] .= '<h3>' . static::getLanguageService()->getLL('fatalerrors') . '</h3>' . implode('<hr/>', $this->errorsWarnings[$scope]['fatal']);
                 $errStat['iconCode'] = 3;
             }
         }
@@ -1304,12 +1309,12 @@ class MainController extends AbstractModuleController implements Configurable
 
             foreach ($DStree as $elm => $def) {
                 if (!is_array($def)) {
-                    $HTML .= '<p>' . $this->getModuleTemplate()->getIconFactory()->getIcon('status-dialog-error', Icon::SIZE_SMALL) . sprintf(static::getLanguageService()->getLL('invaliddatastructure_xmlbroken', true), $elm) . '</p>';
+                    $HTML .= '<p>' . $this->getModuleTemplate()->getIconFactory()->getIcon('status-dialog-error', Icon::SIZE_SMALL) . sprintf(static::getLanguageService()->getLL('invaliddatastructure_xmlbroken'), $elm) . '</p>';
                     break;
                 }
 
                 $HTML .= '<dt>';
-                $HTML .= ($elm === 'meta' ? static::getLanguageService()->getLL('configuration', true) : $def['tx_templavoila']['title'] . ' (' . $elm . ')');
+                $HTML .= ($elm === 'meta' ? static::getLanguageService()->getLL('configuration') : $def['tx_templavoila']['title'] . ' (' . $elm . ')');
                 $HTML .= '</dt>';
                 $HTML .= '<dd>';
 
@@ -1333,14 +1338,14 @@ class MainController extends AbstractModuleController implements Configurable
                             (($def['langDisable'] == 1)
                                 ? $this->getModuleTemplate()->getIconFactory()->getIcon('status-dialog-error', Icon::SIZE_SMALL)
                                 : $this->getModuleTemplate()->getIconFactory()->getIcon('status-dialog-ok', Icon::SIZE_SMALL)
-                            ) . ' ' . static::getLanguageService()->getLL('fceislocalized', true) . '</li>';
+                            ) . ' ' . static::getLanguageService()->getLL('fceislocalized') . '</li>';
                     }
                     if (isset($def['langChildren'])) {
                         $conf .= '<li>' .
                             (($def['langChildren'] == 1)
                                 ? $this->getModuleTemplate()->getIconFactory()->getIcon('status-dialog-ok', Icon::SIZE_SMALL)
                                 : $this->getModuleTemplate()->getIconFactory()->getIcon('status-dialog-error', Icon::SIZE_SMALL)
-                            ) . ' ' . static::getLanguageService()->getLL('fceinlineislocalized', true) . '</li>';
+                            ) . ' ' . static::getLanguageService()->getLL('fceinlineislocalized') . '</li>';
                     }
                     if (isset($def['sheetSelector'])) {
                         $conf .= '<li>' .
@@ -1409,17 +1414,17 @@ class MainController extends AbstractModuleController implements Configurable
                                     (($tv['proc']['int'] == 1)
                                         ? $this->getModuleTemplate()->getIconFactory()->getIcon('status-dialog-ok', Icon::SIZE_SMALL)
                                         : $this->getModuleTemplate()->getIconFactory()->getIcon('status-dialog-error', Icon::SIZE_SMALL)
-                                    ) . ' ' . static::getLanguageService()->getLL('casttointeger', true) . '</li>';
+                                    ) . ' ' . static::getLanguageService()->getLL('casttointeger') . '</li>';
                             }
                             if (isset($tv['proc']) && isset($tv['proc']['HSC'])) {
                                 $proc .= '<li>' .
                                     (($tv['proc']['HSC'] == 1)
                                         ? $this->getModuleTemplate()->getIconFactory()->getIcon('status-dialog-ok', Icon::SIZE_SMALL)
                                         : $this->getModuleTemplate()->getIconFactory()->getIcon('status-dialog-error', Icon::SIZE_SMALL)
-                                    ) . ' ' . static::getLanguageService()->getLL('hsced', true) .
+                                    ) . ' ' . static::getLanguageService()->getLL('hsced') .
                                     (($tv['proc']['HSC'] == 1)
-                                        ? ' ' . static::getLanguageService()->getLL('hsc_on', true)
-                                        : ' ' . static::getLanguageService()->getLL('hsc_off', true)
+                                        ? ' ' . static::getLanguageService()->getLL('hsc_on')
+                                        : ' ' . static::getLanguageService()->getLL('hsc_off')
                                     ) . '</li>';
                             }
                             if (isset($tv['proc']) && isset($tv['proc']['stdWrap'])) {
@@ -1427,7 +1432,7 @@ class MainController extends AbstractModuleController implements Configurable
                                     (($tv['proc']['stdWrap'] != '')
                                         ? $this->getModuleTemplate()->getIconFactory()->getIcon('status-dialog-ok', Icon::SIZE_SMALL)
                                         : $this->getModuleTemplate()->getIconFactory()->getIcon('status-dialog-error', Icon::SIZE_SMALL)
-                                    ) . ' ' . static::getLanguageService()->getLL('stdwrap', true) . '</li>';
+                                    ) . ' ' . static::getLanguageService()->getLL('stdwrap') . '</li>';
                             }
 
                             if ($proc != '') {
@@ -1514,48 +1519,48 @@ class MainController extends AbstractModuleController implements Configurable
 
                             $notes = '';
                             if (($tv['eType'] !== 'TypoScriptObject') && isset($tv['TypoScriptObjPath'])) {
-                                $notes .= '<li>' . static::getLanguageService()->getLL('redundant', true) . ' &lt;TypoScriptObjPath&gt;-entry</li>';
+                                $notes .= '<li>' . static::getLanguageService()->getLL('redundant') . ' &lt;TypoScriptObjPath&gt;-entry</li>';
                             }
                             if (($tv['eType'] === 'TypoScriptObject') && isset($tv['TypoScript'])) {
-                                $notes .= '<li>' . static::getLanguageService()->getLL('redundant', true) . ' &lt;TypoScript&gt;-entry</li>';
+                                $notes .= '<li>' . static::getLanguageService()->getLL('redundant') . ' &lt;TypoScript&gt;-entry</li>';
                             }
                             if ((($tv['eType'] === 'TypoScriptObject') || !isset($tv['TypoScript'])) && isset($tv['TypoScript_constants'])) {
-                                $notes .= '<li>' . static::getLanguageService()->getLL('redundant', true) . ' &lt;TypoScript_constants&gt;-' . static::getLanguageService()->getLL('entry', true) . '</li>';
+                                $notes .= '<li>' . static::getLanguageService()->getLL('redundant') . ' &lt;TypoScript_constants&gt;-' . static::getLanguageService()->getLL('entry') . '</li>';
                             }
                             if (isset($tv['proc']) && isset($tv['proc']['int']) && ($tv['proc']['int'] == 1) && isset($tv['proc']['HSC'])) {
-                                $notes .= '<li>' . static::getLanguageService()->getLL('redundant', true) . ' &lt;proc&gt;&lt;HSC&gt;-' . static::getLanguageService()->getLL('redundant', true) . '</li>';
+                                $notes .= '<li>' . static::getLanguageService()->getLL('redundant') . ' &lt;proc&gt;&lt;HSC&gt;-' . static::getLanguageService()->getLL('redundant') . '</li>';
                             }
                             if (isset($tv['TypoScriptObjPath']) && preg_match('/[^a-zA-Z0-9\.\:_]/', $tv['TypoScriptObjPath'])) {
-                                $notes .= '<li><strong>&lt;TypoScriptObjPath&gt;-' . static::getLanguageService()->getLL('illegalcharacters', true) . '</strong></li>';
+                                $notes .= '<li><strong>&lt;TypoScriptObjPath&gt;-' . static::getLanguageService()->getLL('illegalcharacters') . '</strong></li>';
                             }
 
                             $tsstats = '';
                             if (isset($tv['TypoScript_constants'])) {
-                                $tsstats .= '<li>' . sprintf(static::getLanguageService()->getLL('dsdetails_tsconstants', true), count($tv['TypoScript_constants'])) . '</li>';
+                                $tsstats .= '<li>' . sprintf(static::getLanguageService()->getLL('dsdetails_tsconstants'), count($tv['TypoScript_constants'])) . '</li>';
                             }
                             if (isset($tv['TypoScript'])) {
-                                $tsstats .= '<li>' . sprintf(static::getLanguageService()->getLL('dsdetails_tslines', true), (1 + strlen($tv['TypoScript']) - strlen(str_replace("\n", '', $tv['TypoScript'])))) . '</li>';
+                                $tsstats .= '<li>' . sprintf(static::getLanguageService()->getLL('dsdetails_tslines'), (1 + strlen($tv['TypoScript']) - strlen(str_replace("\n", '', $tv['TypoScript'])))) . '</li>';
                             }
                             if (isset($tv['TypoScriptObjPath'])) {
-                                $tsstats .= '<li>' . sprintf(static::getLanguageService()->getLL('dsdetails_tsutilize', true), '<em>' . $tv['TypoScriptObjPath'] . '</em>') . '</li>';
+                                $tsstats .= '<li>' . sprintf(static::getLanguageService()->getLL('dsdetails_tsutilize'), '<em>' . $tv['TypoScriptObjPath'] . '</em>') . '</li>';
                             }
 
                             $HTML .= '<dl class="DS-infos">';
-                            $HTML .= '<dt>' . static::getLanguageService()->getLL('dsdetails_preset', true) . ':</dt>';
+                            $HTML .= '<dt>' . static::getLanguageService()->getLL('dsdetails_preset') . ':</dt>';
                             $HTML .= '<dd>' . $preset . '</dd>';
-                            $HTML .= '<dt>' . static::getLanguageService()->getLL('dsdetails_column', true) . ':</dt>';
+                            $HTML .= '<dt>' . static::getLanguageService()->getLL('dsdetails_column') . ':</dt>';
                             $HTML .= '<dd>' . $column . '</dd>';
                             if ($tsstats != '') {
-                                $HTML .= '<dt>' . static::getLanguageService()->getLL('dsdetails_ts', true) . ':</dt>';
+                                $HTML .= '<dt>' . static::getLanguageService()->getLL('dsdetails_ts') . ':</dt>';
                                 $HTML .= '<dd><ul class="DS-stats">' . $tsstats . '</ul></dd>';
                             }
                             if ($notes != '') {
-                                $HTML .= '<dt>' . static::getLanguageService()->getLL('dsdetails_notes', true) . ':</dt>';
+                                $HTML .= '<dt>' . static::getLanguageService()->getLL('dsdetails_notes') . ':</dt>';
                                 $HTML .= '<dd><ul class="DS-notes">' . $notes . '</ul></dd>';
                             }
                             $HTML .= '</dl>';
                         } else {
-                            $HTML .= '<p>' . static::getLanguageService()->getLL('dsdetails_nobasicdefinitions', true) . '</p>';
+                            $HTML .= '<p>' . static::getLanguageService()->getLL('dsdetails_nobasicdefinitions') . '</p>';
                         }
 
                         /* The basic XML-structure of an TCEforms-entry is:
@@ -1567,7 +1572,7 @@ class MainController extends AbstractModuleController implements Configurable
                          */
                         if (!($def['TCEforms'])) {
                             if (!$tco) {
-                                $HTML .= '<p>' . static::getLanguageService()->getLL('dsdetails_notceformdefinitions', true) . '</p>';
+                                $HTML .= '<p>' . static::getLanguageService()->getLL('dsdetails_notceformdefinitions') . '</p>';
                             }
                         }
                     }
@@ -1659,6 +1664,175 @@ class MainController extends AbstractModuleController implements Configurable
      *****************************/
 
     /**
+<<<<<<< HEAD
+=======
+     * Wizard overview page - before the wizard is started.
+     *
+     * @return string
+     *
+     * @throws \InvalidArgumentException
+     */
+    public function renderNewSiteWizard_overview()
+    {
+        $content = '';
+        //if (!static::getBackendUser()->isAdmin() || $this->modTSconfig['properties']['hideNewSiteWizard']) {
+        //    return $content;
+        //}
+        //
+        //// Introduction:
+        //$outputString = nl2br(sprintf(static::getLanguageService()->getLL('newsitewizard_intro'), implode('", "', $this->getTemplatePaths(true, false))));
+        //
+        //// Checks:
+        //$missingExt = $this->wizard_checkMissingExtensions();
+        //$missingConf = $this->wizard_checkConfiguration();
+        //$missingDir = $this->wizard_checkDirectory();
+        //if (!$missingExt && !$missingConf) {
+        //    $url = BackendUtility::getModuleUrl(
+        //        'tv_mod_admin_wizard'
+        //    );
+        //
+        //    $outputString .= '
+        //    <br/>
+        //    <br/>
+        //    <a href="' . $url . '" class="btn btn-primary">' . static::getLanguageService()->getLL('newsitewizard_startnow') . '</a>';
+        //} else {
+        //    $outputString .= '<br/><br/>' . static::getLanguageService()->getLL('newsitewizard_problem');
+        //}
+        //
+        //// Add output:
+        //$content .= $this->getModuleTemplate()->section(static::getLanguageService()->getLL('wiz_title'), $outputString, 0, 1);
+        //
+        //// Missing extension warning:
+        //if ($missingExt) {
+        //    $msg = GeneralUtility::makeInstance(FlashMessage::class, $missingExt, static::getLanguageService()->getLL('newsitewizard_missingext'), FlashMessage::ERROR);
+        //    $content .= $msg->render();
+        //}
+        //
+        //// Missing configuration warning:
+        //if ($missingConf) {
+        //    $msg = GeneralUtility::makeInstance(FlashMessage::class, static::getLanguageService()->getLL('newsitewizard_missingconf_description'), static::getLanguageService()->getLL('newsitewizard_missingconf'), FlashMessage::ERROR);
+        //    $content .= $msg->render();
+        //}
+        //
+        //// Missing directory warning:
+        //if ($missingDir) {
+        //    $content .= $this->getModuleTemplate()->section(static::getLanguageService()->getLL('newsitewizard_missingdir'), $missingDir, 0, 1, 3);
+        //}
+
+        return $content;
+    }
+
+    /**
+     * Running the wizard. Basically branching out to sub functions.
+     * Also gets and saves session data in $this->wizardData
+     */
+    public function renderNewSiteWizard_run()
+    {
+        // Getting session data:
+        $this->wizardData = static::getBackendUser()->getSessionData('tx_templavoila_wizard');
+
+        if (static::getBackendUser()->isAdmin()) {
+            $outputString = '';
+
+            switch ($this->MOD_SETTINGS['wiz_step']) {
+                case 1:
+                    $this->wizard_step1();
+                    break;
+                case 2:
+                    $this->wizard_step2();
+                    break;
+                case 3:
+                    $this->wizard_step3();
+                    break;
+                case 4:
+                    $this->wizard_step4();
+                    break;
+                case 5:
+                    $this->wizard_step5('field_menu');
+                    break;
+                case 5.1:
+                    $this->wizard_step5('field_submenu');
+                    break;
+                case 6:
+                    $this->wizard_step6();
+                    break;
+            }
+
+            $outputString .= '<hr/><input type="submit" value="' . static::getLanguageService()->getLL('newsitewizard_cancel') . '" onclick="' . htmlspecialchars('document.location=\'index.php?SET[wiz_step]=0\'; return false;') . '" />';
+
+            // Add output:
+            $this->content .= $this->getModuleTemplate()->section('', $outputString, 0, 1);
+        }
+
+        // Save session data:
+        static::getBackendUser()->setAndSaveSessionData('tx_templavoila_wizard', $this->wizardData);
+    }
+
+    /**
+     * Pre-checking for extensions
+     *
+     * @return string If string is returned, an error occured.
+     */
+    public function wizard_checkMissingExtensions()
+    {
+        $outputString = static::getLanguageService()->getLL('newsitewizard_missingext_description');
+
+        // Create extension status:
+        $checkExtensions = explode(',', 'css_styled_content,impexp');
+        $missingExtensions = false;
+
+        $tRows = [];
+        $tRows[] = '<tr class="tableheader bgColor5">
+            <td>' . static::getLanguageService()->getLL('newsitewizard_missingext_extkey') . '</td>
+            <td>' . static::getLanguageService()->getLL('newsitewizard_missingext_installed') . '</td>
+        </tr>';
+
+        foreach ($checkExtensions as $extKey) {
+            $tRows[] = '<tr class="bgColor4">
+                <td>' . $extKey . '</td>
+                <td align="center">' . (ExtensionManagementUtility::isLoaded($extKey) ? static::getLanguageService()->getLL('newsitewizard_missingext_yes') : '<span class="typo3-red">' . static::getLanguageService()->getLL('newsitewizard_missingext_no') . '</span>') . '</td>
+            </tr>';
+
+            if (!ExtensionManagementUtility::isLoaded($extKey)) {
+                $missingExtensions = true;
+            }
+        }
+
+        $outputString .= '<table border="0" cellpadding="1" cellspacing="1">' . implode('', $tRows) . '</table>';
+
+        // If no extensions are missing, simply go to step two:
+        return ($missingExtensions) ? $outputString : '';
+    }
+
+    /**
+     * Pre-checking for TemplaVoila configuration
+     *
+     * @return bool If string is returned, an error occured.
+     */
+    public function wizard_checkConfiguration()
+    {
+        $TVconfig = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf'][Templavoila::EXTKEY]);
+
+        return !is_array($TVconfig);
+    }
+
+    /**
+     * Pre-checking for directory of extensions.
+     *
+     * @return string If string is returned, an error occured.
+     */
+    public function wizard_checkDirectory()
+    {
+        $paths = $this->getTemplatePaths(true);
+        if (empty($paths)) {
+            return nl2br(sprintf(static::getLanguageService()->getLL('newsitewizard_missingdir_instruction'), implode(' or ', $this->getTemplatePaths(true, false)), $GLOBALS['TYPO3_CONF_VARS']['BE']['fileadminDir']));
+        }
+
+        return false;
+    }
+
+    /**
+>>>>>>> [TASK] Do not call getLL with $hsc true
      * Find and check all template paths
      *
      * @param bool $relative if true returned paths are relative

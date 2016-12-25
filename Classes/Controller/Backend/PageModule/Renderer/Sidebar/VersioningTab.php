@@ -51,7 +51,7 @@ class VersioningTab implements Renderable
             $versionSelector = trim((string)$this->controller->getModuleTemplate()->getVersionSelector($this->controller->getId()));
             if (!$versionSelector) {
                 $onClick = 'jumpToUrl(\'' . $GLOBALS['BACK_PATH'] . ExtensionManagementUtility::extRelPath('version') . 'cm1/index.php?table=pages&uid=' . $this->controller->getId() . '&returnUrl=' . rawurlencode(GeneralUtility::getIndpEnv('REQUEST_URI')) . '\')';
-                $versionSelector = '<input type="button" value="' . static::getLanguageService()->getLL('sidebar_versionSelector_createVersion', true) . '" onclick="' . htmlspecialchars($onClick) . '" />';
+                $versionSelector = '<input type="button" value="' . static::getLanguageService()->getLL('sidebar_versionSelector_createVersion') . '" onclick="' . htmlspecialchars($onClick) . '" />';
             }
             $tableRows = ['
                 <tr class="bgColor4-20">

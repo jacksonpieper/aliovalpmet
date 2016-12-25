@@ -150,7 +150,7 @@ class NonUsedElementsTab implements Renderable
             $output = '
                 <table class="tpm-nonused-elements lrPadding" border="0" cellpadding="0" cellspacing="1" width="100%">
                     <tr class="bgColor4-20">
-                        <td colspan="3">' . static::getLanguageService()->getLL('inititemno_elementsNotBeingUsed', true) . ':</td>
+                        <td colspan="3">' . static::getLanguageService()->getLL('inititemno_elementsNotBeingUsed') . ':</td>
                     </tr>
                     ' . implode('', $elementRows) . '
                     <tr class="bgColor4">
@@ -210,7 +210,7 @@ class NonUsedElementsTab implements Renderable
                 ]
             );
 
-            return '<a title="' . static::getLanguageService()->getLL('renderreferencecount_delete', true) . '" class="tpm-countRef" href="' . $url . '">' .
+            return '<a title="' . static::getLanguageService()->getLL('renderreferencecount_delete') . '" class="tpm-countRef" href="' . $url . '">' .
             $this->controller->getModuleTemplate()->getIconFactory()->getIcon('actions-edit-delete', Icon::SIZE_SMALL) .
             '</a>';
         }

@@ -104,7 +104,7 @@ class WizardController extends AbstractModuleController implements Configurable
 
         if (empty($paths) || empty($files)) {
             $this->moduleTemplate->addFlashMessage(
-                static::getLanguageService()->getLL('newsitewizard_errornodir', true),
+                static::getLanguageService()->getLL('newsitewizard_errornodir'),
                 '',
                 FlashMessage::ERROR
             );
@@ -151,7 +151,7 @@ class WizardController extends AbstractModuleController implements Configurable
 
         if (!file_exists($absoluteFilePath)) {
             $this->moduleTemplate->addFlashMessage(
-                static::getLanguageService()->getLL('newsitewizard_step2_notemplatefound', true),
+                static::getLanguageService()->getLL('newsitewizard_step2_notemplatefound'),
                 '',
                 FlashMessage::ERROR
             );
@@ -267,7 +267,7 @@ class WizardController extends AbstractModuleController implements Configurable
 
         $data = [];
         $data['pages'][BackendUtility::wsMapId('pages', $import->import_mapId['pages'][1])]['title'] = $title;
-        $data['sys_template'][BackendUtility::wsMapId('sys_template', $import->import_mapId['sys_template'][1])]['title'] = static::getLanguageService()->getLL('newsitewizard_maintemplate', true) . ' ' . $title;
+        $data['sys_template'][BackendUtility::wsMapId('sys_template', $import->import_mapId['sys_template'][1])]['title'] = static::getLanguageService()->getLL('newsitewizard_maintemplate') . ' ' . $title;
         $data['sys_template'][BackendUtility::wsMapId('sys_template', $import->import_mapId['sys_template'][1])]['sitetitle'] = $title;
         $data['tx_templavoila_tmplobj'][BackendUtility::wsMapId('tx_templavoila_tmplobj', $import->import_mapId['tx_templavoila_tmplobj'][1])]['fileref'] = $file;
         $data['tx_templavoila_tmplobj'][BackendUtility::wsMapId('tx_templavoila_tmplobj', $import->import_mapId['tx_templavoila_tmplobj'][1])]['templatemapping'] = serialize(
