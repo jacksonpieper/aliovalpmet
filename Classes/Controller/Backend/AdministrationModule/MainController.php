@@ -339,7 +339,7 @@ class MainController extends AbstractModuleController implements Configurable
         $outputString .= '<br /><table border="0" cellpadding="1" cellspacing="1" class="typo3-dblist">' . implode('', $tRows) . '</table>';
 
         // Add output:
-        return $this->getModuleTemplate()->section('', $outputString, false, true);
+        return $outputString;
     }
 
     /**
