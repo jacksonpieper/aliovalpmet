@@ -82,7 +82,7 @@ stages:
 #  variables: *mysql_variables
 #  services: *mysql_services
 #  <<: *test
-#
+
 #7.1 @ 5.6 (MySQL):
 #  tags:
 #    - docker
@@ -90,8 +90,7 @@ stages:
 #  variables: *mysql_variables
 #  services: *mysql_services
 #  <<: *test
-#  allow_failure: true
-#
+
 #7.0 @ 10.1 (MariaDB):
 #  tags:
 #    - docker
@@ -99,7 +98,7 @@ stages:
 #  variables: *mariadb_variables
 #  services: *mariadb_services
 #  <<: *test
-#
+
 #7.1 @ 10.1 (MariaDB):
 #  tags:
 #    - docker
@@ -107,4 +106,3 @@ stages:
 #  variables: *mariadb_variables
 #  services: *mariadb_services
 #  <<: *test
-#  allow_failure: true

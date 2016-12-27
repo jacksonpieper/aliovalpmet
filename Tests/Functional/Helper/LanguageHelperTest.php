@@ -38,7 +38,7 @@ class LanguageHelperTest extends FunctionalTestCase
     {
         parent::setUp();
 
-        $this->backendUserFixture = 'typo3conf/ext/templavoila/Tests/Functional/Helper/LanguageHelperTestFixtures/be_users.xml';
+        $this->backendUserFixture = GeneralUtility::getFileAbsFileName('EXT:templavoila/Tests/Functional/Helper/LanguageHelperTestFixtures/be_users.xml');
 
         $fixtureTables = [
             'pages',
