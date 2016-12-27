@@ -244,15 +244,9 @@ class ElementController extends AbstractModuleController implements Configurable
     {
         $view = $this->getStandaloneView('Backend/AdministrationModule/Element');
 
-        $rows = static::getDatabaseConnection()->exec_SELECTgetRows(
-            'tx_templavoila_tmplobj.*,tx_templavoila_datastructure.scope',
-            'tx_templavoila_tmplobj LEFT JOIN tx_templavoila_datastructure ON tx_templavoila_datastructure.uid=tx_templavoila_tmplobj.datastructure',
-            'tx_templavoila_tmplobj.datastructure>0 ' .
-            BackendUtility::deleteClause('tx_templavoila_tmplobj') .
-            BackendUtility::versioningPlaceholderClause('tx_templavoila_tmplobj'),
-            '',
-            'tx_templavoila_datastructure.scope, tx_templavoila_tmplobj.pid, tx_templavoila_tmplobj.title'
-        );
+        /** @var TemplateRepository $templateRepository */
+        $templateRepository = GeneralUtility::makeInstance(TemplateRepository::class);
+        $rows = $templateRepository->findWithScopeOrderedByScopeAndPidAndTitle();
 
         $optionGroups = [];
         foreach ($rows as $row) {

@@ -17,6 +17,7 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Schnitzler\Templavoila\Controller\Backend\AbstractModuleController;
 use Schnitzler\Templavoila\Controller\Backend\Linkable;
+use Schnitzler\Templavoila\Domain\Repository\TemplateRepository;
 use Schnitzler\Templavoila\Service\SyntaxHighlightingService;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Http\Response;
@@ -128,14 +129,11 @@ class DataStructureController extends AbstractModuleController implements Linkab
             $this
         );
 
+        /** @var TemplateRepository $templateRepository */
+        $templateRepository = GeneralUtility::makeInstance(TemplateRepository::class);
+
         $templateObjects = [];
-        $templateObjectRecords = (array)static::getDatabaseConnection()->exec_SELECTgetRows(
-            '*',
-            'tx_templavoila_tmplobj',
-            'datastructure=' . (int)$this->row['uid'] .
-            BackendUtility::deleteClause('tx_templavoila_tmplobj') .
-            BackendUtility::versioningPlaceholderClause('tx_templavoila_tmplobj')
-        );
+        $templateObjectRecords = $templateRepository->findByDataStructure((int)$this->row['uid']);
 
         $templateObjectIcon = $this->getModuleTemplate()->getIconFactory()->getIconForRecord(
             'tx_templavoila_tmplobj',
@@ -144,6 +142,7 @@ class DataStructureController extends AbstractModuleController implements Linkab
         );
 
         foreach ($templateObjectRecords as $templateObjectRecord) {
+            $templateObjectRecord = $templateObjectRecord->getRow();
             BackendUtility::workspaceOL('tx_templavoila_tmplobj', $templateObjectRecord);
 
             $templateObjects[] = [

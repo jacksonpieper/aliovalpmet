@@ -17,7 +17,9 @@ use Psr\Http\Message\ResponseInterface;
 use Schnitzler\Templavoila\Controller\Backend\AbstractModuleController;
 use Schnitzler\Templavoila\Controller\Backend\Configurable;
 use Schnitzler\Templavoila\Domain\Model\AbstractDataStructure;
+use Schnitzler\Templavoila\Domain\Repository\ContentRepository;
 use Schnitzler\Templavoila\Domain\Repository\DataStructureRepository;
+use Schnitzler\Templavoila\Domain\Repository\PageRepository;
 use Schnitzler\Templavoila\Domain\Repository\TemplateRepository;
 use Schnitzler\Templavoila\Service\SyntaxHighlightingService;
 use Schnitzler\Templavoila\Templavoila;
@@ -871,18 +873,11 @@ class MainController extends AbstractModuleController implements Configurable
                             </tr>';
 
                 // Main templates:
-                $dsKey = $toObj->getDatastructure()->getKey();
-                $res = static::getDatabaseConnection()->exec_SELECTquery(
-                    'uid,title,pid,t3ver_wsid,t3ver_id',
-                    'pages',
-                    '(
-                        (tx_templavoila_to=' . (int)$toObj->getKey() . ' AND tx_templavoila_ds=' . static::getDatabaseConnection()->fullQuoteStr($dsKey, 'pages') . ') OR
-                        (tx_templavoila_next_to=' . (int)$toObj->getKey() . ' AND tx_templavoila_next_ds=' . static::getDatabaseConnection()->fullQuoteStr($dsKey, 'pages') . ')
-                    )' .
-                    BackendUtility::deleteClause('pages')
-                );
+                /** @var PageRepository $pageRepository */
+                $pageRepository = GeneralUtility::makeInstance(PageRepository::class);
+                $rows = $pageRepository->findByTemplateAndDataStructure($toObj, $toObj->getDatastructure());
 
-                while (false !== ($pRow = static::getDatabaseConnection()->sql_fetch_assoc($res))) {
+                foreach ($rows as $pRow) {
                     $path = $this->findRecordsWhereUsed_pid($pRow['uid']);
                     if ($path) {
                         $output[] = '
@@ -914,21 +909,13 @@ class MainController extends AbstractModuleController implements Configurable
                             </tr>';
                     }
                 }
-                static::getDatabaseConnection()->sql_free_result($res);
                 break;
             case 2:
 
                 // Select Flexible Content Elements:
-                $res = static::getDatabaseConnection()->exec_SELECTquery(
-                    'uid,header,pid,t3ver_wsid,t3ver_id',
-                    'tt_content',
-                    'CType=' . static::getDatabaseConnection()->fullQuoteStr('templavoila_pi1', 'tt_content') .
-                    ' AND tx_templavoila_to=' . (int)$toObj->getKey() .
-                    ' AND tx_templavoila_ds=' . static::getDatabaseConnection()->fullQuoteStr($toObj->getDatastructure()->getKey(), 'tt_content') .
-                    BackendUtility::deleteClause('tt_content'),
-                    '',
-                    'pid'
-                );
+                /** @var ContentRepository $contentRepository */
+                $contentRepository = GeneralUtility::makeInstance(ContentRepository::class);
+                $rows = $contentRepository->findByTemplateAndDataStructure($toObj, $toObj->getDatastructure());
 
                 // Header:
                 $output[] = '
@@ -940,7 +927,7 @@ class MainController extends AbstractModuleController implements Configurable
                             </tr>';
 
                 // Elements:
-                while (false !== ($pRow = static::getDatabaseConnection()->sql_fetch_assoc($res))) {
+                foreach ($rows as $pRow) {
                     $path = $this->findRecordsWhereUsed_pid($pRow['pid']);
                     if ($path) {
                         $output[] = '
@@ -972,7 +959,6 @@ class MainController extends AbstractModuleController implements Configurable
                             </tr>';
                     }
                 }
-                static::getDatabaseConnection()->sql_free_result($res);
                 break;
         }
 
@@ -1016,17 +1002,11 @@ class MainController extends AbstractModuleController implements Configurable
                             </tr>';
 
                 // Main templates:
-                $res = static::getDatabaseConnection()->exec_SELECTquery(
-                    'uid,title,pid',
-                    'pages',
-                    '(
-                        (tx_templavoila_to NOT IN (' . implode(',', $toIdArray) . ') AND tx_templavoila_ds=' . static::getDatabaseConnection()->fullQuoteStr($dsObj->getKey(), 'pages') . ') OR
-                        (tx_templavoila_next_to NOT IN (' . implode(',', $toIdArray) . ') AND tx_templavoila_next_ds=' . static::getDatabaseConnection()->fullQuoteStr($dsObj->getKey(), 'pages') . ')
-                    )' .
-                    BackendUtility::deleteClause('pages')
-                );
+                /** @var PageRepository $pageRepository */
+                $pageRepository = GeneralUtility::makeInstance(PageRepository::class);
+                $rows = $pageRepository->findByDataStructureWithTemplateNotInList($dsObj, $toIdArray);
 
-                while (false !== ($pRow = static::getDatabaseConnection()->sql_fetch_assoc($res))) {
+                foreach ($rows as $pRow) {
                     $path = $this->findRecordsWhereUsed_pid($pRow['uid']);
                     if ($path) {
                         $output[] = '
@@ -1048,21 +1028,13 @@ class MainController extends AbstractModuleController implements Configurable
                             </tr>';
                     }
                 }
-                static::getDatabaseConnection()->sql_free_result($res);
                 break;
             case 2:
 
                 // Select Flexible Content Elements:
-                $res = static::getDatabaseConnection()->exec_SELECTquery(
-                    'uid,header,pid',
-                    'tt_content',
-                    'CType=' . static::getDatabaseConnection()->fullQuoteStr('templavoila_pi1', 'tt_content') .
-                    ' AND tx_templavoila_to NOT IN (' . implode(',', $toIdArray) . ')' .
-                    ' AND tx_templavoila_ds=' . static::getDatabaseConnection()->fullQuoteStr($dsObj->getKey(), 'tt_content') .
-                    BackendUtility::deleteClause('tt_content'),
-                    '',
-                    'pid'
-                );
+                /** @var ContentRepository $contentRepository */
+                $contentRepository = GeneralUtility::makeInstance(ContentRepository::class);
+                $rows = $contentRepository->findByDataStructureWithTemplateNotInList($dsObj, $toIdArray);
 
                 // Header:
                 $output[] = '
@@ -1072,7 +1044,7 @@ class MainController extends AbstractModuleController implements Configurable
                             </tr>';
 
                 // Elements:
-                while (false !== ($pRow = static::getDatabaseConnection()->sql_fetch_assoc($res))) {
+                foreach ($rows as $pRow) {
                     $path = $this->findRecordsWhereUsed_pid($pRow['pid']);
                     if ($path) {
                         $output[] = '
@@ -1094,7 +1066,6 @@ class MainController extends AbstractModuleController implements Configurable
                             </tr>';
                     }
                 }
-                static::getDatabaseConnection()->sql_free_result($res);
                 break;
         }
 

@@ -15,9 +15,10 @@ namespace Schnitzler\Templavoila\Controller\Backend\PageModule\Renderer\Sidebar;
 
 use Schnitzler\Templavoila\Controller\Backend\PageModule\MainController;
 use Schnitzler\Templavoila\Controller\Backend\PageModule\Renderer\Renderable;
+use Schnitzler\Templavoila\Domain\Repository\PageOverlayRepository;
+use Schnitzler\Templavoila\Domain\Repository\PageRepository;
 use Schnitzler\Templavoila\Helper\LanguageHelper;
 use Schnitzler\Templavoila\Traits\BackendUser;
-use Schnitzler\Templavoila\Traits\DatabaseConnection;
 use Schnitzler\Templavoila\Traits\LanguageService;
 use Schnitzler\Templavoila\Utility\PermissionUtility;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
@@ -32,7 +33,6 @@ class LocalizationTab implements Renderable
 {
     use BackendUser;
     use LanguageService;
-    use DatabaseConnection;
 
     /**
      * @var MainController
@@ -87,6 +87,12 @@ class LocalizationTab implements Renderable
             return false;
         }
 
+        /** @var PageRepository $pageRepository */
+        $pageRepository = GeneralUtility::makeInstance(PageRepository::class);
+
+        /** @var PageOverlayRepository $pageOverlayRepository */
+        $pageOverlayRepository = GeneralUtility::makeInstance(PageOverlayRepository::class);
+
         $optionsArr = [];
         foreach ($availableLanguagesArr as $languageArr) {
             if ($languageArr['uid'] <= 0 || static::getBackendUser()->checkLanguageAccess($languageArr['uid'])) {
@@ -97,35 +103,28 @@ class LocalizationTab implements Renderable
                 // todo: edit links for page and page overlay records here
                 $iconState = null;
                 if ((int)$languageArr['uid'] === 0) {
-                    $pageRecord = static::getDatabaseConnection()->exec_SELECTgetSingleRow(
-                        '*',
-                        'pages',
-                        'uid = ' . $this->controller->getId()
-                    );
-
-                    if (is_array($pageRecord)) {
-                        /** @var array $pageRecord */
-                        BackendUtility::workspaceOL('pages', $pageRecord);
+                    try {
+                        $pageRecord = $pageRepository->findOneByIdentifier($this->controller->getId());
+                        BackendUtility::workspaceOL(PageRepository::TABLE, $pageRecord);
 
                         if ((int)$pageRecord['hidden'] === 1) {
                             $iconState = new IconState(IconState::STATE_DISABLED);
                         }
+                    } catch (\Exception $e) {
                     }
                 }
 
-                $pageOverlayRow = static::getDatabaseConnection()->exec_SELECTgetSingleRow(
-                    '*',
-                    'pages_language_overlay',
-                    'pid = ' . $this->controller->getId() . ' AND sys_language_uid = ' . (int)$languageArr['uid']
-                );
-
-                if (is_array($pageOverlayRow)) {
-                    /** @var array $pageOverlayRow */
-                    BackendUtility::workspaceOL('pages_language_overlay', $pageOverlayRow);
+                try {
+                    $pageOverlayRow = $pageOverlayRepository->findOneByParentIdentifierAndLanguage(
+                        $this->controller->getId(),
+                        (int)$languageArr['uid']
+                    );
+                    BackendUtility::workspaceOL(PageOverlayRepository::TABLE, $pageOverlayRow);
 
                     if ((int)$pageOverlayRow['hidden'] === 1) {
                         $iconState = new IconState(IconState::STATE_DISABLED);
                     }
+                } catch (\Exception $e) {
                 }
 
                 $flagIcon = $this->controller->getModuleTemplate()->getIconFactory()->getIcon(

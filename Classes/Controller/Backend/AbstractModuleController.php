@@ -16,7 +16,6 @@ namespace Schnitzler\Templavoila\Controller\Backend;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Schnitzler\Templavoila\Traits\BackendUser;
-use Schnitzler\Templavoila\Traits\DatabaseConnection;
 use Schnitzler\Templavoila\Traits\LanguageService;
 use Schnitzler\Templavoila\Utility\PermissionUtility;
 use TYPO3\CMS\Backend\Module\AbstractModule;
@@ -58,7 +57,6 @@ abstract class AbstractModuleController extends AbstractModule
     private $typoScriptSetupCache = [];
 
     use BackendUser;
-    use DatabaseConnection;
     use LanguageService;
 
     /**

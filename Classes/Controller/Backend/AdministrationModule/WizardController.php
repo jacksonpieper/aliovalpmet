@@ -16,8 +16,11 @@ namespace Schnitzler\Templavoila\Controller\Backend\AdministrationModule;
 use Psr\Http\Message\ResponseInterface;
 use Schnitzler\Templavoila\Controller\Backend\AbstractModuleController;
 use Schnitzler\Templavoila\Controller\Backend\Configurable;
+use Schnitzler\Templavoila\Domain\Model\Template;
 use Schnitzler\Templavoila\Templavoila;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Core\Database\ConnectionPool;
+use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
 use TYPO3\CMS\Core\DataHandling\DataHandler;
 use TYPO3\CMS\Core\Http\Response;
 use TYPO3\CMS\Core\Http\ServerRequest;
@@ -112,12 +115,20 @@ class WizardController extends AbstractModuleController implements Configurable
 
         $view = $this->getStandaloneView('Backend/AdministrationModule/WizardController');
         $view->assign('files', array_map(function ($hash, $path) {
-            $templateObjectCount = (int)static::getDatabaseConnection()->exec_SELECTcountRows(
-                'uid',
-                'tx_templavoila_tmplobj',
-                'fileref = ' . static::getDatabaseConnection()->fullQuoteStr($path, 'tx_templavoila_tmplobj') .
-                BackendUtility::deleteClause('tx_templavoila_tmplobj')
-            );
+            $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable(Template::TABLE);
+            $queryBuilder
+                ->getRestrictions()
+                ->removeAll()
+                ->add(GeneralUtility::makeInstance(DeletedRestriction::class));
+
+            $query = $queryBuilder
+                ->count('uid')
+                ->from(Template::TABLE)
+                ->where(
+                    $queryBuilder->expr()->eq('fileref', $queryBuilder->quote($path))
+                );
+
+            $templateObjectCount = $query->execute()->fetchColumn(0);
 
             return [
                 'hash' => $hash,

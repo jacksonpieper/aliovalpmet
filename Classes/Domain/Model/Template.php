@@ -508,4 +508,12 @@ class Template
     {
         return (int)$this->row['pid'] === (int)$pageId;
     }
+
+    /**
+     * @return array
+     */
+    public function getRow()
+    {
+        return $this->row;
+    }
 }

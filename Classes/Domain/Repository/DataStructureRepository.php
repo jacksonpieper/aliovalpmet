@@ -14,12 +14,16 @@
 namespace Schnitzler\Templavoila\Domain\Repository;
 
 use Schnitzler\Templavoila\Domain\Model\DataStructure;
+use Schnitzler\Templavoila\Domain\Model\Template;
 use Schnitzler\Templavoila\Templavoila;
-use Schnitzler\Templavoila\Traits\DatabaseConnection;
+use Schnitzler\Templavoila\Traits\BackendUser;
 use Schnitzler\Templavoila\Traits\DataHandler;
 use Schnitzler\Templavoila\Utility\StaticDataStructure\ToolsUtility;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Core\Database\ConnectionPool;
+use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Versioning\VersionState;
 
 /**
  * Class to provide unique access to datastructure
@@ -28,7 +32,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  */
 class DataStructureRepository
 {
-    use DatabaseConnection;
+    use BackendUser;
     use DataHandler;
 
     /**
@@ -86,15 +90,33 @@ class DataStructureRepository
         }
 
         if (!self::isStaticDsEnabled()) {
-            $dsRows = (array)static::getDatabaseConnection()->exec_SELECTgetRows(
-                'uid',
-                'tx_templavoila_datastructure',
-                'pid=' . (int)$pid
-                . BackendUtility::deleteClause('tx_templavoila_datastructure')
-                . ' AND pid!=-1 '
-                . BackendUtility::versioningPlaceholderClause('tx_templavoila_datastructure')
-            );
+            $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable(DataStructure::TABLE);
+            $queryBuilder
+                ->getRestrictions()
+                ->removeAll()
+                ->add(GeneralUtility::makeInstance(DeletedRestriction::class));
+
+            $query = $queryBuilder
+                ->select('uid')
+                ->from(DataStructure::TABLE)
+                ->where(
+                    $queryBuilder->expr()->gte('pid', 0),
+                    $queryBuilder->expr()->eq('pid', (int)$pid)
+                );
+
+            if (BackendUtility::isTableWorkspaceEnabled(Template::TABLE)) {
+                $query->andWhere(
+                    $queryBuilder->expr()->orX(
+                        $queryBuilder->expr()->lte('t3ver_state', new VersionState(VersionState::DEFAULT_STATE)),
+                        $queryBuilder->expr()->eq('t3ver_wsid', (int)static::getBackendUser()->workspace)
+                    )
+                );
+            }
+
+            $dsRows = $query->execute()->fetchAll();
+
             foreach ($dsRows as $ds) {
+                /** @var array $ds */
                 $dscollection[] = $this->getDatastructureByUidOrFilename($ds['uid']);
             }
         }
@@ -128,16 +150,32 @@ class DataStructureRepository
         }
 
         if (!self::isStaticDsEnabled()) {
-            $dsRows = (array)static::getDatabaseConnection()->exec_SELECTgetRows(
-                'uid',
-                'tx_templavoila_datastructure',
-                'scope=' . (int)$scope . ' AND pid=' . (int)$pid
-                . BackendUtility::deleteClause('tx_templavoila_datastructure')
-                . ' AND pid!=-1 '
-                . BackendUtility::versioningPlaceholderClause('tx_templavoila_datastructure')
-            );
-            foreach ($dsRows as $ds) {
-                $dscollection[] = $this->getDatastructureByUidOrFilename($ds['uid']);
+            $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable(DataStructure::TABLE);
+            $queryBuilder
+                ->getRestrictions()
+                ->removeAll()
+                ->add(GeneralUtility::makeInstance(DeletedRestriction::class));
+
+            $query = $queryBuilder
+                ->select('uid')
+                ->from(DataStructure::TABLE)
+                ->where(
+                    $queryBuilder->expr()->gte('pid', 0),
+                    $queryBuilder->expr()->eq('pid', (int)$pid),
+                    $queryBuilder->expr()->eq('scope', (int)$scope)
+                );
+
+            if (BackendUtility::isTableWorkspaceEnabled(Template::TABLE)) {
+                $query->andWhere(
+                    $queryBuilder->expr()->orX(
+                        $queryBuilder->expr()->lte('t3ver_state', new VersionState(VersionState::DEFAULT_STATE)),
+                        $queryBuilder->expr()->eq('t3ver_wsid', (int)static::getBackendUser()->workspace)
+                    )
+                );
+            }
+
+            foreach ($query->execute()->fetchAll() as $row) {
+                $dscollection[] = $this->getDatastructureByUidOrFilename($row['uid']);
             }
         }
         usort($dscollection, [$this, 'sortDatastructures']);
@@ -166,15 +204,33 @@ class DataStructureRepository
         }
 
         if (!self::isStaticDsEnabled()) {
-            $dsRows = (array)static::getDatabaseConnection()->exec_SELECTgetRows(
-                'uid',
-                'tx_templavoila_datastructure',
-                'scope=' . (int)$scope
-                . BackendUtility::deleteClause('tx_templavoila_datastructure')
-                . ' AND pid!=-1 '
-                . BackendUtility::versioningPlaceholderClause('tx_templavoila_datastructure')
-            );
+            $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable(DataStructure::TABLE);
+            $queryBuilder
+                ->getRestrictions()
+                ->removeAll()
+                ->add(GeneralUtility::makeInstance(DeletedRestriction::class));
+
+            $query = $queryBuilder
+                ->select('uid')
+                ->from(DataStructure::TABLE)
+                ->where(
+                    $queryBuilder->expr()->gte('pid', 0),
+                    $queryBuilder->expr()->eq('scope', (int)$scope)
+                );
+
+            if (BackendUtility::isTableWorkspaceEnabled(Template::TABLE)) {
+                $query->andWhere(
+                    $queryBuilder->expr()->orX(
+                        $queryBuilder->expr()->lte('t3ver_state', new VersionState(VersionState::DEFAULT_STATE)),
+                        $queryBuilder->expr()->eq('t3ver_wsid', (int)static::getBackendUser()->workspace)
+                    )
+                );
+            }
+
+            $dsRows = $query->execute()->fetchAll();
+
             foreach ($dsRows as $ds) {
+                /** @var array $ds */
                 $dscollection[] = $this->getDatastructureByUidOrFilename($ds['uid']);
             }
         }
@@ -204,16 +260,31 @@ class DataStructureRepository
         }
 
         if (!self::isStaticDsEnabled()) {
-            $dsRows = (array)static::getDatabaseConnection()->exec_SELECTgetRows(
-                'uid',
-                'tx_templavoila_datastructure',
-                'scope=' . (int)$scope
-                . BackendUtility::deleteClause('tx_templavoila_datastructure')
-                . ' AND pid!=-1 '
-                . BackendUtility::versioningPlaceholderClause('tx_templavoila_datastructure')
-            );
-            foreach ($dsRows as $ds) {
-                $dscollection[] = $this->getDatastructureByUidOrFilename($ds['uid']);
+            $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable(DataStructure::TABLE);
+            $queryBuilder
+                ->getRestrictions()
+                ->removeAll()
+                ->add(GeneralUtility::makeInstance(DeletedRestriction::class));
+
+            $query = $queryBuilder
+                ->select('uid')
+                ->from(DataStructure::TABLE)
+                ->where(
+                    $queryBuilder->expr()->gte('pid', 0),
+                    $queryBuilder->expr()->eq('scope', (int)$scope)
+                );
+
+            if (BackendUtility::isTableWorkspaceEnabled(Template::TABLE)) {
+                $query->andWhere(
+                    $queryBuilder->expr()->orX(
+                        $queryBuilder->expr()->lte('t3ver_state', new VersionState(VersionState::DEFAULT_STATE)),
+                        $queryBuilder->expr()->eq('t3ver_wsid', (int)static::getBackendUser()->workspace)
+                    )
+                );
+            }
+
+            foreach ($query->execute()->fetchAll() as $row) {
+                $dscollection[] = $this->getDatastructureByUidOrFilename($row['uid']);
             }
         }
         usort($dscollection, [$this, 'sortDatastructures']);
@@ -238,15 +309,32 @@ class DataStructureRepository
         }
 
         if (!self::isStaticDsEnabled()) {
-            $dsRows = (array)static::getDatabaseConnection()->exec_SELECTgetRows(
-                'uid',
-                'tx_templavoila_datastructure',
-                '1=1'
-                . BackendUtility::deleteClause('tx_templavoila_datastructure')
-                . ' AND pid!=-1 '
-                . BackendUtility::versioningPlaceholderClause('tx_templavoila_datastructure')
-            );
+            $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable(DataStructure::TABLE);
+            $queryBuilder
+                ->getRestrictions()
+                ->removeAll()
+                ->add(GeneralUtility::makeInstance(DeletedRestriction::class));
+
+            $query = $queryBuilder
+                ->select('uid')
+                ->from(DataStructure::TABLE)
+                ->where(
+                    $queryBuilder->expr()->gte('pid', 0)
+                );
+
+            if (BackendUtility::isTableWorkspaceEnabled(Template::TABLE)) {
+                $query->andWhere(
+                    $queryBuilder->expr()->orX(
+                        $queryBuilder->expr()->lte('t3ver_state', new VersionState(VersionState::DEFAULT_STATE)),
+                        $queryBuilder->expr()->eq('t3ver_wsid', (int)static::getBackendUser()->workspace)
+                    )
+                );
+            }
+
+            $dsRows = $queryBuilder->execute()->fetchAll();
+
             foreach ($dsRows as $ds) {
+                /** @var array $ds */
                 $dscollection[] = $this->getDatastructureByUidOrFilename($ds['uid']);
             }
         }
@@ -340,11 +428,20 @@ class DataStructureRepository
      */
     public function getDatastructureCountForPid($pid)
     {
-        return (int)static::getDatabaseConnection()->exec_SELECTcountRows(
-            '*',
-            'tx_templavoila_tmplobj',
-            'pid=' . (int)$pid . BackendUtility::deleteClause('tx_templavoila_tmplobj')
-        );
+        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable(DataStructure::TABLE);
+        $queryBuilder
+            ->getRestrictions()
+            ->removeAll()
+            ->add(GeneralUtility::makeInstance(DeletedRestriction::class));
+
+        $query = $queryBuilder
+            ->count('*')
+            ->from(DataStructure::TABLE)
+            ->where(
+                $queryBuilder->expr()->eq('pid', (int)$pid)
+            );
+
+        return (int) $query->execute()->fetchColumn(0);
     }
 
     /**

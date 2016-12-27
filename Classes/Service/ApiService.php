@@ -13,9 +13,13 @@
 
 namespace Schnitzler\Templavoila\Service;
 
-use Schnitzler\Templavoila\Traits\DatabaseConnection;
+use Schnitzler\Templavoila\Domain\Model\AbstractDataStructure;
+use Schnitzler\Templavoila\Domain\Repository\ContentRepository;
+use Schnitzler\Templavoila\Domain\Repository\SysLanguageRepository;
+use Schnitzler\Templavoila\Domain\Repository\TemplateRepository;
 use Schnitzler\Templavoila\Traits\LanguageService;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\RelationHandler;
 use TYPO3\CMS\Core\DataHandling\DataHandler;
 use TYPO3\CMS\Core\Imaging\Icon;
@@ -31,7 +35,6 @@ use TYPO3\CMS\Core\Utility\MathUtility;
  */
 class ApiService
 {
-    use DatabaseConnection;
     use LanguageService;
 
     /**
@@ -151,12 +154,14 @@ class ApiService
         // If the destination is not the default language, try to set the old-style sys_language_uid field accordingly
         if ($destinationPointer['sLang'] !== 'lDEF' || $destinationPointer['vLang'] !== 'vDEF') {
             $languageKey = $destinationPointer['vLang'] !== 'vDEF' ? $destinationPointer['vLang'] : $destinationPointer['sLang'];
+
+            $language_isocode = GeneralUtility::makeInstance(ConnectionPool::class)
+                ->getConnectionForTable('sys_language')
+                ->quote(strtolower(substr($languageKey, 1)));
+
             $languageRecord = BackendUtility::getRecordRaw(
                 'sys_language',
-                'language_isocode=' . static::getDatabaseConnection()->fullQuoteStr(
-                    strtolower(substr($languageKey, 1)),
-                    'sys_language'
-                )
+                'language_isocode=' . $language_isocode
             );
 
             if (isset($languageRecord['uid'])) {
@@ -533,8 +538,11 @@ class ApiService
                 $elementUids[] = $elementUid;
 
                 // Reduce the list to local elements to make sure that references are kept instead of moving the referenced record
-                $localRecords = static::getDatabaseConnection()->exec_SELECTgetRows('uid,pid', 'tt_content', 'uid IN (' . implode(',', $elementUids) . ') AND pid=' . (int)$sourcePID . ' ' . BackendUtility::deleteClause('tt_content'));
-                if (!empty($localRecords) && is_array($localRecords)) {
+                /** @var ContentRepository $contentRepository */
+                $contentRepository = GeneralUtility::makeInstance(ContentRepository::class);
+                $localRecords = $contentRepository->findByUidListOnPage($elementUids, $sourcePID);
+
+                if (!empty($localRecords)) {
                     $cmdArray = [];
                     foreach ($localRecords as $localRecord) {
                         $cmdArray['tt_content'][$localRecord['uid']]['move'] = $destinationPID;
@@ -1349,31 +1357,15 @@ class ApiService
      *
      * @param int $pageUid (current) page uid, used for finding the correct storage folder
      *
-     * @return mixed Array of Template Object records or FALSE if an error occurred.
+     * @return array Array of Template Object records
      */
     public function ds_getAvailablePageTORecords($pageUid)
     {
         $storageFolderPID = $this->getStorageFolderPid($pageUid);
 
-        $tTO = 'tx_templavoila_tmplobj';
-        $tDS = 'tx_templavoila_datastructure';
-        $res = static::getDatabaseConnection()->exec_SELECTquery(
-            "$tTO.*",
-            "$tTO LEFT JOIN $tDS ON $tTO.datastructure = $tDS.uid",
-            "$tTO.pid=" . (int)$storageFolderPID . " AND $tDS.scope=1" .
-            BackendUtility::deleteClause($tTO) . BackendUtility::deleteClause($tDS) .
-            BackendUtility::versioningPlaceholderClause($tTO) . BackendUtility::versioningPlaceholderClause($tDS)
-        );
-        if (!$res) {
-            return false;
-        }
-
-        $templateObjectRecords = [];
-        while (false != ($row = static::getDatabaseConnection()->sql_fetch_assoc($res))) {
-            $templateObjectRecords[$row['uid']] = $row;
-        }
-
-        return $templateObjectRecords;
+        /** @var TemplateRepository $templateRepository */
+        $templateRepository = GeneralUtility::makeInstance(TemplateRepository::class);
+        return $templateRepository->findByScopeOnPage(AbstractDataStructure::SCOPE_PAGE, (int)$storageFolderPID);
     }
 
     /******************************************************
@@ -1659,17 +1651,16 @@ class ApiService
             $fakeElementRow = ['uid' => $contentTreeArr['el']['uid'], 'pid' => $contentTreeArr['el']['pid']];
             BackendUtility::fixVersioningPid('tt_content', $fakeElementRow);
 
-            $res = static::getDatabaseConnection()->exec_SELECTquery(
-                '*',
-                'tt_content',
-                'pid=' . $fakeElementRow['pid'] .
-                ' AND sys_language_uid>0' .
-                ' AND l18n_parent=' . (int)$contentTreeArr['el']['uid'] .
-                BackendUtility::deleteClause('tt_content')
+            /** @var ContentRepository $contentRepository */
+            $contentRepository = GeneralUtility::makeInstance(ContentRepository::class);
+
+            $olrows = $contentRepository->findAllLocalizationsForSingleRecordOnPage(
+                (int)$contentTreeArr['el']['uid'],
+                (int)$fakeElementRow['pid']
             );
 
             $attachedLocalizations = [];
-            while (true == ($olrow = static::getDatabaseConnection()->sql_fetch_assoc($res))) {
+            foreach ($olrows as $olrow) {
                 BackendUtility::workspaceOL('tt_content', $olrow);
                 if (!isset($attachedLocalizations[$olrow['sys_language_uid']])) {
                     $attachedLocalizations[$olrow['sys_language_uid']] = $olrow['uid'];
@@ -1825,19 +1816,12 @@ class ApiService
         $this->allSystemWebsiteLanguages['all_lKeys'][] = 'lDEF';
         $this->allSystemWebsiteLanguages['all_vKeys'][] = 'vDEF';
 
-        // Select all website languages:
-        $this->allSystemWebsiteLanguages['rows'] = static::getDatabaseConnection()->exec_SELECTgetRows(
-            'sys_language.*',
-            'sys_language',
-            '1=1' . BackendUtility::deleteClause('sys_language'),
-            '',
-            'uid',
-            '',
-            'uid'
-        );
+        /** @var SysLanguageRepository $sysLanguageRepository */
+        $sysLanguageRepository = GeneralUtility::makeInstance(SysLanguageRepository::class);
 
-        // Traverse and set ISO codes if found:
-        foreach ($this->allSystemWebsiteLanguages['rows'] as $row) {
+        foreach ($sysLanguageRepository->findAll() as $row) {
+            $this->allSystemWebsiteLanguages['rows'][$row['uid']] = $row;
+
             if ($row['language_isocode']) {
                 $languageIsocode = strtoupper($row['language_isocode']);
                 $this->allSystemWebsiteLanguages['rows'][$row['uid']]['_ISOcode'] = $languageIsocode;

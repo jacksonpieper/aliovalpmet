@@ -17,6 +17,7 @@ use Schnitzler\Templavoila\Domain\Repository\DataStructureRepository;
 use Schnitzler\Templavoila\Traits\BackendUser;
 use TYPO3\CMS\Backend\Module\AbstractFunctionModule;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
@@ -89,19 +90,29 @@ class RenameFieldInPageFlexWizardController extends AbstractFunctionModule
 
                 return $message->render();
             }
-            $escapedSource = $this->getDatabaseConnection()->fullQuoteStr('%' . GeneralUtility::_GP('sourceField') . '%', 'pages');
-            $escapedDest = $this->getDatabaseConnection()->fullQuoteStr('%' . GeneralUtility::_GP('destinationField') . '%', 'pages');
 
-            $condition = 'tx_templavoila_flex LIKE ' . $escapedSource
-                . ' AND NOT tx_templavoila_flex LIKE ' . $escapedDest . ' '
-                . ' AND uid IN ('
-                . implode(',', $this->getAllSubPages($this->pObj->id)) . ')';
+            $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('pages');
+            $queryBuilder
+                ->getRestrictions()
+                ->removeAll();
 
-            $rows = $this->getDatabaseConnection()->exec_SELECTgetRows(
-                'uid, title',
-                'pages',
-                $condition
-            );
+            $query = $queryBuilder
+                ->count('uid, title')
+                ->from('pages')
+                ->where(
+                    $queryBuilder->expr()->like(
+                        'tx_templavoila_flex',
+                        $queryBuilder->quote($queryBuilder->escapeLikeWildcards(GeneralUtility::_GP('sourceField')))
+                    ),
+                    $queryBuilder->expr()->notLike(
+                        'tx_templavoila_flex',
+                        $queryBuilder->quote($queryBuilder->escapeLikeWildcards(GeneralUtility::_GP('destinationField')))
+                    ),
+                    $queryBuilder->expr()->in('uid', implode(',', $this->getAllSubPages($this->pObj->id)))
+                );
+
+            $rows = $query->execute()->fetchAll();
+
             if (count($rows) > 0) {
                 // build message for simulation
                 $mbuffer = 'Affects ' . count($rows) . ': <ul>';
@@ -114,13 +125,25 @@ class RenameFieldInPageFlexWizardController extends AbstractFunctionModule
                 unset($mbuffer);
                 //really do it
                 if (!GeneralUtility::_GP('simulateField')) {
-                    $escapedSource = $this->getDatabaseConnection()->fullQuoteStr(GeneralUtility::_GP('sourceField'), 'pages');
-                    $escapedDest = $this->getDatabaseConnection()->fullQuoteStr(GeneralUtility::_GP('destinationField'), 'pages');
-                    $this->getDatabaseConnection()->admin_query('
-                        UPDATE pages
-                        SET tx_templavoila_flex = REPLACE(tx_templavoila_flex, ' . $escapedSource . ', ' . $escapedDest . ')
-                        WHERE ' . $condition . '
-                    ');
+                    $escapedSource = $queryBuilder->quote(GeneralUtility::_GP('sourceField'));
+                    $escapedDest = $queryBuilder->quote(GeneralUtility::_GP('destinationField'));
+
+                    $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('pages');
+                    $queryBuilder
+                        ->getRestrictions()
+                        ->removeAll();
+
+                    $query = $queryBuilder
+                        ->update('pages')
+                        ->set('tx_templavoila_flex', 'REPLACE(tx_templavoila_flex, ' . $escapedSource . ', ' . $escapedDest . ')')
+                        ->where(
+                            $queryBuilder->expr()->like('tx_templavoila_flex', $escapedSource),
+                            $queryBuilder->expr()->notLike('tx_templavoila_flex', $escapedDest),
+                            $queryBuilder->expr()->in('uid', implode(',', $this->getAllSubPages($this->pObj->id)))
+                        );
+
+                    $query->execute();
+
                     $message = new FlashMessage('DONE', '', FlashMessage::OK);
                     $buffer .= $message->render();
                 }

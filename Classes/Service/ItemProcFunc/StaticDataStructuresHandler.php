@@ -14,14 +14,15 @@
 namespace Schnitzler\Templavoila\Service\ItemProcFunc;
 
 use Schnitzler\Templavoila\Domain\Model\AbstractDataStructure;
+use Schnitzler\Templavoila\Domain\Model\Template;
 use Schnitzler\Templavoila\Domain\Repository\DataStructureRepository;
 use Schnitzler\Templavoila\Domain\Repository\TemplateRepository;
 use Schnitzler\Templavoila\Exception\Configuration\UndefinedStorageFolderException;
 use Schnitzler\Templavoila\Templavoila;
-use Schnitzler\Templavoila\Traits\DatabaseConnection;
 use Schnitzler\Templavoila\Traits\LanguageService;
 use TYPO3\CMS\Backend\Form\FormDataProvider\TcaSelectItems;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
 use TYPO3\CMS\Frontend\Page\PageRepository;
@@ -33,7 +34,6 @@ use TYPO3\CMS\Frontend\Page\PageRepository;
  */
 class StaticDataStructuresHandler
 {
-    use DatabaseConnection;
     use LanguageService;
 
     /**
@@ -103,17 +103,23 @@ class StaticDataStructuresHandler
         if ($templateRef && $storagePid) {
 
             // Select all Template Object Records from storage folder, which are parent records and which has the data structure for the plugin:
-            $res = static::getDatabaseConnection()->exec_SELECTquery(
-                'title,uid,previewicon',
-                'tx_templavoila_tmplobj',
-                'tx_templavoila_tmplobj.pid=' . $storagePid . ' AND tx_templavoila_tmplobj.datastructure=' . static::getDatabaseConnection()->fullQuoteStr($templateRef, 'tx_templavoila_tmplobj') . ' AND tx_templavoila_tmplobj.parent=0',
-                '',
-                'tx_templavoila_tmplobj.title'
-            );
+            $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable(Template::TABLE);
+            $queryBuilder
+                ->getRestrictions()
+                ->removeAll();
+
+            $query = $queryBuilder
+                ->select('*')
+                ->from(Template::TABLE)
+                ->where(
+                    $queryBuilder->expr()->eq('pid', $storagePid),
+                    $queryBuilder->expr()->eq('datastructure', $queryBuilder->quote($templateRef)),
+                    $queryBuilder->expr()->eq('parent', 0)
+                )
+                ->orderBy('title');
 
             // Traverse these and add them. Icons are set too if applicable.
-            while (false !== ($row = static::getDatabaseConnection()->sql_fetch_assoc($res))) {
-                /** @var array $row */
+            foreach ($query->execute()->fetchAll() as $row) {
                 if ($row['previewicon']) {
                     $icon = '../' . $GLOBALS['TCA']['tx_templavoila_tmplobj']['columns']['previewicon']['config']['uploadfolder'] . '/' . $row['previewicon'];
                 } else {
@@ -273,7 +279,7 @@ class StaticDataStructuresHandler
                 '--div--'
             ];
 
-            $toList = $toRepo->findByDataStructure($dsObj);
+            $toList = $toRepo->findByDataStructureObject($dsObj);
             foreach ($toList as $toObj) {
                 /** @var \Schnitzler\Templavoila\Domain\Model\Template $toObj */
                 if (!$toObj->hasParent() && $toObj->isPermittedForUser($params['row'], $removeTOItems)) {

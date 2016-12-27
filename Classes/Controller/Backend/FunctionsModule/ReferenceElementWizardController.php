@@ -13,14 +13,18 @@
 
 namespace Schnitzler\Templavoila\Controller\Backend\FunctionsModule;
 
+use Schnitzler\Templavoila\Helper\LanguageHelper;
 use Schnitzler\Templavoila\Service\ApiService;
 use Schnitzler\Templavoila\Traits\BackendUser;
 use TYPO3\CMS\Backend\Module\AbstractFunctionModule;
 use TYPO3\CMS\Backend\Tree\View\PageTreeView;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Core\Database\ConnectionPool;
+use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Versioning\VersionState;
 
 /**
  * Reference elements wizard,
@@ -83,7 +87,7 @@ class ReferenceElementWizardController extends AbstractFunctionModule
     public function main()
     {
         $this->modSharedTSconfig = BackendUtility::getModTSconfig($this->pObj->id, 'mod.SHARED');
-        $this->allAvailableLanguages = $this->getAvailableLanguages(0, true, true);
+        $this->allAvailableLanguages = LanguageHelper::getAll(0);
 
         $this->templavoilaAPIObj = GeneralUtility::makeInstance(ApiService::class);
 
@@ -218,7 +222,7 @@ class ReferenceElementWizardController extends AbstractFunctionModule
                 $langChildren = (int)$xml['meta']['langChildren'];
                 $langDisable = (int)$xml['meta']['langDisable'];
                 if ($elementRecord[$langField] == -1) {
-                    $translatedLanguagesArr = $this->getAvailableLanguages($pageUid);
+                    $translatedLanguagesArr = LanguageHelper::getPageLanguages($pageUid);
                     foreach ($translatedLanguagesArr as $lUid => $lArr) {
                         if ($lUid >= 0) {
                             $lDef[] = $langDisable ? 'lDEF' : ($langChildren ? 'lDEF' : 'l' . $lArr['language_isocode']);
@@ -266,98 +270,44 @@ class ReferenceElementWizardController extends AbstractFunctionModule
      */
     protected function getUnreferencedElementsRecords($pid)
     {
-        $elementRecordsArr = [];
         $dummyArr = [];
         $referencedElementsArr = $this->templavoilaAPIObj->flexform_getListOfSubElementUidsRecursively('pages', $pid, $dummyArr);
 
-        $res = $this->getDatabaseConnection()->exec_SELECTquery(
-            'uid, header, bodytext, sys_language_uid, colPos',
-            'tt_content',
-            'pid=' . (int)$pid .
-            (count($referencedElementsArr) ? ' AND uid NOT IN (' . implode(',', $referencedElementsArr) . ')' : '') .
-            ' AND t3ver_wsid=' . (int)static::getBackendUser()->workspace .
-            ' AND l18n_parent=0' .
-            BackendUtility::deleteClause('tt_content') .
-            BackendUtility::versioningPlaceholderClause('tt_content'),
-            '',
-            'sorting'
-        );
+        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('tt_content');
+        $queryBuilder
+            ->getRestrictions()
+            ->removeAll()
+            ->add(GeneralUtility::makeInstance(DeletedRestriction::class));
 
-        if ($res) {
-            while (($elementRecordArr = $this->getDatabaseConnection()->sql_fetch_assoc($res)) !== false) {
-                $elementRecordsArr[$elementRecordArr['uid']] = $elementRecordArr;
-            }
-            $this->getDatabaseConnection()->sql_free_result($res);
+        $query = $queryBuilder
+            ->select('uid', 'header', 'bodytext', 'sys_language_uid', 'colPos')
+            ->from('tt_content')
+            ->where(
+                $queryBuilder->expr()->eq('pid', (int)$pid),
+                $queryBuilder->expr()->eq('l18n_parent', 0)
+            )
+            ->orderBy('sorting');
+
+        if (BackendUtility::isTableWorkspaceEnabled('')) {
+            $query->andWhere(
+                $queryBuilder->expr()->orX(
+                    $queryBuilder->expr()->lte('t3ver_state', new VersionState(VersionState::DEFAULT_STATE)),
+                    $queryBuilder->expr()->eq('t3ver_wsid', (int)static::getBackendUser()->workspace)
+                )
+            );
+        }
+
+        if (count($referencedElementsArr) > 0) {
+            $query->andWhere(
+                $queryBuilder->expr()->notIn('uid', implode(',', $referencedElementsArr))
+            );
+        }
+
+        $elementRecordsArr = [];
+        foreach ($query->execute()->fetchAll() as $row) {
+            $elementRecordsArr[$row['uid']] = $row;
         }
 
         return $elementRecordsArr;
-    }
-
-    /**
-     * Get available languages
-     *
-     * @param int $id
-     * @param bool $setDefault
-     * @param bool $setMulti
-     * @return array
-     */
-    protected function getAvailableLanguages($id = 0, $setDefault = true, $setMulti = false)
-    {
-        $output = [];
-        $excludeHidden = static::getBackendUser()->isAdmin() ? '1' : 'sys_language.hidden=0';
-
-        if ($id) {
-            $excludeHidden .= ' AND pages_language_overlay.deleted=0';
-            $res = $this->getDatabaseConnection()->exec_SELECTquery(
-                'DISTINCT sys_language.*',
-                'pages_language_overlay,sys_language',
-                'pages_language_overlay.sys_language_uid=sys_language.uid AND pages_language_overlay.pid=' . (int)$id . ' AND ' . $excludeHidden,
-                '',
-                'sys_language.title'
-            );
-        } else {
-            $res = $this->getDatabaseConnection()->exec_SELECTquery(
-                'sys_language.*',
-                'sys_language',
-                $excludeHidden,
-                '',
-                'sys_language.title'
-            );
-        }
-
-        if ($setDefault) {
-            $output[0] = [
-                'uid' => 0,
-                'title' => strlen($this->modSharedTSconfig['properties']['defaultLanguageLabel']) ? $this->modSharedTSconfig['properties']['defaultLanguageLabel'] : $this->getLanguageService()->getLL('defaultLanguage'),
-                'language_isocode' => 'DEF',
-                'flagIcon' => strlen($this->modSharedTSconfig['properties']['defaultLanguageFlag']) ? $this->modSharedTSconfig['properties']['defaultLanguageFlag'] : null
-            ];
-        }
-
-        if ($setMulti) {
-            $output[-1] = [
-                'uid' => -1,
-                'title' => $this->getLanguageService()->getLL('multipleLanguages'),
-                'language_isocode' => 'DEF',
-                'flagIcon' => 'multiple',
-            ];
-        }
-
-        while (($row = $this->getDatabaseConnection()->sql_fetch_assoc($res)) !== false) {
-            /** @var $row array */
-            BackendUtility::workspaceOL('sys_language', $row);
-            $output[$row['uid']] = $row;
-
-            if ($row['language_isocode']) {
-                $languageIsocode = strtoupper($row['language_isocode']);
-                $output[$row['uid']]['language_isocode'] = $languageIsocode;
-            }
-            if (strlen($row['flag'])) {
-                $output[$row['uid']]['flagIcon'] = $row['flag'];
-            }
-        }
-        $this->getDatabaseConnection()->sql_free_result($res);
-
-        return $output;
     }
 }

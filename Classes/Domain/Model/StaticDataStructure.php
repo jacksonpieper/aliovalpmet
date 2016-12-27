@@ -14,8 +14,8 @@
 namespace Schnitzler\Templavoila\Domain\Model;
 
 use Schnitzler\Templavoila\Domain\Repository\DataStructureRepository;
-use Schnitzler\Templavoila\Traits\DatabaseConnection;
-use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Core\Database\ConnectionPool;
+use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -25,8 +25,6 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  */
 class StaticDataStructure extends AbstractDataStructure
 {
-    use DatabaseConnection;
-
     /**
      * @var string
      */
@@ -62,12 +60,21 @@ class StaticDataStructure extends AbstractDataStructure
     public function getStoragePids()
     {
         $pids = [];
-        $toList = (array)static::getDatabaseConnection()->exec_SELECTgetRows(
-            'tx_templavoila_tmplobj.uid,tx_templavoila_tmplobj.pid',
-            'tx_templavoila_tmplobj',
-            'tx_templavoila_tmplobj.datastructure=' . static::getDatabaseConnection()->fullQuoteStr($this->filename, 'tx_templavoila_tmplobj') . BackendUtility::deleteClause('tx_templavoila_tmplobj')
-        );
-        foreach ($toList as $toRow) {
+
+        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable(Template::TABLE);
+        $queryBuilder
+            ->getRestrictions()
+            ->removeAll()
+            ->add(GeneralUtility::makeInstance(DeletedRestriction::class));
+
+        $query = $queryBuilder
+            ->count('uid')
+            ->from(Template::TABLE)
+            ->where(
+                $queryBuilder->expr()->eq('datastructure', $queryBuilder->quote($this->filename))
+            );
+
+        foreach ($query->execute()->fetchAll() as $toRow) {
             $pids[$toRow['pid']]++;
         }
 

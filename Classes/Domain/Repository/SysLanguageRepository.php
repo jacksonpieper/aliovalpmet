@@ -14,7 +14,11 @@
 namespace Schnitzler\Templavoila\Domain\Repository;
 
 use Schnitzler\Templavoila\Traits\BackendUser;
-use Schnitzler\Templavoila\Traits\DatabaseConnection;
+use TYPO3\CMS\Core\Database\ConnectionPool;
+use TYPO3\CMS\Core\Database\Query\QueryBuilder;
+use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
+use TYPO3\CMS\Core\Database\Query\Restriction\HiddenRestriction;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Class Schnitzler\Templavoila\Domain\Repository\SysLanguageRepository
@@ -22,20 +26,17 @@ use Schnitzler\Templavoila\Traits\DatabaseConnection;
 class SysLanguageRepository
 {
     use BackendUser;
-    use DatabaseConnection;
+
+    const TABLE = 'sys_language';
 
     /**
-     * @param array $where
-     *
-     * @return array
+     * @param QueryBuilder $queryBuilder
      */
-    protected function addExcludeHiddenWhereClause(array $where = [])
+    protected function addExcludeHiddenWhereClause(QueryBuilder $queryBuilder)
     {
         if (!static::getBackendUser()->isAdmin()) {
-            $where[] = 'sys_language.hidden = 0';
+            $queryBuilder->getRestrictions()->add(GeneralUtility::makeInstance(HiddenRestriction::class));
         }
-
-        return $where;
     }
 
     /**
@@ -47,22 +48,20 @@ class SysLanguageRepository
      */
     public function findAll()
     {
-        $whereClause = '1=1';
-        $where = $this->addExcludeHiddenWhereClause();
+        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable(self::TABLE);
+        $queryBuilder
+            ->getRestrictions()
+            ->removeAll()
+            ->add(GeneralUtility::makeInstance(DeletedRestriction::class));
 
-        if (count($where) > 0) {
-            $whereClause .= ' and ' . implode(' and ', $where);
-        }
+        $query = $queryBuilder
+            ->select('*')
+            ->from(self::TABLE)
+            ->orderBy('uid', 'ASC');
 
-        return (array) static::getDatabaseConnection()->exec_SELECTgetRows(
-            '*',
-            'sys_language',
-            $whereClause,
-            '',
-            'sys_language.uid',
-            '',
-            'uid'
-        );
+        $this->addExcludeHiddenWhereClause($query);
+
+        return $query->execute()->fetchAll();
     }
 
     /**
@@ -81,22 +80,25 @@ class SysLanguageRepository
             );
         }
 
-        $where = [
-            'pages_language_overlay.sys_language_uid = sys_language.uid',
-            'pages_language_overlay.pid = ' . $pid,
-            'pages_language_overlay.deleted = 0'
-        ];
+        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable(self::TABLE);
+        $queryBuilder
+            ->getRestrictions()
+            ->removeAll()
+            ->add(GeneralUtility::makeInstance(DeletedRestriction::class));
 
-        $where = $this->addExcludeHiddenWhereClause($where);
-        $whereClause = '1=1 and ' . implode(' and ', $where);
+        $query = $queryBuilder
+            ->select('sl.*')
+            ->from(self::TABLE, 'sl')
+            ->join('sl', 'pages_language_overlay', 'plo', '`sl`.`uid` = `plo`.`sys_language_uid`')
+            ->where(
+                $queryBuilder->expr()->eq('plo.pid', (int)$pid)
+            )
+            ->groupBy('sl.uid')
+            ->orderBy('sl.title');
 
-        return (array) static::getDatabaseConnection()->exec_SELECTgetRows(
-            'DISTINCT sys_language.*',
-            'pages_language_overlay,sys_language',
-            $whereClause,
-            '',
-            'sys_language.title'
-        );
+        $this->addExcludeHiddenWhereClause($query);
+
+        return $query->execute()->fetchAll();
     }
 
     /**
@@ -105,21 +107,28 @@ class SysLanguageRepository
      */
     public function findAllForPossiblePageTranslations($pid)
     {
-        $where = [
-            'pages_language_overlay.uid is null'
-        ];
-        $where = $this->addExcludeHiddenWhereClause($where);
-        $whereClause = '1=1 and ' . implode(' and ', $where);
+        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable(self::TABLE);
+        $queryBuilder
+            ->getRestrictions()
+            ->removeAll();
 
-        return (array)static::getDatabaseConnection()->exec_SELECTgetRows(
-            'sys_language.*',
-            'sys_language left join pages_language_overlay on sys_language.uid = pages_language_overlay.sys_language_uid'
-            . ' and pages_language_overlay.pid = ' . $pid,
-            $whereClause,
-            '',
-            '',
-            '',
-            'uid'
-        );
+        $query = $queryBuilder
+            ->select(self::TABLE . '.*')
+            ->from(self::TABLE)
+            ->leftJoin(
+                self::TABLE,
+                'pages_language_overlay',
+                'pages_language_overlay',
+                '`' . self::TABLE . '`.`uid` = `pages_language_overlay`.`sys_language_uid`'
+                . ' AND `pages_language_overlay`.`pid` = ' . (int) $pid
+                . ' AND `pages_language_overlay`.`deleted` = 0'
+            )
+            ->where(
+                $queryBuilder->expr()->isNull('pages_language_overlay.uid')
+            );
+
+        $this->addExcludeHiddenWhereClause($query);
+
+        return $query->execute()->fetchAll();
     }
 }

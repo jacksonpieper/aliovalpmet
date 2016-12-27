@@ -16,7 +16,9 @@ namespace Schnitzler\Templavoila\Tests\Functional\Service;
 use Schnitzler\Templavoila\Service\ApiService;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Core\Bootstrap;
+use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Tests\FunctionalTestCase;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  *
@@ -76,7 +78,7 @@ class ApiServiceTest extends FunctionalTestCase
         $fixtureRootPath = ORIGINAL_ROOT . 'typo3conf/ext/templavoila/Tests/Functional/Service/ApiServiceTestFixtures/';
 
         foreach ($fixtureTables as $table) {
-            $this->getDatabaseConnection()->exec_TRUNCATEquery($table);
+            GeneralUtility::makeInstance(ConnectionPool::class)->getConnectionForTable($table)->truncate($table);
             $this->importDataSet($fixtureRootPath . $table . '.xml');
         }
 
@@ -546,11 +548,14 @@ class ApiServiceTest extends FunctionalTestCase
         //Mark the second content element as deleted directly in the database so TemplaVoila has no
         // chance to clean up the flexform XML and therefore must handle the inconsistency:
 
-        $this->getDatabaseConnection()->exec_UPDATEquery(
-            'tt_content',
-            'uid=' . (int)$elementUids[2],
-            ['deleted' => 1]
-        );
+        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('tt_content');
+        $queryBuilder->getRestrictions()->removeAll();
+
+        $queryBuilder
+            ->update('tt_content')
+            ->where($queryBuilder->expr()->eq('uid', (int)$elementUids[2]))
+            ->set('deleted', 1)
+            ->execute();
 
         // Now insert an element after the second:
         $row = $this->fixture_getContentElementRow_TEXT();
@@ -1794,13 +1799,17 @@ class ApiServiceTest extends FunctionalTestCase
         self::assertTrue($everythingIsFine, 'The reference list is not as expected after moving the third element up two times in the left column!');
 
         // ... and then move the now second element one up again, measured by the sorting field! (also exposes the bug 2154):
-        $elementsBySortingFieldArr = $this->getDatabaseConnection()->exec_SELECTgetRows(
-            'uid',
-            'tt_content',
-            'pid=' . (int)$pageUid,
-            '',
-            'sorting'
-        );
+        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('tt_content');
+        $queryBuilder->getRestrictions()->removeAll();
+
+        $query = $queryBuilder
+            ->select('uid')
+            ->from('tt_content')
+            ->where($queryBuilder->expr()->eq('pid', (int)$pageUid))
+            ->orderBy('sorting', 'ASC');
+
+        $elementsBySortingFieldArr = $query->execute()->fetchAll();
+
         $positionOfElement1 = null;
         foreach ($elementsBySortingFieldArr as $index => $row) {
             if ($elementUids[1] == $row['uid']) {

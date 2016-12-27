@@ -13,12 +13,12 @@
 
 namespace Schnitzler\Templavoila\Utility;
 
+use Schnitzler\Templavoila\Domain\Repository\PageRepository;
 use Schnitzler\Templavoila\Traits\BackendUser;
-use Schnitzler\Templavoila\Traits\DatabaseConnection;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Type\Bitmask\Permission;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Frontend\Page\PageRepository;
+use TYPO3\CMS\Frontend\Page\PageRepository as CorePageRepository;
 
 /**
  * Class Schnitzler\Templavoila\Utility\PermissionUtility
@@ -26,7 +26,6 @@ use TYPO3\CMS\Frontend\Page\PageRepository;
 final class PermissionUtility
 {
     use BackendUser;
-    use DatabaseConnection;
 
     /**
      * @var array
@@ -104,20 +103,18 @@ final class PermissionUtility
     {
         $storageFolders = [];
 
+        /** @var CorePageRepository $pageRepository */
+        $corePageRepository = GeneralUtility::makeInstance(CorePageRepository::class);
+
         /** @var PageRepository $pageRepository */
         $pageRepository = GeneralUtility::makeInstance(PageRepository::class);
-        $pages = static::getDatabaseConnection()->exec_SELECTgetRows(
-            '*',
-            'pages',
-            'doktype = ' . PageRepository::DOKTYPE_SYSFOLDER . BackendUtility::deleteClause('pages')
-        );
 
-        foreach ($pages as $page) {
+        foreach ($pageRepository->findByDoktype(CorePageRepository::DOKTYPE_SYSFOLDER) as $page) {
             if (!self::hasBasicEditRights('pages', $page)) {
                 continue;
             }
             $pid = (int)$page['uid'];
-            $rootline = $pageRepository->getRootLine($pid);
+            $rootline = $corePageRepository->getRootLine($pid);
 
             $label = implode(' / ', array_map(function ($page) {
                 return $page['title'];

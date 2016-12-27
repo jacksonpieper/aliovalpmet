@@ -15,7 +15,9 @@ namespace Schnitzler\Templavoila\Tests\Functional\Service;
 
 use Schnitzler\Templavoila\Helper\LanguageHelper;
 use TYPO3\CMS\Core\Core\Bootstrap;
+use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Tests\FunctionalTestCase;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Class Schnitzler\Templavoila\Tests\Functional\Service\LanguageHelperTest
@@ -47,7 +49,7 @@ class LanguageHelperTest extends FunctionalTestCase
         $fixtureRootPath = ORIGINAL_ROOT . 'typo3conf/ext/templavoila/Tests/Functional/Helper/LanguageHelperTestFixtures/';
 
         foreach ($fixtureTables as $table) {
-            $this->getDatabaseConnection()->exec_TRUNCATEquery($table);
+            GeneralUtility::makeInstance(ConnectionPool::class)->getConnectionForTable($table)->truncate($table);
             $this->importDataSet($fixtureRootPath . $table . '.xml');
         }
 

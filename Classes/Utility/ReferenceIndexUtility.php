@@ -13,15 +13,14 @@
 
 namespace Schnitzler\Templavoila\Utility;
 
-use Schnitzler\Templavoila\Traits\DatabaseConnection;
+use Schnitzler\Templavoila\Domain\Repository\ReferenceIndexRepository;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Class Schnitzler\Templavoila\Utility\ReferenceIndexUtility
  */
 class ReferenceIndexUtility
 {
-    use DatabaseConnection;
-
     /**
      * Get a list of referencing elements other than the given pid.
      *
@@ -40,13 +39,10 @@ class ReferenceIndexUtility
         if (!is_array($references)) {
             $references = [];
         }
-        $refrows = static::getDatabaseConnection()->exec_SELECTgetRows(
-            '*',
-            'sys_refindex',
-            'ref_table=' . static::getDatabaseConnection()->fullQuoteStr($element['table'], 'sys_refindex') .
-            ' AND ref_uid=' . (int)$element['uid'] .
-            ' AND deleted=0'
-        );
+
+        /** @var ReferenceIndexRepository $referenceIndexRepository */
+        $referenceIndexRepository = GeneralUtility::makeInstance(ReferenceIndexRepository::class);
+        $refrows = $referenceIndexRepository->findByReferenceTableAndUid($element['table'], (int)$element['uid']);
 
         if (is_array($refrows)) {
             foreach ($refrows as $ref) {

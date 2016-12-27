@@ -16,7 +16,6 @@ namespace Schnitzler\Templavoila\Controller\Backend\PageModule\Renderer\Sidebar;
 use Schnitzler\Templavoila\Controller\Backend\PageModule\MainController;
 use Schnitzler\Templavoila\Controller\Backend\PageModule\Renderer\Renderable;
 use Schnitzler\Templavoila\Traits\BackendUser;
-use Schnitzler\Templavoila\Traits\DatabaseConnection;
 use Schnitzler\Templavoila\Traits\LanguageService;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Imaging\Icon;
@@ -28,7 +27,6 @@ use TYPO3\CMS\Recordlist\RecordList\DatabaseRecordList;
  */
 class RecordsTab implements Renderable
 {
-    use DatabaseConnection;
     use LanguageService;
     use BackendUser;
 

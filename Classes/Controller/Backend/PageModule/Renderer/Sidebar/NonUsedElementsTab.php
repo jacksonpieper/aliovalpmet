@@ -15,9 +15,10 @@ namespace Schnitzler\Templavoila\Controller\Backend\PageModule\Renderer\Sidebar;
 
 use Schnitzler\Templavoila\Controller\Backend\PageModule\MainController;
 use Schnitzler\Templavoila\Controller\Backend\PageModule\Renderer\Renderable;
+use Schnitzler\Templavoila\Domain\Repository\ContentRepository;
+use Schnitzler\Templavoila\Domain\Repository\ReferenceIndexRepository;
 use Schnitzler\Templavoila\Helper\LanguageHelper;
 use Schnitzler\Templavoila\Traits\BackendUser;
-use Schnitzler\Templavoila\Traits\DatabaseConnection;
 use Schnitzler\Templavoila\Traits\LanguageService;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Imaging\Icon;
@@ -28,7 +29,6 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  */
 class NonUsedElementsTab implements Renderable
 {
-    use DatabaseConnection;
     use LanguageService;
     use BackendUser;
 
@@ -64,17 +64,9 @@ class NonUsedElementsTab implements Renderable
         $usedUids[] = 0;
         $pid = $this->controller->getId(); // If workspaces should evaluated non-used elements it must consider the id: For "element" and "branch" versions it should accept the incoming id, for "page" type versions it must be remapped (because content elements are then related to the id of the offline version)
 
-        $rows = (array)static::getDatabaseConnection()->exec_SELECTgetRows(
-            BackendUtility::getCommonSelectFields('tt_content', '', ['uid', 'header', 'bodytext', 'sys_language_uid']),
-            'tt_content',
-            'pid=' . (int)$pid . ' ' .
-            'AND uid NOT IN (' . implode(',', $usedUids) . ') ' .
-            'AND ( t3ver_state NOT IN (1,3) OR (t3ver_wsid > 0 AND t3ver_wsid = ' . (int)static::getBackendUser()->workspace . ') )' .
-            BackendUtility::deleteClause('tt_content') .
-            BackendUtility::versioningPlaceholderClause('tt_content'),
-            '',
-            'uid'
-        );
+        /** @var ContentRepository $contentRepository */
+        $contentRepository = GeneralUtility::makeInstance(ContentRepository::class);
+        $rows = $contentRepository->findNotInUidListOnPage($usedUids, $pid);
 
         $this->deleteUids = []; // Used to collect all those tt_content uids with no references which can be deleted
         foreach ($rows as $row) {
@@ -170,13 +162,9 @@ class NonUsedElementsTab implements Renderable
      */
     public function renderReferenceCount($uid)
     {
-        $rows = static::getDatabaseConnection()->exec_SELECTgetRows(
-            '*',
-            'sys_refindex',
-            'ref_table=' . static::getDatabaseConnection()->fullQuoteStr('tt_content', 'sys_refindex') .
-            ' AND ref_uid=' . (int)$uid .
-            ' AND deleted=0'
-        );
+        /** @var ReferenceIndexRepository $referenceIndexRepository */
+        $referenceIndexRepository = GeneralUtility::makeInstance(ReferenceIndexRepository::class);
+        $rows = $referenceIndexRepository->findByReferenceTableAndUid('tt_content', $uid);
 
         // Compile information for title tag:
         $infoData = [];

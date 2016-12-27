@@ -18,10 +18,10 @@ use Schnitzler\Templavoila\Domain\Model\File;
 use Schnitzler\Templavoila\Domain\Model\Template;
 use Schnitzler\Templavoila\Templavoila;
 use Schnitzler\Templavoila\Traits\BackendUser;
-use Schnitzler\Templavoila\Traits\DatabaseConnection;
 use Schnitzler\Templavoila\Traits\LanguageService;
 use TYPO3\CMS\Backend\ClickMenu\ClickMenu;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
@@ -36,7 +36,6 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 class MainClickMenu
 {
     use BackendUser;
-    use DatabaseConnection;
     use LanguageService;
 
     /**
@@ -195,11 +194,19 @@ class MainClickMenu
                 $url = $extensionRelativePath . 'mod1/index.php?id=';
 
                 // Generate a list of pages where this element is also being used:
-                $referenceRecords = (array)static::getDatabaseConnection()->exec_SELECTgetRows(
-                    '*',
-                    'tx_templavoila_elementreferences',
-                    'uid=' . (int)$clickMenu->rec['uid']
-                );
+                $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('tx_templavoila_elementreferences');
+                $queryBuilder
+                    ->getRestrictions()
+                    ->removeAll();
+
+                $query = $queryBuilder
+                    ->select('*')
+                    ->from(Template::TABLE)
+                    ->where(
+                        $queryBuilder->expr()->eq('uid', $clickMenu->rec['uid'])
+                    );
+
+                $referenceRecords = $query->execute()->fetchAll();
                 foreach ($referenceRecords as $referenceRecord) {
                     $pageRecord = BackendUtility::getRecord('pages', $referenceRecord['pid']);
                     // @todo: Display language flag icon and jump to correct language

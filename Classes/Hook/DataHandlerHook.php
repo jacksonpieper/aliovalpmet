@@ -16,20 +16,21 @@ namespace Schnitzler\Templavoila\Hook;
 use Schnitzler\Templavoila\Service\ApiService;
 use Schnitzler\Templavoila\Service\UserFunc\Access as AccessUserFunction;
 use Schnitzler\Templavoila\Templavoila;
-use Schnitzler\Templavoila\Traits\DatabaseConnection;
 use Schnitzler\Templavoila\Traits\LanguageService;
 use Schnitzler\Templavoila\Utility\ReferenceIndexUtility;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\DataHandling\DataHandler as CoreDataHandler;
+use TYPO3\CMS\Core\Database\ConnectionPool;
+use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Utility\MathUtility;
 
 /**
  * Class Schnitzler\Templavoila\Service\DataHandling\DataHandlerHook
  */
 class DataHandlerHook
 {
-    use DatabaseConnection;
     use LanguageService;
 
     /**
@@ -244,9 +245,27 @@ page.10.disableExplosivePreview = 1
                             if ($sorting < 0) {
                                 $parentRecord = BackendUtility::getRecordWSOL($destinationFlexformPointer['table'], $destinationFlexformPointer['uid'], 'uid,pid,tx_templavoila_flex');
                                 $currentReferencesArr = $templaVoilaAPI->flexform_getElementReferencesFromXML($parentRecord['tx_templavoila_flex'], $destinationFlexformPointer);
+
+                                $currentReferencesArr = array_filter($currentReferencesArr, function ($uid) {
+                                    return MathUtility::canBeInterpretedAsInteger($uid);
+                                });
+
                                 if (count($currentReferencesArr)) {
-                                    $rows = static::getDatabaseConnection()->exec_SELECTgetRows('uid,' . $sorting_field, $table, 'uid IN (' . implode(',', $currentReferencesArr) . ')' . BackendUtility::deleteClause($table));
-                                    $sort = [$dataHandler->substNEWwithIDs[$id] => -$sorting];
+                                    $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable($table);
+                                    $queryBuilder->getRestrictions()
+                                        ->removeAll()
+                                        ->add(GeneralUtility::makeInstance(DeletedRestriction::class));
+
+                                    $query = $queryBuilder
+                                        ->select('uid')
+                                        ->addSelect($sorting_field)
+                                        ->where(
+                                            $queryBuilder->expr()->in('uid', implode(',', $currentReferencesArr))
+                                        );
+
+                                    $rows = $query->execute()->fetchAll();
+
+                                    $sort = [$reference->substNEWwithIDs[$id] => -$sorting];
                                     foreach ($rows as $row) {
                                         $sort[$row['uid']] = $row[$sorting_field];
                                     }
@@ -515,15 +534,17 @@ page.10.disableExplosivePreview = 1
         if ($sortByField) {
             foreach ($elementsOnThisPage as $elementArr) {
                 $colPos = $templaVoilaAPI->ds_getColumnPositionByFieldName($pid, $elementArr['field']);
-                $updateFields = [
-                    $sortByField => $sortNumber,
-                    'colPos' => $colPos
-                ];
-                static::getDatabaseConnection()->exec_UPDATEquery(
-                    'tt_content',
-                    'uid=' . (int)$elementArr['uid'],
-                    $updateFields
-                );
+
+                $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('tt_content');
+                $queryBuilder->getRestrictions()->removeAll();
+
+                $queryBuilder
+                    ->update('tt_content')
+                    ->where($queryBuilder->expr()->eq('uid', (int)$elementArr['uid']))
+                    ->set($sortByField, $sortNumber)
+                    ->set('colPos', $colPos)
+                    ->execute();
+
                 $sortNumber += 100;
             }
         }

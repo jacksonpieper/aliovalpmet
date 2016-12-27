@@ -13,12 +13,16 @@
 
 namespace Schnitzler\Templavoila\Comand;
 
+use Schnitzler\Templavoila\Domain\Repository\ReferenceIndexRepository;
 use Schnitzler\Templavoila\Service\ApiService;
-use Schnitzler\Templavoila\Traits\DatabaseConnection;
+use Schnitzler\Templavoila\Traits\BackendUser;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Core\Database\ConnectionPool;
+use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
 use TYPO3\CMS\Core\DataHandling\DataHandler;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
+use TYPO3\CMS\Core\Versioning\VersionState;
 use TYPO3\CMS\Lowlevel\CleanerCommand;
 
 /**
@@ -30,7 +34,7 @@ use TYPO3\CMS\Lowlevel\CleanerCommand;
  */
 class UnusedContentElementComand extends CleanerCommand
 {
-    use DatabaseConnection;
+    use BackendUser;
 
     /**
      * @var array
@@ -126,40 +130,57 @@ Automatic Repair:
                     $usedUids[] = 0;
 
                     // Look up all content elements that are NOT used on this page...
-                    $res = static::getDatabaseConnection()->exec_SELECTquery(
-                        'uid, header',
-                        'tt_content',
-                        'pid=' . (int)$uid . ' ' .
-                        'AND uid NOT IN (' . implode(',', $usedUids) . ') ' .
-                        'AND t3ver_state!=1 ' .
-                        'AND t3ver_state!=3 ' .
-                        BackendUtility::deleteClause('tt_content') .
-                        BackendUtility::versioningPlaceholderClause('tt_content'),
-                        '',
-                        'uid'
-                    );
+                    $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('tt_content');
+                    $queryBuilder
+                        ->getRestrictions()
+                        ->removeAll()
+                        ->add(GeneralUtility::makeInstance(DeletedRestriction::class));
 
-                    // Traverse, for each find references if any and register them.
-                    while (false !== ($row = static::getDatabaseConnection()->sql_fetch_assoc($res))) {
+                    $query = $queryBuilder
+                        ->select('uid', 'header')
+                        ->from('tt_content')
+                        ->where(
+                            $queryBuilder->expr()->eq('pid', (int)$uid),
+                            $queryBuilder->expr()->notIn('uid', implode(',', $usedUids)),
+                            $queryBuilder->expr()->notIn('t3ver_state', '1,3')
+                        )
+                        ->orderBy('uid');
 
-                        // Look up references to elements:
-                        $refrows = static::getDatabaseConnection()->exec_SELECTgetRows(
-                            'hash',
-                            'sys_refindex',
-                            'ref_table=' . static::getDatabaseConnection()->fullQuoteStr('tt_content', 'sys_refindex') .
-                            ' AND ref_uid=' . (int)$row['uid'] .
-                            ' AND deleted=0'
+                    if (BackendUtility::isTableWorkspaceEnabled('tt_content')) {
+                        $query->andWhere(
+                            $queryBuilder->expr()->orX(
+                                $queryBuilder->expr()->lte('t3ver_state', new VersionState(VersionState::DEFAULT_STATE)),
+                                $queryBuilder->expr()->eq('t3ver_wsid', (int)static::getBackendUser()->workspace)
+                            )
                         );
+                    }
+
+                    /** @var ReferenceIndexRepository $referenceIndexRepository */
+                    $referenceIndexRepository = GeneralUtility::makeInstance(ReferenceIndexRepository::class);
+
+                    foreach ($query->execute()->fetchAll() as $row) {
+                        // Look up references to elements:
+
+                        $refrows = $referenceIndexRepository->findByReferenceTableAndUid('tt_content', (int)$row['uid']);
 
                         // Look up TRANSLATION references FROM this element to another content element:
                         $isATranslationChild = false;
-                        $refrows_From = static::getDatabaseConnection()->exec_SELECTgetRows(
-                            'ref_uid',
-                            'sys_refindex',
-                            'tablename=' . static::getDatabaseConnection()->fullQuoteStr('tt_content', 'sys_refindex') .
-                            ' AND recuid=' . (int)$row['uid'] .
-                            ' AND field=' . static::getDatabaseConnection()->fullQuoteStr('l18n_parent', 'sys_refindex')
-                        );
+
+                        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('sys_refindex');
+                        $queryBuilder
+                            ->getRestrictions()
+                            ->removeAll();
+
+                        $query = $queryBuilder
+                            ->select('ref_uid')
+                            ->from('sys_refindex')
+                            ->where(
+                                $queryBuilder->expr()->eq('tablename', $queryBuilder->quote('tt_content')),
+                                $queryBuilder->expr()->eq('recuid', (int)$row['uid']),
+                                $queryBuilder->expr()->eq('field', $queryBuilder->quote('l18n_parent'))
+                            );
+
+                        $refrows_From = $query->execute()->fetchAll();
                         // Check if that other record is deleted or not:
                         if ($refrows_From[0] && $refrows_From[0]['ref_uid']) {
                             $isATranslationChild = BackendUtility::getRecord('tt_content', $refrows_From[0]['ref_uid'], 'uid') ? true : false;

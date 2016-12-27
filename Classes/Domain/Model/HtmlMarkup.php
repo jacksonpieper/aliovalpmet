@@ -13,7 +13,6 @@
 
 namespace Schnitzler\Templavoila\Domain\Model;
 
-use Schnitzler\Templavoila\Traits\DatabaseConnection;
 use TYPO3\CMS\Core\Html\HtmlParser;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
@@ -26,8 +25,6 @@ use TYPO3\CMS\Core\Utility\MathUtility;
  */
 class HtmlMarkup
 {
-    use DatabaseConnection;
-
     /**
      * @var array
      */

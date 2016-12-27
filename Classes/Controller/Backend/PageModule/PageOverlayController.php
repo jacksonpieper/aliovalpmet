@@ -15,8 +15,8 @@ namespace Schnitzler\Templavoila\Controller\Backend\PageModule;
 
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
+use Schnitzler\Templavoila\Domain\Repository\PageOverlayRepository;
 use Schnitzler\Templavoila\Templavoila;
-use Schnitzler\Templavoila\Traits\DatabaseConnection;
 use TYPO3\CMS\Backend\Module\AbstractModule;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Http\Response;
@@ -28,8 +28,6 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  */
 class PageOverlayController extends AbstractModule
 {
-    use DatabaseConnection;
-
     /**
      * @var array
      */
@@ -121,17 +119,10 @@ class PageOverlayController extends AbstractModule
         $params = [];
         try {
             if ($sysLanguageUid !== 0) {
-                $row = static::getDatabaseConnection()->exec_SELECTgetSingleRow(
-                    '*',
-                    'pages_language_overlay',
-                    'pid=' . $pid . ' AND sys_language_uid=' . $sysLanguageUid .
-                    BackendUtility::deleteClause('pages_language_overlay') .
-                    BackendUtility::versioningPlaceholderClause('pages_language_overlay')
-                );
 
-                if (!is_array($row)) {
-                    throw new \RuntimeException;
-                }
+                /** @var PageOverlayRepository $pageOverlayRepository */
+                $pageOverlayRepository = GeneralUtility::makeInstance(PageOverlayRepository::class);
+                $row = $pageOverlayRepository->findOneByParentIdentifierAndLanguage($pid, $sysLanguageUid);
 
                 BackendUtility::workspaceOL('pages_language_overlay', $row);
 
@@ -139,6 +130,7 @@ class PageOverlayController extends AbstractModule
                     throw new \RuntimeException;
                 }
 
+                /** @var array $row */
                 $params['edit']['pages_language_overlay'][$row['uid']] = 'edit';
             } else {
                 $params['edit']['pages'][$pid] = 'edit';
