@@ -34,4 +34,28 @@
         <doktype>255</doktype>
         <!--<storage_pid>0</storage_pid>-->
     </pages>
+    <pages>
+        <uid>4</uid>
+        <pid>0</pid>
+        <tstamp>1396692010</tstamp>
+        <crdate>1396692010</crdate>
+        <cruser_id>1</cruser_id>
+        <title>*** t3unit templavoila testcase page ***</title>
+        <doktype>1</doktype>
+        <!--<storage_pid>0</storage_pid>-->
+        <tx_templavoila_ds>4</tx_templavoila_ds>
+        <tx_templavoila_to>4</tx_templavoila_to>
+    </pages>
+    <pages>
+        <uid>5</uid>
+        <pid>0</pid>
+        <tstamp>1396692010</tstamp>
+        <crdate>1396692010</crdate>
+        <cruser_id>1</cruser_id>
+        <title>*** t3unit templavoila testcase page ***</title>
+        <doktype>1</doktype>
+        <!--<storage_pid>0</storage_pid>-->
+        <tx_templavoila_ds>5</tx_templavoila_ds>
+        <tx_templavoila_to>5</tx_templavoila_to>
+    </pages>
 </dataset>

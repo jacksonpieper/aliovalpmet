@@ -21,6 +21,7 @@ use Schnitzler\Templavoila\Utility\ReferenceIndexUtility;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\DataHandling\DataHandler as CoreDataHandler;
+use TYPO3\CMS\Core\Configuration\FlexForm\FlexFormTools;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -637,11 +638,26 @@ page.10.disableExplosivePreview = 1
                     break;
                 }
                 // get the field-information and check if only "ce" fields are updated
-                $conf = $GLOBALS['TCA'][$table]['columns'][$field]['config'];
                 $currentRecord = BackendUtility::getRecord($table, $id);
-                $dataStructArray = BackendUtility::getFlexFormDS($conf, $currentRecord, $table, $field, true);
+
+                /** @var FlexFormTools $flexformTools */
+                $flexformTools = GeneralUtility::makeInstance(FlexFormTools::class);
+
+                try {
+                    $dataStructureIdentifier = $flexformTools->getDataStructureIdentifier(
+                        $GLOBALS['TCA'][$table]['columns'][$field],
+                        $table,
+                        $field,
+                        $currentRecord
+                    );
+
+                    $dataStructArray = $flexformTools->parseDataStructureByIdentifier($dataStructureIdentifier);
+                } catch (\Exception $e) {
+                    $dataStructArray = [];
+                }
+
                 foreach ($data[$field]['data'] as $sheetData) {
-                    if (!is_array($sheetData) || !is_array($dataStructArray['ROOT']['el'])) {
+                    if (!is_array($sheetData) || !is_array($dataStructArray['sheets']['sDEF']['ROOT']['el'])) {
                         $res = false;
                         break;
                     }
@@ -652,12 +668,12 @@ page.10.disableExplosivePreview = 1
                         }
                         /** @var array $lData */
                         foreach ($lData as $fieldName => $fieldData) {
-                            if (!isset($dataStructArray['ROOT']['el'][$fieldName])) {
+                            if (!isset($dataStructArray['sheets']['sDEF']['ROOT']['el'][$fieldName])) {
                                 $res = false;
                                 break;
                             }
 
-                            $fieldConf = $dataStructArray['ROOT']['el'][$fieldName];
+                            $fieldConf = $dataStructArray['sheets']['sDEF']['ROOT']['el'][$fieldName];
                             if ($fieldConf['tx_templavoila']['eType'] !== 'ce') {
                                 $res = false;
                                 break;

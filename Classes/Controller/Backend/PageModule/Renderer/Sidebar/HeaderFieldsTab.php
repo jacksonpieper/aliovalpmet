@@ -17,6 +17,7 @@ use Schnitzler\Templavoila\Controller\Backend\PageModule\MainController;
 use Schnitzler\Templavoila\Controller\Backend\PageModule\Renderer\Renderable;
 use Schnitzler\Templavoila\Traits\LanguageService;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Core\Configuration\FlexForm\FlexFormTools;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -55,12 +56,24 @@ class HeaderFieldsTab implements Renderable
             return '';
         }
 
-        $conf = $GLOBALS['TCA']['pages']['columns']['tx_templavoila_flex']['config'];
+        /** @var FlexFormTools $flexformTools */
+        $flexformTools = GeneralUtility::makeInstance(FlexFormTools::class);
 
-        $dataStructureArr = BackendUtility::getFlexFormDS($conf, $this->controller->getRecord(), 'pages');
+        try {
+            $dataStructureIdentifier = $flexformTools->getDataStructureIdentifier(
+                $GLOBALS['TCA']['pages']['columns']['tx_templavoila_flex'],
+                'pages',
+                'tx_templavoila_flex',
+                $this->controller->getRecord()
+            );
 
-        if (is_array($dataStructureArr) && is_array($dataStructureArr['ROOT']['tx_templavoila']['pageModule'])) {
-            $headerTablesAndFieldNames = GeneralUtility::trimExplode(chr(10), str_replace(chr(13), '', $dataStructureArr['ROOT']['tx_templavoila']['pageModule']['displayHeaderFields']), true);
+            $dataStructureArr = $flexformTools->parseDataStructureByIdentifier($dataStructureIdentifier);
+        } catch (\Exception $e) {
+            $dataStructureArr = [];
+        }
+
+        if (is_array($dataStructureArr) && is_array($dataStructureArr['sheets']['sDEF']['ROOT']['tx_templavoila']['pageModule'])) {
+            $headerTablesAndFieldNames = GeneralUtility::trimExplode(chr(10), str_replace(chr(13), '', $dataStructureArr['sheets']['sDEF']['ROOT']['tx_templavoila']['pageModule']['displayHeaderFields']), true);
             if (is_array($headerTablesAndFieldNames)) {
                 $fieldNames = [];
                 $headerFieldRows = [];

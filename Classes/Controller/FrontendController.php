@@ -341,14 +341,18 @@ class FrontendController extends AbstractPlugin
         }
 
         try {
-            $dataStructureRepository = GeneralUtility::makeInstance(DataStructureRepository::class);
-            try {
-                /** @var \Schnitzler\Templavoila\Domain\Model\DataStructure $dsObj */
-                $dsObj = $dataStructureRepository->getDatastructureByUidOrFilename($row['tx_templavoila_ds']);
-                $dataStructure = $dsObj->getDataprotArray();
-            } catch (\InvalidArgumentException $e) {
-                $dataStructure = null;
-            }
+            /** @var FlexFormTools$flexformTools */
+            $flexformTools = GeneralUtility::makeInstance(FlexFormTools::class);
+
+            $fieldName = 'tx_templavoila_flex';
+            $dataStructureIdentifier = $flexformTools->getDataStructureIdentifier(
+                $GLOBALS['TCA'][$table]['columns'][$fieldName],
+                $table,
+                $fieldName,
+                $row
+            );
+
+            $dataStructure = $flexformTools->parseDataStructureByIdentifier($dataStructureIdentifier);
 
             if (!is_array($dataStructure)) {
                 throw new ObjectNotFoundException('
@@ -370,10 +374,13 @@ class FrontendController extends AbstractPlugin
             // Initialize:
             $langChildren = $dataStructure['meta']['langChildren'] ? 1 : 0;
             $langDisabled = $dataStructure['meta']['langDisable'] ? 1 : 0;
-            list($dataStructureSheet, $sheet, $singleSheet) = GeneralUtility::resolveSheetDefInDS($dataStructure, $renderSheet);
+
+            $sheet = $renderSheet;
+            $dataStructureSheet = $dataStructure['sheets'][$sheet];
+            $singleSheet = count($dataStructure['sheets']) === 1;
 
             // Data from FlexForm field:
-            $data = GeneralUtility::xml2array($row['tx_templavoila_flex']);
+            $data = GeneralUtility::xml2array($row[$fieldName]);
 
             $lKey = $this->resolveLanguageKey((bool)$langDisabled, (bool)$langChildren);
 
@@ -530,7 +537,7 @@ class FrontendController extends AbstractPlugin
             if ($table === 'pages') {
                 $eIconf['beforeLastTag'] = -1;
             } // For "pages", set icon in top, not after.
-            $content = $this->pi_getEditIcon($content, 'tx_templavoila_flex', 'Edit element', $row, $table, $eIconf);
+            $content = $this->pi_getEditIcon($content, $fieldName, 'Edit element', $row, $table, $eIconf);
 
             // Visual identification aids:
 

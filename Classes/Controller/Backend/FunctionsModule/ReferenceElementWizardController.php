@@ -19,6 +19,7 @@ use Schnitzler\Templavoila\Traits\BackendUser;
 use TYPO3\CMS\Backend\Module\AbstractFunctionModule;
 use TYPO3\CMS\Backend\Tree\View\PageTreeView;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Core\Configuration\FlexForm\FlexFormTools;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
 use TYPO3\CMS\Core\Imaging\Icon;
@@ -213,12 +214,23 @@ class ReferenceElementWizardController extends AbstractFunctionModule
             $vDef = [];
             if ($langField && $elementRecord[$langField]) {
                 $pageRec = BackendUtility::getRecordWSOL('pages', $pageUid);
-                $xml = BackendUtility::getFlexFormDS(
-                    $GLOBALS['TCA']['pages']['columns']['tx_templavoila_flex']['config'],
-                    $pageRec,
-                    'pages',
-                    'tx_templavoila_ds'
-                );
+
+                /** @var FlexFormTools $flexformTools */
+                $flexformTools = GeneralUtility::makeInstance(FlexFormTools::class);
+
+                try {
+                    $dataStructureIdentifier = $flexformTools->getDataStructureIdentifier(
+                        $GLOBALS['TCA']['pages']['columns']['tx_templavoila_flex'],
+                        'pages',
+                        'tx_templavoila_flex',
+                        $pageRec
+                    );
+
+                    $xml = $flexformTools->parseDataStructureByIdentifier($dataStructureIdentifier);
+                } catch (\Exception $e) {
+                    $xml = [];
+                }
+
                 $langChildren = (int)$xml['meta']['langChildren'];
                 $langDisable = (int)$xml['meta']['langDisable'];
                 if ($elementRecord[$langField] == -1) {

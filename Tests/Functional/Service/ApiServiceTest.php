@@ -1868,4 +1868,76 @@ class ApiServiceTest extends FunctionalTestCase
             'tx_templavoila_to' => $templateObjectUid,
         ];
     }
+
+    public function testDsGetExpandedDataStructureWithSingleSheet()
+    {
+        $row = BackendUtility::getRecord('pages', 4);
+
+        $expected = [
+            'sDEF' => [
+                'ROOT' => [
+                    'tx_templavoila' => [
+                        'title' => 'ROOT',
+                    ],
+                    'type' => 'array',
+                    'el' => [
+                        'field_content' => [
+                            'TCEforms' => [
+                                'config' => [],
+                                'label' => 'Content',
+                            ]
+                        ]
+                    ]
+                ]
+            ]
+        ];
+
+        $structure = $this->api->ds_getExpandedDataStructure('pages', $row);
+
+        static::assertSame($expected, $structure);
+    }
+
+    public function testDsGetExpandedDataStructureWithMultipleSheet()
+    {
+        $row = BackendUtility::getRecord('pages', 5);
+
+        $expected = [
+            'sDEF' => [
+                'ROOT' => [
+                    'tx_templavoila' => [
+                        'title' => 'ROOT',
+                    ],
+                    'type' => 'array',
+                    'el' => [
+                        'field_content' => [
+                            'TCEforms' => [
+                                'config' => [],
+                                'label' => 'Content',
+                            ]
+                        ]
+                    ]
+                ]
+            ],
+            'sEN' => [
+                'ROOT' => [
+                    'tx_templavoila' => [
+                        'title' => 'ROOT',
+                    ],
+                    'type' => 'array',
+                    'el' => [
+                        'field_content' => [
+                            'TCEforms' => [
+                                'config' => [],
+                                'label' => 'Content',
+                            ]
+                        ]
+                    ]
+                ]
+            ]
+        ];
+
+        $structure = $this->api->ds_getExpandedDataStructure('pages', $row);
+
+        static::assertSame($expected, $structure);
+    }
 }

@@ -248,4 +248,86 @@
 </T3DataStructure>]]></dataprot>
         <scope>2</scope>
     </tx_templavoila_datastructure>
+    <tx_templavoila_datastructure>
+        <uid>4</uid>
+        <pid>3</pid>
+        <tstamp>1396692010</tstamp>
+        <crdate>1396692010</crdate>
+        <cruser_id>1</cruser_id>
+        <title>*** t3unit templavoila testcase page template ds ***</title>
+        <deleted>0</deleted>
+        <dataprot><![CDATA[<?xml version="1.0" encoding="iso-8859-1" standalone="yes" ?>
+<T3DataStructure>
+    <meta type="array">
+        <langChildren type="integer">1</langChildren>
+        <langDisable type="integer">0</langDisable>
+    </meta>
+    <ROOT type="array">
+        <tx_templavoila type="array">
+            <title>ROOT</title>
+        </tx_templavoila>
+        <type>array</type>
+        <el type="array">
+            <field_content type="array">
+                <TCEforms type="array">
+                    <config type="array"></config>
+                    <label>Content</label>
+                </TCEforms>
+            </field_content>
+        </el>
+    </ROOT>
+</T3DataStructure>]]></dataprot>
+        <scope>1</scope>
+    </tx_templavoila_datastructure>
+    <tx_templavoila_datastructure>
+        <uid>5</uid>
+        <pid>3</pid>
+        <tstamp>1396692010</tstamp>
+        <crdate>1396692010</crdate>
+        <cruser_id>1</cruser_id>
+        <title>*** t3unit templavoila testcase page template ds ***</title>
+        <deleted>0</deleted>
+        <dataprot><![CDATA[<?xml version="1.0" encoding="iso-8859-1" standalone="yes" ?>
+<T3DataStructure>
+    <meta type="array">
+        <langChildren type="integer">1</langChildren>
+        <langDisable type="integer">0</langDisable>
+    </meta>
+        <sheets>
+            <sDEF>
+                <ROOT type="array">
+                    <tx_templavoila type="array">
+                        <title>ROOT</title>
+                    </tx_templavoila>
+                    <type>array</type>
+                    <el type="array">
+                        <field_content type="array">
+                            <TCEforms type="array">
+                                <config type="array"></config>
+                                <label>Content</label>
+                            </TCEforms>
+                        </field_content>
+                    </el>
+                </ROOT>
+            </sDEF>
+            <sEN>
+                <ROOT type="array">
+                    <tx_templavoila type="array">
+                        <title>ROOT</title>
+                    </tx_templavoila>
+                    <type>array</type>
+                    <el type="array">
+                        <field_content type="array">
+                            <TCEforms type="array">
+                                <config type="array"></config>
+                                <label>Content</label>
+                            </TCEforms>
+                        </field_content>
+                    </el>
+                </ROOT>
+            </sEN>
+        </sheets>
+</T3DataStructure>]]></dataprot>
+        <scope>1</scope>
+    </tx_templavoila_datastructure>
 </dataset>
