@@ -140,18 +140,6 @@ if (\TYPO3\CMS\Core\Utility\GeneralUtility::getApplicationContext()->isDevelopme
     ];
 }
 
-$GLOBALS['TYPO3_CONF_VARS']['SYS']['formEngine']['formDataGroup']['tcaDatabaseRecord'][\Schnitzler\Templavoila\Form\FormDataProvider\BeforeTcaFlexPrepare::class] = [
-    'before' => [
-        TYPO3\CMS\Backend\Form\FormDataProvider\TcaFlexPrepare::class,
-    ],
-];
-
-$GLOBALS['TYPO3_CONF_VARS']['SYS']['formEngine']['formDataGroup']['inlineParentRecord'][\Schnitzler\Templavoila\Form\FormDataProvider\BeforeTcaFlexPrepare::class] = [
-    'before' => [
-        TYPO3\CMS\Backend\Form\FormDataProvider\TcaFlexPrepare::class,
-    ],
-];
-
 // Register language aware flex form handling in FormEngine
 // Register render elements
 $GLOBALS['TYPO3_CONF_VARS']['SYS']['formEngine']['nodeRegistry'][1489490491267] = [
