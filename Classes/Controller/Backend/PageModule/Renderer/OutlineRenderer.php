@@ -1,4 +1,5 @@
 <?php
+declare(strict_types = 1);
 
 /*
  * This file is part of the TemplaVoilà project.
@@ -57,7 +58,7 @@ class OutlineRenderer implements Renderable
         $this->contentTree = $contentTree;
     }
 
-    public function render()
+    public function render(): string
     {
         // Load possible website languages:
         $this->translatedLanguagesArr_isoCodes = [];

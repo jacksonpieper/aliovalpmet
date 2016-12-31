@@ -1,4 +1,5 @@
 <?php
+declare(strict_types = 1);
 
 /*
  * This file is part of the TemplaVoilà project.
@@ -47,7 +48,7 @@ class Mountpoint implements Renderable
     /**
      * @return string
      */
-    public function render()
+    public function render(): string
     {
         if (!$this->row['mount_pid_ol']) {
             return '';

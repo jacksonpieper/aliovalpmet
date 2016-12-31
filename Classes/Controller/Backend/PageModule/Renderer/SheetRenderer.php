@@ -1,4 +1,5 @@
 <?php
+declare(strict_types = 1);
 
 /*
  * This file is part of the TemplaVoilà project.
@@ -120,7 +121,7 @@ class SheetRenderer implements Renderable
      *
      * @return string
      */
-    public function render()
+    public function render(): string
     {
         try {
             $sheet = new Sheet(

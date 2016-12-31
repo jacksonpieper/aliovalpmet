@@ -1,4 +1,5 @@
 <?php
+declare(strict_types = 1);
 
 /*
  * This file is part of the TemplaVoilà project.
@@ -38,7 +39,7 @@ class Link implements Renderable
     /**
      * @return string
      */
-    public function render()
+    public function render(): string
     {
         switch ($this->row['urltype']) {
             case 2:

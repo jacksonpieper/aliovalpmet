@@ -1,4 +1,5 @@
 <?php
+declare(strict_types = 1);
 
 /*
  * This file is part of the TemplaVoilà project.
@@ -27,7 +28,7 @@ class GenericRenderer extends AbstractContentElementRenderer
     /**
      * @return string
      */
-    public function render()
+    public function render(): string
     {
         return '<strong>' . static::getLanguageService()->sL(BackendUtility::getLabelFromItemlist('tt_content', 'CType', $this->row['CType'])) . '</strong>';
     }

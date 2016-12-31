@@ -1,4 +1,5 @@
 <?php
+declare(strict_types = 1);
 
 /*
  * This file is part of the TemplaVoilà project.
@@ -49,7 +50,7 @@ class HeaderFieldsTab implements Renderable
      * @throws \InvalidArgumentException
      * @throws \TYPO3\CMS\Core\Type\Exception\InvalidEnumerationValueException
      */
-    public function render()
+    public function render(): string
     {
         $output = '';
         if ($this->controller->getTable() !== 'pages') {

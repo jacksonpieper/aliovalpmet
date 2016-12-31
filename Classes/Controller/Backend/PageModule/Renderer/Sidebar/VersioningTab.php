@@ -1,4 +1,5 @@
 <?php
+declare(strict_types = 1);
 
 /*
  * This file is part of the TemplaVoilà project.
@@ -45,7 +46,7 @@ class VersioningTab implements Renderable
      * @throws \InvalidArgumentException
      * @throws \TYPO3\CMS\Core\Type\Exception\InvalidEnumerationValueException
      */
-    public function render()
+    public function render(): string
     {
         if ($this->controller->getId() > 0) {
             $versionSelector = trim((string)$this->controller->getModuleTemplate()->getVersionSelector($this->controller->getId()));

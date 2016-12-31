@@ -1,4 +1,5 @@
 <?php
+declare(strict_types = 1);
 
 /*
  * This file is part of the TemplaVoilà project.
@@ -54,7 +55,7 @@ class LocalizationTab implements Renderable
      *
      * @throws \TYPO3\CMS\Core\Type\Exception\InvalidEnumerationValueException
      */
-    public function render()
+    public function render(): string
     {
         $iOutput = $this->sidebar_renderItem_renderLanguageSelectorbox() . $this->sidebar_renderItem_renderNewTranslationSelectorbox();
 

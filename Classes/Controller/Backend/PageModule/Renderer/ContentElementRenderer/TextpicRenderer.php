@@ -1,4 +1,5 @@
 <?php
+declare(strict_types = 1);
 
 /*
  * This file is part of the TemplaVoilà project.
@@ -23,7 +24,7 @@ class TextpicRenderer extends TextRenderer
     /**
      * @return string
      */
-    public function render()
+    public function render(): string
     {
         $uploadDir = $GLOBALS['TCA']['tt_content']['columns']['image']['config']['internal_type'] === 'file_reference' ? '' : null;
 
