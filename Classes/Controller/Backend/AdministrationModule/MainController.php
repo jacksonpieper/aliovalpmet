@@ -30,8 +30,6 @@ use TYPO3\CMS\Core\Imaging\IconProvider\BitmapIconProvider;
 use TYPO3\CMS\Core\Imaging\IconRegistry;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Resource\FileInterface;
-use TYPO3\CMS\Core\Resource\FileRepository;
-use TYPO3\CMS\Core\Resource\Index\FileIndexRepository;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
@@ -624,15 +622,30 @@ class MainController extends AbstractModuleController implements Configurable
 //        $linkUrl = '../cm1/index.php?table=tx_templavoila_tmplobj&uid=' . $toObj->getKey() . '&_reload_from=1&id=' . $this->getId() . '&returnUrl=' . rawurlencode(GeneralUtility::getIndpEnv('REQUEST_URI'));
 
         $fileReference = GeneralUtility::getFileAbsFileName($toObj->getFileref());
-        $combinedIdentifier = str_replace('fileadmin/', '1:', $toObj->getFileref());
+        $relativeFilePath = substr($fileReference, strlen(PATH_site));
 
         $file = null;
-        $fileIndexRepository = GeneralUtility::makeInstance(FileIndexRepository::class);
-        $fileRepository = GeneralUtility::makeInstance(FileRepository::class);
-        $fileRecord = $fileIndexRepository->findOneByCombinedIdentifier($combinedIdentifier);
+        foreach (static::getBackendUser()->getFileStorages() as $fileStorage) {
+            if ($fileStorage->getDriverType() !== 'Local') {
+                // todo: test with remote driver
+                continue;
+            }
 
-        if (is_array($fileRecord)) {
-            $file = $fileRepository->findByUid($fileRecord['uid']);
+            $basePath = $fileStorage->getConfiguration()['basePath'];
+            if ($fileStorage->getConfiguration()['pathType'] === 'absolute') {
+                $basePath = substr($basePath, strlen(PATH_site));
+            }
+
+            $basePath = trim($basePath, DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR;
+
+            if (strpos($relativeFilePath, $basePath) !== false) {
+                try {
+                    $file = $fileStorage->getFile(substr($toObj->getFileref(), strlen($basePath)));
+                    break;
+                } catch (\Exception $e) {
+                    continue;
+                }
+            }
         }
 
         $linkUrl = BackendUtility::getModuleUrl(
