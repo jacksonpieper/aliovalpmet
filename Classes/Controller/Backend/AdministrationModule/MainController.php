@@ -29,7 +29,8 @@ use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconProvider\BitmapIconProvider;
 use TYPO3\CMS\Core\Imaging\IconRegistry;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
-use TYPO3\CMS\Core\Resource\FileInterface;
+use TYPO3\CMS\Core\Resource\File;
+use TYPO3\CMS\Core\Resource\FileRepository;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
@@ -621,31 +622,34 @@ class MainController extends AbstractModuleController implements Configurable
         // Mapping status / link:
 //        $linkUrl = '../cm1/index.php?table=tx_templavoila_tmplobj&uid=' . $toObj->getKey() . '&_reload_from=1&id=' . $this->getId() . '&returnUrl=' . rawurlencode(GeneralUtility::getIndpEnv('REQUEST_URI'));
 
-        $fileReference = GeneralUtility::getFileAbsFileName($toObj->getFileref());
-        $relativeFilePath = substr($fileReference, strlen(PATH_site));
+        $relativeFileName = $fileHash = '';
+        $fileExists = false;
+        $fileMtime = 0;
+        $fileRef = $toObj->getFileref();
+        if (strpos($fileRef, 'file:') === 0) {
+            $identifier = (int)end(explode(':', $fileRef));
 
-        $file = null;
-        foreach (static::getBackendUser()->getFileStorages() as $fileStorage) {
-            if ($fileStorage->getDriverType() !== 'Local') {
-                // todo: test with remote driver
-                continue;
+            /** @var FileRepository $fileRepository */
+            $fileRepository = GeneralUtility::makeInstance(FileRepository::class);
+
+            try {
+                /** @var File $file */
+                $file = $fileRepository->findByIdentifier($identifier);
+                $relativeFileName = $file->getPublicUrl();
+                $absoluteFileName = PATH_site . $relativeFileName;
+
+                $fileMtime = filemtime($absoluteFileName);
+                $fileHash = md5_file($absoluteFileName);
+                $fileExists = true;
+            } catch (\RuntimeException $e) {
             }
+        } else {
+            $absoluteFileName = GeneralUtility::getFileAbsFileName($toObj->getFileref());
+            $relativeFileName = substr($absoluteFileName, strlen(PATH_site));
 
-            $basePath = $fileStorage->getConfiguration()['basePath'];
-            if ($fileStorage->getConfiguration()['pathType'] === 'absolute') {
-                $basePath = substr($basePath, strlen(PATH_site));
-            }
-
-            $basePath = trim($basePath, DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR;
-
-            if (strpos($relativeFilePath, $basePath) !== false) {
-                try {
-                    $file = $fileStorage->getFile(substr($toObj->getFileref(), strlen($basePath)));
-                    break;
-                } catch (\Exception $e) {
-                    continue;
-                }
-            }
+            $fileMtime = filemtime($absoluteFileName);
+            $fileHash = md5_file($absoluteFileName);
+            $fileExists = true;
         }
 
         $linkUrl = BackendUtility::getModuleUrl(
@@ -657,24 +661,21 @@ class MainController extends AbstractModuleController implements Configurable
             ]
         );
 
-        if ($file instanceof FileInterface) {
-            $this->tFileList[$fileReference]++;
-            $fileRef = '<a href="' . htmlspecialchars($this->doc->backPath . '../' . substr($fileReference, strlen(PATH_site))) . '" target="_blank">' . htmlspecialchars($toObj->getFileref()) . '</a>';
+        if ($fileExists) {
+            $this->tFileList[$relativeFileName]++;
+            $fileRef = '<a href="' . '/' . $relativeFileName . '" target="_blank">' . $relativeFileName . '</a>';
             $fileMsg = '';
-//            $fileMtime = filemtime($fileReference);
-            $fileMtime = $file->getModificationTime();
         } else {
             $fileRef = htmlspecialchars($toObj->getFileref());
             $fileMsg = '<div class="typo3-red">ERROR: File not found</div>';
-            $fileMtime = 0;
         }
 
         $mappingStatus_index = '';
         if ($fileMtime && $toObj->getFilerefMtime()) {
-            if ($toObj->getFilerefMD5() != '') {
-                $modified = (@md5_file($fileReference) != $toObj->getFilerefMD5());
+            if ($toObj->getFilerefMD5() !== '') {
+                $modified = $fileHash !== $toObj->getFilerefMD5();
             } else {
-                $modified = ($toObj->getFilerefMtime() != $fileMtime);
+                $modified = $fileMtime !== $toObj->getFilerefMtime();
             }
             if ($modified) {
                 $mappingStatus = $mappingStatus_index = $this->getModuleTemplate()->getIconFactory()->getIcon('status-dialog-warning', Icon::SIZE_SMALL);
