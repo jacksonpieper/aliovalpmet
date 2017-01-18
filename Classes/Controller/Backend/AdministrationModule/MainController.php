@@ -562,9 +562,9 @@ class MainController extends AbstractModuleController implements Configurable
             if ($XMLinfo['referenceFields']) {
                 $containerMode = static::getLanguageService()->getLL('yes', true);
                 if ($XMLinfo['languageMode'] === 'Separate') {
-                    $containerMode .= ' ' . $this->doc->icons(3) . static::getLanguageService()->getLL('containerwithseparatelocalization', true);
+                    $containerMode .= ' ' . $this->getModuleTemplate()->icons(3) . static::getLanguageService()->getLL('containerwithseparatelocalization', true);
                 } elseif ($XMLinfo['languageMode'] === 'Inheritance') {
-                    $containerMode .= ' ' . $this->doc->icons(2);
+                    $containerMode .= ' ' . $this->getModuleTemplate()->icons(2);
                     if ($XMLinfo['inputFields']) {
                         $containerMode .= static::getLanguageService()->getLL('mixofcontentandref', true);
                     } else {
@@ -1755,7 +1755,7 @@ class MainController extends AbstractModuleController implements Configurable
             $outputString .= '<hr/><input type="submit" value="' . static::getLanguageService()->getLL('newsitewizard_cancel', true) . '" onclick="' . htmlspecialchars('document.location=\'index.php?SET[wiz_step]=0\'; return false;') . '" />';
 
             // Add output:
-            $this->content .= $this->doc->section('', $outputString, 0, 1);
+            $this->content .= $this->getModuleTemplate()->section('', $outputString, 0, 1);
         }
 
         // Save session data:
