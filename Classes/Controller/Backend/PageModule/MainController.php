@@ -26,7 +26,6 @@ use Schnitzler\Templavoila\Helper\LanguageHelper;
 use Schnitzler\Templavoila\Service\ApiService;
 use Schnitzler\Templavoila\Templavoila;
 use Schnitzler\Templavoila\Utility\PermissionUtility;
-use Schnitzler\Templavoila\Wizards;
 use TYPO3\CMS\Backend\Template\Components\ButtonBar;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\DataHandling\DataHandler;
@@ -431,30 +430,19 @@ class MainController extends AbstractModuleController implements Configurable
      */
     public function accessDenied(ServerRequest $request, Response $response)
     {
-        $content = '';
-
-        $cmd = GeneralUtility::_GP('cmd');
-
-        if ($cmd === 'crPage') { // create a new page
-            $wizardsObj = GeneralUtility::makeInstance(Wizards::class, $this);
-            $content .= $wizardsObj->renderWizard_createNewPage(GeneralUtility::_GP('positionPid'));
+        if (!isset($pageInfoArr['uid'])) {
+            $this->moduleTemplate->addFlashMessage(
+                static::getLanguageService()->getLL('page_not_found'),
+                static::getLanguageService()->getLL('title'),
+                FlashMessage::INFO
+            );
         } else {
-            if (!isset($pageInfoArr['uid'])) {
-                $this->moduleTemplate->addFlashMessage(
-                    static::getLanguageService()->getLL('page_not_found'),
-                    static::getLanguageService()->getLL('title'),
-                    FlashMessage::INFO
-                );
-            } else {
-                $this->moduleTemplate->addFlashMessage(
-                    static::getLanguageService()->getLL('default_introduction'),
-                    static::getLanguageService()->getLL('title'),
-                    FlashMessage::INFO
-                );
-            }
+            $this->moduleTemplate->addFlashMessage(
+                static::getLanguageService()->getLL('default_introduction'),
+                static::getLanguageService()->getLL('title'),
+                FlashMessage::INFO
+            );
         }
-
-        $this->moduleTemplate->setContent($content);
 
         $response->getBody()->write($this->moduleTemplate->renderContent());
         return $response;
