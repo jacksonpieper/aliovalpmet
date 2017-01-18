@@ -590,7 +590,9 @@ class FrontendController extends AbstractPlugin
         // Prepare a fake data record for cObj (important to do now before processing takes place):
         $dataRecord = [];
         foreach ($dataValues as $key => $values) {
-            $dataRecord[$key] = $this->inheritValue($dataValues[$key], $valueKey, $LP[$key]['langOverlayMode']);
+            if (isset($dataValues[$key]) && is_array($dataValues[$key])) {
+                $dataRecord[$key] = $this->inheritValue($dataValues[$key], $valueKey, $LP[$key]['langOverlayMode']);
+            }
         }
 
         // Check if information about parent record should be set. Note: we do not push/pop registers here because it may break LOAD_REGISTER/RESTORE_REGISTER data transfer between FCEs!
@@ -688,7 +690,9 @@ class FrontendController extends AbstractPlugin
 
                 // Language inheritance:
                 if ($valueKey !== 'vDEF') {
-                    $dataValues[$key][$valueKey] = $this->inheritValue($dataValues[$key], $valueKey, $LP[$key]['langOverlayMode']);
+                    if (isset($dataValues[$key]) && is_array($dataValues[$key])) {
+                        $dataValues[$key][$valueKey] = $this->inheritValue($dataValues[$key], $valueKey, $LP[$key]['langOverlayMode']);
+                    }
 
                     // The value "__REMOVE" will trigger removal of the item!
                     if (is_array($dataValues[$key][$valueKey]) && !strcmp($dataValues[$key][$valueKey]['ERROR'], '__REMOVE')) {
