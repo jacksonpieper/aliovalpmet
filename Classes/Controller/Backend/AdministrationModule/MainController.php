@@ -501,7 +501,17 @@ class MainController extends AbstractModuleController implements Configurable
             $dsTitle = $dsObj->getLabel();
         } else {
             $editLink = $lpXML .= '<a href="#" onclick="' . htmlspecialchars(BackendUtility::editOnClick('&edit[tx_templavoila_datastructure][' . $dsObj->getKey() . ']=edit', $this->doc->backPath)) . '">' . $this->getModuleTemplate()->getIconFactory()->getIcon('actions-document-open', Icon::SIZE_SMALL) . '</a>';
-            $dsTitle = '<a href="' . htmlspecialchars('../cm1/index.php?table=tx_templavoila_datastructure&uid=' . $dsObj->getKey() . '&id=' . $this->getId() . '&returnUrl=' . rawurlencode(GeneralUtility::sanitizeLocalUrl(GeneralUtility::getIndpEnv('REQUEST_URI')))) . '">' . htmlspecialchars($dsObj->getLabel()) . '</a>';
+
+            $editUrl = BackendUtility::getModuleUrl('record_edit', [
+                'edit' => [
+                    'tx_templavoila_datastructure' => [
+                        $dsObj->getKey() => 'edit'
+                    ]
+                ],
+                'returnUrl' => GeneralUtility::sanitizeLocalUrl(GeneralUtility::getIndpEnv('REQUEST_URI'))
+            ]);
+
+            $dsTitle = '<a href="' . $editUrl . '">' . htmlspecialchars($dsObj->getLabel()) . '</a>';
         }
 
         // Compile info table:
