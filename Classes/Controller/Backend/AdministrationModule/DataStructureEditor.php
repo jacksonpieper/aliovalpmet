@@ -279,8 +279,8 @@ class DataStructureEditor
                         foreach ($optDat as $k => $v) {
                             $pathInformation = reset($this->htmlMarkup->splitPath($k));
 
-                            $elementIsAnAttribute = $value['type'] === 'attr' && $pathInformation['modifier'] === 'ATTR';
-                            $elementIsNotAnAttribute = $value['type'] !== 'attr' && $pathInformation['modifier'] !== 'ATTR';
+                            $elementIsAnAttribute = $value['tx_templavoila']['type'] === 'attr' && $pathInformation['modifier'] === 'ATTR';
+                            $elementIsNotAnAttribute = $value['tx_templavoila']['type'] !== 'attr' && $pathInformation['modifier'] !== 'ATTR';
 
                             if (!($elementIsAnAttribute || $elementIsNotAnAttribute)) {
                                 continue;
