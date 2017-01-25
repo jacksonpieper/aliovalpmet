@@ -322,6 +322,12 @@ class MainController extends AbstractModuleController implements Configurable
         if (!$doktype !== PageRepository::DOKTYPE_DEFAULT && $doktypeRenderer->canRender($doktype)) {
             $view->assign('content', $doktypeRenderer->render($doktype));
         } else {
+            // Fetch the content structure of page:
+            $contentTreeData = $this->getApiService()->getContentTree($this->rootElementTable, $this->rootElementRecord); // TODO Dima: seems like it does not return <TCEForms> for elements inside sectiions. Thus titles are not visible for these elements!
+
+            // Set internal variable which registers all used content elements:
+            $this->global_tt_content_elementRegister = $contentTreeData['contentElementUsage'];
+
             if ($this->modTSconfig['properties']['sideBarEnable']) {
                 $view->assign('sidebar', $this->render_sidebar());
             }
@@ -369,7 +375,7 @@ class MainController extends AbstractModuleController implements Configurable
                 );
             }
             // Render "edit current page" (important to do before calling ->sideBarObj->render() - otherwise the translation tab is not rendered!
-            $content .= $this->render_editPageScreen();
+            $content .= $this->render_editPageScreen($contentTreeData);
 
             $view->assign('content', $content);
         }
@@ -589,17 +595,12 @@ class MainController extends AbstractModuleController implements Configurable
     /**
      * Displays the default view of a page, showing the nested structure of elements.
      *
+     * @param array $contentTreeData
      * @return string The modules content
      */
-    public function render_editPageScreen()
+    public function render_editPageScreen(array $contentTreeData = [])
     {
         $output = '';
-
-        // Fetch the content structure of page:
-        $contentTreeData = $this->getApiService()->getContentTree($this->rootElementTable, $this->rootElementRecord); // TODO Dima: seems like it does not return <TCEForms> for elements inside sectiions. Thus titles are not visible for these elements!
-
-        // Set internal variable which registers all used content elements:
-        $this->global_tt_content_elementRegister = $contentTreeData['contentElementUsage'];
 
         // Setting localization mode for root element:
         $this->rootElementLangMode = $contentTreeData['tree']['ds_meta']['langDisable'] ? 'disable' : ($contentTreeData['tree']['ds_meta']['langChildren'] ? 'inheritance' : 'separate');
