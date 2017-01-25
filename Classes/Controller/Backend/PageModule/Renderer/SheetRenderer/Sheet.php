@@ -36,6 +36,11 @@ class Sheet
     private $sheetKey;
 
     /**
+     * @var string
+     */
+    private $title = '';
+
+    /**
      * @param Column $column
      * @param array $contentTreeData
      * @throws \RuntimeException
@@ -45,6 +50,10 @@ class Sheet
         $this->column = $column;
         $this->contentTreeData = $contentTreeData;
         $this->sheetKey = $sheetKey;
+
+        if (isset($this->contentTreeData['el']['fullTitle'])) {
+            $this->title = $this->contentTreeData['el']['fullTitle'];
+        }
 
         if (!isset($this->contentTreeData['el']['table'])) {
             throw new \RuntimeException('table is not set', 1478029315398);
@@ -292,5 +301,13 @@ class Sheet
         }
 
         return $key;
+    }
+
+    /**
+     * @return string
+     */
+    public function getTitle()
+    {
+        return $this->title;
     }
 }

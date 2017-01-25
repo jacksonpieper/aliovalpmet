@@ -26,6 +26,8 @@
                         <core:icon identifier="{languageFlagIconIdentifier}" />
                     </span>
                 </f:if>
+
+                {title->f:format.crop( maxCharacters:50 )}
             </div>
         </div>
         <div id="ContentElementBody" class="t3-page-ce-body">

@@ -431,6 +431,7 @@ class SheetRenderer implements Renderable
             'languageFlagIconIdentifier' => LanguageHelper::getLanguageFlagIconIdentifier($this->controller->getId(), $sheet->getSysLanguageUid()),
             'isInTranslatorMode' => PermissionUtility::isInTranslatorMode(),
             'hash' => md5($this->controller->getApiService()->flexform_getStringFromPointer($this->controller->getCurrentElementParentPointer()) . $sheet->getUid()),
+            'title' => $sheet->getTitle(),
             'titleBarLeftButtons' => $this->getTitleBarLeftIcons($sheet),
             'titleBarRightButtons' => $this->getTitleBarRightIcons($sheet, $elementBelongsToCurrentPage, $parentPointer),
             'warnings' => $warnings,
