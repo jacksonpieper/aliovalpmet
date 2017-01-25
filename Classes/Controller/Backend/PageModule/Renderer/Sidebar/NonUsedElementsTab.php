@@ -128,12 +128,22 @@ class NonUsedElementsTab implements Renderable
             // Control for deleting all deleteable records:
             $deleteAll = '';
             if (count($this->deleteUids)) {
-                $params = '';
+                $parameters = [
+                    'redirect' => GeneralUtility::getIndpEnv('REQUEST_URI')
+                ];
+
                 foreach ($this->deleteUids as $deleteUid) {
-                    $params .= '&cmd[tt_content][' . $deleteUid . '][delete]=1';
+                    $parameters['cmd']['tt_content'][$deleteUid]['delete'] = 1;
                 }
-                $deleteAll = '<a title="' . static::getLanguageService()->getLL('rendernonusedelements_deleteall') . '" href="#" onclick="' . htmlspecialchars('jumpToUrl(\'' . BackendUtility::getLinkToDataHandlerAction($params, -1) . '\');') . '">' .
+
+                $url = BackendUtility::getModuleUrl(
+                    'tce_db',
+                    $parameters
+                );
+
+                $deleteAll = '<a title="' . static::getLanguageService()->getLL('rendernonusedelements_deleteall') . '" href="' . $url . '">' .
                     $this->controller->getModuleTemplate()->getIconFactory()->getIcon('actions-edit-delete', Icon::SIZE_SMALL) .
+                    static::getLanguageService()->getLL('rendernonusedelements_deleteall') .
                     '</a>';
             }
 
@@ -186,9 +196,22 @@ class NonUsedElementsTab implements Renderable
             return '<a class="tpm-countRef" href="#" onclick="' . htmlspecialchars('top.launchView(\'tt_content\', \'' . $uid . '\'); return false;') . '" title="' . htmlspecialchars(GeneralUtility::fixed_lgd_cs(implode(' / ', $infoData), 100)) . '">Ref: ' . count($infoData) . '</a>';
         } else {
             $this->deleteUids[] = $uid;
-            $params = '&cmd[tt_content][' . $uid . '][delete]=1';
 
-            return '<a title="' . static::getLanguageService()->getLL('renderreferencecount_delete', true) . '" class="tpm-countRef" href="#" onclick="' . htmlspecialchars('jumpToUrl(\'' . BackendUtility::getLinkToDataHandlerAction($params, -1) . '\');') . '">' .
+            $url = BackendUtility::getModuleUrl(
+                'tce_db',
+                [
+                    'cmd' => [
+                        'tt_content' => [
+                            $uid => [
+                                'delete' => 1
+                            ]
+                        ]
+                    ],
+                    'redirect' => GeneralUtility::getIndpEnv('REQUEST_URI')
+                ]
+            );
+
+            return '<a title="' . static::getLanguageService()->getLL('renderreferencecount_delete', true) . '" class="tpm-countRef" href="' . $url .  '">' .
             $this->controller->getModuleTemplate()->getIconFactory()->getIcon('actions-edit-delete', Icon::SIZE_SMALL) .
             '</a>';
         }
