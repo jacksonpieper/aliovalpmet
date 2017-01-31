@@ -1,38 +1,49 @@
 
 .. include:: ../../Includes.txt
 
-========================================================
-Breaking: Configuration Of Container Titles In Flexforms
-========================================================
+=============================================
+Breaking: Configuration Of Types In Flexforms
+=============================================
 
 Description
 ===========
 
-Since TYPO3 7.6 the parsing of flexforms is very strict. In the past it was possible to set a container element title
-by putting it into the templavoila container definition.
+Since TYPO3 7.6 the parsing of flexforms is very strict. In the past TemplàVoila put the `type` configuration directly
+into the element nodes.
 
 Example:
 
 .. code-block:: xml
 
-   <container_element type="array">
-       <type>array</type>
+   <element type="array">
+       <type>attr</type>
        <tx_templavoila type="array">
-           <title>Title</title>
            ...
        </tx_templavoila>
        <TCEforms type="array">
            ...
        </TCEforms>
-       <el type="array">
-           ...
-       </el>
-   </container_element>
+   </element>
 
 Impact
 ======
 
-The old configuration does not lead to an exception but the title will be ignored by the TYPO3 core.
+An exception is thrown when having a non-compatible configuration.
+
+The only allowed `type` definition directly inside the element node is `array`. But only if in combination with the
+section node `<section>1</section>`, that makes that element a section container.
+
+Example:
+
+.. code-block:: xml
+
+   <element type="array">
+       <type>array</type>
+       <section>1</section>
+       <el type="array">
+           ...
+       </el>
+   </element>
 
 Affected Installations
 ======================
@@ -42,22 +53,18 @@ All
 Migration
 =========
 
-Simply put the title next to it's parent node.
+Simply put the `type` node into the `tx_templavoila` node
 
 Example:
 
 .. code-block:: xml
 
-   <container_element type="array">
-       <type>array</type>
-       <title>Title</title>
+   <element type="array">
        <tx_templavoila type="array">
+           <type>attr</type>
            ...
        </tx_templavoila>
        <TCEforms type="array">
            ...
        </TCEforms>
-       <el type="array">
-           ...
-       </el>
-   </container_element>
+   </element>
