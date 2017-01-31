@@ -19,6 +19,7 @@ use Schnitzler\Templavoila\Controller\Backend\PageModule\MainController;
 use Schnitzler\Templavoila\Controller\Backend\PageModule\Renderer\SheetRenderer\Column;
 use Schnitzler\Templavoila\Controller\Backend\PageModule\Renderer\SheetRenderer\Sheet;
 use Schnitzler\Templavoila\Domain\Repository\TemplateRepository;
+use Schnitzler\Templavoila\Exception;
 use Schnitzler\Templavoila\Helper\LanguageHelper;
 use Schnitzler\Templavoila\Traits\BackendUser;
 use Schnitzler\Templavoila\Traits\LanguageService;
@@ -223,7 +224,10 @@ class SheetRenderer implements Renderable
                 // Modify the flexform pointer so it points to the position of the curren sub element:
                 $parentPointer['position'] = $position;
 
-                $content .= $this->renderSheets($column, $element, $parentPointer, $parentDsMeta);
+                try {
+                    $content .= $this->renderSheets($column, $element, $parentPointer, $parentDsMeta);
+                } catch (Exception $e) {
+                }
             } else {
                 // Modify the flexform pointer so it points to the position of the curren sub element:
                 $parentPointer['position'] = $position;

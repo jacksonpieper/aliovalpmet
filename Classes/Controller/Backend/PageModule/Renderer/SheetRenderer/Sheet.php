@@ -14,6 +14,8 @@
 
 namespace Schnitzler\Templavoila\Controller\Backend\PageModule\Renderer\SheetRenderer;
 
+use Schnitzler\Templavoila\Exception;
+
 /**
  * Class Schnitzler\Templavoila\Controller\Backend\PageModule\Renderer\SheetRenderer\Sheet
  */
@@ -56,7 +58,7 @@ class Sheet
         }
 
         if (!isset($this->contentTreeData['el']['table'])) {
-            throw new \RuntimeException('table is not set', 1478029315398);
+            throw new Exception('Sheet configuration is not valid', 1478029315398);
         }
     }
 
