@@ -71,17 +71,15 @@ class SidebarRenderer
             }
         }
 
-        if (LanguageHelper::hasPageTranslations($controller->getId())) {
-            try {
-                $this->addItem(
-                    'localization',
-                    GeneralUtility::makeInstance(LocalizationTab::class, $controller),
-                    static::getLanguageService()->getLL('localization', true),
-                    60,
-                    false
-                );
-            } catch (\Exception $e) {
-            }
+        try {
+            $this->addItem(
+                'localization',
+                GeneralUtility::makeInstance(LocalizationTab::class, $controller),
+                static::getLanguageService()->getLL('localization', true),
+                60,
+                false
+            );
+        } catch (\Exception $e) {
         }
 
         try {
