@@ -1,0 +1,609 @@
+<?xml version='1.0' encoding='utf-8'?>
+<xliff version="1.0">
+    <file source-language="en" datatype="plaintext" original="messages" target-language="ru">
+        <header/>
+        <body>
+            <trans-unit xml:space="preserve" id="title">
+                <source>TemplaVoilà Control Center</source>
+                <target>Центр управления TemplaVoilà</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="storagefolders">
+                <source>Storage Folders</source>
+                <target>Папки-хранилища</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="datastructures">
+                <source>Data Structures</source>
+                <target>Структуры данных</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="templateobjects">
+                <source>Template Objects</source>
+                <target>Объекты шаблонов</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="templatefiles">
+                <source>Template Files</source>
+                <target>Файлы шаблонов</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="pagetemplates">
+                <source>Page templates</source>
+                <target>Шаблонные страницы</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="filereference">
+                <source>File reference</source>
+                <target>Ссылка на файл</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="description">
+                <source>Description</source>
+                <target>Описание</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="fces">
+                <source>Flexible CE</source>
+                <target>Гибкий Эл.</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="other">
+                <source>Other</source>
+                <target>Другое</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="unknown">
+                <source>Unknown "%s"</source>
+                <target>Неизвестное "%s"</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="losttos">
+                <source>Lost TOs [%d]</source>
+                <target>Последние ОШ [%d]</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="overview">
+                <source>XML file</source>
+                <target>Файл XML</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="dstotitle">
+                <source>DS/TO Title</source>
+                <target>Название СД/ОШ</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="localization">
+                <source>Localization</source>
+                <target>Локализация</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="showdetails">
+                <source>Show Details</source>
+                <target></target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="showuused">
+                <source>Show unused datastructures</source>
+                <target></target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="containerstatus">
+                <source>Container status</source>
+                <target>Статус контейнера</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="mappingstatus">
+                <source>Mapping status</source>
+                <target>Статус разметки</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="usagecount">
+                <source>Usage count</source>
+                <target>Количество использования</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="templatestatus">
+                <source>Template Status</source>
+                <target>Статус шаблона</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="rendertype">
+                <source>Render Type</source>
+                <target>Тип формирования</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="language">
+                <source>Language</source>
+                <target>Язык</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="globalprocessing_xml">
+                <source>Global Processing &lt;strong&gt;XML&lt;/strong&gt;</source>
+                <target>Глобальная обработка &lt;strong&gt;XML&lt;/strong&gt;</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="localprocessing_xml">
+                <source>Local Processing &lt;strong&gt;XML&lt;/strong&gt;</source>
+                <target>Локальная обработка &lt;strong&gt;XML&lt;/strong&gt;</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="usedby">
+                <source>Used by</source>
+                <target>Используется в</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="created">
+                <source>Created</source>
+                <target>Создан</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="updated">
+                <source>Updated</source>
+                <target>Обновлен</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="noicon">
+                <source>[No icon]</source>
+                <target>[Нет значка]</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="filenotfound">
+                <source>[File not found!]</source>
+                <target>[Файл не найден]</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="createnewto">
+                <source>Create new Template Object</source>
+                <target>Создать новый Объект Шаблона</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="containerwithseparatelocalization">
+                <source>Container element with separate localization!</source>
+                <target>Элемент-контейнер с отдельной локализацией!</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="mixofcontentandref">
+                <source>Mix of content and references, OK, but be careful!</source>
+                <target>Смесь содержимого и ссылок, возможно, но используйте осторожно!</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="nocontentfields">
+                <source>No content fields, recommended to set "&lt;langDisable&gt;" = 1</source>
+                <target>Нет полей содержимого, рекомендуется установить "&lt;langDisable&gt;" = 1</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="towasupdated">
+                <source>Template file was updated since last mapping (%s) and you might need to remap the Template Object!</source>
+                <target>Файл шаблона обновился со времени последней разметки (%s), может понадобиться переразметить Объект Шаблона!</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="warning_mappingstatus">
+                <source>%s (TO: "%s")</source>
+                <target>%s (ОШ: "%s")</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="mapping_uptodate">
+                <source>Mapping is up to date.</source>
+                <target>Разметка актуальна</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="update_mapping">
+                <source>Update mapping</source>
+                <target>Обновите разметку</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="notmapped">
+                <source>Not mapped yet!</source>
+                <target>Не размечено!</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="updatemapping_info">
+                <source>- &lt;em&gt;(It might also mean that the TO was mapped with an older version of TemplaVoila - then just go and save the mapping again at this will be updated.)&lt;/em&gt;</source>
+                <target>- &lt;em&gt;(также возможно, что ОШ был размечен в старой версии TemplaVoila, просто откройте шаблон и сохраните его, он будет обновлен).&lt;/em&gt;</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="map">
+                <source>Map</source>
+                <target>Разметка</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="remap">
+                <source>Remap</source>
+                <target>Переразметка</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="preview">
+                <source>Preview</source>
+                <target>Предварительный просмотр</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="toused_title">
+                <source>Title</source>
+                <target>Название</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="toused_pid">
+                <source>Page ID</source>
+                <target>ID страницы</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="toused_path">
+                <source>Path</source>
+                <target>Путь</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="toused_workspace">
+                <source>Workspace</source>
+                <target>Рабочая область</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="toused_uid">
+                <source>UID</source>
+                <target>UID</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="toused_header">
+                <source>Header</source>
+                <target>Заголовок</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="toused_usedin">
+                <source>Used in %d Elements</source>
+                <target>Используется в %d элементах</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="noaccess">
+                <source>No Access</source>
+                <target>Нет доступа</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="usage">
+                <source>Usage</source>
+                <target>Использование</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="action">
+                <source>Action</source>
+                <target>Действие</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="refresh">
+                <source>Refresh</source>
+                <target>Обновить</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="invalidtemplatevalues">
+                <source>Invalid template values in %d elements</source>
+                <target>Неверные значения шаблонов в %d эл.</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="noerrorsfound">
+                <source>No errors found!</source>
+                <target>Ошибок не найдено!</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="byuser">
+                <source>by user</source>
+                <target>пользователем</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="file">
+                <source>File</source>
+                <target>Файл</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="newdsto">
+                <source>New DS/TO</source>
+                <target>Новые СД/ОШ</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="usedfiles">
+                <source>Used files</source>
+                <target>Используемые файлы</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="templatearchive">
+                <source>Template Archive</source>
+                <target>Архив шаблонов</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="configuration">
+                <source>Configuration</source>
+                <target>Настройка</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="fceislocalized">
+                <source>FCE-element is localized</source>
+                <target>Гибкий элемент локализован</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="fceinlineislocalized">
+                <source>FCE-inline-elements of the FCE-element are localized</source>
+                <target>Встроенные в гибкий элемент гибкие элементы локализованы</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="casttointeger">
+                <source>the entered/computed value will be cast to an integer</source>
+                <target>введенное/вычисленное значение будет приведено к целому</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="hsced">
+                <source>the entered/computed value will be passed to htmlentities</source>
+                <target>введенное/вычисленное значение будет передано в объект html</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="hsc_on">
+                <source>[HTML-code won't be available]</source>
+                <target>[код HTML не будет доступен]</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="hsc_off">
+                <source>[HTML-code will be displayed as-is]</source>
+                <target>[код HTML будет отображен как есть]</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="stdwrap">
+                <source>the entered/computed value will be wrapped</source>
+                <target>введенное/вычисленное значение будет помещено в обертку</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="redundant">
+                <source>redundant</source>
+                <target>избыточно</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="illegalcharacters">
+                <source>entry contains illegal characters and/or has multiple lines</source>
+                <target>введены запрещенные символы и/или имеется несколько строк</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="newsitewizard_menuhtmlcode">
+                <source>Here is the HTML code from the Template that encapsulated the menu</source>
+                <target>Здесь находится код HTML из шаблона, содержащий меню</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="newsitewizard_menuenc">
+                <source>It seems that the menu consists of menu items encapsulated with %s.</source>
+                <target>Похоже, что меню состоит из элементов входящих в %s.</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="newsitewizard_menunoa">
+                <source>It seems that the menu consists of menu items not wrapped in any block tags except A-tags.</source>
+                <target>Похоже, что меню состоит из элементов, не заключенных ни в один из блоковых тегов, за исключением тега A.</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="newsitewizard_menuwrap">
+                <source>It also seems that the whole menu is wrapped in this tag %s</source>
+                <target>Кроме того, похоже, что все меню заключено в тег %s</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="newsitewizard_menudiv">
+                <source>Between the menu elements there seems to be a visual division element with this HTML code: "%s". That will be added between each element as well.</source>
+                <target>Между элементами меню имеется визуальное разделение с таким кодом HTML: "%s". Он будет добавлен между всеми элементами.</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="newsitewizard_menuimg">
+                <source>The menu items were detected to be images - TYPO3 will try to generate graphical menu items automatically (GMENU). You will need to customize the look of these before it will match the originals!</source>
+                <target>Установлено, что элементы меню являются изображениями, TYPO3 попытается элементы графического меню автоматически (GMENU). Сначала необходимо настроить их вид!</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="newsitewizard_menumouseover">
+                <source>It seems like a mouseover functionality has been applied previously, so roll-over effect has been applied as well.</source>
+                <target>Похоже, что функциональность при наведении мышки была применена до того, поэтому был применен эффект изменения при наведении мышки.</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="newsitewizard_menuts">
+                <source>Based on this analysis, this TypoScript configuration for the menu is suggested:</source>
+                <target>На основе анализа, эта настройка TypoScript для меню включает:</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="newsitewizard_menufinetune">
+                <source>You can fine tune the configuration here before it is saved:</source>
+                <target>Перед сохранением, здесь можно подстроить конфигурацию:</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="newsitewizard_menuwritets">
+                <source>Write %s TypoScript code</source>
+                <target>Запись %s кода TypoScript</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="newsitewizard_menufinished">
+                <source>The basics of your website should be working now. It seems like you did not map the %s to any element, so the menu configuration process will be skipped.</source>
+                <target>Теперь каркас Вашего сайта должен заработать. Похоже, что не сделана разметка для %s, поэтому процесс настройки меню был пропущен.</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="newsitewizard_menunext">
+                <source>Next...</source>
+                <target>Далее...</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="newsitewizard_step5">
+                <source>Step 5 %s: Trying to create dynamic menu</source>
+                <target>Этап 5 %s: попытайтесь создать динамическое меню</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="newsitewizard_sitecreated">
+                <source>&lt;b&gt;Congratulations!&lt;/b&gt; You have completed the initial creation of a new website in TYPO3 based on the TemplaVoila engine. After you click the "Finish" button you can go to the Web&gt;Page module to edit your pages!</source>
+                <target>&lt;b&gt;Отлично!&lt;/b&gt; Завершено начальное создание нового веб сайта на TYPO3 посредством движка TemplaVoila. После щелчка по кнопке "Завершить", можно перейти в модуль Веб&gt;Страница для редактирования страниц!</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="newsitewizard_finish">
+                <source>Finish Wizard!</source>
+                <target>Мастер завершающего этапа!</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="newsitewizard_done">
+                <source>Step 6: Done</source>
+                <target>Этап 6: сделано</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="newsitewizard_basicsshouldwork">
+                <source>The basics of your website should be working now. However the %s still needs to be configured so that TYPO3 automatically generates a menu reflecting the pages in the page tree. This process involves configuration of the TypoScript object path, "lib.%s". This is a technical job which requires that you know about TypoScript if you want it 100%% customized.&lt;br/&gt;To assist you getting started with the %s this wizard will try to analyse the menu found inside the template file. If the menu was created of a series of repetitive block tags containing A-tags then there is a good chance this will succeed. You can see the result below.</source>
+                <target>Основа веб сайта уже должна заработать. Но все еще требуется настроить %s, чтобы TYPO3 автоматически формировал меню, отражающее структуру страниц в дереве страниц. Этот процесс состоит из настройки пути объектов TypoScript "lib.%s". Это техническая работа, требующая знания TypoScript для возможности 100%% настройки.&lt;br/&gt;Для начальной помощи, в %s, этот мастер попытается проанализировать меню, найденное внутри файла шаблона. Если меню создано при помощи серий повторяющихся блочных тегов, содержащих теги A, то имеется неплохой шанс на успех. Результат представлен ниже.</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="newsitewizard_headerinclude">
+                <source>Finally you also have to select which parts of the HTML header you want to include. For instance it is important that you select all sections with CSS styles in order to preserve the correct visual appearance of your website.&lt;br/&gt;You can also select the body-tag of the template if you want to use the original body-tag.&lt;br/&gt;This animations shows an example of this process:</source>
+                <target>И наконец, необходимо выбрать части HTML заголовка, которые должны присутствовать на сайте. Например, важно выбрать все разделы со стилями CSS, чтобы сохранить правильное визуальное представеление сайта.&lt;br/&gt;Также можно выбрать тег body шаблона, если необходимо использовать оригинальный тег body из шаблона.&lt;br/&gt;Эта анимация показывает пример такого процесса:</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="newsitewizard_headerselect">
+                <source>Select HTML header parts</source>
+                <target>Выберете части для заголовка HTML</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="newsitewizard_step4">
+                <source>Step 4: Select HTML header parts</source>
+                <target>Этап 4: выбор частей для заголовка HTML</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="newsitewizard_maintemplate">
+                <source>Main template:</source>
+                <target>Основной шаблон:</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="newsitewizard_created">
+                <source>New site has been created and adapted.</source>
+                <target>Создан и адаптирован новый сайт.</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="newsitewizard_step3error">
+                <source>Error happened: Either you did not specify a website name or username in the previous form!</source>
+                <target>Произошла ошибка: либо не определено название сайта, либо имя пользователя в предыдущей форме!</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="newsitewizard_step3ready">
+                <source>You are now ready to point out at which position in the HTML code to insert the TYPO3 generated page content and the main menu. This process is called "mapping".&lt;br/&gt;The process of mapping is shown with this little animation. Please study it closely to understand the flow, then click the button below to start the mapping process on your own. Complete the mapping process by pressing "Save and Return".</source>
+                <target>Теперь Вы готовы указать, где в коде HTML нужно вставлять сформированное в TYPO3 содержимое страницы, а где – основное меню. Этот процесс называется "разметка".&lt;br/&gt;Процесс разметки показан на этой небольшой анимации. Внимательно изучите его, чтобы он стал понятен, после чего нажмите нижнюю кнопку для начала собственной разметки. Завершите разметку, нажав на кнопку "Сохранить и вернуться".</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="newsitewizard_startmapping">
+                <source>Start the mapping process</source>
+                <target>Начало процесса разметки</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="newsitewizard_beginmapping">
+                <source>Step 3: Begin mapping</source>
+                <target>Этап 3: начало разметки</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="newsitewizard_firststep">
+                <source>The first step is to select the HTML file you want to base the new website design on. Below you see a list of HTML files found in the folder "%s". Click the "Preview"-link to see what the file looks like and when the right template is found, just click the "Choose as template"-link in order to proceed.&lt;br/&gt;If the list of files is empty you must now copy the HTML file you want to use as a template into the template folder. When you have done that, press the refresh button to refresh the list.</source>
+                <target>На первом этапе нужно выбрать файл HTML который станет базовым для дизайна нового сайта. Ниже приведен список файлов HTML, найденных в папке "%s". Щелкните по ссылке "Просмотр", чтобы посмотреть, как выглядит файл. Когда обнаружите нужный шаблон, просто щелкните "Выбрать в качестве шаблона" для продолжения.&lt;br/&gt;Если в списке нет файлов, нужно скопировать файл HTML, который предполагается использовать в качестве шаблона, в папку для шаблонов. Сделав это, нажмите на кнопку обновления для обновления списка файлов.</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="newsitewizard_selecttemplate">
+                <source>Step 1: Select the template HTML file</source>
+                <target>Этап 1: выберете файл HTML шаблона</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="newsitewizard_error">
+                <source>TemplaVoila wizard error</source>
+                <target>Мастер ошибок TemplaVoila</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="newsitewizard_errornodir">
+                <source>The template directory is empty or could not be found. Please, create it before starting this wizard.</source>
+                <target>Директория для шаблонов не пустая или не найдена. Ее нужно создать перед запуском этого мастера.</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="newsitewizard_templateselected">
+                <source>The template file "%s" is now selected:</source>
+                <target>Выбран файл шаблона "%s":</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="newsitewizard_step2next">
+                <source>Next, you should enter default values for the new website. With this basic set of information we are ready to create the initial website structure!</source>
+                <target>Далее, необходимо ввести значения по умолчанию для нового сайта. С этим базовым набором информации уже можно создавать начальную структуру веб сайта!</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="newsitewizard_step2_name">
+                <source>Name of the site</source>
+                <target>Название сайта</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="newsitewizard_step2_url">
+                <source>URL of the website</source>
+                <target>URL веб сайта</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="newsitewizard_step2_editor">
+                <source>Editor username</source>
+                <target>Имя пользователя для редактора</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="newsitewizard_step2_required">
+                <source>(Required)</source>
+                <target>(требуется)</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="newsitewizard_step2_optional">
+                <source>(Optional)</source>
+                <target>(по возможности)</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="newsitewizard_step2_createnewsite">
+                <source>Create new site</source>
+                <target>Создать новый сайт</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="newsitewizard_step2_notemplatefound">
+                <source>No template file found!?</source>
+                <target>Файл шаблона не найден!?</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="newsitewizard_step2_valuename">
+                <source>This value is shown in the browsers title bar and will be the default name of the first page in the page tree.</source>
+                <target>Это значение отображается в заголовке браузера и по умолчанию служит названием первой страницы в дереве страниц.</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="newsitewizard_step2_valueurl">
+                <source>If you know the URL of the website already please enter it here, eg. "www.mydomain.com".</source>
+                <target>Если известен URL веб сайта, введите его здесь. Пример: "www.mydomain.com".</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="newsitewizard_step2_username">
+                <source>Enter the username of a new backend user/group who will be able to edit the pages on the new website. (Password will be "password" by default, make sure to change that!)</source>
+                <target>Введите имя пользователя нового внутреннего пользователя/группы, который будет редактировать страницы нового веб сайта (по умолчанию в качестве пароля будет установлено "password", не забудьте изменить его!).</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="newsitewizard_step2">
+                <source>Step 2: Enter default values for new site</source>
+                <target>Этап 2: введите значения по умолчанию для нового сайта</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="newsitewizard_usedtimes">
+                <source>Used %d times</source>
+                <target>Используется %d раз</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="newsitewizard_notused">
+                <source>Not used yet</source>
+                <target>Пока не используется</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="newsitewizard_preview">
+                <source>[Preview first]</source>
+                <target>[Просмотр]</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="newsitewizard_choose">
+                <source>[Choose as Template]</source>
+                <target>[Выбрать в качестве шаблона]</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="dsdetails_nobasicdefinitions">
+                <source>The element has no basic definitions!</source>
+                <target>Элемент не имеет основных определений!</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="dsdetails_notceformdefinitions">
+                <source>The element has no TCE-form definitions!</source>
+                <target>Элемент не имеет определений для форм TCE!</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="dsdetails_notes">
+                <source>Notes</source>
+                <target>Замечания</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="dsdetails_ts">
+                <source>TypoScript</source>
+                <target>TypoScript</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="dsdetails_column">
+                <source>Column-positioning</source>
+                <target>Позиционирование столбцов</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="dsdetails_preset">
+                <source>Preset used for the element</source>
+                <target>Преднастройка для элемента</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="dsdetails_tsutilize">
+                <source>will utilize the TS-structure %s defined inside the &lt;TypoScriptObjPath&gt;-entry</source>
+                <target>будет использована структура TS %s, определенная внутри элемента &lt;TypoScriptObjPath&gt;</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="dsdetails_tslines">
+                <source>%d lines of TS-code inside the &lt;TypoScript&gt;-entry</source>
+                <target>%d строк кода TS внутри элемента &lt;TypoScript&gt;</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="dsdetails_tsconstants">
+                <source>%d TS-constants defined for use in the &lt;TypoScript&gt;-entry</source>
+                <target>элемент &lt;TypoScript&gt;</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="warnings">
+                <source>Warnings</source>
+                <target>Предупреждения</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="fatalerrors">
+                <source>Fatal errors</source>
+                <target>Фатальная ошибка</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="invaliddatastructure_xmlbroken">
+                <source>The the element "%1$s" within the datastructure seems to contain invalid XML, therefore the required data can't be displayed.</source>
+                <target>Похоже, что элемент "%1$s" внутри структуры данных содержит неверный XML, поэтому требуемые данные не могут быть отображены.</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="wiz_title">
+                <source>New site wizard</source>
+                <target>Создание нового сайта</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="wiz_step">
+                <source>Step %s</source>
+                <target>Этап %s</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="description_pagesWithCertainDsTo">
+                <source>The following pages in the root line contain data structures and template objects</source>
+                <target>Следующие страницы корневой линии имеют структуры данных и объекты шаблонов</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="newsitewizard_intro">
+                <source>If you want to start a new website based on the TemplaVoila template engine you can start this wizard which will set up all the boring initial stuff for you.
+                You will be taken through these steps:
+                - Creation of a new website root, storage folder, sample pages.
+                - Creation of the main TemplaVoila template, including mapping of one content area and a main menu.
+                - Creation of a backend user and group to manage only that website.
+                You should prepare an HTML template before you begin the wizard; simply make a design in HTML and place the HTML file including graphics and stylesheets in a subfolder of "%s" relative to the websites root directory.
+                Tip about menus: If you include a main menu in the template, try to place the whole menu inside a container (like &lt;div&gt;, &lt;table&gt; or &lt;tr&gt;) and encapsulate each menu item in a block tag (like &lt;tr&gt;, &lt;td&gt; or &lt;div&gt;). Use A-tags for the links. If you want different designs for normal and active menu elements, design the first menu item as "Active" and the second (and rest) as "Normal", then the wizard might be able to capture the right configuration.
+                Tip about stylesheets: The content elements from TYPO3 will be outputted in regular HTML tags like &lt;p&gt;, &lt;h1&gt; to &lt;h6&gt;, &lt;ol&gt; etc. You will prepare yourself well if your stylesheet in the HTML template provides good styles for these standard elements from the start. Then you will have less finetuning to do later.
+            </source>
+                <target>Если хотите начать создание веб сайта на движке шаблонирования TemplaVoila, можно начать с этого мастера, который выполнит всю рутинную работу. Потребуется пройти следующие этапы: - создание нового корня для веб сайта, папки хранилища, шаблонных страниц. - создание основного шаблона TemplaVoila, включая разметку одной области для содержимого и основного меню. - создание внутреннего пользователя и группы только лишь для управления веб сайтом. Перед началом работы мастера, необходимо подготовить шаблон HTML – просто создайте образец дизайна страницы в файле HTML, включая графику и таблицы стилей в подпапке "' . $GLOBALS['TYPO3_CONF_VARS']['BE']['fileadminDir'] . 'templates/" относительно корневой директории веб сайта. Совет относительно меню: если основное меню включено в шаблон, постарайтесь поместить меню целиком в контейнер (вроде &lt;div&gt;, &lt;table&gt; или &lt;tr&gt;), а каждый элемент меню – в блоковый тег (наподобие &lt;tr&gt;, &lt;td&gt; или &lt;div&gt;). Для ссылок используйте теги A. Если хотите использовать разное представление для обычных и активного элементов меню, то поместите "активный" элемент первым, а за ним "обычные", при этом мастер сможет создать правильные настройки. Совет относительно таблиц стилей: элементы содержимого из TYPO3 выводятся в обычные теги HTML, вроде &lt;p&gt;, &lt;h1&gt; до &lt;h6&gt;, &lt;ol&gt; и т.д. Вы снимите с себя большой груз, если изначально снабдите HTML шаблон продуманными стилями для таких стандартных элементов. При этом понадобиться гораздо меньше времени для окончательной отладки.</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="newsitewizard_startnow">
+                <source>Start wizard now!</source>
+                <target>Запустить мастер!</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="newsitewizard_cancel">
+                <source>Cancel wizard</source>
+                <target>Отмена выполнения мастера</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="newsitewizard_problem">
+                <source>&lt;em&gt;There are some technical problems you have to solve before you can start the wizard! Please see below for details. Solve these problems first and come back.&lt;/em&gt;</source>
+                <target>&lt;em&gt;Необходимо разрешить некоторые технические проблемы, перед запуском мастера! Детали приведены ниже. Сначала устраните проблемы, а затем вернитесь к мастеру.&lt;/em&gt;</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="newsitewizard_missingext">
+                <source>Missing extension!</source>
+                <target>Неверное расширение!</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="newsitewizard_missingconf">
+                <source>Missing configuration!</source>
+                <target>Неверная настройка!</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="newsitewizard_missingconf_description">
+                <source>The TemplaVoila extension configuration is missing. Please clear the cache and recheck the configuration within the extension manager.</source>
+                <target>Ошибка в настройке расширения TemplaVoila. Очистите кеш и заново проверьте настройки в модуле управления расширениями.</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="newsitewizard_missingdir">
+                <source>Missing directory!</source>
+                <target>Неверная директория!</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="newsitewizard_missingext_description">
+                <source>Before the wizard can run some extensions are required to be installed. Below you will see the which extensions are required and which are not available at this moment. Please go to the Extension Manager and install these first.</source>
+                <target>Для работы мастера требуется установить некоторые расширения. Ниже приведен список требуемых, но недоступных на данный момент расширений. Перейдите к модулю управления расширениями (Extension Manager) и установите недостающие расширения перед началом работы.</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="newsitewizard_missingext_extkey">
+                <source>Extension Key:</source>
+                <target>Ключ расширения:</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="newsitewizard_missingext_installed">
+                <source>Installed?</source>
+                <target>Установлено?</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="newsitewizard_missingext_yes">
+                <source>Yes</source>
+                <target>Да</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="newsitewizard_missingext_no">
+                <source>No</source>
+                <target>Нет</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="newsitewizard_missingdir_instruction">
+                <source>The directory "%s" (relative to the website root) does not exist! This is where you must place your HTML templates. Please create that directory &lt;u&gt;before you start the wizard&lt;/u&gt;. In order to do so, follow these directions:
+                - Go to the module File &gt; Filelist
+                - Click the icon of the "%s" root and select "Create" from the context menu.
+                - Enter the name "templates" of the folder and press the "Create" button.
+                - Return to this wizard
+            </source>
+                <target>Директория "%s" (относительно корня сайта) не существует! Это место, куда необходимо помещать свои HTML шаблоны. &lt;u&gt;Перед началом работы мастера&lt;/u&gt; создайте эту директорию. Для ее создания проделайте следующие шаги: - перейдите в модуль Файл &gt; Список файлов; - щелкните по значку "%s" в корне и выберете "создать" из контекстного меню; - введите название папки "templates" и нажмите кнопку "создать"; - вернитесь к этому мастеру.</target>
+            </trans-unit>
+        </body>
+    </file>
+</xliff>

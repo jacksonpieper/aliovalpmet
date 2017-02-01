@@ -1,0 +1,66 @@
+<?xml version='1.0' encoding='utf-8'?>
+<xliff version="1.0">
+    <file source-language="en" datatype="plaintext" original="messages" target-language="de">
+        <header/>
+        <body>
+            <trans-unit xml:space="preserve" id="cm1_title">
+                <source>TemplaVoilà</source>
+                <target>TemplaVoilà</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="cm1_viewsubelements">
+                <source>View: Sub elements</source>
+                <target>Ansicht: Unterelemente</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="cm1_viewflexformxml">
+                <source>View: Flexform XML</source>
+                <target>Ansicht: Flexform-XML</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="cm_viewdsto">
+                <source>View: DS/TO</source>
+                <target>Ansicht: DS/TO</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="cm1_pagesusingthiselement">
+                <source>Pages using this element -&gt;</source>
+                <target>Seiten, die dieses Element nutzen -&gt;</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="wiz_refElements">
+                <source>Reference unused content elements (templavoila)</source>
+                <target>Unbenutzte Inhaltselemente referenzieren (TemplaVoilà)</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="wiz_renameFieldsInPage">
+                <source>Rename a field in pages.tx_templavoila_flex</source>
+                <target>Feld in pages.tx_templavoila_flex umbenennen</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="field_sourceField">
+                <source>source field</source>
+                <target>Quellfeld</target><alt-trans xml:space="preserve" origin="None"><target>Quelle aus dem Feld</target></alt-trans></trans-unit>
+            <trans-unit xml:space="preserve" id="field_destinationField">
+                <source>destination field</source>
+                <target>Zielfeld</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="field_simulateField">
+                <source>Simulate Change only</source>
+                <target>Änderung nur simulieren</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="field_submit">
+                <source>submit</source>
+                <target>Absenden</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="extconf.staticWizard.header">
+                <source>Migrate</source>
+                <target>Migrieren</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="extconf.staticWizard.message">
+                <source>Please use the migration wizard to move all datastructures from your database to the filesystem.</source>
+                <target>Bitte nutzen Sie den Migrations-Assistenten, um alle Datenstrukturen von der Datenbank in das Dateisystem zu verschieben.</target><alt-trans xml:space="preserve" origin="None"><target>Nutzen Sie bitte den Migrations-Assistenten, um alle Datenstrukturen von der Datenbank in das Dateisystem zu verschieben.</target></alt-trans></trans-unit>
+            <trans-unit xml:space="preserve" id="extconf.staticWizard.link">
+                <source>Click here to run the wizard</source>
+                <target>Klicken Sie hier um den Assistenten zu starten</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="extmng.updatermsgOption">
+                <source>Updater</source>
+                <target></target>
+            </trans-unit>
+        </body>
+    </file>
+</xliff>

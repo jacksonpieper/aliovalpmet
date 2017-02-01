@@ -1,0 +1,148 @@
+<?xml version='1.0' encoding='utf-8'?>
+<xliff version="1.0">
+    <file source-language="en" datatype="plaintext" original="messages" target-language="cs">
+        <header/>
+        <body>
+            <trans-unit xml:space="preserve" id="sel1">
+                <source>Please select which kind of page content you wish to create:</source>
+                <target>Zvolte si prosím, jaký druh obsahu stránky chcete vytvořit:</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="sel2">
+                <source>Now, click at the position where you wish to place the element on the page:</source>
+                <target>Nyní klikněte na pozici, kde chcete umístit prvek na stránce:</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="common">
+                <source>Typical page content</source>
+                <target>Typický obsah stránky</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="common_1_title">
+                <source>Regular text element</source>
+                <target>Běžný textový prvek</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="common_1_description">
+                <source>A regular text element with header and bodytext fields.</source>
+                <target>Běžný textový prvek s nadpisem a statí.</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="common_2_title">
+                <source>Text with image below</source>
+                <target>Text s obrázkem dole</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="common_2_description">
+                <source>Regular text element with a field which can contain any number of images which are positioned below the text.</source>
+                <target>Běžný textový prvek s polem, které může obsahovat jakýkoliv počet obrázků, které jsou umístěny pod textem.</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="common_3_title">
+                <source>Text with image to the right</source>
+                <target>Text s obrázkem vpravo</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="common_3_description">
+                <source>Like above but with the images placed to the right of the text with the text wrapping around the images.</source>
+                <target>Stejně jako nahoře, ale obrázky jsou umístěny napravo od textu a text je obtéká.</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="common_4_title">
+                <source>Images only</source>
+                <target>Jen obrázky</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="common_4_description">
+                <source>Any number of images aligned in columns and rows with caption. Like the image options above but without text.</source>
+                <target>Jakýkoliv počet obrázků zarovnaný do sloupců a řad s popisky. Jako u možností obrázků nahoře, ale bez textu.</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="common_5_title">
+                <source>Bullet list</source>
+                <target>Výčet</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="common_5_description">
+                <source>A single bullet list.</source>
+                <target>Jednoduchý výčet.</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="common_6_title">
+                <source>Table</source>
+                <target>Tabulka</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="common_6_description">
+                <source>A simple table with up to 8 columns.</source>
+                <target>Jednoduchá tabulka až s osmi sloupci.</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="special">
+                <source>Special elements</source>
+                <target>Speciální prvky</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="special_1_title">
+                <source>Filelinks</source>
+                <target>Odkazy na soubory</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="special_1_description">
+                <source>Makes a list of files for download.</source>
+                <target>Vytvoří seznam souborů ke stažení.</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="special_2_title">
+                <source>Multimedia</source>
+                <target>Multimédia</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="special_2_description">
+                <source>Inserts a media element like a Flash animation, audio file or video clip.</source>
+                <target>Vloží multimediální prvek: Flash animaci, zvukový soubor nebo videoklip.</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="special_3_title">
+                <source>Sitemap</source>
+                <target>Mapa webu</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="special_3_description">
+                <source>Creates a sitemap of the website.</source>
+                <target>Vytvoří mapu webu.</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="special_4_title">
+                <source>Plain HTML</source>
+                <target>Prostý HTML</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="special_4_description">
+                <source>With this element you can insert raw HTML code on the page.</source>
+                <target>S tímto prvkem můžete vkládat do stránky neupravený kód HTML.</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="forms">
+                <source>Form elements</source>
+                <target>Formuláře</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="forms_1_title">
+                <source>Mail form</source>
+                <target>E-mailový formulář</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="forms_1_description">
+                <source>A response mail form by which users of the website can submit responses.</source>
+                <target>E-mailový formulář, jehož prostřednictvím mohou uživatelé webu odesílat své reakce.</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="forms_2_title">
+                <source>Search form</source>
+                <target>Vyhledávací formulář</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="forms_2_description">
+                <source>Draws a search form and the searchresult if a search is performed.</source>
+                <target>Vytvoří vyhledávací formulář a výsledky vyhledávání, je-li použito.</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="forms_3_title">
+                <source>Login form</source>
+                <target>Přihlašovací formulář (login)</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="forms_3_description">
+                <source>Login/logout form for website users. This is used to password protect pages. You must create website users and groups for this to work.</source>
+                <target>Formulář pro přihlášení/odhlášení uživatelů webu. Lze použít pro ochranu stran heslem. Pro jeho úspěšnou funkci musíte vytvořit také uživatele a skupiny.</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="plugins">
+                <source>Plugins</source>
+                <target>Doplňky</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="plugins_1_title">
+                <source>General Plugin</source>
+                <target>Obecný doplněk</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="plugins_1_description">
+                <source>If you want to insert a plugin which cannot be found among the options below, just select this element type and you can select your specific plugin in a selector box afterward.</source>
+                <target>Pokud chcete vložit doplněk, který nemůžete nalézt ve výběru dole, vyberte tento typ prvku a budete moci vybrat váš specifický doplněk vzápětí v roletce.</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="fce">
+                <source>Flexible content</source>
+                <target>Flexibilní obsah</target>
+            </trans-unit>
+        </body>
+    </file>
+</xliff>

@@ -1,0 +1,36 @@
+<?xml version='1.0' encoding='utf-8'?>
+<xliff version="1.0">
+    <file source-language="en" datatype="plaintext" original="messages" target-language="cs">
+        <header/>
+        <body>
+            <trans-unit xml:space="preserve" id="tx_templavoila_ds.description">
+                <source>Select the kind of page you want to create. You can see the basic layout in the icon below the selector box.</source>
+                <target></target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="tx_templavoila_next_ds.description">
+                <source>Select alternative page structure for subpages.</source>
+                <target></target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="tx_templavoila_next_ds.details">
+                <source>Subpages to this page will normally use the same structure as you have set in the "Page Template Structure" field above. However you can select an alternative structure here to be used by all subpages.</source>
+                <target></target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="tx_templavoila_to.description">
+                <source>Select the template design of the chosen "Page Template Structure" for this page.</source>
+                <target></target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="tx_templavoila_next_to.description">
+                <source>Select a different template design of the chosen "Page Template Structure" above for all subpages.</source>
+                <target></target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="tx_templavoila_flex.description">
+                <source>Select the content and / or flexible elements for your page.</source>
+                <target></target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="tx_templavoila_flex.details">
+                <source>Usually, these fields show you the content types that you defined in the selected data structure above. If you use simple content elements, this fields gets automatically altered through the page module once you add content there.</source>
+                <target></target>
+            </trans-unit>
+        </body>
+    </file>
+</xliff>

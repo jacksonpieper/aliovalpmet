@@ -1,0 +1,781 @@
+<?xml version='1.0' encoding='utf-8'?>
+<xliff version="1.0">
+    <file source-language="en" datatype="plaintext" original="messages" target-language="cs">
+        <header/>
+        <body>
+            <trans-unit xml:space="preserve" id="title">
+                <source>TemplaVoilà</source>
+                <target>TemplaVoilà</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="templateFile">
+                <source>Template File</source>
+                <target>Soubor šablony</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="templateObject">
+                <source>Template Object</source>
+                <target>Objekt šablony</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="titleXmlConfiguration">
+                <source>XML configuration</source>
+                <target>Konfigurace XML</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="titleLoadDSXml">
+                <source>Load DS XML</source>
+                <target>Nahrát XML DS</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="mappingTitle">
+                <source>TemplaVoilà Template Mapping</source>
+                <target>Mapování šablony TemplaVoilà</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="mappingNEW">
+                <source>[NEW]</source>
+                <target>[NOVÝ]</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="mappingHeadParts">
+                <source>Adding parts from HTML header</source>
+                <target>Přidání částí HTML hlavičky</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="mappingBodyParts">
+                <source>Data Structure to be mapped to HTML template</source>
+                <target>Datová Struktura k namapování na HTML šablonu</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="rootDescription">
+                <source>Select the HTML element on the page which you want to be the overall container element for the template.</source>
+                <target>Vyberte ten HTML prvek na stránce, který chcete mít za hlavní ohraničující prvek šablony.</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="selectTOrecrdToLoadDSFrom">
+                <source>Select a Template Object record to load a Data Structure/Mapping information from</source>
+                <target>Vyberte záznam objektu šablony, ze kterého chcete nahrát datovou strukturu/informace o mapování</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="noDSDefined">
+                <source>No Data Structure was defined in the record... (Must be T3DataStructure XML content)</source>
+                <target>V záznamu nebyla definovaná žádná Datová Struktura... (Musí to být obsah typu T3DataStructure XML)</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="pasteDSXml">
+                <source>Alternatively, paste the Data Structure XML into this form</source>
+                <target>Alternativně, vložte XML Datové Struktury do tohoto formuláře</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="loadDSXml">
+                <source>Load Data Structure</source>
+                <target>Nahrát Datovou Strukturu</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="instrunctions">
+                <source>Instructions</source>
+                <target>Instrukce</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="toBeDefined">
+                <source>to be defined</source>
+                <target>má být definováno</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="tabTODetails">
+                <source>Information</source>
+                <target>Informace</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="tabHeadParts">
+                <source>Header Parts</source>
+                <target>Části hlavičky</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="tabBodyParts">
+                <source>Mapping</source>
+                <target>Mapování</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="dsTypes_section">
+                <source>Section</source>
+                <target>Část</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="dsTypes_container">
+                <source>Container</source>
+                <target>Kontejner</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="dsTypes_attribute">
+                <source>Attribute</source>
+                <target>Atribut</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="dsTypes_element">
+                <source>Element</source>
+                <target>Prvek</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="dsTypes_notmapped">
+                <source>Not Mapped</source>
+                <target>Nemapováno</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="buttonGoBack">
+                <source>Go back</source>
+                <target>Jdi zpět</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="buttonCancel">
+                <source>Cancel</source>
+                <target>Storno</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="buttonShowXML">
+                <source>Show XML</source>
+                <target>Ukázat XML</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="buttonClearAll">
+                <source>Clear all</source>
+                <target>Vyčistit vše</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="buttonPreview">
+                <source>Preview</source>
+                <target>Náhled</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="buttonSave">
+                <source>Save</source>
+                <target>Uložit</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="buttonSaveExit">
+                <source>Save and Exit</source>
+                <target>Uložit a odejít</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="buttonSaveAs">
+                <source>Save as</source>
+                <target>Uložit jako</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="buttonLoad">
+                <source>Load</source>
+                <target>Nahrát</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="buttonRefresh">
+                <source>Refresh</source>
+                <target>Obnovit</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="buttonAdd">
+                <source>Add</source>
+                <target>Přidat</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="buttonUpdate">
+                <source>Update</source>
+                <target>Aktualizovat</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="buttonDelete">
+                <source>Delete</source>
+                <target>Vymazat</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="buttonCancelClose">
+                <source>Cancel / Close</source>
+                <target>Vymazat / Zavřít</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="buttonTitle_showXML">
+                <source>Preview the currently build Data Structure as XML</source>
+                <target>Náhled aktuálně vytvořené Datové Struktury jako XML</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="buttonTitle_clearAll">
+                <source>Clear all Data Structure and Mapping information</source>
+                <target>Vyčistit všechny Datové Struktury a informace o mapování</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="buttonTitle_preview">
+                <source>Preview the mapping to the template</source>
+                <target>Náhled mapování šablony</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="buttonTitle_save">
+                <source>Save to current TO and DS</source>
+                <target>Uložit aktuální TO a DS</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="buttonTitle_saveExit">
+                <source>Save to current TO and DS and return to Overview</source>
+                <target>Uložit aktuální TO a DS, a vrátit se na přehled</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="buttonTitle_saveAs">
+                <source>Go to save menu</source>
+                <target>Přejít na menu uložení</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="buttonTitle_load">
+                <source>Go to load menu</source>
+                <target>Přejít na menu nahrání</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="buttonTitle_refresh">
+                <source>Redraw screen</source>
+                <target>Překreslit obrazovku</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="buttonSet">
+                <source>Set</source>
+                <target>Nastavit</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="buttonSetTitle">
+                <source>Will update session data with current settings.</source>
+                <target>Aktualizuje data relace aktuálním nastavením.</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="buttonClearAllMappingTitle">
+                <source>Clears all mapping information currently set.</source>
+                <target>Vymaže všechny aktuálně nastavené mapovací informace.</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="buttonPreviewMappingTitle">
+                <source>Will merge sample content into the template according to the current mapping information.</source>
+                <target>Sloučí vzorek obsahu do šablony podle aktuálních mapovacích informací.</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="buttonSaveTOTitle">
+                <source>Saving all mapping data into the Template Object.</source>
+                <target>Ukládám všechna mapovacích dat do objektu šablony.</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="buttonSaveAndReturn">
+                <source>Save and Return</source>
+                <target>Uložit a návrat</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="buttonSaveAndReturnTitle">
+                <source>Saving all mapping data into the Template Object and return.</source>
+                <target>Ukládám všechna mapovacích data do objektu šablony a vracím se zpět.</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="buttonRevert">
+                <source>Revert</source>
+                <target>Vrátit</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="buttonRevertTitle">
+                <source>Reverting %s mapping data to original data in the Template Object.</source>
+                <target>Vracím %s data mapování na původní data v objektu šablony.</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="createDSTO">
+                <source>CREATE Data Structure / Template Object</source>
+                <target>VYTVOŘIT datovou strukturu / objekt šablony</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="updateDSTO">
+                <source>UPDATE existing Data Structure / Template Object</source>
+                <target>AKTUALIZOVAT existující datovou strukturu / objekt šablony</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="updateDSTOshort">
+                <source>UPDATE TO (and DS)</source>
+                <target>AKTUALIZOVAT TO (a DS)</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="saveDSTOconfirm">
+                <source>Are you sure you want to override the current contents of these records?\nThis feature is meant to support the process of creating new Data Structures which have not been manually edited yet.</source>
+                <target>Jste si jisti, že chcete přepsat aktuální obsah těchto záznamů?\nTato vlastnost je určena na podporu procesu vytváření nových Datových Struktur, které nebyly doposud ručně upraveny.</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="createDSTOshort">
+                <source>CREATE DS / TO</source>
+                <target>VYTVOŘIT DS / TO</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="titleDSTO">
+                <source>Title of DS/TO</source>
+                <target>Název DS/TO</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="templateType">
+                <source>Template Type</source>
+                <target>Typ šablony</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="pageTemplate">
+                <source>Page Template</source>
+                <target>Šablona stránky</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="contentElement">
+                <source>Content Element</source>
+                <target>Prvek obsahu</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="undefined">
+                <source>Undefined</source>
+                <target>Nedefinovaný</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="storeInPID">
+                <source>Store in PID</source>
+                <target>Uložit v PID</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="selectTO">
+                <source>Select TO</source>
+                <target>Vybrat TO</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="buildingDS">
+                <source>Building Data Structure</source>
+                <target>Vytvářím Datovou Strukturu</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="renderDSO_dataStructure">
+                <source>Data Structure in record</source>
+                <target>Datová Struktura v záznamu</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="renderDSO_dataElement">
+                <source>Data Element</source>
+                <target>Datový prvek</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="renderDSO_mappingInstructions">
+                <source>Mapping Instructions</source>
+                <target>Mapovací instrukce</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="renderDSO_rules">
+                <source>Rules</source>
+                <target>Pravidla</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="renderDSO_uid">
+                <source>Uid</source>
+                <target>Uid</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="renderDSO_title">
+                <source>Title</source>
+                <target>Název</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="renderDSO_fileRef">
+                <source>File reference</source>
+                <target>Odkaz na soubor</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="renderDSO_dataLgd">
+                <source>Mapping Data Lgd</source>
+                <target>Mapovací data Lgd</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="renderDSO_usedTO">
+                <source>Template Objects using this Data Structure</source>
+                <target>Objekty šablon využívající tuto datovou strukturu</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="renderDSO_XML">
+                <source>Data Structure XML</source>
+                <target>XML Datové Struktury</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="renderDSO_DSO">
+                <source>Data Structure Object</source>
+                <target>Objekt Datové Struktury</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="renderDSO_noUid">
+                <source>No UID was found pointing to a Data Structure Object record.</source>
+                <target>Nebylo nalezeno žádné UID, poukazující na záznam Objektu Datové Struktury.</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="renderDSO_notFound">
+                <source>(NOT FOUND)</source>
+                <target>(NENALEZENO)</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="all">
+                <source>(ALL)</source>
+                <target>(VŠE)</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="renderTO_toDetails">
+                <source>Template Object Details</source>
+                <target>Detaily objektu šablony</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="renderTO_dsRecord">
+                <source>Data Structure Record</source>
+                <target>Záznam Datové Struktury</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="renderTO_updateWarningConfirm">
+                <source>Warning: You should only modify Data Structures and Template Objects which have not been manually edited.
+You risk that manual changes will be removed without further notice!</source>
+                <target>Upozornění: Měli byste pouze upravit Datové Struktury a Objekty Šablony, které nebyly ručně upraveny\nRiskujete, že budou manuální změny bez dalšího upozornění odstraněny!</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="renderTO_editDSTO">
+                <source>Modify DS / TO</source>
+                <target>Upravit DS / TO</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="renderTO_dsFile">
+                <source>Data Structure File</source>
+                <target>Soubor Datové Struktury</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="renderTO_toInfo">
+                <source>Template Object Information</source>
+                <target>Informace o Objektu Šablony</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="rootMultiTemplate_title">
+                <source>ROOT of MultiTemplate</source>
+                <target>KOŘEN MultiŠablony</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="rootMultiTemplate_description">
+                <source>Select the ROOT container for this template project. Probably just select a body-tag or some other HTML element which encapsulates ALL sub templates!</source>
+                <target>Vyberte ROOT kontejner pro tento projekt šablony. Vyberte asi jen tag body nebo jiný HTML prvek, který sdružuje VŠECHNY podšablony!</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="msgMappingIsDifferent">
+                <source>The current mapping information is different from the mapping information in the Template Object</source>
+                <target>Aktuální mapovací informace jsou odlišné od mapovacích informací Objektu Šablony</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="msgDSTOSaved">
+                <source>Data Structure (UID %s) and Template Record (UID %s) was saved in PID %s</source>
+                <target>Datová Struktura (UID %s) a Záznam šablony (UID %s) byly uloženy v PID %s</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="msgDSTOUpdated">
+                <source>Data Structure (UID %s) and Template Record (UID %s) was updated</source>
+                <target>Datová Struktura (UID %s) a Záznam šablony (UID %s) byly aktualizovány</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="msgMappingSaved">
+                <source>Mapping information was saved to the current Template Object!</source>
+                <target>Informace o mapování byla uložena do aktuálního Objektu Šablony</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="msgHeaderSet">
+                <source>Do not forget to press "Set" if header parts are changed!</source>
+                <target>Nezapomeňte klepnout na "Nastavit", pokud se části záhlaví změní!</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="include">
+                <source>Include</source>
+                <target>Začlenit</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="tag">
+                <source>Tag</source>
+                <target>Tag</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="tagContent">
+                <source>Tag Content</source>
+                <target>Obsah tagu</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="mapDataElement">
+                <source>Data Element</source>
+                <target>Datový prvek</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="mapField">
+                <source>Field</source>
+                <target>Pole</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="mapInstructions">
+                <source>Mapping Instructions</source>
+                <target>Mapovací instrukce</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="mapSampleData">
+                <source>Sample Data</source>
+                <target>Vzorová data</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="mapElementPreset">
+                <source>Element Preset</source>
+                <target>Přednastavení prvku</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="mapHTMLpath">
+                <source>HTML-path</source>
+                <target>HTML-cesta</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="mapAction">
+                <source>Action</source>
+                <target>Akce</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="mapRules">
+                <source>Rules</source>
+                <target>Pravidla</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="mapEdit">
+                <source>Edit</source>
+                <target>Upravit</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="mapMappingWindow">
+                <source>Mapping Window</source>
+                <target>Mapovací okno</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="mapPreviewInfo">
+                <source>Preview of Data Structure sample data merged into the mapped tags</source>
+                <target>Náhled vzorku dat Datové Struktury sloučený do namapovaných značek</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="mapDSelement">
+                <source>Mapping Data Element</source>
+                <target>Mapování prvku DS</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="mapLimitToTags">
+                <source>Limiting to tags</source>
+                <target>Omezení na značky</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="mapWarningElementChange">
+                <source>Changing element type will change your existing settings!</source>
+                <target>Změnou typu prvku se změní vaše stávající nastavení!</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="displayDSTitleTranslated">
+                <source>This title is translated!</source>
+                <target>Tento název je přeložen!</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="displayDSContentFound">
+                <source>Content found (%s chars)</source>
+                <target>Nalezen obsah (%s znaků)</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="displayDSContentEmpty">
+                <source>Content empty.</source>
+                <target>Obsah prázdný.</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="buttonRemap">
+                <source>Re-Map</source>
+                <target>Mapovat znovu</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="buttonRemapTitle">
+                <source>Map this DS element to another HTML element in template file.</source>
+                <target>Mapovat tento prvek DS na jiný prvek HTML v souboru šablony.</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="buttonChangeMode">
+                <source>Change Mode</source>
+                <target>Změna režimu</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="buttonChangeModeTitle">
+                <source>Change mapping mode, eg. from INNER to OUTER etc.</source>
+                <target>Změna režimu mapování, např. z VNITŘNÍ na VNĚJŠÍ apod.</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="msgNoContentFound">
+                <source>No content found!</source>
+                <target>Žádný obsah nenalezen!</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="msgHowToMap">
+                <source>Click a tag-icon in the window below to map this element.</source>
+                <target>Pro mapování tohoto prvku klepněte na ikonu tagu v okně níže.</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="buttonMap">
+                <source>Map</source>
+                <target>Mapovat</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="editEntry">
+                <source>Edit entry</source>
+                <target>Upravit záznam</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="deleteEntry">
+                <source>DELETE entry</source>
+                <target>Odstranit záznam</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="confirmDeleteEntry">
+                <source>Are you sure to delete this Data Structure entry?</source>
+                <target>Jste si jisti, že chcete odstranit tento záznam Datové Struktury?</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="noSampleData">
+                <source>No sample data</source>
+                <target>Žádná ukázková data</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="mapEnterNewFieldname">
+                <source>Enter new fieldname</source>
+                <target>Zadejte nový název pole</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="mapPresets_plainInput">
+                <source>Plain input field</source>
+                <target>Běžné vstupní pole</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="mapPresets_headerField">
+                <source>Header field</source>
+                <target>Pole hlavičky</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="mapPresets_gHederField">
+                <source>Header field, Graphical</source>
+                <target>Pole hlavičky, grafické</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="mapPresets_textarea">
+                <source>Text area for bodytext</source>
+                <target>Textové pole pro bodytext</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="mapPresets_rte">
+                <source>Rich text editor for bodytext</source>
+                <target>Rozšířený editor pro bodytext</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="mapPresets_linkField">
+                <source>Link field</source>
+                <target>Pole odkazu</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="mapPresets_integer">
+                <source>Integer value</source>
+                <target>Celočíselná hodnota</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="mapPresets_imageFixed">
+                <source>Image field, fixed W+H</source>
+                <target>Pole obrázku, pevná Š + V</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="mapPresets_select">
+                <source>Selector box</source>
+                <target>Výběrový box</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="mapPresets_check">
+                <source>Check box</source>
+                <target>Zaškrtávací pole</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="mapPresets_image">
+                <source>Image field</source>
+                <target>Pole obrázku</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="mapPresets_ce">
+                <source>Page-Content Elements [Pos.: %s]</source>
+                <target>Prvky obsahu stránky [Poz.: %s]</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="mapPresets_TSobjectPath">
+                <source>TypoScript Object Path</source>
+                <target>Cesta k objektu TypoScriptu</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="mapPresets_none">
+                <source>None (TypoScript only)</source>
+                <target>Žádná (pouze TypoScript)</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="mapPresets_customTCA">
+                <source>Custom form setup (no preset used)</source>
+                <target>Vlastní formulář (nepoužita předvolba)</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="mapPresetGroups_tceFields">
+                <source>Form Fields</source>
+                <target>Pole formuláře</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="mapPresetGroups_ts">
+                <source>TypoScript Elements</source>
+                <target>Prvky TypoScriptu</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="mapPresetGroups_other">
+                <source>Other</source>
+                <target>Ostatní</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="mapTSconstants">
+                <source>TypoScript Constants</source>
+                <target>Konstanty TypoScriptu</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="mapTScode">
+                <source>TypoScript Code</source>
+                <target>Kód TypoScriptu</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="mapExtraOptions">
+                <source>Extra options</source>
+                <target>Další volby</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="mapPostProcesses">
+                <source>Applied post-processes</source>
+                <target>Aplikované post-procesy</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="mapEnablePreview">
+                <source>Enable data preview in Page-Module</source>
+                <target>Povolit náhled dat v modulu Stránka</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="mapEnablePreview.enable">
+                <source>Enable</source>
+                <target>Povolit</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="mapEnablePreview.disable">
+                <source>Disable</source>
+                <target>Zakázat</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="mapPPcastInteger">
+                <source>Cast content to integer</source>
+                <target>Převést obsah na celé číslo</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="mapPPhsc">
+                <source>Pass content through htmlSpecialChars (HSC)</source>
+                <target>Filtrovat obsah skrz htmlSpecialChars (HSC)</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="mapCustomStdWrap">
+                <source>Custom stdWrap</source>
+                <target>Vlastní stdWrap</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="mapTCElabel">
+                <source>Form label</source>
+                <target>Štítek formuláře</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="mapTCEconf">
+                <source>Form configuration</source>
+                <target>Konfigurace formuláře</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="mapTCEextras">
+                <source>Form extras</source>
+                <target>Další možnosti formuláře</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="mapElContainers">
+                <source>Containers</source>
+                <target>Kontejnery</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="mapElElements">
+                <source>Elements</source>
+                <target>Prvky</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="mapSection">
+                <source>Section of elements</source>
+                <target>Sekce prvků</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="mapContainer">
+                <source>Container for elements</source>
+                <target>Kontejner pro prvky</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="mapElement">
+                <source>Element</source>
+                <target>Prvek</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="mapAttribute">
+                <source>Attribute</source>
+                <target>Atribut</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="mapNotMapped">
+                <source>Not mapped</source>
+                <target>Nenamapovaný</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="mapConfiguration">
+                <source>Configuration</source>
+                <target>Konfigurace</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="mapEditConfiguration">
+                <source>Edit general configuration</source>
+                <target>Upravit obecnou konfiguraci</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="mapDataProcessing">
+                <source>Data processing</source>
+                <target>Zpracování dat</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="mapEditDataProcessing">
+                <source>Edit data processing modifications</source>
+                <target>Upravit změny zpracování dat</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="mapTyposcript">
+                <source>Typoscript</source>
+                <target>TypoScript</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="mapEditTyposcript">
+                <source>Edit Typoscript</source>
+                <target>Upravit TypoScript</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="mapExtra">
+                <source>Extra</source>
+                <target>Další</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="mapEditExtra">
+                <source>Edit extra options</source>
+                <target>Upravit další možnosti</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="mapTCEform">
+                <source>Form</source>
+                <target>Formulář</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="mapEditTCEform">
+                <source>Edit form configuration</source>
+                <target>Upravit konfiguraci formuláře</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="mapObjectPath">
+                <source>Object path</source>
+                <target>Cesta objektu</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="mapOldStyleColumnNumber">
+                <source>Old style column number</source>
+                <target>Starý styl čísla sloupce</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="mapOldStyleColumnNumber_label">
+                <source>Column number (0=normal, 1=left, 2=right, 3=border)</source>
+                <target>Číslo sloupce (0=normální, 1=vlevo, 2=vpravo, 3=okraj)</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="mapEnableDragDrop">
+                <source>Enable Drag&amp;Drop in this container</source>
+                <target>Povolit Drag&amp;Drop v tomto kontejneru</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="errorNoContentInFile">
+                <source>No content found in file reference</source>
+                <target>Žádný obsah nenalezen v referenci souborů</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="errorNoFileToDisplay">
+                <source>No file to display</source>
+                <target>Žádný soubor k zobrazení</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="error">
+                <source>Error</source>
+                <target>Chyba</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="errorNoStorageFolder">
+                <source>No accessible Storage Folder found - please create one immediately!</source>
+                <target>Nebylo nalezeno žádné úložiště záznamů - prosím nejdříve nějaké vytvořte!</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="errorTONotSaved">
+                <source>No Template Object was created although the Data Structure was (UID %s)!</source>
+                <target>Nebyl vytvořen žádný Objekt Šablony, ale Datová Struktura vytvořena byla (UID %s)!</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="errorTONotCreated">
+                <source>No Data Structure was created!</source>
+                <target>Nebyla vytvořena žádná Datová Struktura!</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="errorNoUidFound">
+                <source>No UID was found pointing to a Template Object record.</source>
+                <target>Nebyl nalezen žádný UID ukazující na záznam typu Objekt Šablony.</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="errorNoDSrecord">
+                <source>ERROR: No Data Structure Record with the UID %s</source>
+                <target>CHYBA: Žádný záznam Datové Struktury s UID %s</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="errorInDSO">
+                <source>Data Structure Object ERROR</source>
+                <target>CHYBA objektu Datové Struktury</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="errorNoDSfound">
+                <source>No Data Structure Record could be found with UID "%s"!</source>
+                <target>Nebyl nalezen žádný záznam Datové Struktury s UID "%s"!</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="errorFileNotFound">
+                <source>The file "%s" could not be found!</source>
+                <target>Soubor "%s" nebyl nalezen!</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="errorNoTOfound">
+                <source>No Template Object Record with the UID "%s"!</source>
+                <target>Nebyl nalezen žádný záznam Objektu Šablony s UID "%s"!</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="errorNoToTitleDefined">
+                <source>No "title" defined, unable to create DS/TO.</source>
+                <target>Žádný "název" nedefinován, nelze vytvořit DS/TO.</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="validateTpl">
+                <source>Validate template file (on validator.w3c.org)</source>
+                <target>Ověřit soubor šablony (na validator.w3c.org)</target>
+            </trans-unit>
+        </body>
+    </file>
+</xliff>

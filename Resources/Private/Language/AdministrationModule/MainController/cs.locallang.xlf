@@ -1,0 +1,609 @@
+<?xml version='1.0' encoding='utf-8'?>
+<xliff version="1.0">
+    <file source-language="en" datatype="plaintext" original="messages" target-language="cs">
+        <header/>
+        <body>
+            <trans-unit xml:space="preserve" id="title">
+                <source>TemplaVoilà Control Center</source>
+                <target>Ovládací centrum TemplaVoilà</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="storagefolders">
+                <source>Storage Folders</source>
+                <target>Složky úložiště</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="datastructures">
+                <source>Data Structures</source>
+                <target>Datové Struktury</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="templateobjects">
+                <source>Template Objects</source>
+                <target>Objekty Šablon</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="templatefiles">
+                <source>Template Files</source>
+                <target>Soubory šablon</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="pagetemplates">
+                <source>Page templates</source>
+                <target>Šablony stránek</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="filereference">
+                <source>File reference</source>
+                <target>Odkaz na soubor</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="description">
+                <source>Description</source>
+                <target>Popis</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="fces">
+                <source>Flexible CE</source>
+                <target>Flexibilní CE</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="other">
+                <source>Other</source>
+                <target>Ostatní</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="unknown">
+                <source>Unknown "%s"</source>
+                <target>Neznámý "%s"</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="losttos">
+                <source>Lost TOs [%d]</source>
+                <target>Ztracené TO [%d]</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="overview">
+                <source>XML file</source>
+                <target>XML soubor</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="dstotitle">
+                <source>DS/TO Title</source>
+                <target>Název DS/TO</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="localization">
+                <source>Localization</source>
+                <target>Lokalizace</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="showdetails">
+                <source>Show Details</source>
+                <target></target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="showuused">
+                <source>Show unused datastructures</source>
+                <target></target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="containerstatus">
+                <source>Container status</source>
+                <target>Stav kontejneru</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="mappingstatus">
+                <source>Mapping status</source>
+                <target>Stav mapování</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="usagecount">
+                <source>Usage count</source>
+                <target>Počet využití</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="templatestatus">
+                <source>Template Status</source>
+                <target>Stav šablony</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="rendertype">
+                <source>Render Type</source>
+                <target>Type renderu</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="language">
+                <source>Language</source>
+                <target>Jazyk</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="globalprocessing_xml">
+                <source>Global Processing &lt;strong&gt;XML&lt;/strong&gt;</source>
+                <target>Globální zpracování &lt;strong&gt;XML&lt;/strong&gt;</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="localprocessing_xml">
+                <source>Local Processing &lt;strong&gt;XML&lt;/strong&gt;</source>
+                <target>Místní zpracování &lt;strong&gt;XML&lt;/strong&gt;</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="usedby">
+                <source>Used by</source>
+                <target>Používáno</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="created">
+                <source>Created</source>
+                <target>Vytvořeno</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="updated">
+                <source>Updated</source>
+                <target>Aktualizováno</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="noicon">
+                <source>[No icon]</source>
+                <target>[Bez ikony]</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="filenotfound">
+                <source>[File not found!]</source>
+                <target>[Soubor nebyl nalezen!]</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="createnewto">
+                <source>Create new Template Object</source>
+                <target>Vytvořit nový Objekt Šablony</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="containerwithseparatelocalization">
+                <source>Container element with separate localization!</source>
+                <target>Prvek kontejneru se samostatnou lokalizací!</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="mixofcontentandref">
+                <source>Mix of content and references, OK, but be careful!</source>
+                <target>Mix obsahu a odkazů, OK, ale buďte opatrní!</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="nocontentfields">
+                <source>No content fields, recommended to set "&lt;langDisable&gt;" = 1</source>
+                <target>Žádná pole obsahu, doporučuje se nastavit "&lt;langDisable&gt;" = 1</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="towasupdated">
+                <source>Template file was updated since last mapping (%s) and you might need to remap the Template Object!</source>
+                <target>Soubor šablony byl od posledního mapování (%s) aktualizován a může být potřeba přemapovat Objekt Šablony!</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="warning_mappingstatus">
+                <source>%s (TO: "%s")</source>
+                <target>%s (TO: "%s")</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="mapping_uptodate">
+                <source>Mapping is up to date.</source>
+                <target>Mapování je aktuální.</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="update_mapping">
+                <source>Update mapping</source>
+                <target>Aktualizace mapování</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="notmapped">
+                <source>Not mapped yet!</source>
+                <target>Ještě nenamapováno!</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="updatemapping_info">
+                <source>- &lt;em&gt;(It might also mean that the TO was mapped with an older version of TemplaVoila - then just go and save the mapping again at this will be updated.)&lt;/em&gt;</source>
+                <target>- &lt;em&gt;(To by mohlo také znamenat, že TO byl mapován se starší verzí TemplaVoilà - potom prostě uložte mapování znovu a to bude aktualizováno)&lt;/em&gt;</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="map">
+                <source>Map</source>
+                <target>Mapovat</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="remap">
+                <source>Remap</source>
+                <target>Přemapovat</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="preview">
+                <source>Preview</source>
+                <target>Náhled</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="toused_title">
+                <source>Title</source>
+                <target>Název</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="toused_pid">
+                <source>Page ID</source>
+                <target>ID stránky</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="toused_path">
+                <source>Path</source>
+                <target>Cesta</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="toused_workspace">
+                <source>Workspace</source>
+                <target>Pracovní prostor</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="toused_uid">
+                <source>UID</source>
+                <target>UID</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="toused_header">
+                <source>Header</source>
+                <target>Záhlaví</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="toused_usedin">
+                <source>Used in %d Elements</source>
+                <target>Používá se u %d prvků</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="noaccess">
+                <source>No Access</source>
+                <target>Žádný přístup</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="usage">
+                <source>Usage</source>
+                <target>Využití</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="action">
+                <source>Action</source>
+                <target>Akce</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="refresh">
+                <source>Refresh</source>
+                <target>Aktualizovat</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="invalidtemplatevalues">
+                <source>Invalid template values in %d elements</source>
+                <target>Neplatné hodnoty šablony u %d prvků</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="noerrorsfound">
+                <source>No errors found!</source>
+                <target>Žádné chyby nebyly nalezeny!</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="byuser">
+                <source>by user</source>
+                <target>uživatelem</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="file">
+                <source>File</source>
+                <target>Soubor</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="newdsto">
+                <source>New DS/TO</source>
+                <target>Nový DS/TO</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="usedfiles">
+                <source>Used files</source>
+                <target>Použité soubory</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="templatearchive">
+                <source>Template Archive</source>
+                <target>Archiv šablon</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="configuration">
+                <source>Configuration</source>
+                <target>Konfigurace</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="fceislocalized">
+                <source>FCE-element is localized</source>
+                <target>FPO-prvek je lokalizován</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="fceinlineislocalized">
+                <source>FCE-inline-elements of the FCE-element are localized</source>
+                <target>FPO-inline-prvky FPO-prvku jsou lokalizovány</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="casttointeger">
+                <source>the entered/computed value will be cast to an integer</source>
+                <target>vložené/vypočtené hodnoty budou převedeny na celé číslo</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="hsced">
+                <source>the entered/computed value will be passed to htmlentities</source>
+                <target>vložené/vypočtené hodnoty budou filtrovány skrz htmlentities</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="hsc_on">
+                <source>[HTML-code won't be available]</source>
+                <target>[HTML-kód nebude k dispozici]</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="hsc_off">
+                <source>[HTML-code will be displayed as-is]</source>
+                <target>[HTML-kód se zobrazí tak jak je]</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="stdwrap">
+                <source>the entered/computed value will be wrapped</source>
+                <target>vložené/vypočtené hodnoty budou obaleny</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="redundant">
+                <source>redundant</source>
+                <target>redundantní</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="illegalcharacters">
+                <source>entry contains illegal characters and/or has multiple lines</source>
+                <target>položka obsahuje nepovolené znaky a/nebo má více řádků</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="newsitewizard_menuhtmlcode">
+                <source>Here is the HTML code from the Template that encapsulated the menu</source>
+                <target>Zde je HTML kód ze šablony, který zapouzdřil menu</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="newsitewizard_menuenc">
+                <source>It seems that the menu consists of menu items encapsulated with %s.</source>
+                <target>Zdá se, že se menu skládá z položek menu zapouzdřených pomocí %s.</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="newsitewizard_menunoa">
+                <source>It seems that the menu consists of menu items not wrapped in any block tags except A-tags.</source>
+                <target>Zdá se, že se menu skládá z položek menu, které nejsou zabalené v žádných blokových tazích s výjimkou tagu A.</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="newsitewizard_menuwrap">
+                <source>It also seems that the whole menu is wrapped in this tag %s</source>
+                <target>Zdá se také, že je celé menu zabaleno tímto tagem %s</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="newsitewizard_menudiv">
+                <source>Between the menu elements there seems to be a visual division element with this HTML code: "%s". That will be added between each element as well.</source>
+                <target>Mezi prvky menu je zřejmě přítomen prvek vizuálního rozdělení s tímto HTML kódem: "%s". Ten bude také přidán mezi jednotlivé prvky.</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="newsitewizard_menuimg">
+                <source>The menu items were detected to be images - TYPO3 will try to generate graphical menu items automatically (GMENU). You will need to customize the look of these before it will match the originals!</source>
+                <target>Byly zjištěny obrázky coby položky menu - TYPO3 se bude snažit vytvořit grafické položky menu automaticky (GMENU). Budete muset upravit vzhled těchto položek předtím, než se bude shodovat s originálem!</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="newsitewizard_menumouseover">
+                <source>It seems like a mouseover functionality has been applied previously, so roll-over effect has been applied as well.</source>
+                <target>Vypadá to, že byla již dříve použita mouseover funkce, takže byl také použit roll-over efekt.</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="newsitewizard_menuts">
+                <source>Based on this analysis, this TypoScript configuration for the menu is suggested:</source>
+                <target>Na základě této analýzy je pro menu navrhována tato konfigurace TypoScriptu:</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="newsitewizard_menufinetune">
+                <source>You can fine tune the configuration here before it is saved:</source>
+                <target>Zde můžete doladit konfiguraci předtím, než bude uložena:</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="newsitewizard_menuwritets">
+                <source>Write %s TypoScript code</source>
+                <target>Zapsat %s TypoScript kód</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="newsitewizard_menufinished">
+                <source>The basics of your website should be working now. It seems like you did not map the %s to any element, so the menu configuration process will be skipped.</source>
+                <target>Základy vaší webové stránky by měly být teď funkční. Vypadá to, že jste nenamapovali %s na jakýkoli prvek, takže proces konfigurace menu bude přeskočen.</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="newsitewizard_menunext">
+                <source>Next...</source>
+                <target>Další...</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="newsitewizard_step5">
+                <source>Step 5 %s: Trying to create dynamic menu</source>
+                <target>Krok 5 %s: Snaha o vytvoření dynamického menu</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="newsitewizard_sitecreated">
+                <source>&lt;b&gt;Congratulations!&lt;/b&gt; You have completed the initial creation of a new website in TYPO3 based on the TemplaVoila engine. After you click the "Finish" button you can go to the Web&gt;Page module to edit your pages!</source>
+                <target>&lt;b&gt;Gratulujeme!&lt;/b&gt; Dokončili jste počáteční fázi vytváření nových webových stránek v TYPO3 založených na nástroji TemplaVoilà. Po klepnutí na tlačítko "Dokončit", můžete jít na modul Web&gt;Stránka upravovat své stránky!</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="newsitewizard_finish">
+                <source>Finish Wizard!</source>
+                <target>Dokončit průvodce!</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="newsitewizard_done">
+                <source>Step 6: Done</source>
+                <target>Krok 6: Hotovo</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="newsitewizard_basicsshouldwork">
+                <source>The basics of your website should be working now. However the %s still needs to be configured so that TYPO3 automatically generates a menu reflecting the pages in the page tree. This process involves configuration of the TypoScript object path, "lib.%s". This is a technical job which requires that you know about TypoScript if you want it 100%% customized.&lt;br/&gt;To assist you getting started with the %s this wizard will try to analyse the menu found inside the template file. If the menu was created of a series of repetitive block tags containing A-tags then there is a good chance this will succeed. You can see the result below.</source>
+                <target>Základy vaší webové stránky by měly být teď funkční. Nicméně %s ještě musí být nakonfigurován tak, aby TYPO3 automaticky generovalo menu podle stránek ve stromu stránek. Tento proces zahrnuje konfiguraci cesty objektu TypoScriptu, "lib.%s". Jedná se o technickou práci, která vyžaduje znalost TypoScriptu, pokud vyžadujete 100% přizpůsobení.&lt;br/&gt;Abychom vám pomohli se začátkem %s, tento průvodce se bude snažit analyzovat menu, které našel uvnitř souboru se šablonou. Pokud bylo menu vytvořeno z řady opakujících se blokových tagů obsahujících tag A, pak je dobrá šance, že se to podaří. Níže můžete vidět výsledek.</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="newsitewizard_headerinclude">
+                <source>Finally you also have to select which parts of the HTML header you want to include. For instance it is important that you select all sections with CSS styles in order to preserve the correct visual appearance of your website.&lt;br/&gt;You can also select the body-tag of the template if you want to use the original body-tag.&lt;br/&gt;This animations shows an example of this process:</source>
+                <target>Nakonec si také zvolte, které části HTML hlavičky chcete zahrnout. Například je důležité, abyste vybrali všechny úseky s CSS styly, aby byl zachován správný vzhled vašeho webu.&lt;br/&gt;Můžete také vybrat tag BODY ze šablony, pokud chcete použít původní.&lt;br/&gt;Tato animace ukazuje příklad tohoto procesu:</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="newsitewizard_headerselect">
+                <source>Select HTML header parts</source>
+                <target>Vybrat části HTML hlavičky</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="newsitewizard_step4">
+                <source>Step 4: Select HTML header parts</source>
+                <target>Krok 4: Výběr částí HTML hlavičky</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="newsitewizard_maintemplate">
+                <source>Main template:</source>
+                <target>Hlavní šablona:</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="newsitewizard_created">
+                <source>New site has been created and adapted.</source>
+                <target>Nový web byl vytvořen a přizpůsoben.</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="newsitewizard_step3error">
+                <source>Error happened: Either you did not specify a website name or username in the previous form!</source>
+                <target>Nastala chyba: V předchozím formuláři jste buď neuvedli název webu nebo uživatelské jméno!</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="newsitewizard_step3ready">
+                <source>You are now ready to point out at which position in the HTML code to insert the TYPO3 generated page content and the main menu. This process is called "mapping".&lt;br/&gt;The process of mapping is shown with this little animation. Please study it closely to understand the flow, then click the button below to start the mapping process on your own. Complete the mapping process by pressing "Save and Return".</source>
+                <target>Nyní jste připraveni ukázat na které pozici v HTML kódu bude vložený obsah stránky a hlavního menu generovaný TYPO3. Tento proces se nazývá "mapování".&lt;br/&gt;Proces mapování je zobrazen pomocí této malé animaci. Prosím prostudujte si ji blíže, abyste pochopili princip, potom klepněte na tlačítko níže a spusťte proces mapování na vlastní pěst. Dokončete proces mapování pomocí tlačítka "Uložit a návrat".</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="newsitewizard_startmapping">
+                <source>Start the mapping process</source>
+                <target>Začít proces mapování</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="newsitewizard_beginmapping">
+                <source>Step 3: Begin mapping</source>
+                <target>Krok 3: Zahájení mapování</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="newsitewizard_firststep">
+                <source>The first step is to select the HTML file you want to base the new website design on. Below you see a list of HTML files found in the folder "%s". Click the "Preview"-link to see what the file looks like and when the right template is found, just click the "Choose as template"-link in order to proceed.&lt;br/&gt;If the list of files is empty you must now copy the HTML file you want to use as a template into the template folder. When you have done that, press the refresh button to refresh the list.</source>
+                <target>Prvním krokem je výběr HTML souboru, na kterém chcete založit nový design webu. Níže vidíte seznam HTML souborů nalezených ve složce "%s". Klepněte na odkaz "Náhled", abyste zjistili, jak soubor vypadá a jakmile naleznete správnou šablonu, stačí klepnout na odkaz "Vybrat jako šablonu", abyste mohli pokračovat.&lt;br/&gt;Pokud je seznam souborů prázdný, musíte nyní zkopírovat HTML soubor, který chcete použít jako šablonu do složky templates. Pokud jste to udělali, stiskněte tlačítko Obnovit pro obnovení seznamu.</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="newsitewizard_selecttemplate">
+                <source>Step 1: Select the template HTML file</source>
+                <target>Krok 1: Vyberte soubor HTML šablony</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="newsitewizard_error">
+                <source>TemplaVoila wizard error</source>
+                <target>Chyba TemplaVoilà průvodce</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="newsitewizard_errornodir">
+                <source>The template directory is empty or could not be found. Please, create it before starting this wizard.</source>
+                <target>Složka se šablonou je prázdná nebo nebyla nalezena. Prosím, vytvořte ji před spuštěním tohoto průvodce.</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="newsitewizard_templateselected">
+                <source>The template file "%s" is now selected:</source>
+                <target>Soubor šablony "%s" je nyní vybrán:</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="newsitewizard_step2next">
+                <source>Next, you should enter default values for the new website. With this basic set of information we are ready to create the initial website structure!</source>
+                <target>Dále musíte zadat výchozí hodnoty pro nový web. S touto základní sadou informací jsme připraveni vytvořit počáteční strukturu stránek!</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="newsitewizard_step2_name">
+                <source>Name of the site</source>
+                <target>Název webu</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="newsitewizard_step2_url">
+                <source>URL of the website</source>
+                <target>URL webové stránky</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="newsitewizard_step2_editor">
+                <source>Editor username</source>
+                <target>Uživatelské jméno editora</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="newsitewizard_step2_required">
+                <source>(Required)</source>
+                <target>(Povinné)</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="newsitewizard_step2_optional">
+                <source>(Optional)</source>
+                <target>(Volitelné)</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="newsitewizard_step2_createnewsite">
+                <source>Create new site</source>
+                <target>Vytvořit nový web</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="newsitewizard_step2_notemplatefound">
+                <source>No template file found!?</source>
+                <target>Nenalezen žádný soubor šablony!?</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="newsitewizard_step2_valuename">
+                <source>This value is shown in the browsers title bar and will be the default name of the first page in the page tree.</source>
+                <target>Tato hodnota je uvedena v záhlaví prohlížeče a bude výchozím názvem první stránky ve stromu.</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="newsitewizard_step2_valueurl">
+                <source>If you know the URL of the website already please enter it here, eg. "www.mydomain.com".</source>
+                <target>Pokud znáte adresu URL webu již nyní, zadejte ho prosím zde, například. "www.mojedomena.cz".</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="newsitewizard_step2_username">
+                <source>Enter the username of a new backend user/group who will be able to edit the pages on the new website. (Password will be "password" by default, make sure to change that!)</source>
+                <target>Zadejte uživatelské jméno nového uživatele/skupiny backendu, kteří budou moci upravovat stránky na novém webu. (Heslo bude ve výchozím nastavení "password", a určitě jej po dokončení průvodce změňte!)</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="newsitewizard_step2">
+                <source>Step 2: Enter default values for new site</source>
+                <target>Krok 2: Zadejte výchozí hodnoty pro nové stránky</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="newsitewizard_usedtimes">
+                <source>Used %d times</source>
+                <target>Použito %d×</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="newsitewizard_notused">
+                <source>Not used yet</source>
+                <target>Zatím nepoužito</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="newsitewizard_preview">
+                <source>[Preview first]</source>
+                <target>[Nejdříve náhled]</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="newsitewizard_choose">
+                <source>[Choose as Template]</source>
+                <target>[Vybrat jako šablonu]</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="dsdetails_nobasicdefinitions">
+                <source>The element has no basic definitions!</source>
+                <target>Prvek nemá žádné základní definice!</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="dsdetails_notceformdefinitions">
+                <source>The element has no TCE-form definitions!</source>
+                <target>Prvek nemá žádné definice TCE-formuláře!</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="dsdetails_notes">
+                <source>Notes</source>
+                <target>Poznámky</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="dsdetails_ts">
+                <source>TypoScript</source>
+                <target>TypoScript</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="dsdetails_column">
+                <source>Column-positioning</source>
+                <target>Sloupec-polohování</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="dsdetails_preset">
+                <source>Preset used for the element</source>
+                <target>Přednastavení použité pro prvek</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="dsdetails_tsutilize">
+                <source>will utilize the TS-structure %s defined inside the &lt;TypoScriptObjPath&gt;-entry</source>
+                <target>bude využívat TS-strukturu %s definovánou uvnitř &lt;TypoScriptObjPath&gt;-záznamu</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="dsdetails_tslines">
+                <source>%d lines of TS-code inside the &lt;TypoScript&gt;-entry</source>
+                <target>%d řádků TS-kódu uvnitř &lt;TypoScript&gt;-záznamu</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="dsdetails_tsconstants">
+                <source>%d TS-constants defined for use in the &lt;TypoScript&gt;-entry</source>
+                <target>%d TS-konstanty definované pro použití v &lt;TypoScript&gt;-záznamu</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="warnings">
+                <source>Warnings</source>
+                <target>Upozornění</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="fatalerrors">
+                <source>Fatal errors</source>
+                <target>Fatální chyby</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="invaliddatastructure_xmlbroken">
+                <source>The the element "%1$s" within the datastructure seems to contain invalid XML, therefore the required data can't be displayed.</source>
+                <target>Zdá se, že prvek "%1$s" v rámci datové struktury obsahuje neplatné XML, a proto nelze požadované údaje zobrazit.</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="wiz_title">
+                <source>New site wizard</source>
+                <target>Pomocník pro nový web</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="wiz_step">
+                <source>Step %s</source>
+                <target>Krok %s</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="description_pagesWithCertainDsTo">
+                <source>The following pages in the root line contain data structures and template objects</source>
+                <target>Následující stránky v kořenové linii obsahují Datové Struktury a Objekty Šablon</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="newsitewizard_intro">
+                <source>If you want to start a new website based on the TemplaVoila template engine you can start this wizard which will set up all the boring initial stuff for you.
+                You will be taken through these steps:
+                - Creation of a new website root, storage folder, sample pages.
+                - Creation of the main TemplaVoila template, including mapping of one content area and a main menu.
+                - Creation of a backend user and group to manage only that website.
+                You should prepare an HTML template before you begin the wizard; simply make a design in HTML and place the HTML file including graphics and stylesheets in a subfolder of "%s" relative to the websites root directory.
+                Tip about menus: If you include a main menu in the template, try to place the whole menu inside a container (like &lt;div&gt;, &lt;table&gt; or &lt;tr&gt;) and encapsulate each menu item in a block tag (like &lt;tr&gt;, &lt;td&gt; or &lt;div&gt;). Use A-tags for the links. If you want different designs for normal and active menu elements, design the first menu item as "Active" and the second (and rest) as "Normal", then the wizard might be able to capture the right configuration.
+                Tip about stylesheets: The content elements from TYPO3 will be outputted in regular HTML tags like &lt;p&gt;, &lt;h1&gt; to &lt;h6&gt;, &lt;ol&gt; etc. You will prepare yourself well if your stylesheet in the HTML template provides good styles for these standard elements from the start. Then you will have less finetuning to do later.
+            </source>
+                <target>Pokud chcete vytvořit nový web založený na šablonovacím nástroji TemplaVoilà můžete spustit tohoto průvodce, který za vás vykoná všechny ty nudné počáteční úkony. Budete provedeni následujícími kroky: - Vytvoření kořenu nového webu, složky pro ukládání a vzorových stránek. - Vytvoření hlavní šablony TemplaVoilà, včetně mapování jedné oblasti obsahu a hlavního menu. - Vytvoření uživatelů a skupin backendu pro správu webu. Než spustíte průvodce, měli byste si připravit HTML šablonu; prostě vytvořit design v HTML a umístit HTML soubor, včetně grafiky a stylů do podsložky "%s", vztaženo relativně ke kořenové složce webu. Tip k menu: Zahrnete-li do šablony hlavní menu, zkuste umístit celé menu dovnitř kontejneru (jako &lt;div&gt;, &lt;table&gt; nebo &lt;tr&gt;), a zapouzdřit jednotlivé položky menu do blokových tagů (jako &lt;tr&gt;, &lt;td&gt; nebo &lt;div&gt;). Pro odkazy použijte tagy A. Pokud chcete mít různý design pro normální a aktivní prvky menu, navrhněte první položku menu jako "aktivní" a druhou (a zbytek) jako "normální", pak může být průvodce schopen podchytit správnou konfiguraci. Tip ke stylům: prvky obsahu z TYPO3 budou na výstupu zapouzdřeny do běžných HTML tagů, jako je &lt;p&gt;, &lt;h1&gt; na &lt;h6&gt;, &lt;ol&gt; atd. Můžete se na to připravit předem, pokud bude mít váš styl v HTML šabloně už od začátku tyto standardní prvky nadefinované. Později budete mít méně práce s jemným dolaďováním.</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="newsitewizard_startnow">
+                <source>Start wizard now!</source>
+                <target>Začněte průvodce nyní!</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="newsitewizard_cancel">
+                <source>Cancel wizard</source>
+                <target>Zrušit průvodce</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="newsitewizard_problem">
+                <source>&lt;em&gt;There are some technical problems you have to solve before you can start the wizard! Please see below for details. Solve these problems first and come back.&lt;/em&gt;</source>
+                <target>&lt;em&gt;Existují nějaké technické problémy, které musíte vyřešit předtím, než budete moci spustit průvodce! Níže naleznete podrobnosti. Nejprve tyto problémy vyřešte a pak se vraťte.&lt;/em&gt;</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="newsitewizard_missingext">
+                <source>Missing extension!</source>
+                <target>Chybějící rozšíření!</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="newsitewizard_missingconf">
+                <source>Missing configuration!</source>
+                <target>Chybějící konfigurace!</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="newsitewizard_missingconf_description">
+                <source>The TemplaVoila extension configuration is missing. Please clear the cache and recheck the configuration within the extension manager.</source>
+                <target>Konfigurace rozšíření TemplaVoila chybí. Prosím vymažte keš a znovu zkontrolujte nastavení v rámci Správce rozšíření.</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="newsitewizard_missingdir">
+                <source>Missing directory!</source>
+                <target>Chybějící adresář!</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="newsitewizard_missingext_description">
+                <source>Before the wizard can run some extensions are required to be installed. Below you will see the which extensions are required and which are not available at this moment. Please go to the Extension Manager and install these first.</source>
+                <target>Předtím, než může být spuštěn průvodce, musí být nainstalována některá rozšíření. Níže uvidíte, která rozšíření jsou potřebná a která nejsou v tuto chvíli k dispozici. Prosím, jděte do Správce rozšíření a nejprve je nainstalujte.</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="newsitewizard_missingext_extkey">
+                <source>Extension Key:</source>
+                <target>Klíč rozšíření:</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="newsitewizard_missingext_installed">
+                <source>Installed?</source>
+                <target>Nainstalováno?</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="newsitewizard_missingext_yes">
+                <source>Yes</source>
+                <target>Ano</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="newsitewizard_missingext_no">
+                <source>No</source>
+                <target>Ne</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="newsitewizard_missingdir_instruction">
+                <source>The directory "%s" (relative to the website root) does not exist! This is where you must place your HTML templates. Please create that directory &lt;u&gt;before you start the wizard&lt;/u&gt;. In order to do so, follow these directions:
+                - Go to the module File &gt; Filelist
+                - Click the icon of the "%s" root and select "Create" from the context menu.
+                - Enter the name "templates" of the folder and press the "Create" button.
+                - Return to this wizard
+            </source>
+                <target>Složka "%s" (relativní ke kořenu webu) neexistuje! To je místo, kam musíte umístit HTML šablonu. Prosím vytvořte tuto složku &lt;u&gt;před spuštěním průvodce&lt;/u&gt;. Aby bylo tak možné učinit, postupujte podle následujících pokynů: - Přejděte na modul Soubor &gt; Seznam souborů - Klikněte na ikonu "%s" kořenu a zvolte z kontextového menu "Vytvořit". - Zadejte název složky "templates" a stiskněte tlačítko "Vytvořit". - Vraťte se do tohoto průvodce</target>
+            </trans-unit>
+        </body>
+    </file>
+</xliff>

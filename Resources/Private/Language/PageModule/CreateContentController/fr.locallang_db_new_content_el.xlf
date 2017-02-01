@@ -1,0 +1,148 @@
+<?xml version='1.0' encoding='utf-8'?>
+<xliff version="1.0">
+    <file source-language="en" datatype="plaintext" original="messages" target-language="fr">
+        <header/>
+        <body>
+            <trans-unit xml:space="preserve" id="sel1">
+                <source>Please select which kind of page content you wish to create:</source>
+                <target>Sélectionnez le type de contenu que vous souhaitez créer :</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="sel2">
+                <source>Now, click at the position where you wish to place the element on the page:</source>
+                <target>Maintenant, cliquez où vous souhaitez placer le contenu dans la page :</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="common">
+                <source>Typical page content</source>
+                <target>Contenu type de la page</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="common_1_title">
+                <source>Regular text element</source>
+                <target>Elément texte normal</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="common_1_description">
+                <source>A regular text element with header and bodytext fields.</source>
+                <target>Texte avec titre et paragraphe(s).</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="common_2_title">
+                <source>Text with image below</source>
+                <target>Texte avec une image en dessous</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="common_2_description">
+                <source>Regular text element with a field which can contain any number of images which are positioned below the text.</source>
+                <target>Texte avec un champs pouvant contenir un nombre important d'images.</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="common_3_title">
+                <source>Text with image to the right</source>
+                <target>Texte avec une image à droite</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="common_3_description">
+                <source>Like above but with the images placed to the right of the text with the text wrapping around the images.</source>
+                <target>Idem que le précendent mais avec le texte jusitfié autour de l'image.</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="common_4_title">
+                <source>Images only</source>
+                <target>Liste d'images</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="common_4_description">
+                <source>Any number of images aligned in columns and rows with caption. Like the image options above but without text.</source>
+                <target>Liste d'images aligné en colonnes et en lignes avec titre.</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="common_5_title">
+                <source>Bullet list</source>
+                <target>Liste à puces</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="common_5_description">
+                <source>A single bullet list.</source>
+                <target>Une simple liste à puces.</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="common_6_title">
+                <source>Table</source>
+                <target>Tableau</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="common_6_description">
+                <source>A simple table with up to 8 columns.</source>
+                <target>Un tableau simple avec un max. 8 colonnes.</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="special">
+                <source>Special elements</source>
+                <target>Eléments spéciaux</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="special_1_title">
+                <source>Filelinks</source>
+                <target>Fichiers à télécharger</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="special_1_description">
+                <source>Makes a list of files for download.</source>
+                <target>Liste de fichiers à télécharger.</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="special_2_title">
+                <source>Multimedia</source>
+                <target>Multimédia</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="special_2_description">
+                <source>Inserts a media element like a Flash animation, audio file or video clip.</source>
+                <target>Insérez un élément multimédia comme une animation flash ou un clip vidéo.</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="special_3_title">
+                <source>Sitemap</source>
+                <target>Plan du site</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="special_3_description">
+                <source>Creates a sitemap of the website.</source>
+                <target>Créer un plan du site.</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="special_4_title">
+                <source>Plain HTML</source>
+                <target>Code HTML</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="special_4_description">
+                <source>With this element you can insert raw HTML code on the page.</source>
+                <target>Avec cette élément, vous pouvez insérer du code HTML brut.</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="forms">
+                <source>Form elements</source>
+                <target>Éléments de formulaire</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="forms_1_title">
+                <source>Mail form</source>
+                <target>Formulaire par e-mail</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="forms_1_description">
+                <source>A response mail form by which users of the website can submit responses.</source>
+                <target>Un formulaire qui peut directement être envoyé par e-mail.</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="forms_2_title">
+                <source>Search form</source>
+                <target>Formulaire de recherche</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="forms_2_description">
+                <source>Draws a search form and the searchresult if a search is performed.</source>
+                <target>Affiche un formulaire de recherche et le résultat si une recherche est faite.</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="forms_3_title">
+                <source>Login form</source>
+                <target>Formulaire d'identification</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="forms_3_description">
+                <source>Login/logout form for website users. This is used to password protect pages. You must create website users and groups for this to work.</source>
+                <target>Formulaire d'identification pour les utilisateurs du site. C'est utilisé pour les pages protégées par mot de passe. Vous devez créer des utilisateurs et des groupes pour que ça fonctionne.</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="plugins">
+                <source>Plugins</source>
+                <target>Plugins</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="plugins_1_title">
+                <source>General Plugin</source>
+                <target>Plugin général</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="plugins_1_description">
+                <source>If you want to insert a plugin which cannot be found among the options below, just select this element type and you can select your specific plugin in a selector box afterward.</source>
+                <target>Si vous voulez insérer un plugin qui ne peut être trouvé parmi les options ci-dessous, sélectionnez ce type d'élément et vous pourrez sélectionner votre plugin dans un menu déroulant</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="fce">
+                <source>Flexible content</source>
+                <target>Contenu flexible</target>
+            </trans-unit>
+        </body>
+    </file>
+</xliff>

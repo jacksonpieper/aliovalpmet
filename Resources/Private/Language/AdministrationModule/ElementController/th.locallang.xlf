@@ -1,0 +1,781 @@
+<?xml version='1.0' encoding='utf-8'?>
+<xliff version="1.0">
+    <file source-language="en" datatype="plaintext" original="messages" target-language="th">
+        <header/>
+        <body>
+            <trans-unit xml:space="preserve" id="title">
+                <source>TemplaVoilà</source>
+                <target>TemplaVoilà</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="templateFile">
+                <source>Template File</source>
+                <target>แฟ้มแม่แบบ</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="templateObject">
+                <source>Template Object</source>
+                <target>วัตถุแม่แบบ</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="titleXmlConfiguration">
+                <source>XML configuration</source>
+                <target>XML การกำหนดค่า</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="titleLoadDSXml">
+                <source>Load DS XML</source>
+                <target>DS Load XML</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="mappingTitle">
+                <source>TemplaVoilà Template Mapping</source>
+                <target>Mapping Template</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="mappingNEW">
+                <source>[NEW]</source>
+                <target>[] NEW</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="mappingHeadParts">
+                <source>Adding parts from HTML header</source>
+                <target>เพิ่มส่วนจาก HTML header</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="mappingBodyParts">
+                <source>Data Structure to be mapped to HTML template</source>
+                <target>โครงสร้างข้อมูลที่จะแมปกับ HTML แม่แบบ</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="rootDescription">
+                <source>Select the HTML element on the page which you want to be the overall container element for the template.</source>
+                <target>เลือกองค์ประกอบในหน้า HTML ที่คุณต้องการจะเก็บองค์ประกอบโดยรวมของแม่แบบ</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="selectTOrecrdToLoadDSFrom">
+                <source>Select a Template Object record to load a Data Structure/Mapping information from</source>
+                <target>เลือกระเบียน Template Object โหลดข้อมูลโครงสร้าง / ข้อมูลแผนที่จาก</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="noDSDefined">
+                <source>No Data Structure was defined in the record... (Must be T3DataStructure XML content)</source>
+                <target>ไม่มีข้อมูลโครงสร้างถูกกำหนดไว้ในบันทึก ... (ต้องมีเนื้อหา T3DataStructure XML)</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="pasteDSXml">
+                <source>Alternatively, paste the Data Structure XML into this form</source>
+                <target>หรือวางข้อมูลโครงสร้าง XML ในฟอร์มนี้</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="loadDSXml">
+                <source>Load Data Structure</source>
+                <target>Load โครงสร้างข้อมูล</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="instrunctions">
+                <source>Instructions</source>
+                <target>คำแนะนำ</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="toBeDefined">
+                <source>to be defined</source>
+                <target>เพื่อกำหนด</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="tabTODetails">
+                <source>Information</source>
+                <target>ข้อมูล</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="tabHeadParts">
+                <source>Header Parts</source>
+                <target>ส่วน Header</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="tabBodyParts">
+                <source>Mapping</source>
+                <target>การทำแผนที่</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="dsTypes_section">
+                <source>Section</source>
+                <target>มาตรา</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="dsTypes_container">
+                <source>Container</source>
+                <target>ภาชนะ</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="dsTypes_attribute">
+                <source>Attribute</source>
+                <target>คุณลักษณะ</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="dsTypes_element">
+                <source>Element</source>
+                <target>ธาตุ</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="dsTypes_notmapped">
+                <source>Not Mapped</source>
+                <target>ไม่กำหนดตำแหน่ง</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="buttonGoBack">
+                <source>Go back</source>
+                <target>กลับไป</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="buttonCancel">
+                <source>Cancel</source>
+                <target>ยกเลิก</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="buttonShowXML">
+                <source>Show XML</source>
+                <target>XML แสดง</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="buttonClearAll">
+                <source>Clear all</source>
+                <target>ล้าง</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="buttonPreview">
+                <source>Preview</source>
+                <target>Preview</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="buttonSave">
+                <source>Save</source>
+                <target>ประหยัด</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="buttonSaveExit">
+                <source>Save and Exit</source>
+                <target>บันทึกและออกจาก</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="buttonSaveAs">
+                <source>Save as</source>
+                <target>บันทึกเป็น</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="buttonLoad">
+                <source>Load</source>
+                <target>ภาระ</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="buttonRefresh">
+                <source>Refresh</source>
+                <target>Refresh</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="buttonAdd">
+                <source>Add</source>
+                <target>เพิ่ม</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="buttonUpdate">
+                <source>Update</source>
+                <target>Update</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="buttonDelete">
+                <source>Delete</source>
+                <target>ลบ</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="buttonCancelClose">
+                <source>Cancel / Close</source>
+                <target>ยกเลิก / Close</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="buttonTitle_showXML">
+                <source>Preview the currently build Data Structure as XML</source>
+                <target>ตัวอย่างที่กำลังสร้างโครงสร้างข้อมูลเป็น XML</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="buttonTitle_clearAll">
+                <source>Clear all Data Structure and Mapping information</source>
+                <target>ล้างข้อมูลโครงสร้างและข้อมูลแผนที่</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="buttonTitle_preview">
+                <source>Preview the mapping to the template</source>
+                <target>ตัวอย่างการทำแผนที่ในแม่แบบ</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="buttonTitle_save">
+                <source>Save to current TO and DS</source>
+                <target>บันทึกปัจจุบันและ DS</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="buttonTitle_saveExit">
+                <source>Save to current TO and DS and return to Overview</source>
+                <target>บันทึกปัจจุบันและ DS และกลับไปที่ภาพรวม</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="buttonTitle_saveAs">
+                <source>Go to save menu</source>
+                <target>ไปบันทึกเมนู</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="buttonTitle_load">
+                <source>Go to load menu</source>
+                <target>ไปโหลดเมนู</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="buttonTitle_refresh">
+                <source>Redraw screen</source>
+                <target>จอวาด</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="buttonSet">
+                <source>Set</source>
+                <target>ตั้งค่า</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="buttonSetTitle">
+                <source>Will update session data with current settings.</source>
+                <target>จะปรับปรุงข้อมูลครั้งกับการตั้งค่าปัจจุบัน</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="buttonClearAllMappingTitle">
+                <source>Clears all mapping information currently set.</source>
+                <target>ลบข้อมูลแผนที่ทั้งหมดชุดนี้</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="buttonPreviewMappingTitle">
+                <source>Will merge sample content into the template according to the current mapping information.</source>
+                <target>จะรวมเนื้อหาเป็นตัวอย่างแม่แบบตามข้อมูลแผนที่ในปัจจุบัน</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="buttonSaveTOTitle">
+                <source>Saving all mapping data into the Template Object.</source>
+                <target>บันทึกข้อมูลแผนที่ทั้งหมดลงในแม่แบบ Object</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="buttonSaveAndReturn">
+                <source>Save and Return</source>
+                <target>บันทึกและกลับ</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="buttonSaveAndReturnTitle">
+                <source>Saving all mapping data into the Template Object and return.</source>
+                <target>บันทึกข้อมูลแผนที่ทั้งหมดลงในแม่แบบของวัตถุและผลตอบแทน</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="buttonRevert">
+                <source>Revert</source>
+                <target>ย้อนกลับ</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="buttonRevertTitle">
+                <source>Reverting %s mapping data to original data in the Template Object.</source>
+                <target>ตอกหมุด% s แผนที่ข้อมูลไปข้อมูลเดิมในแม่แบบ Object</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="createDSTO">
+                <source>CREATE Data Structure / Template Object</source>
+                <target>สร้างโครงสร้างข้อมูล / Template Object</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="updateDSTO">
+                <source>UPDATE existing Data Structure / Template Object</source>
+                <target>UPDATE ข้อมูลที่มีอยู่โครงสร้าง / Object แม่แบบ</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="updateDSTOshort">
+                <source>UPDATE TO (and DS)</source>
+                <target>UPDATE TO DS (และ)</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="saveDSTOconfirm">
+                <source>Are you sure you want to override the current contents of these records?\nThis feature is meant to support the process of creating new Data Structures which have not been manually edited yet.</source>
+                <target>คุณแน่ใจหรือว่าต้องการแทนที่เนื้อหาปัจจุบันของรายการเหล่านี้ \ คุณลักษณะ nThis มีขึ้นเพื่อสนับสนุนกระบวนการสร้างโครงสร้างข้อมูลใหม่ที่ยังไม่ได้แก้ไขด้วยตนเองยัง</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="createDSTOshort">
+                <source>CREATE DS / TO</source>
+                <target>DS CREATE / TO</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="titleDSTO">
+                <source>Title of DS/TO</source>
+                <target>ชื่อของ DS / TO</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="templateType">
+                <source>Template Type</source>
+                <target>แม่แบบ</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="pageTemplate">
+                <source>Page Template</source>
+                <target>แม่แบบหน้า</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="contentElement">
+                <source>Content Element</source>
+                <target>Element Content</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="undefined">
+                <source>Undefined</source>
+                <target>ตะคุ่ม</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="storeInPID">
+                <source>Store in PID</source>
+                <target>เก็บใน PID</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="selectTO">
+                <source>Select TO</source>
+                <target>เพื่อเลือก</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="buildingDS">
+                <source>Building Data Structure</source>
+                <target>อาคารโครงสร้างข้อมูล</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="renderDSO_dataStructure">
+                <source>Data Structure in record</source>
+                <target>ข้อมูลโครงสร้างในบันทึก</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="renderDSO_dataElement">
+                <source>Data Element</source>
+                <target>Element Data</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="renderDSO_mappingInstructions">
+                <source>Mapping Instructions</source>
+                <target>คำแนะนำ Mapping</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="renderDSO_rules">
+                <source>Rules</source>
+                <target>กฎระเบียบ</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="renderDSO_uid">
+                <source>Uid</source>
+                <target>uid</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="renderDSO_title">
+                <source>Title</source>
+                <target>ชื่อเรื่อง</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="renderDSO_fileRef">
+                <source>File reference</source>
+                <target>อ้างอิงไฟล์</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="renderDSO_dataLgd">
+                <source>Mapping Data Lgd</source>
+                <target>ข้อมูลแผนที่ Lgd</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="renderDSO_usedTO">
+                <source>Template Objects using this Data Structure</source>
+                <target>แม่แบบนี้โดยใช้วัตถุโครงสร้างข้อมูล</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="renderDSO_XML">
+                <source>Data Structure XML</source>
+                <target>XML โครงสร้างข้อมูล</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="renderDSO_DSO">
+                <source>Data Structure Object</source>
+                <target>วัตถุโครงสร้างข้อมูล</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="renderDSO_noUid">
+                <source>No UID was found pointing to a Data Structure Object record.</source>
+                <target>UID ไม่พบชี้ให้บันทึกข้อมูลโครงสร้างวัตถุ</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="renderDSO_notFound">
+                <source>(NOT FOUND)</source>
+                <target>(ไม่พบ)</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="all">
+                <source>(ALL)</source>
+                <target>(ALL)</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="renderTO_toDetails">
+                <source>Template Object Details</source>
+                <target>แม่แบบรายละเอียดวัตถุ</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="renderTO_dsRecord">
+                <source>Data Structure Record</source>
+                <target>บันทึกโครงสร้างข้อมูล</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="renderTO_updateWarningConfirm">
+                <source>Warning: You should only modify Data Structures and Template Objects which have not been manually edited.
+You risk that manual changes will be removed without further notice!</source>
+                <target>คำเตือน : คุณควรปรับเปลี่ยนโครงสร้างข้อมูลและวัตถุแม่แบบที่ไม่ได้แก้ไขด้วยความเสี่ยง nYou \ ว่าการเปลี่ยนแปลงตนเองจะถูกลบออกโดยไม่ต้องแจ้งให้ทราบต่อไป!</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="renderTO_editDSTO">
+                <source>Modify DS / TO</source>
+                <target>DS แก้ไข / TO</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="renderTO_dsFile">
+                <source>Data Structure File</source>
+                <target>แฟ้มโครงสร้างข้อมูล</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="renderTO_toInfo">
+                <source>Template Object Information</source>
+                <target>ข้อมูลวัตถุแม่แบบ</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="rootMultiTemplate_title">
+                <source>ROOT of MultiTemplate</source>
+                <target>ROOT ของ MultiTemplate</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="rootMultiTemplate_description">
+                <source>Select the ROOT container for this template project. Probably just select a body-tag or some other HTML element which encapsulates ALL sub templates!</source>
+                <target>เลือกภาชนะ ROOT สำหรับแม่แบบนี้โครงการ อาจเพียงแค่เลือกตัวแท็กหรือบางองค์ประกอบ HTML อื่น ๆ ที่ encapsulates sub ALL แม่!</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="msgMappingIsDifferent">
+                <source>The current mapping information is different from the mapping information in the Template Object</source>
+                <target>ข้อมูลแผนที่ในปัจจุบันแตกต่างจากข้อมูลการทำแผนที่ในแม่แบบ Object</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="msgDSTOSaved">
+                <source>Data Structure (UID %s) and Template Record (UID %s) was saved in PID %s</source>
+                <target>ข้อมูลโครงสร้าง (% UID s) และแม่ Record (s% UID) บันทึกไว้ใน PID% s</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="msgDSTOUpdated">
+                <source>Data Structure (UID %s) and Template Record (UID %s) was updated</source>
+                <target>ข้อมูลโครงสร้าง (% UID s) และแม่ Record (s% UID) ได้รับการปรับปรุง</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="msgMappingSaved">
+                <source>Mapping information was saved to the current Template Object!</source>
+                <target>ข้อมูลแผนที่ถูกบันทึกไว้ในปัจจุบัน Template Object!</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="msgHeaderSet">
+                <source>Do not forget to press "Set" if header parts are changed!</source>
+                <target>อย่าลืมกด"Set"ถ้าส่วนหัวมีการเปลี่ยนแปลง!</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="include">
+                <source>Include</source>
+                <target>ประกอบด้วย</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="tag">
+                <source>Tag</source>
+                <target>Tag</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="tagContent">
+                <source>Tag Content</source>
+                <target>เนื้อหา Tag</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="mapDataElement">
+                <source>Data Element</source>
+                <target>Element Data</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="mapField">
+                <source>Field</source>
+                <target>สนาม</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="mapInstructions">
+                <source>Mapping Instructions</source>
+                <target>คำแนะนำ Mapping</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="mapSampleData">
+                <source>Sample Data</source>
+                <target>ข้อมูลตัวอย่าง</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="mapElementPreset">
+                <source>Element Preset</source>
+                <target>Preset Element</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="mapHTMLpath">
+                <source>HTML-path</source>
+                <target>HTML พาธ</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="mapAction">
+                <source>Action</source>
+                <target>การกระทำ</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="mapRules">
+                <source>Rules</source>
+                <target>กฎระเบียบ</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="mapEdit">
+                <source>Edit</source>
+                <target>Edit</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="mapMappingWindow">
+                <source>Mapping Window</source>
+                <target>หน้าต่าง Mapping</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="mapPreviewInfo">
+                <source>Preview of Data Structure sample data merged into the mapped tags</source>
+                <target>ตัวอย่างของข้อมูลโครงสร้างข้อมูลตัวอย่างผสานเข้าแท็กแมป</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="mapDSelement">
+                <source>Mapping Data Element</source>
+                <target>Mapping Data Element</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="mapLimitToTags">
+                <source>Limiting to tags</source>
+                <target>จำกัด แท็ก</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="mapWarningElementChange">
+                <source>Changing element type will change your existing settings!</source>
+                <target>ประเภทธาตุเปลี่ยนจะเปลี่ยนการตั้งค่าที่มีอยู่ของคุณ</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="displayDSTitleTranslated">
+                <source>This title is translated!</source>
+                <target>ชื่อนี้แปล!</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="displayDSContentFound">
+                <source>Content found (%s chars)</source>
+                <target>เนื้อหาพบ (chars s%)</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="displayDSContentEmpty">
+                <source>Content empty.</source>
+                <target>เนื้อหาว่างเปล่า</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="buttonRemap">
+                <source>Re-Map</source>
+                <target>Re - Map</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="buttonRemapTitle">
+                <source>Map this DS element to another HTML element in template file.</source>
+                <target>แผนที่นี้องค์ประกอบอื่น DS องค์ประกอบ HTML ในแฟ้มแม่แบบ</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="buttonChangeMode">
+                <source>Change Mode</source>
+                <target>เปลี่ยนโหมด</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="buttonChangeModeTitle">
+                <source>Change mapping mode, eg. from INNER to OUTER etc.</source>
+                <target>เปลี่ยนโหมดการทำแผนที่เช่น จาก INNER ไปนอกเป็นต้น</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="msgNoContentFound">
+                <source>No content found!</source>
+                <target>เนื้อหาไม่พบ!</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="msgHowToMap">
+                <source>Click a tag-icon in the window below to map this element.</source>
+                <target>คลิกแท็กไอคอนในหน้าต่างด้านล่างเพื่อแผนที่องค์ประกอบนี้</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="buttonMap">
+                <source>Map</source>
+                <target>แผนที่</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="editEntry">
+                <source>Edit entry</source>
+                <target>รายการแก้ไข</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="deleteEntry">
+                <source>DELETE entry</source>
+                <target>รายการ DELETE</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="confirmDeleteEntry">
+                <source>Are you sure to delete this Data Structure entry?</source>
+                <target>คุณแน่ใจที่จะลบรายการนี้ข้อมูลโครงสร้าง?</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="noSampleData">
+                <source>No sample data</source>
+                <target>ไม่มีข้อมูลตัวอย่าง</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="mapEnterNewFieldname">
+                <source>Enter new fieldname</source>
+                <target>Enter fieldname ใหม่</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="mapPresets_plainInput">
+                <source>Plain input field</source>
+                <target>เขต input ธรรมดา</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="mapPresets_headerField">
+                <source>Header field</source>
+                <target>เขต Header</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="mapPresets_gHederField">
+                <source>Header field, Graphical</source>
+                <target>เขตหัวกราฟิก</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="mapPresets_textarea">
+                <source>Text area for bodytext</source>
+                <target>พื้นที่อักษร bodytext</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="mapPresets_rte">
+                <source>Rich text editor for bodytext</source>
+                <target>แก้ไขข้อความ Rich สำหรับ bodytext</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="mapPresets_linkField">
+                <source>Link field</source>
+                <target>เขต Link</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="mapPresets_integer">
+                <source>Integer value</source>
+                <target>ค่า Integer</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="mapPresets_imageFixed">
+                <source>Image field, fixed W+H</source>
+                <target>ข้อมูลรูปภาพ, ถาวร W + H</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="mapPresets_select">
+                <source>Selector box</source>
+                <target>กล่องเลือก</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="mapPresets_check">
+                <source>Check box</source>
+                <target>ตรวจสอบกล่อง</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="mapPresets_image">
+                <source>Image field</source>
+                <target>ข้อมูลรูปภาพ</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="mapPresets_ce">
+                <source>Page-Content Elements [Pos.: %s]</source>
+                <target>องค์ประกอบ Page - Content [Pos . :% s]</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="mapPresets_TSobjectPath">
+                <source>TypoScript Object Path</source>
+                <target>เส้นทาง Object TypoScript</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="mapPresets_none">
+                <source>None (TypoScript only)</source>
+                <target>ไม่มี (TypoScript เท่านั้น)</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="mapPresets_customTCA">
+                <source>Custom form setup (no preset used)</source>
+                <target>การตั้งค่าแบบกำหนดเอง (ไม่ใช้ตั้งไว้ล่วงหน้า)</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="mapPresetGroups_tceFields">
+                <source>Form Fields</source>
+                <target>เขตข้อมูลแบบฟอร์ม</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="mapPresetGroups_ts">
+                <source>TypoScript Elements</source>
+                <target>องค์ประกอบ TypoScript</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="mapPresetGroups_other">
+                <source>Other</source>
+                <target>อื่นๆ</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="mapTSconstants">
+                <source>TypoScript Constants</source>
+                <target>คง TypoScript</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="mapTScode">
+                <source>TypoScript Code</source>
+                <target>รหัส TypoScript</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="mapExtraOptions">
+                <source>Extra options</source>
+                <target>ตัวเลือกเสริม</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="mapPostProcesses">
+                <source>Applied post-processes</source>
+                <target>ใช้กระบวนการ post -</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="mapEnablePreview">
+                <source>Enable data preview in Page-Module</source>
+                <target>ตัวอย่างข้อมูลที่ใช้ใน Page - Module</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="mapEnablePreview.enable">
+                <source>Enable</source>
+                <target>เปิดใช้งาน</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="mapEnablePreview.disable">
+                <source>Disable</source>
+                <target>ปิดการใช้งาน</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="mapPPcastInteger">
+                <source>Cast content to integer</source>
+                <target>โยนเนื้อหาจำนวนเต็ม</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="mapPPhsc">
+                <source>Pass content through htmlSpecialChars (HSC)</source>
+                <target>เนื้อหาผ่าน htmlSpecialChars (HSC)</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="mapCustomStdWrap">
+                <source>Custom stdWrap</source>
+                <target>stdWrap Custom</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="mapTCElabel">
+                <source>Form label</source>
+                <target>ป้ายแบบฟอร์ม</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="mapTCEconf">
+                <source>Form configuration</source>
+                <target>การตั้งค่าแบบ</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="mapTCEextras">
+                <source>Form extras</source>
+                <target>extras Form</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="mapElContainers">
+                <source>Containers</source>
+                <target>ภาชนะบรรจุ</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="mapElElements">
+                <source>Elements</source>
+                <target>องค์ประกอบ</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="mapSection">
+                <source>Section of elements</source>
+                <target>ส่วนขององค์ประกอบ</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="mapContainer">
+                <source>Container for elements</source>
+                <target>ภาชนะสำหรับองค์ประกอบ</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="mapElement">
+                <source>Element</source>
+                <target>ธาตุ</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="mapAttribute">
+                <source>Attribute</source>
+                <target>คุณลักษณะ</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="mapNotMapped">
+                <source>Not mapped</source>
+                <target>ไม่แมป</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="mapConfiguration">
+                <source>Configuration</source>
+                <target>การตั้งค่า</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="mapEditConfiguration">
+                <source>Edit general configuration</source>
+                <target>แก้ไขการตั้งค่าทั่วไป</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="mapDataProcessing">
+                <source>Data processing</source>
+                <target>การประมวลผลข้อมูล</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="mapEditDataProcessing">
+                <source>Edit data processing modifications</source>
+                <target>แก้ไขข้อมูลการแก้ไข</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="mapTyposcript">
+                <source>Typoscript</source>
+                <target>Typoscript</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="mapEditTyposcript">
+                <source>Edit Typoscript</source>
+                <target>Typoscript แก้ไข</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="mapExtra">
+                <source>Extra</source>
+                <target>เพิ่มเติม</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="mapEditExtra">
+                <source>Edit extra options</source>
+                <target>แก้ไขตัวเลือกพิเศษ</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="mapTCEform">
+                <source>Form</source>
+                <target>รูป</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="mapEditTCEform">
+                <source>Edit form configuration</source>
+                <target>การตั้งค่ารูปแบบแก้ไข</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="mapObjectPath">
+                <source>Object path</source>
+                <target>เส้นทาง Object</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="mapOldStyleColumnNumber">
+                <source>Old style column number</source>
+                <target>จำนวนคอลัมน์ Old style</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="mapOldStyleColumnNumber_label">
+                <source>Column number (0=normal, 1=left, 2=right, 3=border)</source>
+                <target>จำนวนคอลัมน์ (0 = ปกติ 1 = ซ้าย 2 = ขวา, 3 border =)</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="mapEnableDragDrop">
+                <source>Enable Drag&amp;Drop in this container</source>
+                <target>เปิดใช้งานการลากและวางในภาชนะนี้</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="errorNoContentInFile">
+                <source>No content found in file reference</source>
+                <target>เนื้อหาไม่พบในแฟ้มอ้างอิง</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="errorNoFileToDisplay">
+                <source>No file to display</source>
+                <target>ไม่มีไฟล์แสดง</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="error">
+                <source>Error</source>
+                <target>ความผิดพลาด</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="errorNoStorageFolder">
+                <source>No accessible Storage Folder found - please create one immediately!</source>
+                <target>ไม่สามารถเข้าถึงโฟลเดอร์เก็บ found -- กรุณาสร้างทันที!</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="errorTONotSaved">
+                <source>No Template Object was created although the Data Structure was (UID %s)!</source>
+                <target>No แม่แบบ Object สร้าง แต่ข้อมูลโครงสร้างได้ (% s UID)!</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="errorTONotCreated">
+                <source>No Data Structure was created!</source>
+                <target>ไม่มีข้อมูลโครงสร้างสร้าง!</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="errorNoUidFound">
+                <source>No UID was found pointing to a Template Object record.</source>
+                <target>UID ไม่พบชี้ไปที่บันทึกแม่แบบ Object</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="errorNoDSrecord">
+                <source>ERROR: No Data Structure Record with the UID %s</source>
+                <target>ผิดพลาด : ไม่มีข้อมูลโครงสร้างรายการด้วย UID% s</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="errorInDSO">
+                <source>Data Structure Object ERROR</source>
+                <target>ข้อมูลผิดพลาดวัตถุโครงสร้าง</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="errorNoDSfound">
+                <source>No Data Structure Record could be found with UID "%s"!</source>
+                <target>ไม่มีข้อมูลโครงสร้างรายการอาจจะพบกับ UID% s"!</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="errorFileNotFound">
+                <source>The file "%s" could not be found!</source>
+                <target>file"% s"ไม่พบ!</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="errorNoTOfound">
+                <source>No Template Object Record with the UID "%s"!</source>
+                <target>No แม่แบบ Object รายการด้วย UID% s"!</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="errorNoToTitleDefined">
+                <source>No "title" defined, unable to create DS/TO.</source>
+                <target>กำหนดชื่อเรื่องไม่ได้ ไม่สามารถสร้าง DS/TO.</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="validateTpl">
+                <source>Validate template file (on validator.w3c.org)</source>
+                <target>แฟ้มแม่แบบตรวจสอบ</target>
+            </trans-unit>
+        </body>
+    </file>
+</xliff>

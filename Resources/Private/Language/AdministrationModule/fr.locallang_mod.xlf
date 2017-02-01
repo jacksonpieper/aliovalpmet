@@ -1,0 +1,20 @@
+<?xml version='1.0' encoding='utf-8'?>
+<xliff version="1.0">
+    <file source-language="en" datatype="plaintext" original="messages" target-language="fr">
+        <header/>
+        <body>
+            <trans-unit xml:space="preserve" id="mlang_tabs_tab">
+                <source>TemplaVoilà</source>
+                <target>TemplaVoilà</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="mlang_labels_tabdescr">
+                <source>TemplaVoilà Control Center lists all Data Structures and Template Objects available</source>
+                <target>Le centre de contrôle de TemplaVoilà liste toutes les Structures de Données (DS) et tous les Objets Gabarit (TO) disponibles</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="mlang_labels_tablabel">
+                <source>TemplaVoilà Control Center</source>
+                <target>Centre de contrôle de TemplaVoilà</target>
+            </trans-unit>
+        </body>
+    </file>
+</xliff>

@@ -1,0 +1,54 @@
+<?xml version='1.0' encoding='utf-8'?>
+<xliff version="1.0">
+    <file source-language="en" datatype="plaintext" original="messages" target-language="th">
+        <header/>
+        <body>
+            <trans-unit xml:space="preserve" id="tx_templavoila_access.description">
+                <source>Select TemplaVoilà objects to disallow access to. Notice that disallowing access to DS (data structure) implicitly disallows access to any TO (template object) associated with this DS.</source>
+                <target></target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="datastructure.description">
+                <source>Select data structure of this template object</source>
+                <target></target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="fileref.description">
+                <source>Reference to a file to map with this template object</source>
+                <target></target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="templatemapping.description">
+                <source/>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="previewicon.description">
+                <source>Select preview icon (optional)</source>
+                <target></target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="description.description">
+                <source>Description of this template object</source>
+                <target></target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="rendertype.description">
+                <source>Select rendering type</source>
+                <target></target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="sys_language_uid.description">
+                <source/>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="parent.description">
+                <source>Select parent template</source>
+                <target></target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="localprocessing.description">
+                <source>Local processing XML overrides parts of Data Source XML. If you want to override parts of DS XML, enter it here</source>
+                <target></target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="enableaccessctrl.description">
+                <source>Access control for this template object. To enable access control, check the box</source>
+                <target></target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="access.description">
+                <source>Lists groups and users. Select users and/or groups that will have access to this template object</source>
+                <target></target>
+            </trans-unit>
+        </body>
+    </file>
+</xliff>

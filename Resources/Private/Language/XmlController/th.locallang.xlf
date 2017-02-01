@@ -1,0 +1,36 @@
+<?xml version='1.0' encoding='utf-8'?>
+<xliff version="1.0">
+    <file source-language="en" datatype="plaintext" original="messages" target-language="th">
+        <header/>
+        <body>
+            <trans-unit xml:space="preserve" id="title">
+                <source>View FlexForm XML data</source>
+                <target>ดูข้อมูล FlexForm XML</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="needsCleaning">
+                <source>It seems the FlexForm XML can be cleaned up a bit. Please compare the current and suggested XML structure and press the "Clean" button below if you wish to clean it!</source>
+                <target>ดูเหมือนว่า FlexForm XML สามารถทำความสะอาดขึ้นเล็กน้อย กรุณาเปรียบเทียบปัจจุบันและเสนอโครงสร้าง XML และกดปุ่ม"Clean ด้านล่างหากคุณต้องการทำความสะอาด!</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="XMLclean">
+                <source>XML is clean</source>
+                <target>XML สะอาด</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="cleanUp">
+                <source>Save clean XML to record!</source>
+                <target>ประหยัดสะอาด XML บันทึก!</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="current">
+                <source>Current XML:</source>
+                <target>ปัจจุบัน XML :</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="clean">
+                <source>Clean XML:</source>
+                <target>สะอาด XML :</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="diff">
+                <source>Difference:</source>
+                <target>แตกต่าง :</target>
+            </trans-unit>
+        </body>
+    </file>
+</xliff>

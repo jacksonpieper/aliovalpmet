@@ -1,0 +1,54 @@
+<?xml version='1.0' encoding='utf-8'?>
+<xliff version="1.0">
+    <file source-language="en" datatype="plaintext" original="messages" target-language="de">
+        <header/>
+        <body>
+            <trans-unit xml:space="preserve" id="tx_templavoila_access.description">
+                <source>Select TemplaVoilà objects to disallow access to. Notice that disallowing access to DS (data structure) implicitly disallows access to any TO (template object) associated with this DS.</source>
+                <target>Wählen Sie die TemplaVoilà-Objekte aus, auf die kein Zugriff erlaubt werden soll. Beachten Sie, dass ein Verbot des Zugriffs auf DS (Datenstruktur) das Verbot des Zugriffs auf diesem DS zugeordnete TO (Vorlagenobjekte) impliziert.</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="datastructure.description">
+                <source>Select data structure of this template object</source>
+                <target>Wählen Sie die Datenstruktur dieses Vorlagenobjekts aus</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="fileref.description">
+                <source>Reference to a file to map with this template object</source>
+                <target>Verweis auf eine Datei, die mit diesem Vorlagenobjekt abgebildet werden soll</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="templatemapping.description">
+                <source/>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="previewicon.description">
+                <source>Select preview icon (optional)</source>
+                <target>Wählen Sie das Vorschausymbol aus (optional)</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="description.description">
+                <source>Description of this template object</source>
+                <target>Beschreibung dieses Vorlagenobjekts</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="rendertype.description">
+                <source>Select rendering type</source>
+                <target>Wählen Sie den Darstellungstyp aus</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="sys_language_uid.description">
+                <source/>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="parent.description">
+                <source>Select parent template</source>
+                <target>Wählen Sie die Stammvorlage aus</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="localprocessing.description">
+                <source>Local processing XML overrides parts of Data Source XML. If you want to override parts of DS XML, enter it here</source>
+                <target>Lokale Bearbeitung des XML überschreibt Teile des Datenquellen-XML. Wollen Sie Teile des DS XML überschreiben, geben Sie es hier ein.</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="enableaccessctrl.description">
+                <source>Access control for this template object. To enable access control, check the box</source>
+                <target>Zugriffsberechtigungen für dieses Vorlagenobjekt. Wählen Sie das Markierungsfeld aus, um die Zugriffskontrolle zu aktivieren.</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="access.description">
+                <source>Lists groups and users. Select users and/or groups that will have access to this template object</source>
+                <target>Gruppen und Benutzer anzeigen. Wählen Sie Benutzer und/oder Gruppen aus, denen Zugriff auf dieses Vorlagenobjekt erteilt werden soll.</target>
+            </trans-unit>
+        </body>
+    </file>
+</xliff>

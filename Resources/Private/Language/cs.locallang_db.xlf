@@ -1,0 +1,132 @@
+<?xml version='1.0' encoding='utf-8'?>
+<xliff version="1.0">
+    <file source-language="en" datatype="plaintext" original="messages" target-language="cs">
+        <header/>
+        <body>
+            <trans-unit xml:space="preserve" id="tx_templavoila_tmplobj">
+                <source>TemplaVoilà Template Object</source>
+                <target></target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="tx_templavoila_tmplobj.title">
+                <source>Title:</source>
+                <target></target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="tx_templavoila_tmplobj.datastructure">
+                <source>Data Structure:</source>
+                <target></target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="tx_templavoila_tmplobj.fileref">
+                <source>File reference:</source>
+                <target></target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="tx_templavoila_tmplobj.belayout">
+                <source>BELayout Template File:</source>
+                <target></target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="tx_templavoila_tmplobj.previewicon">
+                <source>Attach preview icon (gif or png in 1:1 size):</source>
+                <target></target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="tx_templavoila_tmplobj.description">
+                <source>Description of the template:</source>
+                <target></target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="tx_templavoila_tmplobj.ds_createnew">
+                <source>Create new data structure!</source>
+                <target></target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="tx_templavoila_tmplobj.rendertype">
+                <source>Select a type of rendering:</source>
+                <target></target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="tx_templavoila_tmplobj.rendertype.I.0">
+                <source>Default output</source>
+                <target></target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="tx_templavoila_tmplobj.rendertype.I.1">
+                <source>Printer friendly</source>
+                <target></target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="tx_templavoila_tmplobj.parent">
+                <source>Make this a sub-template of:</source>
+                <target></target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="tx_templavoila_tmplobj.rendertype_ref">
+                <source>Inherit default subtemplates from:</source>
+                <target></target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="tx_templavoila_tmplobj.localProc">
+                <source>Local Processing (XML):</source>
+                <target></target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="be_groups.tx_templavoila_access">
+                <source>Disallow access to TemplaVoilà objects:</source>
+                <target></target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="tx_templavoila_datastructure">
+                <source>TemplaVoilà Data Structure</source>
+                <target></target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="tx_templavoila_datastructure.title">
+                <source>Title:</source>
+                <target></target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="tx_templavoila_datastructure.dataprot">
+                <source>Data Structure XML:</source>
+                <target></target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="tx_templavoila_datastructure.scope">
+                <source>Category:</source>
+                <target></target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="tx_templavoila_datastructure.scope.I.1">
+                <source>Page Template</source>
+                <target></target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="tx_templavoila_datastructure.scope.I.2">
+                <source>Flexible Content Element</source>
+                <target></target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="tt_content.tx_templavoila_ds">
+                <source>Data Structure:</source>
+                <target></target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="tt_content.tx_templavoila_to">
+                <source>Template Object:</source>
+                <target></target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="tt_content.tx_templavoila_pito">
+                <source>Plug-In Template Object:</source>
+                <target></target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="tt_content.tx_templavoila_flex">
+                <source>Content:</source>
+                <target></target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="tt_content.CType_pi1">
+                <source>Flexible Content</source>
+                <target></target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="pages.tx_templavoila_ds">
+                <source>Page Template Structure:</source>
+                <target></target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="pages.tx_templavoila_to">
+                <source>Use Template Design:</source>
+                <target></target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="pages.tx_templavoila_next_ds">
+                <source>Subpages - Page Template Structure:</source>
+                <target></target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="pages.tx_templavoila_next_to">
+                <source>Subpages - Use Template Design:</source>
+                <target></target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="pages.tx_templavoila_flex">
+                <source>Content:</source>
+                <target></target>
+            </trans-unit>
+        </body>
+    </file>
+</xliff>

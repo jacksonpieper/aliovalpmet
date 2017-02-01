@@ -1,0 +1,609 @@
+<?xml version='1.0' encoding='utf-8'?>
+<xliff version="1.0">
+    <file source-language="en" datatype="plaintext" original="messages" target-language="th">
+        <header/>
+        <body>
+            <trans-unit xml:space="preserve" id="title">
+                <source>TemplaVoilà Control Center</source>
+                <target>ศูนย์ควบคุม TemplaVoilà</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="storagefolders">
+                <source>Storage Folders</source>
+                <target>โฟลเดอร์เก็บ</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="datastructures">
+                <source>Data Structures</source>
+                <target>โครงสร้างข้อมูล</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="templateobjects">
+                <source>Template Objects</source>
+                <target>วัตถุแม่แบบ</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="templatefiles">
+                <source>Template Files</source>
+                <target>ไฟล์แม่แบบ</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="pagetemplates">
+                <source>Page templates</source>
+                <target>หน้าแม่แบบ</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="filereference">
+                <source>File reference</source>
+                <target>อ้างอิงไฟล์</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="description">
+                <source>Description</source>
+                <target>หน้าต่อไปนี้ในบรรทัดรากมีโครงสร้างข้อมูลและแม่แบบวัตถุ</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="fces">
+                <source>Flexible CE</source>
+                <target>CE ยืดหยุ่น</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="other">
+                <source>Other</source>
+                <target>อื่นๆ</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="unknown">
+                <source>Unknown "%s"</source>
+                <target>ไม่ทราบ"% s"</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="losttos">
+                <source>Lost TOs [%d]</source>
+                <target>TOS Lost% [d]</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="overview">
+                <source>XML file</source>
+                <target>XML file</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="dstotitle">
+                <source>DS/TO Title</source>
+                <target>DS / TO Title</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="localization">
+                <source>Localization</source>
+                <target>การจำกัด</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="showdetails">
+                <source>Show Details</source>
+                <target></target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="showuused">
+                <source>Show unused datastructures</source>
+                <target></target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="containerstatus">
+                <source>Container status</source>
+                <target>สถานะคอนเทนเนอร์</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="mappingstatus">
+                <source>Mapping status</source>
+                <target>สถานะ Mapping</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="usagecount">
+                <source>Usage count</source>
+                <target>นับประโยชน์</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="templatestatus">
+                <source>Template Status</source>
+                <target>สถานะแม่</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="rendertype">
+                <source>Render Type</source>
+                <target>แสดงประเภท</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="language">
+                <source>Language</source>
+                <target>ภาษา</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="globalprocessing_xml">
+                <source>Global Processing &lt;strong&gt;XML&lt;/strong&gt;</source>
+                <target>การประมวลผล &lt;strong&gt;XML&lt;/strong&gt; Global</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="localprocessing_xml">
+                <source>Local Processing &lt;strong&gt;XML&lt;/strong&gt;</source>
+                <target>การประมวลผล &lt;strong&gt;XML&lt;/strong&gt; Local</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="usedby">
+                <source>Used by</source>
+                <target>โดยใช้</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="created">
+                <source>Created</source>
+                <target>สร้างขึ้น</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="updated">
+                <source>Updated</source>
+                <target>Updated</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="noicon">
+                <source>[No icon]</source>
+                <target>[] No icon</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="filenotfound">
+                <source>[File not found!]</source>
+                <target>[หาไฟล์ไม่เจอ!]</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="createnewto">
+                <source>Create new Template Object</source>
+                <target>สร้างวัตถุแม่แบบใหม่</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="containerwithseparatelocalization">
+                <source>Container element with separate localization!</source>
+                <target>element Container กับท้องถิ่นแยก!</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="mixofcontentandref">
+                <source>Mix of content and references, OK, but be careful!</source>
+                <target>ผสมของเนื้อหาและอ้างอิง, OK แต่ระวัง!</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="nocontentfields">
+                <source>No content fields, recommended to set "&lt;langDisable&gt;" = 1</source>
+                <target>ไม่มีเขตข้อมูลเนื้อหาแนะนำให้ตั้ง" &lt;langDisable&gt; "= 1</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="towasupdated">
+                <source>Template file was updated since last mapping (%s) and you might need to remap the Template Object!</source>
+                <target>แฟ้มแม่แบบที่ปรับปรุงล่าสุดตั้งแต่แผนที่ (% s) และคุณอาจต้องทำการแมปแม่แบบ Object!</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="warning_mappingstatus">
+                <source>%s (TO: "%s")</source>
+                <target>s% (TO :% s")</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="mapping_uptodate">
+                <source>Mapping is up to date.</source>
+                <target>แผนที่ทันสมัย</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="update_mapping">
+                <source>Update mapping</source>
+                <target>แผนที่ Update</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="notmapped">
+                <source>Not mapped yet!</source>
+                <target>แมปยังไม่ได้!</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="updatemapping_info">
+                <source>- &lt;em&gt;(It might also mean that the TO was mapped with an older version of TemplaVoila - then just go and save the mapping again at this will be updated.)&lt;/em&gt;</source>
+                <target>-- &lt;em&gt;(นอกจากนี้ยังอาจหมายความว่าการถูกแมปกับรุ่นเก่าของ TemplaVoila -- แล้วก็ไปและบันทึกการทำแผนที่อีกครั้งที่นี้จะมีการปรับปรุง . )&lt;/em&gt;</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="map">
+                <source>Map</source>
+                <target>แผนที่</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="remap">
+                <source>Remap</source>
+                <target>ทำการแมป</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="preview">
+                <source>Preview</source>
+                <target>ก่อนหน้า</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="toused_title">
+                <source>Title</source>
+                <target>ชื่อเรื่อง</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="toused_pid">
+                <source>Page ID</source>
+                <target>ID หน้า</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="toused_path">
+                <source>Path</source>
+                <target>เส้นทาง</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="toused_workspace">
+                <source>Workspace</source>
+                <target>ที่ทำงาน</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="toused_uid">
+                <source>UID</source>
+                <target>UID</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="toused_header">
+                <source>Header</source>
+                <target>หัวเรื่อง</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="toused_usedin">
+                <source>Used in %d Elements</source>
+                <target>องค์ประกอบที่ใช้ใน% d</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="noaccess">
+                <source>No Access</source>
+                <target>ไม่มีการติดต่อ</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="usage">
+                <source>Usage</source>
+                <target>การใช้</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="action">
+                <source>Action</source>
+                <target>การกระทำ</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="refresh">
+                <source>Refresh</source>
+                <target>ฟื้นฟู</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="invalidtemplatevalues">
+                <source>Invalid template values in %d elements</source>
+                <target>แม่แบบไม่ถูกต้องค่าใน% d องค์ประกอบ</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="noerrorsfound">
+                <source>No errors found!</source>
+                <target>ไม่พบข้อผิดพลาด!</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="byuser">
+                <source>by user</source>
+                <target>โดยผู้ใช้</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="file">
+                <source>File</source>
+                <target>ไฟล์</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="newdsto">
+                <source>New DS/TO</source>
+                <target>DS New / TO</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="usedfiles">
+                <source>Used files</source>
+                <target>ใช้ไฟล์</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="templatearchive">
+                <source>Template Archive</source>
+                <target>ที่เก็บแม่แบบ</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="configuration">
+                <source>Configuration</source>
+                <target>การตั้งค่า</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="fceislocalized">
+                <source>FCE-element is localized</source>
+                <target>FCE องค์ประกอบคือท้องถิ่น</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="fceinlineislocalized">
+                <source>FCE-inline-elements of the FCE-element are localized</source>
+                <target>FCE - องค์ประกอบ - inline ของ FCE องค์ประกอบ - เป็นภาษาท้องถิ่น</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="casttointeger">
+                <source>the entered/computed value will be cast to an integer</source>
+                <target>ป้อน / ค่าคำนวณจะ cast เป็นจำนวนเต็ม</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="hsced">
+                <source>the entered/computed value will be passed to htmlentities</source>
+                <target>ป้อน / ค่าคำนวณจะถูกส่งไป htmlentities</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="hsc_on">
+                <source>[HTML-code won't be available]</source>
+                <target>รหัส [HTML - จะไม่สามารถใช้ได้]</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="hsc_off">
+                <source>[HTML-code will be displayed as-is]</source>
+                <target>รหัส [HTML จะถูกแสดงเป็นจะ]</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="stdwrap">
+                <source>the entered/computed value will be wrapped</source>
+                <target>ป้อน / คำนวณค่าจะห่อ</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="redundant">
+                <source>redundant</source>
+                <target>ซ้ำซาก</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="illegalcharacters">
+                <source>entry contains illegal characters and/or has multiple lines</source>
+                <target>รายการอักขระที่ผิดกฎหมายและ / หรือมีหลายบรรทัด</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="newsitewizard_menuhtmlcode">
+                <source>Here is the HTML code from the Template that encapsulated the menu</source>
+                <target>ที่นี่โค้ด HTML จากแม่แบบที่ห่อหุ้มเมนูเป็น</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="newsitewizard_menuenc">
+                <source>It seems that the menu consists of menu items encapsulated with %s.</source>
+                <target>ดูเหมือนว่าเมนูประกอบด้วยรายการเมนูห่อหุ้มด้วย% s</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="newsitewizard_menunoa">
+                <source>It seems that the menu consists of menu items not wrapped in any block tags except A-tags.</source>
+                <target>ดูเหมือนว่าเมนูประกอบด้วยรายการเมนูไม่ห่อใด ๆ ยกเว้น tags block - tags</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="newsitewizard_menuwrap">
+                <source>It also seems that the whole menu is wrapped in this tag %s</source>
+                <target>นอกจากนี้ยังดูเหมือนว่าเมนูทั้งหมดจะห่อใน% s tag นี้</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="newsitewizard_menudiv">
+                <source>Between the menu elements there seems to be a visual division element with this HTML code: "%s". That will be added between each element as well.</source>
+                <target>ระหว่างองค์ประกอบเมนูดูเหมือนจะแบ่งองค์ประกอบภาพด้วยนี้รหัส HTML :"% s" ที่จะเพิ่มระหว่างองค์ประกอบด้วยกัน</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="newsitewizard_menuimg">
+                <source>The menu items were detected to be images - TYPO3 will try to generate graphical menu items automatically (GMENU). You will need to customize the look of these before it will match the originals!</source>
+                <target>รายการเมนูตรวจพบเป็นภาพ -- TYPO3 จะพยายามสร้างรายการเมนูกราฟิกโดยอัตโนมัติ (GMENU) คุณจะต้องกำหนดลักษณะของเหล่านี้ก่อนที่จะตรงกับต้นฉบับ!</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="newsitewizard_menumouseover">
+                <source>It seems like a mouseover functionality has been applied previously, so roll-over effect has been applied as well.</source>
+                <target>ดูเหมือนว่าการทำงาน mouseover ถูกใช้ก่อนหน้านี้ดังนั้นโรลผลมากกว่าได้ใช้เช่นกัน</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="newsitewizard_menuts">
+                <source>Based on this analysis, this TypoScript configuration for the menu is suggested:</source>
+                <target>จากการวิเคราะห์นี้กำหนดค่านี้ TypoScript สำหรับเมนูแนะนำ :</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="newsitewizard_menufinetune">
+                <source>You can fine tune the configuration here before it is saved:</source>
+                <target>คุณสามารถปรับแต่งการตั้งค่าที่นี่ก่อนที่จะบันทึก :</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="newsitewizard_menuwritets">
+                <source>Write %s TypoScript code</source>
+                <target>% s เขียนรหัส TypoScript</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="newsitewizard_menufinished">
+                <source>The basics of your website should be working now. It seems like you did not map the %s to any element, so the menu configuration process will be skipped.</source>
+                <target>พื้นฐานของเว็บไซต์ของคุณควรจะทำงานนี้ ดูเหมือนว่าคุณไม่ได้แผนที่% s ถึงองค์ประกอบใด ๆ ดังนั้นการตั้งค่าเมนูจะข้าม</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="newsitewizard_menunext">
+                <source>Next...</source>
+                <target>ต่อไป</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="newsitewizard_step5">
+                <source>Step 5 %s: Trying to create dynamic menu</source>
+                <target>ขั้นตอน 5% s : การพยายามที่จะสร้างเมนูแบบไดนามิก</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="newsitewizard_sitecreated">
+                <source>&lt;b&gt;Congratulations!&lt;/b&gt; You have completed the initial creation of a new website in TYPO3 based on the TemplaVoila engine. After you click the "Finish" button you can go to the Web&gt;Page module to edit your pages!</source>
+                <target>&lt;b&gt;!&lt;/b&gt; คุณได้เสร็จสิ้นการสร้างเริ่มต้นของเว็บไซต์ใหม่ใน TYPO3 ตามเครื่องมือ TemplaVoila หลังจากที่คุณคลิกปุ่ม"Finish คุณสามารถไปที่โมดูล Web&gt; หน้าแก้ไขหน้าเว็บของคุณ</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="newsitewizard_finish">
+                <source>Finish Wizard!</source>
+                <target>ตัวช่วยสร้างเสร็จสิ้น</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="newsitewizard_done">
+                <source>Step 6: Done</source>
+                <target>ขั้นที่ 6 : เสร็จสิ้น</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="newsitewizard_basicsshouldwork">
+                <source>The basics of your website should be working now. However the %s still needs to be configured so that TYPO3 automatically generates a menu reflecting the pages in the page tree. This process involves configuration of the TypoScript object path, "lib.%s". This is a technical job which requires that you know about TypoScript if you want it 100%% customized.&lt;br/&gt;To assist you getting started with the %s this wizard will try to analyse the menu found inside the template file. If the menu was created of a series of repetitive block tags containing A-tags then there is a good chance this will succeed. You can see the result below.</source>
+                <target>พื้นฐานของเว็บไซต์ของคุณควรจะทำงานนี้ อย่างไรก็ตาม% s ยังคงต้องมีการกำหนดค่าเพื่อให้ TYPO3 โดยอัตโนมัติเมนูสะท้อนหน้าที่ในต้นไม้หน้า กระบวนการนี้เกี่ยวข้องกับการกำหนดค่าของเส้นทางวัตถุ TypoScript, lib". s%" นี้เป็นงานที่ต้องใช้เทคนิคที่คุณรู้จัก TypoScript หากต้องการ 100% เอง &lt;br/&gt; เพื่อช่วยคุณเริ่มต้นกับ% s ตัวนี้จะพยายามวิเคราะห์เมนูที่พบในแฟ้มแม่แบบ หากเมนูที่สร้างขึ้นจากชุดของแท็กป้องกันซ้ำที่มีแท็ก - A แล้วมีโอกาสที่จะประสบความสำเร็จ คุณจะเห็นผลด้านล่าง</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="newsitewizard_headerinclude">
+                <source>Finally you also have to select which parts of the HTML header you want to include. For instance it is important that you select all sections with CSS styles in order to preserve the correct visual appearance of your website.&lt;br/&gt;You can also select the body-tag of the template if you want to use the original body-tag.&lt;br/&gt;This animations shows an example of this process:</source>
+                <target>ในที่สุดคุณก็ต้องเลือกในส่วนของ header HTML ที่คุณต้องการรวม เช่นเป็นสิ่งสำคัญที่คุณเลือกทุกส่วนที่มีรูปแบบ CSS เพื่อรักษาลักษณะที่ปรากฏถูกต้องของเว็บไซต์ของคุณ &lt;br/&gt; คุณยังสามารถเลือกตัวแท็กของแม่ถ้าคุณต้องการใช้ตัวเดิม - tag &lt;br/&gt; ภาพเคลื่อนไหวนี้จะแสดงตัวอย่างของกระบวนการนี้ :</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="newsitewizard_headerselect">
+                <source>Select HTML header parts</source>
+                <target>เลือก HTML ส่วนหัว</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="newsitewizard_step4">
+                <source>Step 4: Select HTML header parts</source>
+                <target>ขั้นที่ 4 : เลือก HTML ส่วนหัว</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="newsitewizard_maintemplate">
+                <source>Main template:</source>
+                <target>หลักแม่แบบ :</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="newsitewizard_created">
+                <source>New site has been created and adapted.</source>
+                <target>เว็บไซต์ใหม่ถูกสร้างและดัดแปลง</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="newsitewizard_step3error">
+                <source>Error happened: Either you did not specify a website name or username in the previous form!</source>
+                <target>ข้อผิดพลาดเกิดขึ้น : ไม่ว่าคุณไม่ได้ระบุชื่อเว็บไซต์หรือชื่อผู้ใช้ในรูปก่อน!</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="newsitewizard_step3ready">
+                <source>You are now ready to point out at which position in the HTML code to insert the TYPO3 generated page content and the main menu. This process is called "mapping".&lt;br/&gt;The process of mapping is shown with this little animation. Please study it closely to understand the flow, then click the button below to start the mapping process on your own. Complete the mapping process by pressing "Save and Return".</source>
+                <target>ตอนนี้คุณพร้อมที่จะชี้ที่ที่ตำแหน่งในรหัส HTML เพื่อแทรก TYPO3 สร้างเนื้อหาและหน้าเมนูหลัก แผนที่"กระบวนการนี้เรียกว่า &lt;br/&gt; กระบวนการของแผนที่จะแสดงภาพเคลื่อนไหวน้อยนี้ กรุณาศึกษาได้อย่างใกล้ชิดเพื่อทำความเข้าใจการไหลจากนั้นคลิกปุ่มด้านล่างเพื่อเริ่มต้นกระบวนการจัดทำแผนที่เอง เสร็จสิ้นขั้นตอนการทำแผนที่โดยการกด"Save และกลับ"</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="newsitewizard_startmapping">
+                <source>Start the mapping process</source>
+                <target>เริ่มกระบวนการจัดทำแผนที่</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="newsitewizard_beginmapping">
+                <source>Step 3: Begin mapping</source>
+                <target>ขั้นที่ 3 : แผนที่เริ่มต้น</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="newsitewizard_firststep">
+                <source>The first step is to select the HTML file you want to base the new website design on. Below you see a list of HTML files found in the folder "%s". Click the "Preview"-link to see what the file looks like and when the right template is found, just click the "Choose as template"-link in order to proceed.&lt;br/&gt;If the list of files is empty you must now copy the HTML file you want to use as a template into the template folder. When you have done that, press the refresh button to refresh the list.</source>
+                <target>ขั้นตอนแรกคือการเลือก HTML ไฟล์ที่คุณต้องการให้การออกแบบเว็บไซต์ใหม่ใน ด้านล่างคุณจะเห็นรายการของ HTML ที่พบในโฟลเดอร์"% s" คลิกที่"Preview"ลิงค์เพื่อดูว่าไฟล์จะมีลักษณะและเมื่อมีสิทธิในแม่แบบพบเพียงคลิก"เลือกเป็นแม่แบบ"ลิงค์เพื่อดำเนินการต่อไป &lt;br/&gt; ถ้ารายการของไฟล์ที่ยังว่างอยู่ตอนนี้คุณต้องคัดลอกไฟล์ HTML ที่คุณต้องการใช้เป็นแม่แบบลงในโฟลเดอร์แม่แบบ เมื่อคุณได้ทำที่กดปุ่มรีเฟรชเพื่อรีเฟรชรายการ</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="newsitewizard_selecttemplate">
+                <source>Step 1: Select the template HTML file</source>
+                <target>ขั้นที่ 1 : เลือกแบบ HTML file</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="newsitewizard_error">
+                <source>TemplaVoila wizard error</source>
+                <target>ข้อผิดพลาดตัว TemplaVoila</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="newsitewizard_errornodir">
+                <source>The template directory is empty or could not be found. Please, create it before starting this wizard.</source>
+                <target>% s ไม่ใช่ไดเรกทอรี! โปรดให้สร้างก่อนที่จะเริ่มตัวช่วยสร้างนี้</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="newsitewizard_templateselected">
+                <source>The template file "%s" is now selected:</source>
+                <target>แม่แบบ file"% s"ถูกเลือกขณะนี้ :</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="newsitewizard_step2next">
+                <source>Next, you should enter default values for the new website. With this basic set of information we are ready to create the initial website structure!</source>
+                <target>ถัดไปคุณควรป้อนค่าเริ่มต้นสำหรับเว็บไซต์ใหม่ กับชุดพื้นฐานของข้อมูลนี้เราพร้อมที่จะสร้างโครงสร้างเว็บไซต์ครั้งแรก!</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="newsitewizard_step2_name">
+                <source>Name of the site</source>
+                <target>ชื่อของเว็บไซต์</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="newsitewizard_step2_url">
+                <source>URL of the website</source>
+                <target>URL ของเว็บไซต์</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="newsitewizard_step2_editor">
+                <source>Editor username</source>
+                <target>ชื่อผู้ใช้ Editor</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="newsitewizard_step2_required">
+                <source>(Required)</source>
+                <target>(จำเป็น)</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="newsitewizard_step2_optional">
+                <source>(Optional)</source>
+                <target>(อุปกรณ์เสริม)</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="newsitewizard_step2_createnewsite">
+                <source>Create new site</source>
+                <target>สร้างเว็บไซต์ใหม่</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="newsitewizard_step2_notemplatefound">
+                <source>No template file found!?</source>
+                <target>แม่ไม่มี file พบ?</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="newsitewizard_step2_valuename">
+                <source>This value is shown in the browsers title bar and will be the default name of the first page in the page tree.</source>
+                <target>ค่านี้จะปรากฏในแถบชื่อเบราว์เซอร์และจะเป็นชื่อเริ่มต้นของหน้าแรกที่ต้นไม้หน้า</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="newsitewizard_step2_valueurl">
+                <source>If you know the URL of the website already please enter it here, eg. "www.mydomain.com".</source>
+                <target>ถ้าคุณทราบ URL ของเว็บไซต์ที่มีอยู่แล้วโปรดป้อนที่นี่เช่น www.mydomain.com""</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="newsitewizard_step2_username">
+                <source>Enter the username of a new backend user/group who will be able to edit the pages on the new website. (Password will be "password" by default, make sure to change that!)</source>
+                <target>กรุณาใส่ชื่อของผู้ใช้แบ็กเอนด์ใหม่ของกลุ่ม / ผู้ที่จะสามารถแก้ไขเพจในเว็บไซต์ใหม่ (รหัสผ่านจะถูก"รหัสผ่าน"โดยเริ่มต้นให้ตรวจสอบการเปลี่ยนแปลงที่!)</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="newsitewizard_step2">
+                <source>Step 2: Enter default values for new site</source>
+                <target>ขั้นที่ 2 : ใส่ค่าเริ่มต้นสำหรับไซต์ใหม่</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="newsitewizard_usedtimes">
+                <source>Used %d times</source>
+                <target>ใช้เวลา% d</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="newsitewizard_notused">
+                <source>Not used yet</source>
+                <target>ยังไม่ได้ใช้</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="newsitewizard_preview">
+                <source>[Preview first]</source>
+                <target>] [ตัวอย่างแรก</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="newsitewizard_choose">
+                <source>[Choose as Template]</source>
+                <target>[เลือกเป็นแม่]</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="dsdetails_nobasicdefinitions">
+                <source>The element has no basic definitions!</source>
+                <target>องค์ประกอบที่มีความหมายขั้นพื้นฐาน no!</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="dsdetails_notceformdefinitions">
+                <source>The element has no TCE-form definitions!</source>
+                <target>องค์ประกอบที่มีความหมายทีซีอีแบบ - no!</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="dsdetails_notes">
+                <source>Notes</source>
+                <target>Notes</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="dsdetails_ts">
+                <source>TypoScript</source>
+                <target>TypoScript</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="dsdetails_column">
+                <source>Column-positioning</source>
+                <target>คอลัมน์ - positioning</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="dsdetails_preset">
+                <source>Preset used for the element</source>
+                <target>Preset ใช้องค์ประกอบ</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="dsdetails_tsutilize">
+                <source>will utilize the TS-structure %s defined inside the &lt;TypoScriptObjPath&gt;-entry</source>
+                <target>จะใช้ประโยชน์จากโครงสร้าง% TS - s กำหนดภายใน &lt;TypoScriptObjPath&gt; เข้า</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="dsdetails_tslines">
+                <source>%d lines of TS-code inside the &lt;TypoScript&gt;-entry</source>
+                <target>บรรทัด% d ของ TS โค้ดภายใน &lt;TypoScript&gt; เข้า</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="dsdetails_tsconstants">
+                <source>%d TS-constants defined for use in the &lt;TypoScript&gt;-entry</source>
+                <target>% d TS คงกำหนดให้ใช้ใน &lt;TypoScript&gt; เข้า</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="warnings">
+                <source>Warnings</source>
+                <target>คำเตือน</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="fatalerrors">
+                <source>Fatal errors</source>
+                <target>ข้อผิดพลาดร้ายแรง</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="invaliddatastructure_xmlbroken">
+                <source>The the element "%1$s" within the datastructure seems to contain invalid XML, therefore the required data can't be displayed.</source>
+                <target>องค์ประกอบ"% 1 $ s"ภายใน datastructure ดูเหมือนว่าจะมีที่ไม่ถูกต้อง XML ดังนั้นข้อมูลที่ต้องการไม่สามารถแสดงได้</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="wiz_title">
+                <source>New site wizard</source>
+                <target>ตัวเว็บไซต์ใหม่</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="wiz_step">
+                <source>Step %s</source>
+                <target>Step% s</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="description_pagesWithCertainDsTo">
+                <source>The following pages in the root line contain data structures and template objects</source>
+                <target>หน้าต่อไปนี้ในบรรทัดรากมีโครงสร้างข้อมูลและวัตถุแม่แบบ</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="newsitewizard_intro">
+                <source>If you want to start a new website based on the TemplaVoila template engine you can start this wizard which will set up all the boring initial stuff for you.
+                You will be taken through these steps:
+                - Creation of a new website root, storage folder, sample pages.
+                - Creation of the main TemplaVoila template, including mapping of one content area and a main menu.
+                - Creation of a backend user and group to manage only that website.
+                You should prepare an HTML template before you begin the wizard; simply make a design in HTML and place the HTML file including graphics and stylesheets in a subfolder of "%s" relative to the websites root directory.
+                Tip about menus: If you include a main menu in the template, try to place the whole menu inside a container (like &lt;div&gt;, &lt;table&gt; or &lt;tr&gt;) and encapsulate each menu item in a block tag (like &lt;tr&gt;, &lt;td&gt; or &lt;div&gt;). Use A-tags for the links. If you want different designs for normal and active menu elements, design the first menu item as "Active" and the second (and rest) as "Normal", then the wizard might be able to capture the right configuration.
+                Tip about stylesheets: The content elements from TYPO3 will be outputted in regular HTML tags like &lt;p&gt;, &lt;h1&gt; to &lt;h6&gt;, &lt;ol&gt; etc. You will prepare yourself well if your stylesheet in the HTML template provides good styles for these standard elements from the start. Then you will have less finetuning to do later.
+            </source>
+                <target>หากคุณต้องการเริ่มต้นเว็บไซต์ใหม่ตาม TemplaVoila แม่แบบเครื่องยนต์คุณสามารถเริ่มต้นตัวช่วยสร้างนี้ซึ่งจะตั้งค่าเริ่มต้นทุกสิ่งน่าเบื่อสำหรับคุณ คุณจะเข้าสู่ขั้นตอนเหล่านี้ : -- การสร้างเว็บไซต์รากใหม่โฟลเดอร์เก็บ หน้าตัวอย่าง -- การสร้างหลัก TemplaVoila แม่รวมถึงการทำแผนที่ของพื้นที่เนื้อหาหนึ่งและเมนูหลัก -- สร้างของผู้ใช้แบ็กเอนด์และกลุ่มการจัดการเฉพาะเว็บไซต์ที่ คุณควรจัดทำแม่แบบ HTML ก่อนที่จะเริ่มต้นตัวช่วยสร้างนั้นก็ให้ ออกแบบใน HTML และไฟล์ HTML ที่รวมถึงกราฟิกและ stylesheets ใน'โฟลเดอร์ย่อยของ". $ GLOBALS ['TYPO3_CONF_VARS'] ['พ.ศ. ']'fileadminDir ['] . 'แม่ /"เทียบกับเว็บไซต์ที่ root directory Tip เมนูเกี่ยวกับ : ถ้าคุณมีเมนูหลักในแม่แบบที่พยายามที่เมนูทั้งหมดภายในภาชนะ (เช่น &lt;div&gt; , &lt;table&gt; หรือ &lt;tr&gt; ) และใส่ในแค็ปซูลเมนูในแต่ละแท็กบล็อก (เช่น &lt;tr&gt; , &lt;td&gt; หรือ &lt;div&gt; ) ใช้แท็กสำหรับการเชื่อมโยง ถ้าคุณต้องการที่ต่างกันสำหรับใช้งานปกติและองค์ประกอบเมนูออกแบบเมนูรายการแรกเป็น"Active"และที่สอง (และส่วนที่เหลือ) เป็น"ปกติ"แล้วตัวช่วยอาจจะสามารถจับการตั้งค่าขวา เคล็ดลับเกี่ยวกับ stylesheets : องค์ประกอบเนื้อหาจาก TYPO3 จะ outputted ในแท็กปกติเช่น &lt;p&gt; , &lt;h1&gt; ไปยัง &lt;h6&gt; , &lt;ol&gt; ฯลฯ คุณจะเตรียมตัวได้ดีถ้า stylesheet ใน HTML แม่แบบมีลักษณะที่ดีสำหรับองค์ประกอบของมาตรฐานเหล่านี้ตั้งแต่เริ่มต้น แล้วคุณจะมี finetuning น้อยที่จะทำในภายหลัง</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="newsitewizard_startnow">
+                <source>Start wizard now!</source>
+                <target>ตัวช่วยสร้างเริ่มวันนี้</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="newsitewizard_cancel">
+                <source>Cancel wizard</source>
+                <target>ตัวช่วยยกเลิก</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="newsitewizard_problem">
+                <source>&lt;em&gt;There are some technical problems you have to solve before you can start the wizard! Please see below for details. Solve these problems first and come back.&lt;/em&gt;</source>
+                <target>&lt;em&gt;มีตัวช่วยเป็นเทคนิคบางปัญหาคุณจะต้องแก้ไขก่อนที่จะเริ่มต้น! โปรดดูด้านล่างเพื่อดูรายละเอียด แก้ปัญหาเหล่านี้ก่อนและกลับมา&lt;/em&gt;</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="newsitewizard_missingext">
+                <source>Missing extension!</source>
+                <target>หายไปต่อ!</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="newsitewizard_missingconf">
+                <source>Missing configuration!</source>
+                <target>ค่าหายไป!</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="newsitewizard_missingconf_description">
+                <source>The TemplaVoila extension configuration is missing. Please clear the cache and recheck the configuration within the extension manager.</source>
+                <target>การกำหนดค่าส่วนขยาย TemplaVoila หายไป โปรดล้างแคชและรั้งใหม่การกำหนดค่าภายในผู้จัดการส่วนขยาย</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="newsitewizard_missingdir">
+                <source>Missing directory!</source>
+                <target>directoryหายไป !</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="newsitewizard_missingext_description">
+                <source>Before the wizard can run some extensions are required to be installed. Below you will see the which extensions are required and which are not available at this moment. Please go to the Extension Manager and install these first.</source>
+                <target>ก่อนที่จะสามารถเรียกใช้ตัวช่วยสร้างส่วนขยายบางจะต้องติดตั้ง ด้านล่างคุณจะเห็นที่จะต้องขยายและที่ไม่ได้ในขณะนี้ กรุณาไปที่ Extension Manager และติดตั้งครั้งแรกนี้</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="newsitewizard_missingext_extkey">
+                <source>Extension Key:</source>
+                <target>Extension สำคัญ :</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="newsitewizard_missingext_installed">
+                <source>Installed?</source>
+                <target>ติดตั้ง?</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="newsitewizard_missingext_yes">
+                <source>Yes</source>
+                <target>ใช่</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="newsitewizard_missingext_no">
+                <source>No</source>
+                <target>ไม่</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="newsitewizard_missingdir_instruction">
+                <source>The directory "%s" (relative to the website root) does not exist! This is where you must place your HTML templates. Please create that directory &lt;u&gt;before you start the wizard&lt;/u&gt;. In order to do so, follow these directions:
+                - Go to the module File &gt; Filelist
+                - Click the icon of the "%s" root and select "Create" from the context menu.
+                - Enter the name "templates" of the folder and press the "Create" button.
+                - Return to this wizard
+            </source>
+                <target>directory"% s"(เทียบกับรากเว็บไซต์)! ไม่มี ที่นี่คุณต้องวาง HTML แม่แบบของคุณ &lt;u&gt;กรุณาสร้างไดเรกทอรีนั้นก่อนที่จะเริ่มตัวช่วยสร้าง&lt;/u&gt; เพื่อทำตามเส้นทางนี้ : -- ไปที่โมดูล File&gt; Filelist -- คลิก% ที่ไอคอนของ"s"root และเลือก"สร้าง"จากเมนูบริบท -- ใส่ชื่อ"แม่"ของและโฟลเดอร์ กดปุ่ม"สร้าง -- กลับไปยังตัวช่วยสร้างนี้</target>
+            </trans-unit>
+        </body>
+    </file>
+</xliff>

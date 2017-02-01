@@ -1,0 +1,31 @@
+<?xml version='1.0' encoding='utf-8'?>
+<xliff version="1.0">
+    <file source-language="en" datatype="plaintext" original="messages" target-language="cs">
+        <header/>
+        <body>
+            <trans-unit xml:space="preserve" id=".alttitle">
+                <source>TemplaVoilà</source>
+                <target></target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id=".description">
+                <source>The TemplaVoilà extension contains a unique point'n'click template mapping engine, a new content element type "Flexible Content" (for fixed-template elements) and a new page module for building web-pages with nested content elements.</source>
+                <target></target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="_.seeAlso">
+                <source>Tutorial (Futuristic Template Building) | http://typo3.org/documentation/document-library/doc_tut_ftb1/</source>
+                <target></target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="_.image">
+                <source>EXT:templavoila/Resources/Public/Image/CSH/intro.png</source>
+                <target></target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id=".image_descr">
+                <source>One part of TemplaVoilà is the unique template mapping system which visually shows HTML tags from the template file and allows the user to map data to HTML elements by a single mouseclick.</source>
+                <target></target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id=".syntax">
+                <source/>
+            </trans-unit>
+        </body>
+    </file>
+</xliff>

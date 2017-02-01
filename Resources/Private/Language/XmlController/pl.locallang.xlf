@@ -1,0 +1,36 @@
+<?xml version='1.0' encoding='utf-8'?>
+<xliff version="1.0">
+    <file source-language="en" datatype="plaintext" original="messages" target-language="pl">
+        <header/>
+        <body>
+            <trans-unit xml:space="preserve" id="title">
+                <source>View FlexForm XML data</source>
+                <target>Zobacz XML FlexForm'a</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="needsCleaning">
+                <source>It seems the FlexForm XML can be cleaned up a bit. Please compare the current and suggested XML structure and press the "Clean" button below if you wish to clean it!</source>
+                <target>Wygląda na to, że kod XML w FlexForm może być nieco oczyszczony. Porównaj obecną oraz sugerowaną wersję a następnie kliknij "Wyczyść" jeśli się zgadzasz...</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="XMLclean">
+                <source>XML is clean</source>
+                <target>XML jest czysty</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="cleanUp">
+                <source>Save clean XML to record!</source>
+                <target>Zapisz czysty XML w rekordzie!</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="current">
+                <source>Current XML:</source>
+                <target>Obecny XML:</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="clean">
+                <source>Clean XML:</source>
+                <target>Czysty XML:</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="diff">
+                <source>Difference:</source>
+                <target>Różnice:</target>
+            </trans-unit>
+        </body>
+    </file>
+</xliff>

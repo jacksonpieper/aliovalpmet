@@ -1,0 +1,781 @@
+<?xml version='1.0' encoding='utf-8'?>
+<xliff version="1.0">
+    <file source-language="en" datatype="plaintext" original="messages" target-language="pl">
+        <header/>
+        <body>
+            <trans-unit xml:space="preserve" id="title">
+                <source>TemplaVoilà</source>
+                <target>TemplaVoilà</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="templateFile">
+                <source>Template File</source>
+                <target>Plik TemplaVoilà</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="templateObject">
+                <source>Template Object</source>
+                <target>Obiekt Szablonu</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="titleXmlConfiguration">
+                <source>XML configuration</source>
+                <target>Konfiguracja XML</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="titleLoadDSXml">
+                <source>Load DS XML</source>
+                <target>Załaduj XML z innej Struktury Danych</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="mappingTitle">
+                <source>TemplaVoilà Template Mapping</source>
+                <target>Mapowanie szablonu TemplaVoilà</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="mappingNEW">
+                <source>[NEW]</source>
+                <target>[NOWE]</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="mappingHeadParts">
+                <source>Adding parts from HTML header</source>
+                <target>Dodawanie elementów z nagłówka szablonu HTML</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="mappingBodyParts">
+                <source>Data Structure to be mapped to HTML template</source>
+                <target>Struktura Danych mapowana w HTML</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="rootDescription">
+                <source>Select the HTML element on the page which you want to be the overall container element for the template.</source>
+                <target>Wybierz element HTML na stronie, który będzie głównym kontenerem dla szablonu.</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="selectTOrecrdToLoadDSFrom">
+                <source>Select a Template Object record to load a Data Structure/Mapping information from</source>
+                <target>Wybierz Obiekt Szablonu z którego ma być załadowana Struktura Danych i/lub informacje o mapowaniu</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="noDSDefined">
+                <source>No Data Structure was defined in the record... (Must be T3DataStructure XML content)</source>
+                <target>W wybranym rekordzie nie zdefiniowano kodu XML Struktury Danych (musi zawierać T3DataStructure XML)</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="pasteDSXml">
+                <source>Alternatively, paste the Data Structure XML into this form</source>
+                <target>lub wklej XML z innej Struktury Danych w poniższym polu</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="loadDSXml">
+                <source>Load Data Structure</source>
+                <target>Załaduj Strukturę Danych</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="instrunctions">
+                <source>Instructions</source>
+                <target>Instrukcje</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="toBeDefined">
+                <source>to be defined</source>
+                <target>należy określić</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="tabTODetails">
+                <source>Information</source>
+                <target>Informacja</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="tabHeadParts">
+                <source>Header Parts</source>
+                <target>Elementy nagłówka</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="tabBodyParts">
+                <source>Mapping</source>
+                <target>Mapowanie</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="dsTypes_section">
+                <source>Section</source>
+                <target>Sekcja</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="dsTypes_container">
+                <source>Container</source>
+                <target>Kontener</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="dsTypes_attribute">
+                <source>Attribute</source>
+                <target>Atrybut</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="dsTypes_element">
+                <source>Element</source>
+                <target>Element</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="dsTypes_notmapped">
+                <source>Not Mapped</source>
+                <target>Niezmapowany</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="buttonGoBack">
+                <source>Go back</source>
+                <target>Wróć</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="buttonCancel">
+                <source>Cancel</source>
+                <target>Anuluj</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="buttonShowXML">
+                <source>Show XML</source>
+                <target>Pokaż XML</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="buttonClearAll">
+                <source>Clear all</source>
+                <target>Wyczyść wszystko</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="buttonPreview">
+                <source>Preview</source>
+                <target>Podgląd</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="buttonSave">
+                <source>Save</source>
+                <target>Zapisz</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="buttonSaveExit">
+                <source>Save and Exit</source>
+                <target>Zapisz i wyjdź</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="buttonSaveAs">
+                <source>Save as</source>
+                <target>Zapisz jako</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="buttonLoad">
+                <source>Load</source>
+                <target>Załaduj</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="buttonRefresh">
+                <source>Refresh</source>
+                <target>Odśwież</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="buttonAdd">
+                <source>Add</source>
+                <target>Dodaj</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="buttonUpdate">
+                <source>Update</source>
+                <target>Uaktualnij</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="buttonDelete">
+                <source>Delete</source>
+                <target>Usuń</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="buttonCancelClose">
+                <source>Cancel / Close</source>
+                <target>Anuluj / Zamknij</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="buttonTitle_showXML">
+                <source>Preview the currently build Data Structure as XML</source>
+                <target>Zobacz wynikowy kod XML obecneej Struktury Danych</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="buttonTitle_clearAll">
+                <source>Clear all Data Structure and Mapping information</source>
+                <target>Wyczyść całą Strukturę Danych oraz informacje o mapowaniu</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="buttonTitle_preview">
+                <source>Preview the mapping to the template</source>
+                <target>Podgląd mapowania do szablonu</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="buttonTitle_save">
+                <source>Save to current TO and DS</source>
+                <target>Zapisz w obecnych OS i SD</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="buttonTitle_saveExit">
+                <source>Save to current TO and DS and return to Overview</source>
+                <target>Zapisz w obecnych OS i SD i wróć do przeglądu</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="buttonTitle_saveAs">
+                <source>Go to save menu</source>
+                <target>Zapisz zmodyfikowaną Strukturę Danych</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="buttonTitle_load">
+                <source>Go to load menu</source>
+                <target>Załaduj dane z innej Struktury/Szablonu</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="buttonTitle_refresh">
+                <source>Redraw screen</source>
+                <target>Odśwież widok</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="buttonSet">
+                <source>Set</source>
+                <target>Ustaw</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="buttonSetTitle">
+                <source>Will update session data with current settings.</source>
+                <target>Zastosuj wprowadzone zmiany przed zapisem (!)</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="buttonClearAllMappingTitle">
+                <source>Clears all mapping information currently set.</source>
+                <target>Czyści wszystkie informacje o obecnym mapowaniu!</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="buttonPreviewMappingTitle">
+                <source>Will merge sample content into the template according to the current mapping information.</source>
+                <target>Wyświetla wynik mapowania wykorzystując przykładowe dane.</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="buttonSaveTOTitle">
+                <source>Saving all mapping data into the Template Object.</source>
+                <target>Zapisuje w szablonie nowe dane mapowania.</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="buttonSaveAndReturn">
+                <source>Save and Return</source>
+                <target>Zapisz i wróć</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="buttonSaveAndReturnTitle">
+                <source>Saving all mapping data into the Template Object and return.</source>
+                <target>Zapisuje w szablonie nowe dane mapowania i opuszcza ten edytor.</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="buttonRevert">
+                <source>Revert</source>
+                <target>Przywróć</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="buttonRevertTitle">
+                <source>Reverting %s mapping data to original data in the Template Object.</source>
+                <target>Przywracanie %s danych mapowania do wartości domyślnych z Obiektu Szablonu</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="createDSTO">
+                <source>CREATE Data Structure / Template Object</source>
+                <target>UTWÓRZ Strukturę Danych / Obiekt Szablonu</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="updateDSTO">
+                <source>UPDATE existing Data Structure / Template Object</source>
+                <target>UAKTUALNIJ istniejącą Strukturę Danych / Obiekt Szablonu</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="updateDSTOshort">
+                <source>UPDATE TO (and DS)</source>
+                <target>UAKTUALNIJ OS (oraz SD)</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="saveDSTOconfirm">
+                <source>Are you sure you want to override the current contents of these records?\nThis feature is meant to support the process of creating new Data Structures which have not been manually edited yet.</source>
+                <target>Czy na pewno chcesz nadpisać obecną zawartość tych rekordów? \n Ten kreator jest przeznaczony głównie do TWORZENIA nowych Struktur Danych, które nie były jeszcze edytowane manualnie! Pamiętaj, że stracisz wszystkie samodzielne zmiany!</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="createDSTOshort">
+                <source>CREATE DS / TO</source>
+                <target>UTWÓRZ SD / OS</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="titleDSTO">
+                <source>Title of DS/TO</source>
+                <target>Nazwa SD/OS</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="templateType">
+                <source>Template Type</source>
+                <target>Typ szablonu</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="pageTemplate">
+                <source>Page Template</source>
+                <target>Szablon strony</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="contentElement">
+                <source>Content Element</source>
+                <target>Element Zawartości</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="undefined">
+                <source>Undefined</source>
+                <target>Nieokreślony</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="storeInPID">
+                <source>Store in PID</source>
+                <target>Składuj w PID</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="selectTO">
+                <source>Select TO</source>
+                <target>Wybierz OS</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="buildingDS">
+                <source>Building Data Structure</source>
+                <target>Tworzenie Struktury Danych</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="renderDSO_dataStructure">
+                <source>Data Structure in record</source>
+                <target>Struktura Danych w rekordzie</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="renderDSO_dataElement">
+                <source>Data Element</source>
+                <target>Element Danych</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="renderDSO_mappingInstructions">
+                <source>Mapping Instructions</source>
+                <target>Instrukcja mapowania</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="renderDSO_rules">
+                <source>Rules</source>
+                <target>Zasady</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="renderDSO_uid">
+                <source>Uid</source>
+                <target>Uid</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="renderDSO_title">
+                <source>Title</source>
+                <target>Tytuł</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="renderDSO_fileRef">
+                <source>File reference</source>
+                <target>Odwołanie do pliku</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="renderDSO_dataLgd">
+                <source>Mapping Data Lgd</source>
+                <target>Dane mapowania</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="renderDSO_usedTO">
+                <source>Template Objects using this Data Structure</source>
+                <target>Szablony używające tej Struktury Danych</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="renderDSO_XML">
+                <source>Data Structure XML</source>
+                <target>XML Struktury Danych</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="renderDSO_DSO">
+                <source>Data Structure Object</source>
+                <target>Struktura Danych - informacje</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="renderDSO_noUid">
+                <source>No UID was found pointing to a Data Structure Object record.</source>
+                <target>Nie znaleziono UID wskzującego na obiekt Struktury Danych</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="renderDSO_notFound">
+                <source>(NOT FOUND)</source>
+                <target>(NIE ZNALEZIONO)</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="all">
+                <source>(ALL)</source>
+                <target>(WSZYSTKO)</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="renderTO_toDetails">
+                <source>Template Object Details</source>
+                <target>Szczegóły Obiektu Szablonu</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="renderTO_dsRecord">
+                <source>Data Structure Record</source>
+                <target>Struktura Danych</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="renderTO_updateWarningConfirm">
+                <source>Warning: You should only modify Data Structures and Template Objects which have not been manually edited.
+You risk that manual changes will be removed without further notice!</source>
+                <target>OSTRZEŻENIE: Powinieneś edytować Struktury Danych i Obiekty Szablonów wyłącznie jeśli nie były modyfikowane manualnie! \n Ryzykujesz utratę wprowadzonych samodzielnie zmian bez dalszych ostrzeżeń!</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="renderTO_editDSTO">
+                <source>Modify DS / TO</source>
+                <target>Modyfikuj SD / OS</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="renderTO_dsFile">
+                <source>Data Structure File</source>
+                <target>Plik Struktury Danych</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="renderTO_toInfo">
+                <source>Template Object Information</source>
+                <target>Obiekt Szablonu - informacje</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="rootMultiTemplate_title">
+                <source>ROOT of MultiTemplate</source>
+                <target>ROOT dla wielu szablonów</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="rootMultiTemplate_description">
+                <source>Select the ROOT container for this template project. Probably just select a body-tag or some other HTML element which encapsulates ALL sub templates!</source>
+                <target>Wybierz element nadrzędny (ROOT) w bieżącym projekcie. Najprawdopodobniej jest to tag BODY, choć może być to też inny tag obejmujący WSZYSTKIE wymagane elementy!</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="msgMappingIsDifferent">
+                <source>The current mapping information is different from the mapping information in the Template Object</source>
+                <target>Obecne mapowanie różni się od tego z Obiektu Szablonu</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="msgDSTOSaved">
+                <source>Data Structure (UID %s) and Template Record (UID %s) was saved in PID %s</source>
+                <target>Data Structure (UID %s) oraz Template Record (UID %s) zostało zapisne w PID %s</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="msgDSTOUpdated">
+                <source>Data Structure (UID %s) and Template Record (UID %s) was updated</source>
+                <target>Data Structure (UID %s) oraz Template Record (UID %s) zostało zaktualizowane</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="msgMappingSaved">
+                <source>Mapping information was saved to the current Template Object!</source>
+                <target>Informacja o mapowaniu została zapisana w aktualnym Template Object!</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="msgHeaderSet">
+                <source>Do not forget to press "Set" if header parts are changed!</source>
+                <target>Jeśli dokonałeś zmian pamiętaj by przed zapisem kliknąć przycisk "Ustaw"!</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="include">
+                <source>Include</source>
+                <target>Dołącz</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="tag">
+                <source>Tag</source>
+                <target>Tag</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="tagContent">
+                <source>Tag Content</source>
+                <target>Treść taga</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="mapDataElement">
+                <source>Data Element</source>
+                <target>Element danych</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="mapField">
+                <source>Field</source>
+                <target>Pole</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="mapInstructions">
+                <source>Mapping Instructions</source>
+                <target>Instrukcja mapowania</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="mapSampleData">
+                <source>Sample Data</source>
+                <target>Przykładowe dane</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="mapElementPreset">
+                <source>Element Preset</source>
+                <target>Ustawienia elementu</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="mapHTMLpath">
+                <source>HTML-path</source>
+                <target>Element HTML</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="mapAction">
+                <source>Action</source>
+                <target>Akcja</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="mapRules">
+                <source>Rules</source>
+                <target>Zasady</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="mapEdit">
+                <source>Edit</source>
+                <target>Edytuj</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="mapMappingWindow">
+                <source>Mapping Window</source>
+                <target>Okno mapowania</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="mapPreviewInfo">
+                <source>Preview of Data Structure sample data merged into the mapped tags</source>
+                <target>Wyświetla wynik mapowania wykorzystując przykładowe dane ze Struktury Danych.</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="mapDSelement">
+                <source>Mapping Data Element</source>
+                <target>Mapowany element SD</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="mapLimitToTags">
+                <source>Limiting to tags</source>
+                <target>Ograniczenie do tagów</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="mapWarningElementChange">
+                <source>Changing element type will change your existing settings!</source>
+                <target>Zmiana typu elementu spowoduje również zmianę ustawień!</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="displayDSTitleTranslated">
+                <source>This title is translated!</source>
+                <target>Ten tytuł jest tłumaczony!</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="displayDSContentFound">
+                <source>Content found (%s chars)</source>
+                <target>Znaleziono zawartość (%s znaków)</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="displayDSContentEmpty">
+                <source>Content empty.</source>
+                <target>Brak zawartości.</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="buttonRemap">
+                <source>Re-Map</source>
+                <target>Re-Mapuj</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="buttonRemapTitle">
+                <source>Map this DS element to another HTML element in template file.</source>
+                <target>Zmapuj ten element do innego fragmentu HTML w szablonie.</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="buttonChangeMode">
+                <source>Change Mode</source>
+                <target>Zmień tryb</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="buttonChangeModeTitle">
+                <source>Change mapping mode, eg. from INNER to OUTER etc.</source>
+                <target>Zmień tryb mapowania np. z INNER na OUTER lub na odwrót</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="msgNoContentFound">
+                <source>No content found!</source>
+                <target>Nie znaleziono zawartości!</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="msgHowToMap">
+                <source>Click a tag-icon in the window below to map this element.</source>
+                <target>Kliknij w ikonę tagu w poniższym oknie by zmapować ten element</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="buttonMap">
+                <source>Map</source>
+                <target>Mapuj</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="editEntry">
+                <source>Edit entry</source>
+                <target>Edytuj pozycję</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="deleteEntry">
+                <source>DELETE entry</source>
+                <target>USUŃ pozycję</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="confirmDeleteEntry">
+                <source>Are you sure to delete this Data Structure entry?</source>
+                <target>Jesteś pewien, że chcesz usunąć ten element Struktury Danych?</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="noSampleData">
+                <source>No sample data</source>
+                <target>Brak przykładowych danych</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="mapEnterNewFieldname">
+                <source>Enter new fieldname</source>
+                <target>Nazwa nowego elementu</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="mapPresets_plainInput">
+                <source>Plain input field</source>
+                <target>Zwykłe pole tekstowe</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="mapPresets_headerField">
+                <source>Header field</source>
+                <target>Pole nagłówkowe</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="mapPresets_gHederField">
+                <source>Header field, Graphical</source>
+                <target>Graficzne pole nagłówkowe</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="mapPresets_textarea">
+                <source>Text area for bodytext</source>
+                <target>Pole tekstowe w treści (typ: textarea)</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="mapPresets_rte">
+                <source>Rich text editor for bodytext</source>
+                <target>Zaawansowany edytor tekstu w treści (RTE)</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="mapPresets_linkField">
+                <source>Link field</source>
+                <target>Pole do wprowadzania linków</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="mapPresets_integer">
+                <source>Integer value</source>
+                <target>Wartość liczbowa (integer)</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="mapPresets_imageFixed">
+                <source>Image field, fixed W+H</source>
+                <target>Grafika, określona szerokość i wysokość</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="mapPresets_select">
+                <source>Selector box</source>
+                <target>Rozwijane pole wyboru</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="mapPresets_check">
+                <source>Check box</source>
+                <target>Check box</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="mapPresets_image">
+                <source>Image field</source>
+                <target>Grafika</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="mapPresets_ce">
+                <source>Page-Content Elements [Pos.: %s]</source>
+                <target>Elementy zawartości strony [Poz.: %s]</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="mapPresets_TSobjectPath">
+                <source>TypoScript Object Path</source>
+                <target>Ścieżka obiektu TypoScript</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="mapPresets_none">
+                <source>None (TypoScript only)</source>
+                <target>Brak (sam TypoScript)</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="mapPresets_customTCA">
+                <source>Custom form setup (no preset used)</source>
+                <target>Własne ustawienia formularza (bez domyślnych)</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="mapPresetGroups_tceFields">
+                <source>Form Fields</source>
+                <target>Pola formularza</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="mapPresetGroups_ts">
+                <source>TypoScript Elements</source>
+                <target>Elementy TypoScript</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="mapPresetGroups_other">
+                <source>Other</source>
+                <target>Inne</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="mapTSconstants">
+                <source>TypoScript Constants</source>
+                <target>Stałe TypoScript (Constants)</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="mapTScode">
+                <source>TypoScript Code</source>
+                <target>Ustawienia TypoScript (Setup)</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="mapExtraOptions">
+                <source>Extra options</source>
+                <target>Opcje dodatkowe</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="mapPostProcesses">
+                <source>Applied post-processes</source>
+                <target>Dołączone post-procesy</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="mapEnablePreview">
+                <source>Enable data preview in Page-Module</source>
+                <target>Uaktywnij przegląd danych w module Strona</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="mapEnablePreview.enable">
+                <source>Enable</source>
+                <target>Uaktywnij</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="mapEnablePreview.disable">
+                <source>Disable</source>
+                <target>Zablokuj</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="mapPPcastInteger">
+                <source>Cast content to integer</source>
+                <target>Zmień zawartość w liczbę (integer)</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="mapPPhsc">
+                <source>Pass content through htmlSpecialChars (HSC)</source>
+                <target>Przepuść zawartość przez htmlSpecialChars (HSC)</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="mapCustomStdWrap">
+                <source>Custom stdWrap</source>
+                <target>Własny stdWrap</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="mapTCElabel">
+                <source>Form label</source>
+                <target>Etykieta formularza</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="mapTCEconf">
+                <source>Form configuration</source>
+                <target>Konfiguracja formularza</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="mapTCEextras">
+                <source>Form extras</source>
+                <target>Opcje dodatkowe formularza</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="mapElContainers">
+                <source>Containers</source>
+                <target>Kontenery</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="mapElElements">
+                <source>Elements</source>
+                <target>Elementy</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="mapSection">
+                <source>Section of elements</source>
+                <target>Sekcja elementów</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="mapContainer">
+                <source>Container for elements</source>
+                <target>Kontener na elementy</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="mapElement">
+                <source>Element</source>
+                <target>Element</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="mapAttribute">
+                <source>Attribute</source>
+                <target>Atrybut</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="mapNotMapped">
+                <source>Not mapped</source>
+                <target>Niemapowany</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="mapConfiguration">
+                <source>Configuration</source>
+                <target>Konfiguracja</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="mapEditConfiguration">
+                <source>Edit general configuration</source>
+                <target>Edytuj ogólne ustawienia elementu</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="mapDataProcessing">
+                <source>Data processing</source>
+                <target>Przetwarzanie danych</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="mapEditDataProcessing">
+                <source>Edit data processing modifications</source>
+                <target>Edytuj</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="mapTyposcript">
+                <source>Typoscript</source>
+                <target>TypoScript</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="mapEditTyposcript">
+                <source>Edit Typoscript</source>
+                <target>Edytuj TypoScript</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="mapExtra">
+                <source>Extra</source>
+                <target>Dodatkowe</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="mapEditExtra">
+                <source>Edit extra options</source>
+                <target>Edytuj opcje dodatkowe</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="mapTCEform">
+                <source>Form</source>
+                <target>Formularz</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="mapEditTCEform">
+                <source>Edit form configuration</source>
+                <target>Edytuj konfigurację formularza</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="mapObjectPath">
+                <source>Object path</source>
+                <target>Ścieżka oniektu</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="mapOldStyleColumnNumber">
+                <source>Old style column number</source>
+                <target>Numer kolumny w starym stylu</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="mapOldStyleColumnNumber_label">
+                <source>Column number (0=normal, 1=left, 2=right, 3=border)</source>
+                <target>Numer kolumny (0=normalna, 1= lewa, 2=prawa, 3=boczna)</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="mapEnableDragDrop">
+                <source>Enable Drag&amp;Drop in this container</source>
+                <target>Uaktywnij technikę Przeciągnij i Upuść w kontenerze</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="errorNoContentInFile">
+                <source>No content found in file reference</source>
+                <target>Nie znaleziono zawartości we wskazanym pliku</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="errorNoFileToDisplay">
+                <source>No file to display</source>
+                <target>Brak pliku do wyświetlenia</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="error">
+                <source>Error</source>
+                <target>Błąd</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="errorNoStorageFolder">
+                <source>No accessible Storage Folder found - please create one immediately!</source>
+                <target>Brak dostępu do Folderu Magazynowania (Storage Folder) - utwórz go!</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="errorTONotSaved">
+                <source>No Template Object was created although the Data Structure was (UID %s)!</source>
+                <target>Nie stworzono Template Object pomimo, że Data Structure był (UID %s)!</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="errorTONotCreated">
+                <source>No Data Structure was created!</source>
+                <target>Data Structure nie został utworzony!</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="errorNoUidFound">
+                <source>No UID was found pointing to a Template Object record.</source>
+                <target>Nie został odnaleziony UID wskazujący nad rekord Template Object.</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="errorNoDSrecord">
+                <source>ERROR: No Data Structure Record with the UID %s</source>
+                <target>BŁĄD: Nie ma Struktur Danych z UID %s</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="errorInDSO">
+                <source>Data Structure Object ERROR</source>
+                <target>BŁĄD obiektu Struktury Danych</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="errorNoDSfound">
+                <source>No Data Structure Record could be found with UID "%s"!</source>
+                <target>Nie można odnaleźć Struktury Danych z UID "%s"!</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="errorFileNotFound">
+                <source>The file "%s" could not be found!</source>
+                <target>Plik %s nie został znaleziony!</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="errorNoTOfound">
+                <source>No Template Object Record with the UID "%s"!</source>
+                <target>Nie można odnaleźć Obiektu Szablonu z UID "%s"!</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="errorNoToTitleDefined">
+                <source>No "title" defined, unable to create DS/TO.</source>
+                <target>Nie podano tytułu, nie można utworzyć SD/OS</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="validateTpl">
+                <source>Validate template file (on validator.w3c.org)</source>
+                <target>Walidacja pliku szablonu (na validator.w3c.org)</target>
+            </trans-unit>
+        </body>
+    </file>
+</xliff>

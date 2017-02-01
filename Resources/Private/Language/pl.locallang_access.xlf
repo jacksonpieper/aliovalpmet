@@ -1,0 +1,24 @@
+<?xml version='1.0' encoding='utf-8'?>
+<xliff version="1.0">
+    <file source-language="en" datatype="plaintext" original="messages" target-language="pl">
+        <header/>
+        <body>
+            <trans-unit xml:space="preserve" id="access_noDSaccess">
+                <source>You have no access to data structure of this record</source>
+                <target></target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="access_noTOaccess">
+                <source>You have no access to template object of this record</source>
+                <target></target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="access_noModifyAccess">
+                <source>Modification of record %s:%d is not allowed because user has no access to its DS and/or TO</source>
+                <target></target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="access_noCreateAccess">
+                <source>Creation of record in %s is not allowed because user has no access to its DS and/or TO</source>
+                <target></target>
+            </trans-unit>
+        </body>
+    </file>
+</xliff>

@@ -1,0 +1,148 @@
+<?xml version='1.0' encoding='utf-8'?>
+<xliff version="1.0">
+    <file source-language="en" datatype="plaintext" original="messages" target-language="th">
+        <header/>
+        <body>
+            <trans-unit xml:space="preserve" id="sel1">
+                <source>Please select which kind of page content you wish to create:</source>
+                <target>กรุณาเลือกประเภทของเนื้อหาที่เพจที่คุณต้องการสร้าง :</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="sel2">
+                <source>Now, click at the position where you wish to place the element on the page:</source>
+                <target>คลิกที่นี้ในตำแหน่งที่คุณต้องการวางองค์ประกอบบนหน้าเว็บ :</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="common">
+                <source>Typical page content</source>
+                <target>เนื้อหาหน้าทั่วไป</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="common_1_title">
+                <source>Regular text element</source>
+                <target>องค์ประกอบข้อความธรรมดา</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="common_1_description">
+                <source>A regular text element with header and bodytext fields.</source>
+                <target>องค์ประกอบข้อความปกติกับส่วนหัวและ bodytext เขตข้อมูล</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="common_2_title">
+                <source>Text with image below</source>
+                <target>ข้อความด้วยภาพด้านล่าง</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="common_2_description">
+                <source>Regular text element with a field which can contain any number of images which are positioned below the text.</source>
+                <target>องค์ประกอบข้อความธรรมดากับเขตข้อมูลที่สามารถมีจำนวนของภาพที่ตำแหน่งด้านล่างข้อความใดๆ</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="common_3_title">
+                <source>Text with image to the right</source>
+                <target>ข้อความที่มีภาพไปทางขวา</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="common_3_description">
+                <source>Like above but with the images placed to the right of the text with the text wrapping around the images.</source>
+                <target>ชอบไป แต่กับภาพที่อยู่ด้านขวาของข้อความที่มีการตัดข้อความรอบภาพนั้น</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="common_4_title">
+                <source>Images only</source>
+                <target>ภาพเท่านั้น</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="common_4_description">
+                <source>Any number of images aligned in columns and rows with caption. Like the image options above but without text.</source>
+                <target>จำนวนภาพชิดในคอลัมน์และแถวมีคำอธิบายใดๆ เช่นเลือกภาพไป แต่ไม่มีข้อความ</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="common_5_title">
+                <source>Bullet list</source>
+                <target>รายการ Bullet</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="common_5_description">
+                <source>A single bullet list.</source>
+                <target>รายการ bullet เดียว</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="common_6_title">
+                <source>Table</source>
+                <target>โต๊ะ</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="common_6_description">
+                <source>A simple table with up to 8 columns.</source>
+                <target>ตารางง่ายๆด้วยถึง 8 คอลัมน์</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="special">
+                <source>Special elements</source>
+                <target>องค์ประกอบพิเศษ</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="special_1_title">
+                <source>Filelinks</source>
+                <target>ไฟล์ลิ้ง</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="special_1_description">
+                <source>Makes a list of files for download.</source>
+                <target>ทำให้รายการของไฟล์สำหรับการดาวน์โหลด</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="special_2_title">
+                <source>Multimedia</source>
+                <target>มัลติมีเดีย</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="special_2_description">
+                <source>Inserts a media element like a Flash animation, audio file or video clip.</source>
+                <target>แทรกองค์ประกอบสื่อเช่นภาพเคลื่อนไหว Flash, ไฟล์เสียงหรือวิดีโอคลิป</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="special_3_title">
+                <source>Sitemap</source>
+                <target>แผนที่เว็บไซต์</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="special_3_description">
+                <source>Creates a sitemap of the website.</source>
+                <target>สร้าง sitemap ของเว็บไซต์</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="special_4_title">
+                <source>Plain HTML</source>
+                <target>HTML Plain</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="special_4_description">
+                <source>With this element you can insert raw HTML code on the page.</source>
+                <target>กับองค์ประกอบที่คุณสามารถแทรกรหัส HTML ดิบในหน้านี้</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="forms">
+                <source>Form elements</source>
+                <target>องค์ประกอบแบบ</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="forms_1_title">
+                <source>Mail form</source>
+                <target>แบบฟอร์มอิเล็กทรอนิกส์</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="forms_1_description">
+                <source>A response mail form by which users of the website can submit responses.</source>
+                <target>รูปแบบการตอบสนอง mail โดยที่ผู้ใช้เว็บไซต์สามารถส่งคำตอบ</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="forms_2_title">
+                <source>Search form</source>
+                <target>แบบฟอร์มการค้นหา</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="forms_2_description">
+                <source>Draws a search form and the searchresult if a search is performed.</source>
+                <target>วาดรูปค้นหาและ searchresult หากจะดำเนินการค้นหา</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="forms_3_title">
+                <source>Login form</source>
+                <target>แบบฟอร์มการเข้าสู่ระบบ</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="forms_3_description">
+                <source>Login/logout form for website users. This is used to password protect pages. You must create website users and groups for this to work.</source>
+                <target>Login แบบฟอร์ม / ล็อกเอาต์สำหรับผู้ใช้เว็บไซต์ นี้จะใช้รหัสผ่านป้องกันหน้า คุณต้องสร้างผู้ใช้เว็บไซต์และกลุ่มนี้ทำงาน</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="plugins">
+                <source>Plugins</source>
+                <target>ปลั๊กอิน</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="plugins_1_title">
+                <source>General Plugin</source>
+                <target>ปลั๊กอินทั่วไป</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="plugins_1_description">
+                <source>If you want to insert a plugin which cannot be found among the options below, just select this element type and you can select your specific plugin in a selector box afterward.</source>
+                <target>ถ้าคุณต้องการแทรกปลั๊กอินที่ไม่พบในตัวเลือกด้านล่างเพียงแค่เลือกประเภทองค์ประกอบและคุณสามารถเลือกปลั๊กอินเฉพาะในช่องเลือกภายหลัง</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="fce">
+                <source>Flexible content</source>
+                <target>เนื้อหามีความยืดหยุ่น</target>
+            </trans-unit>
+        </body>
+    </file>
+</xliff>

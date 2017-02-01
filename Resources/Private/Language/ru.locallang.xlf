@@ -1,0 +1,68 @@
+<?xml version='1.0' encoding='utf-8'?>
+<xliff version="1.0">
+    <file source-language="en" datatype="plaintext" original="messages" target-language="ru">
+        <header/>
+        <body>
+            <trans-unit xml:space="preserve" id="cm1_title">
+                <source>TemplaVoilà</source>
+                <target></target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="cm1_viewsubelements">
+                <source>View: Sub elements</source>
+                <target></target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="cm1_viewflexformxml">
+                <source>View: Flexform XML</source>
+                <target></target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="cm_viewdsto">
+                <source>View: DS/TO</source>
+                <target></target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="cm1_pagesusingthiselement">
+                <source>Pages using this element -&gt;</source>
+                <target></target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="wiz_refElements">
+                <source>Reference unused content elements (templavoila)</source>
+                <target></target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="wiz_renameFieldsInPage">
+                <source>Rename a field in pages.tx_templavoila_flex</source>
+                <target></target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="field_sourceField">
+                <source>source field</source>
+                <target></target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="field_destinationField">
+                <source>destination field</source>
+                <target></target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="field_simulateField">
+                <source>Simulate Change only</source>
+                <target></target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="field_submit">
+                <source>submit</source>
+                <target></target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="extconf.staticWizard.header">
+                <source>Migrate</source>
+                <target></target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="extconf.staticWizard.message">
+                <source>Please use the migration wizard to move all datastructures from your database to the filesystem.</source>
+                <target></target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="extconf.staticWizard.link">
+                <source>Click here to run the wizard</source>
+                <target></target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="extmng.updatermsgOption">
+                <source>Updater</source>
+                <target></target>
+            </trans-unit>
+        </body>
+    </file>
+</xliff>

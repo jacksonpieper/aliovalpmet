@@ -1,0 +1,120 @@
+<?xml version='1.0' encoding='utf-8'?>
+<xliff version="1.0">
+    <file source-language="en" datatype="plaintext" original="messages" target-language="fr">
+        <header/>
+        <body>
+            <trans-unit xml:space="preserve" id=".alttitle">
+                <source>TemplaVoilà Mapping</source>
+                <target></target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="mapping_file.description">
+                <source>Modify the structure of this Template and map it with a certain HTML.</source>
+                <target></target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="mapping_file_showXMLDS.description">
+                <source>This view shows the "source code" of what is built together for the Data Structure. You can later modify this data manually.</source>
+                <target></target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="mapping_file_loadDSXML.description">
+                <source>On this page, you can select to load an existing XML (either through an existing Data Structure or through a simple copy / paste of XML in the area below, to replace the existing data structure.</source>
+                <target></target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="mapping_file_createDSTO.description">
+                <source>Add the Data Structure and Template Object (TemplaVoilà will create both of them for you) to a certain Storage Folder. Please be aware that you have to have an existing Storage Folder in your page tree to select it from the dropdown. If you choose "Page Template" as the "Template Type", the new DS/TO Combo will appear when you edit the page properties. If you select "Content Element", the new TO will appear as a new content element type option when you add a new Content Element within any page.</source>
+                <target></target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="mapping_to.description">
+                <source>This tab shows a list of the Template Object (TO), the file and the correspondig Data Structure (DS)</source>
+                <target></target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="mapping_to_htmlheaderparts.description">
+                <source>[FILL IN] mapping_to_htmlheaderparts</source>
+                <target></target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="mapping_to_openInOwnWindow.description">
+                <source>[FILL IN] mapping_to_openInOwnWindow</source>
+                <target></target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="mapping_to_modifyDSTO.description">
+                <source>If you need to modify the structure (the DS that is), e.g. add a new Data Element (a "field") or change the behaviour of a certain Data Element, click here. However, be aware that this modification will erase any custom modification you made to the XML.</source>
+                <target></target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="mapping_head_mapping_instructions.description">
+                <source>Additional information for each Data Element and what you have to consider when you map the Data Element to a HTML tag.</source>
+                <target></target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="mapping_head_sample_data.description">
+                <source>The sample data that is used for the preview (see button below).</source>
+                <target></target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="mapping_head_dataElement.description">
+                <source>A hierarchical list of all Data Elements ("fields") in this Template Object.</source>
+                <target></target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="mapping_head_Field.description">
+                <source>"ROOT" is the main container where everything else is stored. The others are the field names.</source>
+                <target></target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="mapping_head_HTMLpath.description">
+                <source>Displays the HTML element that is mapped to. Hover over the HTML tag to see the full path inside the XML structure. "OUTER" means that the mapping will also replace the element that the field is mapped to, "INNER" means that the content of the element will be replaced, the element itself will be kept.</source>
+                <target></target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="mapping_head_Action.description">
+                <source>"Map" / "Re-Map" allows you to map the field to a certain HTML tag within your HTML file. Use "Ch.Mode" if you only need to modify the OUTER and INNER option.</source>
+                <target></target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="mapping_head_Rules.description">
+                <source>Shows additional mapping restrictions (e.g. only map to a specific HTML tag) for a field. This is defined in the Data Structure.</source>
+                <target></target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="mapping_head_Edit.description">
+                <source>Change the details of a Data Element or delete it completely from the data structure.</source>
+                <target></target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="mapping_window_modes.description">
+                <source>"Exploded Visual" display a view of the HTML template as it looks like (with all the styles), whereas "HTML Source" displays the pure XML structure in a hierarchical source view.</source>
+                <target></target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="mapping_window_help.description">
+                <source>In the screen below you'll see the composite work of the plain HTML template, where the mapped HTML tags are replaced with the sample data (if available).</source>
+                <target></target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="mapping_basics.description">
+                <source>This screen basically allows you to create certain structure through adding fields (when creating the Data Structure) and then map these fields to HTML tags within a HTML template.</source>
+                <target></target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="mapping_to_headerParts.description">
+                <source>When adding a new page template, the Mapping (see other tab) only works on the &lt;body&gt; tag, if you need to add other HTML tags from the HTML &lt;head&gt; tag, you can do this on this screen. Please make sure to hit the "Set" button on the bottom of this list to save your changes. Additional tags in the head part of your HTML can of course be added via regular TypoScript.</source>
+                <target></target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="mapping_to_headerParts_buttons.description">
+                <source>Press "Clear All" to unset all checkboxes above; "Set" saves the changes of this page (the additional tags), "Save" writes the changes of the Mapping (see other tab) to the database. "Save and return" also writes the mapping to the database, but will also return to the TemplaVoilà Control Center.</source>
+                <target></target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="mapping_editform.description">
+                <source>Select the Mapping Type, a distinguishable name, instructions for the one who will map the data to a HTML template later on (optional). The Editing Type determines how the data on the field should be entered. Mapping rules allow to only map to certain HTML tags or HTML attributes. "a:attr:href" to only allows mapping to href attributes of HTML anchor tags.</source>
+                <target></target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="mapping_addfield.description">
+                <source>Enter a for this data structure unique string and click "Add field" to get to the detailed form for this new field.</source>
+                <target></target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="mapping_modeset.description">
+                <source>"OUTER" means that the mapping will also replace the element that the field is mapped to, "INNER" means that the content of the element will be replaced, the element itself will be kept.</source>
+                <target></target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="mapping_ds.description">
+                <source>The list above is the full representation of all fields, containers and sections within this Data Structure.</source>
+                <target></target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="mapping_ds_to.description">
+                <source>The above lists all Template Objects that use this Data Structure.</source>
+                <target></target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="mapping_ds_showXML.description">
+                <source>The XML code above is the complete source of the Data Structure, and how it's stored in the database.</source>
+                <target></target>
+            </trans-unit>
+        </body>
+    </file>
+</xliff>

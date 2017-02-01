@@ -1,0 +1,608 @@
+<?xml version='1.0' encoding='utf-8'?>
+<xliff version="1.0">
+    <file source-language="en" datatype="plaintext" original="messages" target-language="fr">
+        <header/>
+        <body>
+            <trans-unit xml:space="preserve" id="title">
+                <source>TemplaVoilà Control Center</source>
+                <target>Panneau de configuration TemplaVoilà</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="storagefolders">
+                <source>Storage Folders</source>
+                <target>Dossiers de stockage</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="datastructures">
+                <source>Data Structures</source>
+                <target>Structures de données (DS)</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="templateobjects">
+                <source>Template Objects</source>
+                <target>Objets Gabarits (TO)</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="templatefiles">
+                <source>Template Files</source>
+                <target>Fichiers gabarits</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="pagetemplates">
+                <source>Page templates</source>
+                <target>Gabarits de pages</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="filereference">
+                <source>File reference</source>
+                <target>Références de fichiers</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="description">
+                <source>Description</source>
+                <target>Description</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="fces">
+                <source>Flexible CE</source>
+                <target>Contenu flexible</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="other">
+                <source>Other</source>
+                <target>Autre</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="unknown">
+                <source>Unknown "%s"</source>
+                <target>Inconnu "%s"</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="losttos">
+                <source>Lost TOs [%d]</source>
+                <target>TOs perdus [%d]</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="overview">
+                <source>XML file</source>
+                <target>Fichier XML</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="dstotitle">
+                <source>DS/TO Title</source>
+                <target>Titre DS/TO</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="localization">
+                <source>Localization</source>
+                <target>Localisation</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="showdetails">
+                <source>Show Details</source>
+                <target>Afficher les détails</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="showuused">
+                <source>Show unused datastructures</source>
+                <target/></trans-unit>
+            <trans-unit xml:space="preserve" id="containerstatus">
+                <source>Container status</source>
+                <target>Statut du container</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="mappingstatus">
+                <source>Mapping status</source>
+                <target>Statut du mapping</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="usagecount">
+                <source>Usage count</source>
+                <target>Nombre d'utilisations en cours</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="templatestatus">
+                <source>Template Status</source>
+                <target>Statut du gabarit</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="rendertype">
+                <source>Render Type</source>
+                <target>Type de rendu</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="language">
+                <source>Language</source>
+                <target>Langue</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="globalprocessing_xml">
+                <source>Global Processing &lt;strong&gt;XML&lt;/strong&gt;</source>
+                <target>&lt;strong&gt;XML&lt;/strong&gt; de traitement global</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="localprocessing_xml">
+                <source>Local Processing &lt;strong&gt;XML&lt;/strong&gt;</source>
+                <target>&lt;strong&gt;XML&lt;/strong&gt; de traitement local</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="usedby">
+                <source>Used by</source>
+                <target>Utilisé par</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="created">
+                <source>Created</source>
+                <target>Créé</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="updated">
+                <source>Updated</source>
+                <target>Mis à jour</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="noicon">
+                <source>[No icon]</source>
+                <target>[sans icône]</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="filenotfound">
+                <source>[File not found!]</source>
+                <target>[fichier introuvable !]</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="createnewto">
+                <source>Create new Template Object</source>
+                <target>Créer un nouvel Objet Gabarit</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="containerwithseparatelocalization">
+                <source>Container element with separate localization!</source>
+                <target>Elément de contenu avec une localisation séparée!</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="mixofcontentandref">
+                <source>Mix of content and references, OK, but be careful!</source>
+                <target>Mélange de contenu et de référence, OK, mais soyez prudent.</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="nocontentfields">
+                <source>No content fields, recommended to set "&lt;langDisable&gt;" = 1</source>
+                <target>Aucun champs de contenu, il est recommandé de définir "&lt;langDisable&gt;" = 1</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="towasupdated">
+                <source>Template file was updated since last mapping (%s) and you might need to remap the Template Object!</source>
+                <target>Le fichier de gabarit a été mis à jour depuis la dernière configuration (%s), vous devez vérifier la configuration de votre Object Gabarit</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="warning_mappingstatus">
+                <source>%s (TO: "%s")</source>
+                <target>%s (TO: "%s")</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="mapping_uptodate">
+                <source>Mapping is up to date.</source>
+                <target>Configuration à jour</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="update_mapping">
+                <source>Update mapping</source>
+                <target>Mettre à jour la configuration</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="notmapped">
+                <source>Not mapped yet!</source>
+                <target>Aucune configuration actuellement</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="updatemapping_info">
+                <source>- &lt;em&gt;(It might also mean that the TO was mapped with an older version of TemplaVoila - then just go and save the mapping again at this will be updated.)&lt;/em&gt;</source>
+                <target>- &lt;em&gt;(Cela peut aussi vouloir dire que le TO a été configuré avec une version antérieur de Templavoilà - si c'est le cas, vous pouvez simplement sauver à nouveau votre configuration pour la mettre à jour.)&lt;/em&gt;</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="map">
+                <source>Map</source>
+                <target>Connecter</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="remap">
+                <source>Remap</source>
+                <target>Reconnecter</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="preview">
+                <source>Preview</source>
+                <target>Prévisualiser</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="toused_title">
+                <source>Title</source>
+                <target>Titre</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="toused_pid">
+                <source>Page ID</source>
+                <target>ID de la page</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="toused_path">
+                <source>Path</source>
+                <target>Chemin</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="toused_workspace">
+                <source>Workspace</source>
+                <target>Espace de travail</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="toused_uid">
+                <source>UID</source>
+                <target>UID</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="toused_header">
+                <source>Header</source>
+                <target>Titre</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="toused_usedin">
+                <source>Used in %d Elements</source>
+                <target>Utilisé dans %d éléments</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="noaccess">
+                <source>No Access</source>
+                <target>Aucun accès</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="usage">
+                <source>Usage</source>
+                <target>Utilisation</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="action">
+                <source>Action</source>
+                <target>Action</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="refresh">
+                <source>Refresh</source>
+                <target>Rafraîchir</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="invalidtemplatevalues">
+                <source>Invalid template values in %d elements</source>
+                <target>Gabarit invalide dans %d éléments</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="noerrorsfound">
+                <source>No errors found!</source>
+                <target>Aucune erreur trouvée!</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="byuser">
+                <source>by user</source>
+                <target>par utilisateur</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="file">
+                <source>File</source>
+                <target>Fichier</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="newdsto">
+                <source>New DS/TO</source>
+                <target>Nouveau DS/TO</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="usedfiles">
+                <source>Used files</source>
+                <target>Fichiers utilisés</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="templatearchive">
+                <source>Template Archive</source>
+                <target>Gabarit (Archive)</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="configuration">
+                <source>Configuration</source>
+                <target>Configuration</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="fceislocalized">
+                <source>FCE-element is localized</source>
+                <target>L'élément flexible (FCE) est localisé</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="fceinlineislocalized">
+                <source>FCE-inline-elements of the FCE-element are localized</source>
+                <target>Les éléments impriqués du FCE sont localisés</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="casttointeger">
+                <source>the entered/computed value will be cast to an integer</source>
+                <target>la valeur saisie/calculée sera convertie en nombre entier</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="hsced">
+                <source>the entered/computed value will be passed to htmlentities</source>
+                <target>la valeur saisie/calculée sera passée dans htmlentities</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="hsc_on">
+                <source>[HTML-code won't be available]</source>
+                <target>[Le code HTML ne sera pas disponible]</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="hsc_off">
+                <source>[HTML-code will be displayed as-is]</source>
+                <target>[Le code HTML sera affiché tel quel]</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="stdwrap">
+                <source>the entered/computed value will be wrapped</source>
+                <target>la valeur saisie/calculée sera entouré</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="redundant">
+                <source>redundant</source>
+                <target>redondant</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="illegalcharacters">
+                <source>entry contains illegal characters and/or has multiple lines</source>
+                <target>L'entré contient des caractères illégaux et/ou des retours à la ligne</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="newsitewizard_menuhtmlcode">
+                <source>Here is the HTML code from the Template that encapsulated the menu</source>
+                <target>Voici le code HTML du gabarit qui décorera le menu</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="newsitewizard_menuenc">
+                <source>It seems that the menu consists of menu items encapsulated with %s.</source>
+                <target>Il semble que le menu consiste en des éléments de menu décoré avec %s</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="newsitewizard_menunoa">
+                <source>It seems that the menu consists of menu items not wrapped in any block tags except A-tags.</source>
+                <target>Il semble que le menu consiste en des éléments de menu qui ne sont pas décoré, excepté par un lien.</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="newsitewizard_menuwrap">
+                <source>It also seems that the whole menu is wrapped in this tag %s</source>
+                <target>Il semble aussi que le menu soit entouré dans cette balise %s</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="newsitewizard_menudiv">
+                <source>Between the menu elements there seems to be a visual division element with this HTML code: "%s". That will be added between each element as well.</source>
+                <target>Entre les éléments du menu il semble y avoir un séparateur visuel avec ce code HTML: "%s". Ce code va être ajouté entre chaque élément.</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="newsitewizard_menuimg">
+                <source>The menu items were detected to be images - TYPO3 will try to generate graphical menu items automatically (GMENU). You will need to customize the look of these before it will match the originals!</source>
+                <target>Les éléments du menu ont été détecté comme étant des images - TYPO3 va essayer de générer des un menu graphique automatiquement (GMENU). Vous allez devoir personnaliser ce menu pour qu'il ressemble à l'original.</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="newsitewizard_menumouseover">
+                <source>It seems like a mouseover functionality has been applied previously, so roll-over effect has been applied as well.</source>
+                <target>Il semble qu'un effet soit appliqué au menu lors du passage de la souris, cette effet sera aussi disponible dans le menu généré par TYPO3 (RO)</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="newsitewizard_menuts">
+                <source>Based on this analysis, this TypoScript configuration for the menu is suggested:</source>
+                <target>En se basant sur cette analyse, la configuration TypoScript suivante est suggérée:</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="newsitewizard_menufinetune">
+                <source>You can fine tune the configuration here before it is saved:</source>
+                <target>Vous pouvez parfaire la configuration ici, avant qu'elle ne soit sauvegardé.</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="newsitewizard_menuwritets">
+                <source>Write %s TypoScript code</source>
+                <target>%s TypoScript sauvegardé.</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="newsitewizard_menufinished">
+                <source>The basics of your website should be working now. It seems like you did not map the %s to any element, so the menu configuration process will be skipped.</source>
+                <target>La base de votre site doit maintenant fonctionner. Il semble que vous n'ayez pas connecté le %s à aucun élément, la configuration du menu ne sera pas effectuée.</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="newsitewizard_menunext">
+                <source>Next...</source>
+                <target>Prochain...</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="newsitewizard_step5">
+                <source>Step 5 %s: Trying to create dynamic menu</source>
+                <target>Etape 5 %s: Tentative de création d'un menu dynamique</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="newsitewizard_sitecreated">
+                <source>&lt;b&gt;Congratulations!&lt;/b&gt; You have completed the initial creation of a new website in TYPO3 based on the TemplaVoila engine. After you click the "Finish" button you can go to the Web&gt;Page module to edit your pages!</source>
+                <target>&lt;b&gt;Félicitations!&lt;/b&gt; Vous avez terminé les étapes initiales de création de votre nouveau site avec TYPO3 et le moteur de gabarit Templavoilà. Après avoir cliquer sur "Terminé" vous pouvez aller dans le module Web&gt;Page pour éditer vos pages!</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="newsitewizard_finish">
+                <source>Finish Wizard!</source>
+                <target>Terminer l'assistant!</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="newsitewizard_done">
+                <source>Step 6: Done</source>
+                <target>Etape 6: Terminé</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="newsitewizard_basicsshouldwork">
+                <source>The basics of your website should be working now. However the %s still needs to be configured so that TYPO3 automatically generates a menu reflecting the pages in the page tree. This process involves configuration of the TypoScript object path, "lib.%s". This is a technical job which requires that you know about TypoScript if you want it 100%% customized.&lt;br/&gt;To assist you getting started with the %s this wizard will try to analyse the menu found inside the template file. If the menu was created of a series of repetitive block tags containing A-tags then there is a good chance this will succeed. You can see the result below.</source>
+                <target>Les bases de votre site doivent maintenant fonctionner. Mais le %s doit encore être configuré pour que TYPO3 puisse générer un menu qui respecte la ligne graphique de vos pages. Ce processus passe par la configuration de l'objet TypoScript, "lib.%s". C'est un travail technique qui vous demande une bonne connaissance du TypoScript si vous souhaitez le personnalisé complètement. &lt;br/&gt;Pour vous aider à démarrer avec le %s cet assistant va essayer d'analyser la navigation dans votre gabarit. Si votre menu est composé d'éléments répétitifs contenant un lien, il devrait être détecté correctement.</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="newsitewizard_headerinclude">
+                <source>Finally you also have to select which parts of the HTML header you want to include. For instance it is important that you select all sections with CSS styles in order to preserve the correct visual appearance of your website.&lt;br/&gt;You can also select the body-tag of the template if you want to use the original body-tag.&lt;br/&gt;This animations shows an example of this process:</source>
+                <target>Finalement vous devez encore sélectionné les en-tête HTML qui doivent être incluses. Par exemple, c'est important de sélectionné toutes les feuilles de styles pour préserver l'aspect visuel de vos pages.&lt;br/&gt;Vous pouvez aussi sélectionne la balise body si vous utiliser des configurations spécifiques.&lt;br/&gt;Cette animation présente un exemple de ce processus:</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="newsitewizard_headerselect">
+                <source>Select HTML header parts</source>
+                <target>Sélectionner les en-têtes HTML</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="newsitewizard_step4">
+                <source>Step 4: Select HTML header parts</source>
+                <target>Etape 4: Sélectionner les en-têtes HTML</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="newsitewizard_maintemplate">
+                <source>Main template:</source>
+                <target>Gabarit principal</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="newsitewizard_created">
+                <source>New site has been created and adapted.</source>
+                <target>Le nouveau site a été créé et adapaté</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="newsitewizard_step3error">
+                <source>Error happened: Either you did not specify a website name or username in the previous form!</source>
+                <target>Une erreur est survenue: Soit vous n'avez pas précisez de nom pour votre site ou pour votre nouvel utilisateur dans le formulaire précédent!</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="newsitewizard_step3ready">
+                <source>You are now ready to point out at which position in the HTML code to insert the TYPO3 generated page content and the main menu. This process is called "mapping".&lt;br/&gt;The process of mapping is shown with this little animation. Please study it closely to understand the flow, then click the button below to start the mapping process on your own. Complete the mapping process by pressing "Save and Return".</source>
+                <target>Vous êtes maintenant prêt à préciser sur quelle position dans le code HTML le contenu de la page et les menus généré par TYPO3 doivent être insérés. Ce processus est appelé "mapping".&lt;br /&gt;Le processus de mapping est démontré dans cette petite animation. Etudiez là attentivement pour en comprendre le déroulement, ensuite cliquez sur le bouton ci-dessous pour commencer le processus. Une fois que votre mapping terminé vous pouvez sauvegardé en cliquant sur "Sauver et enregistrer"</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="newsitewizard_startmapping">
+                <source>Start the mapping process</source>
+                <target>Démarrer le processus de configuration</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="newsitewizard_beginmapping">
+                <source>Step 3: Begin mapping</source>
+                <target>Etape 3: Démarrer la configuration</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="newsitewizard_firststep">
+                <source>The first step is to select the HTML file you want to base the new website design on. Below you see a list of HTML files found in the folder "%s". Click the "Preview"-link to see what the file looks like and when the right template is found, just click the "Choose as template"-link in order to proceed.&lt;br/&gt;If the list of files is empty you must now copy the HTML file you want to use as a template into the template folder. When you have done that, press the refresh button to refresh the list.</source>
+                <target>La première étape est de sélectionné le fichier HTML que vous allez utiliser comme gabarit pour la ligne graphique de votre site. Ci-dessous vous voyez une liste de fichiers trouvés dans le dossier "%s". Cliquez sur "Prévisualiser" pour voir le rendu du fichier dans votre navigateur. Quand vous avez trouvé le bon gabarit, vous n'avez qu'à cliquer sur "Choisir comme gabarit" pour lancer la suite de l'assistant.&lt;br/&gt;Si la liste des fichiers est vide, vous devez déposer dans le dossiers vos gabarits HTML que vous souhaitez utiliser. Une fois que vos fichiers sont disponible cliquez sur le bouton "Rafraîchir".</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="newsitewizard_selecttemplate">
+                <source>Step 1: Select the template HTML file</source>
+                <target>Etape 1: Sélectionner le fichier de gabarit HTML</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="newsitewizard_error">
+                <source>TemplaVoila wizard error</source>
+                <target>Error de l'assistant Templavoilà</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="newsitewizard_errornodir">
+                <source>The template directory is empty or could not be found. Please, create it before starting this wizard.</source>
+                <target>Le dossier des gabarits est vide ou ne peut pas être trouvé. Merci de créer un gabarit HTML avant de lancer cette assistant.</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="newsitewizard_templateselected">
+                <source>The template file "%s" is now selected:</source>
+                <target>Le fichier de gabarit "%s" est maintenant sélectionné:</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="newsitewizard_step2next">
+                <source>Next, you should enter default values for the new website. With this basic set of information we are ready to create the initial website structure!</source>
+                <target>Ensuite, vous pouvez entrer les valeurs par défaut pour votre nouveau site. Avec ces informations de base, vous êtes prêt à créer la structure de base de votre site!</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="newsitewizard_step2_name">
+                <source>Name of the site</source>
+                <target>Nom du site</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="newsitewizard_step2_url">
+                <source>URL of the website</source>
+                <target>URL du site</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="newsitewizard_step2_editor">
+                <source>Editor username</source>
+                <target>Nom d'utilisateur</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="newsitewizard_step2_required">
+                <source>(Required)</source>
+                <target>(Requis)</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="newsitewizard_step2_optional">
+                <source>(Optional)</source>
+                <target>(Optionnel)</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="newsitewizard_step2_createnewsite">
+                <source>Create new site</source>
+                <target>Créer un nouveau site</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="newsitewizard_step2_notemplatefound">
+                <source>No template file found!?</source>
+                <target>Aucun gabarit n'est disponible</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="newsitewizard_step2_valuename">
+                <source>This value is shown in the browsers title bar and will be the default name of the first page in the page tree.</source>
+                <target>Cette valeur est affichée dans la barre de titre du navigateur et sera le nom par défaut de la première page du site.</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="newsitewizard_step2_valueurl">
+                <source>If you know the URL of the website already please enter it here, eg. "www.mydomain.com".</source>
+                <target>Si vous connaissez déjà l'URL de votre site, merci de la saisir ici, ex: "www.mondomain.com"</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="newsitewizard_step2_username">
+                <source>Enter the username of a new backend user/group who will be able to edit the pages on the new website. (Password will be "password" by default, make sure to change that!)</source>
+                <target>Saisissez le nom d'utilisateur du nouvel utilisateur/groupe backend qui sera responsable de l'édition des pages sur le nouveau site. (Le mot de passe sera "password" par défaut, n'oublier pas de modifier ce champs ultérieurement).</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="newsitewizard_step2">
+                <source>Step 2: Enter default values for new site</source>
+                <target>Etape 2: Saisissez les valeurs par défaut pour le nouveau site</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="newsitewizard_usedtimes">
+                <source>Used %d times</source>
+                <target>Utilisé %d fois</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="newsitewizard_notused">
+                <source>Not used yet</source>
+                <target>Pas encore utilisé</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="newsitewizard_preview">
+                <source>[Preview first]</source>
+                <target>[Prévisualisé en premier]</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="newsitewizard_choose">
+                <source>[Choose as Template]</source>
+                <target>[Choisissez un gabarit]</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="dsdetails_nobasicdefinitions">
+                <source>The element has no basic definitions!</source>
+                <target>L'élément n'a pas de définition</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="dsdetails_notceformdefinitions">
+                <source>The element has no TCE-form definitions!</source>
+                <target>L'élément n'a aucun définition (TCE Form)</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="dsdetails_notes">
+                <source>Notes</source>
+                <target>Notes</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="dsdetails_ts">
+                <source>TypoScript</source>
+                <target>TypoScript</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="dsdetails_column">
+                <source>Column-positioning</source>
+                <target>Colonne (positionnement)</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="dsdetails_preset">
+                <source>Preset used for the element</source>
+                <target>Paramétrage utilisé pour cet élément.</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="dsdetails_tsutilize">
+                <source>will utilize the TS-structure %s defined inside the &lt;TypoScriptObjPath&gt;-entry</source>
+                <target>va utiliser la structure TS %s définie dans l'entrée &lt;TypoScriptObjPath&gt;</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="dsdetails_tslines">
+                <source>%d lines of TS-code inside the &lt;TypoScript&gt;-entry</source>
+                <target>%d lignes de TS dans l'entrée &lt;TypoScript&gt;</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="dsdetails_tsconstants">
+                <source>%d TS-constants defined for use in the &lt;TypoScript&gt;-entry</source>
+                <target>%d constantes TS définies dans l'entrée &lt;TypoScript&gt;</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="warnings">
+                <source>Warnings</source>
+                <target>Avertissements</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="fatalerrors">
+                <source>Fatal errors</source>
+                <target>Erreurs fatales</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="invaliddatastructure_xmlbroken">
+                <source>The the element "%1$s" within the datastructure seems to contain invalid XML, therefore the required data can't be displayed.</source>
+                <target>L'élément "%1$s" dans la structure de donnée semble contenir un code XML invalide, le contenu ne peut être affiché.</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="wiz_title">
+                <source>New site wizard</source>
+                <target>Assistant pour un nouveau site</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="wiz_step">
+                <source>Step %s</source>
+                <target>Étape %s</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="description_pagesWithCertainDsTo">
+                <source>The following pages in the root line contain data structures and template objects</source>
+                <target>Les pages suivantes dans l'arborescence contiennent des structures de données ou des objets gabarits</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="newsitewizard_intro">
+                <source>If you want to start a new website based on the TemplaVoila template engine you can start this wizard which will set up all the boring initial stuff for you.
+                You will be taken through these steps:
+                - Creation of a new website root, storage folder, sample pages.
+                - Creation of the main TemplaVoila template, including mapping of one content area and a main menu.
+                - Creation of a backend user and group to manage only that website.
+                You should prepare an HTML template before you begin the wizard; simply make a design in HTML and place the HTML file including graphics and stylesheets in a subfolder of "%s" relative to the websites root directory.
+                Tip about menus: If you include a main menu in the template, try to place the whole menu inside a container (like &lt;div&gt;, &lt;table&gt; or &lt;tr&gt;) and encapsulate each menu item in a block tag (like &lt;tr&gt;, &lt;td&gt; or &lt;div&gt;). Use A-tags for the links. If you want different designs for normal and active menu elements, design the first menu item as "Active" and the second (and rest) as "Normal", then the wizard might be able to capture the right configuration.
+                Tip about stylesheets: The content elements from TYPO3 will be outputted in regular HTML tags like &lt;p&gt;, &lt;h1&gt; to &lt;h6&gt;, &lt;ol&gt; etc. You will prepare yourself well if your stylesheet in the HTML template provides good styles for these standard elements from the start. Then you will have less finetuning to do later.
+            </source>
+                <target>Si vous souhaitez démarrer un nouveau site basé sur TemplaVoilà vous pouvez utiliser cet assistant qui va vous aider dans vos premiers pas et vous éviter certaine partie ennuyeuse de la configuration. Vous aller passer par les étapes suivantes: - La création d'page racine pour votre nouveau site, un dossier de stockage et des pages d'exemples. - La création du gabarit principale TemplaVoilà, ceci inclus le mapping d'une zone de contenu et d'un menu principale. - La création d'un utilisateur et d'un groupe d'administration qui seront chargé de la gestion du site. Vous devez préparer un gabarit HTML avant de pouvoir commencer cet assistant. Commencez par une ligne graphique simple, ensuite publier vos fichiers HTML ainsi que toutes les feuilles de styles et les images dans le dossiers "%s" relatif à la racine du site.</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="newsitewizard_startnow">
+                <source>Start wizard now!</source>
+                <target>Démarrer l'assistant maintenant</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="newsitewizard_cancel">
+                <source>Cancel wizard</source>
+                <target>Quitter (annuler) l'assistant</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="newsitewizard_problem">
+                <source>&lt;em&gt;There are some technical problems you have to solve before you can start the wizard! Please see below for details. Solve these problems first and come back.&lt;/em&gt;</source>
+                <target>&lt;em&gt;Il y a quelques problèmes techniques que vous devez résoudre avant de pouvoir démarrer cet assistant! Merci de consulter l'aide ci-dessous pour plus de détails. Après avoir résolu ces problèmes, relancer l'assistant.&lt;/em&gt;</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="newsitewizard_missingext">
+                <source>Missing extension!</source>
+                <target>Extension manquante!</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="newsitewizard_missingconf">
+                <source>Missing configuration!</source>
+                <target>Configuration manquante!</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="newsitewizard_missingconf_description">
+                <source>The TemplaVoila extension configuration is missing. Please clear the cache and recheck the configuration within the extension manager.</source>
+                <target>La configuration de l'extension TypoScript est manquante. Merci de vider vos caches et de vérifier à nouveau votre configuration dans le gestionnaire d'extensions.</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="newsitewizard_missingdir">
+                <source>Missing directory!</source>
+                <target>Dossier manquant!</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="newsitewizard_missingext_description">
+                <source>Before the wizard can run some extensions are required to be installed. Below you will see the which extensions are required and which are not available at this moment. Please go to the Extension Manager and install these first.</source>
+                <target>Avant que l'assistant puisse fonctionner quelques extensions doivent être installée. Ci-dessous vous trouverez la liste des extensions requises et celle qui ne sont pas installées. Merci d'utiliser le gestionnaire d'extension pour installer ces prérequis.</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="newsitewizard_missingext_extkey">
+                <source>Extension Key:</source>
+                <target>Clé d'extension:</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="newsitewizard_missingext_installed">
+                <source>Installed?</source>
+                <target>Installé?</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="newsitewizard_missingext_yes">
+                <source>Yes</source>
+                <target>Oui</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="newsitewizard_missingext_no">
+                <source>No</source>
+                <target>No</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="newsitewizard_missingdir_instruction">
+                <source>The directory "%s" (relative to the website root) does not exist! This is where you must place your HTML templates. Please create that directory &lt;u&gt;before you start the wizard&lt;/u&gt;. In order to do so, follow these directions:
+                - Go to the module File &gt; Filelist
+                - Click the icon of the "%s" root and select "Create" from the context menu.
+                - Enter the name "templates" of the folder and press the "Create" button.
+                - Return to this wizard
+            </source>
+                <target>Le dossier "%s" (relatif à la racine du site) n'existe pas! C'est ici que vous devez mettre en place vos gabarits HTML. Merci de bien vouloir créer ce dossier &lt;u&gt;avant de démarrez l'assistant&lt;/u&gt;: - Aller dans le module Fichier &gt; Liste - Cliquer sur l'icône de la racine "%s" et sélectionnez "Créer" depuis le menu contextuel. - Entrer le nom du dossier: "templates" et appuyez sur "Créer" - Relancer l'assistant TemplaVoilà</target>
+            </trans-unit>
+        </body>
+    </file>
+</xliff>

@@ -1,0 +1,424 @@
+<?xml version='1.0' encoding='utf-8'?>
+<xliff version="1.0">
+    <file source-language="en" datatype="plaintext" original="messages" target-language="cs">
+        <header/>
+        <body>
+            <trans-unit xml:space="preserve" id="title">
+                <source>WEB &gt; PAGE MODULE</source>
+                <target>WEB &gt; MODUL STRÁNKA</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="default_introduction">
+                <source>If you wish to edit the content of a page, please click the page title in the page tree to the left.</source>
+                <target>Pokud si přejete editovat obsah nějaké stránky, prosím klikněte na její název nalevo ve stromu stránek.</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="csh_whatisthetemplavoilapagemodule">
+                <source>What is the TemplaVoilà page module?</source>
+                <target>Co je modul stránky TemplaVoilá?</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="createnewpage_selecttemplate">
+                <source>Select a template for your new page:</source>
+                <target>Vyberte šablonu pro vaši novou stránku:</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="createnewpage_defaultlayoutsubmitlabel">
+                <source>Create page with default layout</source>
+                <target>Vytvořit stránku s výchozím vzhledem</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="createnewpage_templateobject_createemptypage">
+                <source>Create an empty page based on this template:</source>
+                <target>Vytvořit prázdnou stránku založenou na této šabloně:</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="createnewpage_templateobject_createpagewithdefaultcontent">
+                <source>Create a page with default content based on this template:</source>
+                <target>Vytvořit stránku s výchozím obsahem založeným na této šabloně:</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="createnewcontent_newContentElement">
+                <source>New content element</source>
+                <target>Nový prvek obsahu</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="info_elementfromotherpage">
+                <source>This is a reference to an element on page %2$d.</source>
+                <target>Toto je odkaz na prvek na straně %2$d.</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="warning_elementusedmorethanonce">
+                <source>This element has been used %s times on this page! ID:%s</source>
+                <target>Tento prvek je použit na této straně %s×! ID:%s</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="warning_containerSeparate">
+                <source>This container element has localization without inheritance enabled (langChildren = 0). This is most likely a misconfiguration since the localization features of TemplaVoilà does not support localized container fields in the native interface! Please inform the system administrator!</source>
+                <target>UPOZORNĚNÍ: Tento prvek typu kontejner má lokalizaci bez povolené dědičnosti (langChildren = 0). Pravděpodobně se jedná o chybu v konfiguraci, protože lokalizační možnosti TemplaVoilá normálně nepodporují lokalizované pole kontejneru! Prosím oznamte to administrátorovi systému!</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="warning_containerInheritance">
+                <source>This container element has localization enabled but with inheritance (langChildren = 1). This situation might produce confusing displays in TemplaVoilà and you are encouraged to disable localization of this container element completely by setting langDisable = 1. Please inform the system administrator!</source>
+                <target>Tento prvek typu kontejner má povolenou lokalizaci, avšak s dědičností (langChildren = 1). Tato situace by mohla mít za následek neočekávané chyby v TemplaVoilá a proto byste měli lokalizaci tohoto kontejneru vypnout tak, že nastavíte langDisable = 1. Prosím oznamte to administrátorovi systému!</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="warning_containerSeparate_short">
+                <source>L10N mode: Separate!</source>
+                <target>Režim L10N: Oddělení!</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="warning_containerInheritance_short">
+                <source>L10N mode: Inheritance</source>
+                <target>Režim L10N: Dědičnost</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="cannotedit_doktypemountpoint">
+                <source>This page acts as a mount point and its content is being replaced by another page ("%s"). Therefore you cannot edit the content of this page directly.</source>
+                <target>Tato stránka slouží jako přípojný bod a její obsah nahrazen jinou stránkou ("%s"). Proto nemůžete přímo editovat její obsah.</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="jumptomountsourcepage">
+                <source>Jump to source page of this mount point</source>
+                <target>Přejít na stránku tohoto přípojného bodu</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="cannotedit_contentfrompid">
+                <source>This page has been configured in a way that it doesn't have any content itself but instead the content of another page ("%s") is shown. Therefore you cannot edit the content of this page directly.</source>
+                <target>Tato strana byla nastavena tak, že místo toho, aby měla svůj vlastní obsah, ukazuje obsah jiné stránky ("%s"). Proto nemůžete přímo editovat její obsah.</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="jumptocontentfrompidpage">
+                <source>Jump to page containing the content elements</source>
+                <target>Přejít na stránku obsahující prvky obsahu</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="cannotedit_shortcut_0">
+                <source>This page is of the type "shortcut". Instead of having content on its own, this page shows the content the page "%s". Therefore you cannot edit the content of this page directly.</source>
+                <target>Tato strana je typu "zkratka". Místo toho, aby měla svůj vlastní obsah, ukazuje tato strana obsah stránky "%s". Proto nemůžete přímo editovat její obsah.</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="cannotedit_shortcut_1">
+                <source>This page is of the type "shortcut". Instead of having content on its own, this page shows the content from the first sub page. Therefore you cannot edit the content of this page directly.</source>
+                <target>Tato strana je typu "zkratka". Místo toho, aby měla svůj vlastní obsah, ukazuje tato strana obsah první podřízené stránky. Proto nemůžete přímo editovat její obsah.</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="cannotedit_shortcut_2">
+                <source>This page is of the type "shortcut". Instead of having content on its own, this page shows the content of a random sub page. Therefore you cannot edit the content of this page directly.</source>
+                <target>Tato strana je typu "zkratka". Místo toho, aby měla svůj vlastní obsah, ukazuje tato strana obsah náhodně vybrané podřízené stránky. Proto nemůžete přímo editovat její obsah.</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="jumptoshortcutdestination">
+                <source>Jump to shortcut destination</source>
+                <target>Přejít na cíl zkatky</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="cannotedit_externalurl_1">
+                <source>This page refers to an external website, you therefore cannot edit the content of this page directly.</source>
+                <target>Tato stránka se odkazuje na externí WWW stránku, proto nemůžete přímo editovat její obsah.</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="cannotedit_externalurl_2">
+                <source>This page refers to an external FTP location, you therefore cannot edit the content of this page directly.</source>
+                <target>Tato stránka se odkazuje na externí FTP server, proto nemůžete přímo editovat její obsah.</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="cannotedit_externalurl_3">
+                <source>This page refers to an email address, you therefore cannot edit the content of this page directly.</source>
+                <target>Tato stránka se odkazuje na e-mailovou adresu, proto nemůžete přímo editovat její obsah.</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="jumptoexternalurl">
+                <source>Jump to external URL (%s)</source>
+                <target>Přejít na externí URL (%s)</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="editpage_sysfolder_intro">
+                <source>The current page is of the type "Sysfolder". Sysfolders usually don't contain content elements but are used for collecting other types of records in a single folder.</source>
+                <target>Aktuální stránka je typu "Sysfolder". Tyto stránky obvykle neobsahují prvky obsahu, ale používají se na shromažďování jiných typů záznamů do jedné složky.</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="editpage_sysfolder_listview_noaccess">
+                <source>The content of a Sysfolder is usually managed by the "List" module but you currently don't have access to that module. If you need to access the data in the Sysfolder anyway, please ask your system administrator to grant you access to the List module.</source>
+                <target>Obsah stránky typu Sysfolder je obvykle spravován pomocí modulu "Záznamy", k němuž aktuálně nemáte přístup. Jestliže přesto potřebujete přistupovat k datům v Sysfolder, prosím požádejte vašeho systémového administrátora o poskytnutí přístupu k modulu Záznamy.</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="editpage_sysfolder_switchtolistview">
+                <source>Switch to list view</source>
+                <target>Přepnout do pohledu záznamů</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="template_nodescriptionavailable">
+                <source>No description available.</source>
+                <target>Popis není dostupný.</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="template_titledefault">
+                <source>Default template</source>
+                <target>Výchozí šablona</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="template_titleInherit">
+                <source>No selection (inherit)</source>
+                <target>Žádný výběr (dědit)</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="willbereplacedbydefaultlanguage">
+                <source>(will be replaced by content of default language)</source>
+                <target>(bude nahrazeno obsahem výchozího jazyka)</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="newce_defaulttext_text">
+                <source>Please enter some text here</source>
+                <target>Prosím tady zadejte nějaký text</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="view_basic">
+                <source>Basic view</source>
+                <target>Základní pohled</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="view_tree">
+                <source>Tree view</source>
+                <target>Pohled na strom</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="createnewtranslation">
+                <source>Create new page translation</source>
+                <target>Vytvořit nový překlad stránky</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="selectlanguageversion">
+                <source>Show page language version</source>
+                <target>Ukázat jazykovou verzi stránky</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="pageLocalizationMode">
+                <source>Page localization mode</source>
+                <target>Režim překladu stránky</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="pageLocalizationMode_separate">
+                <source>Separate structures</source>
+                <target>Rozdílné struktury</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="pageLocalizationMode_inheritance">
+                <source>Inheritance of values</source>
+                <target>Dědičnost hodnot</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="pageLocalizationMode_inheritance.disableInheritance">
+                <source>Don't inherit structure</source>
+                <target>Nedědit strukturu</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="pageLocalizationParadigm_bound">
+                <source>1:1</source>
+                <target>1:1</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="pageLocalizationDisplayMode">
+                <source>Display mode</source>
+                <target>Režim zobrazení</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="pageLocalizationDisplayMode_selectedLanguage">
+                <source>Selected language</source>
+                <target>Vybraný jazyk</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="pageLocalizationDisplayMode_onlyLocalized">
+                <source>Only localized elements</source>
+                <target>Jen přeložené prvky</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="clickToEditTranslation">
+                <source>Click to edit translation</source>
+                <target>Klepněte pro úpravu překladu</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="editlanguageversion">
+                <source>Edit page properties</source>
+                <target>Upravit vlastnosti stránky</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="multipleLanguages">
+                <source>Multiple languages</source>
+                <target>Více jazyků</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="languageDisabled">
+                <source>Language disabled</source>
+                <target>Jazyk vypnut</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="viewsubelements">
+                <source>View sub elements</source>
+                <target>Zobrazit podřízené prvky</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="gobacktooverview">
+                <source>Go back to whole page view</source>
+                <target>Vrátit se k celkovému pohledu na stránku</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="createnewrecord">
+                <source>Create new element</source>
+                <target>Vytvořit nový prvek</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="editrecord">
+                <source>Edit element</source>
+                <target>Upravit prvek</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="editrecord_d">
+                <source>Editing is not allowed for this element!</source>
+                <target>Pro tento prvek nejsou povoleny úpravy!</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="pasterecord">
+                <source>Paste element</source>
+                <target>Vložit prvek</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="pastefce_andcopyallsubs">
+                <source>Paste copy of element and make copies of all sub elements</source>
+                <target>Vložit kopii prvku a vytvořit kopie všech podřízených prvků</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="pastefce_andreferencesubs">
+                <source>Paste copy of element and keep references to original sub elements</source>
+                <target>Vložit kopii prvku a ponechat odkazy na původní podřízené prvky</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="copyrecord">
+                <source>Copy element</source>
+                <target>Kopírovat prvek</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="cutrecord">
+                <source>Cut element</source>
+                <target>Vyjmout prvek</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="createreference">
+                <source>Create reference</source>
+                <target>Vytvořit odkaz</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="unlinkRecord">
+                <source>Unlink element</source>
+                <target>Odpojit prvek</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="deleteRecord">
+                <source>Delete element (!)</source>
+                <target>Vymazat prvek</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="deleteRecordMsg">
+                <source>Do you really want to delete this element?</source>
+                <target>Opravdu chcete tento prvek vymazat?</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="deleteRecordWithReferencesMsg">
+                <source>This element is also referenced on other pages. Do you really want to delete this element?</source>
+                <target>Tento prvek je odkazován rovněž na dalších stránkách. Opravdu chcete odstranit tento prvek?</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="unlinkRecordMsg">
+                <source>Unlink element?</source>
+                <target>Odpojit prvek?</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="pagerelatedinformation">
+                <source>Page related information</source>
+                <target>Informace související se stránkou</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="advancedfunctions">
+                <source>Advanced functions</source>
+                <target>Pokročilé funkce</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="localization">
+                <source>Translations</source>
+                <target>Překlady</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="availabletranslations">
+                <source>Translations</source>
+                <target>Překlady</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="versioning">
+                <source>Versioning</source>
+                <target>Správa verzí</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="nonusedelements">
+                <source>Non-used elements</source>
+                <target>Nepoužité prvky</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="makeLocal">
+                <source>Create local copy</source>
+                <target>Vytvořit lokální kopii</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="makeLocalMsg">
+                <source>Do you want to create a local copy of this referenced element?</source>
+                <target>Chcete vytvořit lokální kopii tohoto odkazujícího se prvku?</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="performTranslation">
+                <source>Click to translate FlexForm</source>
+                <target>Klikněte pro překlad FlexForm</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="path">
+                <source>Path</source>
+                <target>Cesta</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="defaultLanguage">
+                <source>Default language</source>
+                <target>Výchozí jazyk</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="createcopyfortranslation">
+                <source>Create a copy for translation</source>
+                <target>Vytvořit kopii pro překlad</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="inititemno_elementsNotBeingUsed">
+                <source>Elements not being used in this language or sheet</source>
+                <target>Prvky nepoužité v tomto jazyce nebo záložce</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="rendernonusedelements_deleteall">
+                <source>Delete all records above marked with delete-icon</source>
+                <target>Vymazat všechny záznamy nahoře označené ikonou Vymazat</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="renderreferencecount_delete">
+                <source>Delete!</source>
+                <target>Vymazat!</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="sidebar_advancedfunctions_labelshowhidden">
+                <source>Show hidden elements</source>
+                <target>Ukázat skryté prvky</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="sidebar_advancedfunctions_labelshowoutline">
+                <source>Show outline</source>
+                <target>Ukázat přehled</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="sidebar_advancedfunctions_labelcachefunctions">
+                <source>Cache functions</source>
+                <target>Funkce keše</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="sidebar_renderitem_showtranslationinformation">
+                <source>Display translation information</source>
+                <target>Ukázat informace o překladu</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="sidebar_versionSelector">
+                <source>Versioning</source>
+                <target>Verzování</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="sidebar_versionSelector_createVersion">
+                <source>Create version of this page</source>
+                <target>Vytvořit verzi této stránky</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="outline_header_title">
+                <source>Title:</source>
+                <target>Název:</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="outline_header_controls">
+                <source>Controls:</source>
+                <target>Ovládání:</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="outline_header_status">
+                <source>Status:</source>
+                <target>Stav:</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="outline_header_element">
+                <source>Element:</source>
+                <target>Prvek:</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="outline_status_dirty">
+                <source>Click to clean up XML...</source>
+                <target>Klikněte sem a vyčistíte XML...</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="outline_status_clean">
+                <source>XML is clean.</source>
+                <target>XML je čistý.</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="outline_status_cleanAll">
+                <source>Clean XML of all dirty elements above!</source>
+                <target>Čistit XML od všech nevalidních prvků nahoře!</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="element_localizations">
+                <source>Localizations</source>
+                <target>Lokalizace</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="records">
+                <source>Other elements (non-content)</source>
+                <target>Další prvky (ne obsahu)</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="displayRecordsFrom">
+                <source>Display elements from:</source>
+                <target>Ukázat prvky z:</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="content_from_pid_title">
+                <source>Page uses content from this page: %s</source>
+                <target>Stránka používá obsah z této stránky: %s</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="missing_edit_right">
+                <source>Your user settings don't allow creating, moving or removing elements from this page.</source>
+                <target>Vaše uživatelská práva neumožňují vytvoření, přesunutí či odstranění prvků z této stránky.</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="missing_edit_right_detail">
+                <source>Your settings indicate that you're either don't have the general right to edit page content, or you're not allowed to modify required tables or you're not allowed to edit the content fields. We suggest you recheck the settings or get in touch with your technical support.</source>
+                <target>Vaše nastavení naznačují, že buď nemáte obecné právo upravit obsah stránky, nebo nesmíte měnit požadované tabulky, nebo nesmíte upravovat obsah pole. Doporučujeme vám, abyste znovu zkontrolovali nastavení, nebo zkontaktovali vaší technickou podporu.</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="maximal_content_elements">
+                <source>The maximal amount of %d content elements is reached in field "%s."</source>
+                <target>Maximální množství %d prvků obsahu je dosaženo v oblasti "%s."</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="page_structure_inherited">
+                <source>The content structure for this lanuage differs from the default language.</source>
+                <target></target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="page_structure_inherited_detail">
+                <source>If that's not what you expect, please contact you content administrator.</source>
+                <target></target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="page_not_found">
+                <source>The requested page can't be found or is not accessible.</source>
+                <target></target>
+            </trans-unit>
+        </body>
+    </file>
+</xliff>

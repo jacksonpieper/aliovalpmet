@@ -1,0 +1,23 @@
+<?xml version='1.0' encoding='utf-8'?>
+<xliff version="1.0">
+    <file source-language="en" datatype="plaintext" original="messages" target-language="de">
+        <header/>
+        <body>
+            <trans-unit xml:space="preserve" id="access_noDSaccess">
+                <source>You have no access to data structure of this record</source>
+                <target>Sie haben für die Datenstruktur dieses Datensatzes keine Zugriffsberechtigung.</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="access_noTOaccess">
+                <source>You have no access to template object of this record</source>
+                <target>Sie haben für das Vorlagenobjekt dieses Datensatzes keine Zugriffsberechtigung.</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="access_noModifyAccess">
+                <source>Modification of record %s:%d is not allowed because user has no access to its DS and/or TO</source>
+                <target>Änderung des Datensatzes %s:%d ist nicht erlaubt, da der Benutzer keine Zugriffsberechtigung für seine DS und/oder VO hat.</target><alt-trans xml:space="preserve" origin="None"><target>Änderung des Datensatzes %s: %d ist nicht erlaubt, da der Benutzer keine Zugriffsberechtigung für seine DS und/oder VO hat.</target></alt-trans></trans-unit>
+            <trans-unit xml:space="preserve" id="access_noCreateAccess">
+                <source>Creation of record in %s is not allowed because user has no access to its DS and/or TO</source>
+                <target>Erstellen eines Datensatzes in %s ist nicht erlaubt, da der Benutzer keine Zugriffsberechtigung für seine DS und/oder TO hat.</target>
+            </trans-unit>
+        </body>
+    </file>
+</xliff>

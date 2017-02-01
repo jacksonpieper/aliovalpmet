@@ -1,0 +1,148 @@
+<?xml version='1.0' encoding='utf-8'?>
+<xliff version="1.0">
+    <file source-language="en" datatype="plaintext" original="messages" target-language="ru">
+        <header/>
+        <body>
+            <trans-unit xml:space="preserve" id="sel1">
+                <source>Please select which kind of page content you wish to create:</source>
+                <target>Выберите, пожалуйста, какой тип контент-элемента вы хотите создать:</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="sel2">
+                <source>Now, click at the position where you wish to place the element on the page:</source>
+                <target>Теперь нажмите в странице на то место, куда вы хотите поместить элемент:</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="common">
+                <source>Typical page content</source>
+                <target>Типичные контент-элементы страниц</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="common_1_title">
+                <source>Regular text element</source>
+                <target>Обычный текст</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="common_1_description">
+                <source>A regular text element with header and bodytext fields.</source>
+                <target>Обычный текстовый элемент с полями заголовка и текста.</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="common_2_title">
+                <source>Text with image below</source>
+                <target>Текст с картинкой снизу.</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="common_2_description">
+                <source>Regular text element with a field which can contain any number of images which are positioned below the text.</source>
+                <target>Обычный текст, с полем внизу, в которое можно поместить несколько картинок.</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="common_3_title">
+                <source>Text with image to the right</source>
+                <target>Текст с картинками справа.</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="common_3_description">
+                <source>Like above but with the images placed to the right of the text with the text wrapping around the images.</source>
+                <target>То-же, что и выше, но текст обтекает расположенные справа картинки.</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="common_4_title">
+                <source>Images only</source>
+                <target>Только картинки</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="common_4_description">
+                <source>Any number of images aligned in columns and rows with caption. Like the image options above but without text.</source>
+                <target>Любое количество картинок, расставленных в ряды и колонки с подписями. Так-же как картинки выше, но без текста.</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="common_5_title">
+                <source>Bullet list</source>
+                <target>Список</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="common_5_description">
+                <source>A single bullet list.</source>
+                <target>Неупорядоченный список с маркерами.</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="common_6_title">
+                <source>Table</source>
+                <target>Таблица</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="common_6_description">
+                <source>A simple table with up to 8 columns.</source>
+                <target>Простая таблица, шириной до 8-ми колонок.</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="special">
+                <source>Special elements</source>
+                <target>Особые элементы</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="special_1_title">
+                <source>Filelinks</source>
+                <target>Ссылки на файлы</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="special_1_description">
+                <source>Makes a list of files for download.</source>
+                <target>Вставить список файлов для загрузки</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="special_2_title">
+                <source>Multimedia</source>
+                <target>Мультимедиа</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="special_2_description">
+                <source>Inserts a media element like a Flash animation, audio file or video clip.</source>
+                <target>Вставить мультимедиа-элементы (анимацию, звуковые файлы или видео-клипы)</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="special_3_title">
+                <source>Sitemap</source>
+                <target>Карта сайта</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="special_3_description">
+                <source>Creates a sitemap of the website.</source>
+                <target>Создать карту этого сайта.</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="special_4_title">
+                <source>Plain HTML</source>
+                <target>Чистый HTML</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="special_4_description">
+                <source>With this element you can insert raw HTML code on the page.</source>
+                <target>С помощью этого элемента можно помещать на страницу чистый HTML-код.</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="forms">
+                <source>Form elements</source>
+                <target>Форма</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="forms_1_title">
+                <source>Mail form</source>
+                <target>Почтовая форма</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="forms_1_description">
+                <source>A response mail form by which users of the website can submit responses.</source>
+                <target>Почтовая форма, с помощью которой пользователи могут послать свои замечания.</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="forms_2_title">
+                <source>Search form</source>
+                <target>Поисковая форма</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="forms_2_description">
+                <source>Draws a search form and the searchresult if a search is performed.</source>
+                <target>Создает на странице форму для поиска по сайту, а также отображает результаты поиска.</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="forms_3_title">
+                <source>Login form</source>
+                <target>Форма входа в систему</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="forms_3_description">
+                <source>Login/logout form for website users. This is used to password protect pages. You must create website users and groups for this to work.</source>
+                <target>Форма входа в систему и выхода из нее (login/logout) для внешних пользователей. Используется для страниц, защищенных паролем. Для того, чтобы она могла работать, необходимо создать внешних пользователей и группы внешних пользователей (frontend users and groups).</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="plugins">
+                <source>Plugins</source>
+                <target>Расширения</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="plugins_1_title">
+                <source>General Plugin</source>
+                <target>Основное расширение</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="plugins_1_description">
+                <source>If you want to insert a plugin which cannot be found among the options below, just select this element type and you can select your specific plugin in a selector box afterward.</source>
+                <target>Если Вы хотите вставить плагин, который не может быть найден среди вариантов ниже, выберите этот тип элемента, и Вы сможете выбрать желаемый плагин из списка позже.</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="fce">
+                <source>Flexible content</source>
+                <target>Настраиваемый элемент</target>
+            </trans-unit>
+        </body>
+    </file>
+</xliff>

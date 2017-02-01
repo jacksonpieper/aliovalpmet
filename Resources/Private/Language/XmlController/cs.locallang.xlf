@@ -1,0 +1,36 @@
+<?xml version='1.0' encoding='utf-8'?>
+<xliff version="1.0">
+    <file source-language="en" datatype="plaintext" original="messages" target-language="cs">
+        <header/>
+        <body>
+            <trans-unit xml:space="preserve" id="title">
+                <source>View FlexForm XML data</source>
+                <target>Ukázat data FlexForm XML</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="needsCleaning">
+                <source>It seems the FlexForm XML can be cleaned up a bit. Please compare the current and suggested XML structure and press the "Clean" button below if you wish to clean it!</source>
+                <target>Vypadá to, že by FlexForm XML potřeboval trochu pročistit. Prosím porovnejte aktuální a navrhovanou strukturu XML a klikněte na ťlačítko "Čistit" dole, pokud si přejete XML pročistit.</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="XMLclean">
+                <source>XML is clean</source>
+                <target>XML je čistý</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="cleanUp">
+                <source>Save clean XML to record!</source>
+                <target>Uložit čistý XML do záznamu!</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="current">
+                <source>Current XML:</source>
+                <target>Aktuální XML:</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="clean">
+                <source>Clean XML:</source>
+                <target>Čistý XML:</target>
+            </trans-unit>
+            <trans-unit xml:space="preserve" id="diff">
+                <source>Difference:</source>
+                <target>Rozdíl:</target>
+            </trans-unit>
+        </body>
+    </file>
+</xliff>
