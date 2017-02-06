@@ -20,6 +20,7 @@ use Schnitzler\Templavoila\Helper\LanguageHelper;
 use Schnitzler\Templavoila\Traits\BackendUser;
 use Schnitzler\Templavoila\Traits\DatabaseConnection;
 use Schnitzler\Templavoila\Traits\LanguageService;
+use Schnitzler\Templavoila\Utility\PermissionUtility;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Type\Icon\IconState;
@@ -245,7 +246,8 @@ class LocalizationTab implements Renderable
      */
     private function sidebar_renderItem_renderNewTranslationSelectorbox()
     {
-        if (!static::getBackendUser()->isPSet($this->controller->calcPerms, 'pages', 'edit')) {
+        $compiledPermissions = PermissionUtility::getCompiledPermissions($this->controller->getId());
+        if (!static::getBackendUser()->isPSet($compiledPermissions, 'pages', 'edit')) {
             return false;
         }
 
