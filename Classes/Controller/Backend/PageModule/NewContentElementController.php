@@ -20,6 +20,7 @@ use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Backend\Wizard\NewContentElementWizardHookInterface;
 use TYPO3\CMS\Core\Imaging\IconProvider\BitmapIconProvider;
 use TYPO3\CMS\Core\Imaging\IconRegistry;
+use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\StringUtility;
 
@@ -142,10 +143,15 @@ class NewContentElementController extends \TYPO3\CMS\Backend\Controller\ContentE
                         )
                     ];
 
+                    $defaultParams = [];
+                    parse_str($wInfo['params'], $defaultParams);
+
+                    ArrayUtility::mergeRecursiveWithOverrule($urlParams, $defaultParams);
+
                     $url = BackendUtility::getModuleUrl(
                         'tv_mod_pagemodule_contentcontroller',
                         $urlParams
-                    ) . urlencode($wInfo['params']);
+                    );
 
                     if (isset($wInfo['icon'])) {
                         GeneralUtility::deprecationLog('The PageTS-Config: mod.wizards.newContentElement.wizardItems.*.elements.*.icon'
