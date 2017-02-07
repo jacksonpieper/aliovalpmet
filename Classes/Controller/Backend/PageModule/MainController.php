@@ -872,6 +872,7 @@ class MainController extends AbstractModuleController implements Configurable
         $url = BackendUtility::getModuleUrl(
             'tv_mod_createcontent',
             [
+                'action' => 'mainAction',
                 'id' => $this->getId(),
                 'versionId' => $this->versionId,
                 'parentRecord' => $this->getApiService()->flexform_getStringFromPointer($parentPointer),

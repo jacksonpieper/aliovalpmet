@@ -3,7 +3,7 @@
 return [
     'tv_mod_createcontent' => [
         'path' => '/templavoila/module/createcontent',
-        'target' => \Schnitzler\Templavoila\Controller\Backend\PageModule\CreateContentController::class . '::processRequest'
+        'target' => \Schnitzler\Templavoila\Controller\Backend\PageModule\NewContentElementController::class . '::processRequest'
     ],
     'tv_mod_admin_file' => [
         'path' => '/templavoila/admininstration/file',
