@@ -900,8 +900,8 @@ class SheetRenderer implements Renderable
 
                 if ($renderer instanceof AbstractContentElementRenderer) {
                     $renderer->setRow($row);
-                    $renderer->setTable($row);
-                    $renderer->setOutput($row);
+                    $renderer->setTable('tt_content');
+                    $renderer->setOutput($output);
                     $renderer->setAlreadyRendered($alreadyRendered);
                     $renderer->setRef($this->controller);
                     $output .= $renderer->render();
