@@ -211,15 +211,13 @@ class OutlineRenderer implements Renderable
                         !$elementBelongsToCurrentPage ||
                         $this->controller->getElementRegister()[$contentTreeArr['el']['uid']] > 1
                     ) {
-                        $iconUnlink = $this->controller->getModuleTemplate()->getIconFactory()->getIcon('actions-delete', Icon::SIZE_SMALL);
-                        $linkUnlink = $this->controller->link_unlink($iconUnlink, $parentPointer['table'], $contentTreeArr['el']['uid']);
+                        $linkUnlink = $this->controller->link_unlink($parentPointer);
                     } else {
                         $linkUnlink = '';
                     }
                     if ($this->controller->modTSconfig['properties']['enableDeleteIconForLocalElements'] && $elementBelongsToCurrentPage) {
                         $hasForeignReferences = ReferenceIndexUtility::hasElementForeignReferences($contentTreeArr['el'], $contentTreeArr['el']['pid']);
-                        $iconDelete = $this->controller->getModuleTemplate()->getIconFactory()->getIcon('actions-edit-delete', Icon::SIZE_SMALL);
-                        $linkDelete = $this->controller->link_unlink($iconDelete, $parentPointer['table'], $contentTreeArr['el']['uid'], true, $hasForeignReferences);
+                        $linkDelete = $this->controller->link_unlink($parentPointer, true, $hasForeignReferences);
                     } else {
                         $linkDelete = '';
                     }

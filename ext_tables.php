@@ -116,6 +116,13 @@ $iconRegistry->registerIcon(
     ]
 );
 $iconRegistry->registerIcon(
+    'extensions-templavoila-delete',
+    \TYPO3\CMS\Core\Imaging\IconProvider\FontawesomeIconProvider::class,
+    [
+        'name' => 'trash'
+    ]
+);
+$iconRegistry->registerIcon(
     'extensions-templavoila-pastesubref',
     \TYPO3\CMS\Core\Imaging\IconProvider\BitmapIconProvider::class,
     [

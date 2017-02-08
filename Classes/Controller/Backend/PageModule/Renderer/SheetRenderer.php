@@ -326,8 +326,7 @@ class SheetRenderer implements Renderable
                 !$elementBelongsToCurrentPage ||
                 $this->controller->getElementRegister()[$uid] > 1
             ) {
-                $iconUnlink = $this->controller->getModuleTemplate()->getIconFactory()->getIcon('extensions-templavoila-unlink', Icon::SIZE_SMALL);
-                $linkUnlink = !in_array('unlink', $this->controller->getBlindIcons()) ? $this->controller->link_unlink($iconUnlink, 'tt_content', $uid, false, false, $elementPointer) : '';
+                $linkUnlink = !in_array('unlink', $this->controller->getBlindIcons()) ? $this->controller->link_unlink($parentPointer) : '';
             } else {
                 $linkUnlink = '';
             }
@@ -346,8 +345,7 @@ class SheetRenderer implements Renderable
 
             if ($canEditContent && $this->controller->modTSconfig['properties']['enableDeleteIconForLocalElements'] && $elementBelongsToCurrentPage) {
                 $hasForeignReferences = ReferenceIndexUtility::hasElementForeignReferences($sheetData, $pid);
-                $iconDelete = $this->controller->getModuleTemplate()->getIconFactory()->getIcon('actions-edit-delete', Icon::SIZE_SMALL);
-                $linkDelete = !in_array('delete', $this->controller->getBlindIcons()) ? $this->controller->link_unlink($iconDelete, $parentPointer, true, $hasForeignReferences, $elementPointer) : '';
+                $linkDelete = !in_array('delete', $this->controller->getBlindIcons()) ? $this->controller->link_unlink($parentPointer, true, $hasForeignReferences) : '';
             } else {
                 $linkDelete = '';
             }

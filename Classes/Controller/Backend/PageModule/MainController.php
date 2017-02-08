@@ -213,7 +213,7 @@ class MainController extends AbstractModuleController implements Configurable
 
     private function initializeTsConfig()
     {
-        $this->modTSconfig = BackendUtility::getModTSconfig($this->getId(), 'mod.' . $this->moduleName);
+        $this->modTSconfig = BackendUtility::getModTSconfig($this->getId(), 'mod.web_txtemplavoilaM1');
         if (!isset($this->modTSconfig['properties']['sideBarEnable'])) {
             $this->modTSconfig['properties']['sideBarEnable'] = 1;
         }
@@ -906,11 +906,11 @@ class MainController extends AbstractModuleController implements Configurable
      *
      * @return string HTML anchor tag containing the label and the unlink-link
      */
-    public function link_unlink($label, $table, $uid, $realDelete = false, $foreignReferences = false, $elementPointer = '')
+    public function link_unlink($unlinkPointer, $realDelete = false, $foreignReferences = false)
     {
-        $unlinkPointerString = (string)$this->getApiService()->flexform_getStringFromPointer($elementPointer);
+        $unlinkPointerString = (string)$this->getApiService()->flexform_getStringFromPointer($unlinkPointer);
 
-        if ($realDelete && is_string($unlinkPointerString) && $unlinkPointerString !== '') {
+        if ($realDelete) {
             $LLlabel = $foreignReferences ? 'deleteRecordWithReferencesMsg' : 'deleteRecordMsg';
 
             $url = BackendUtility::getModuleUrl(
@@ -922,23 +922,22 @@ class MainController extends AbstractModuleController implements Configurable
                 ]
             );
 
-            return '<a class="btn btn-default t3js-modal-trigger tpm-unlink" data-severity="warning" data-title="Delete this record?" data-content="' . static::getLanguageService()->getLL($LLlabel) . '" data-button-close-text="Cancel" href="' . $url . '">' . $label . '</a>';
+            $icon = $this->getModuleTemplate()->getIconFactory()->getIcon('extensions-templavoila-delete', Icon::SIZE_SMALL);
+
+            return '<a class="btn btn-default t3js-modal-trigger tpm-unlink" data-severity="warning" data-title="Delete this record?" data-content="' . static::getLanguageService()->getLL($LLlabel) . '" data-button-close-text="Cancel" href="' . $url . '">' . $icon . '</a>';
         } else {
             $url = BackendUtility::getModuleUrl(
-                'tce_db',
+                'tv_mod_pagemodule_contentcontroller',
                 [
-                    'cmd' => [
-                        $table => [
-                            $uid => [
-                                'delete' => 1
-                            ]
-                        ]
-                    ],
-                    'redirect' => $this->getReturnUrl()
+                    'action' => 'unlink',
+                    'returnUrl' => $this->getReturnUrl(),
+                    'record' => $unlinkPointerString
                 ]
             );
 
-            return '<a class="btn btn-default t3js-modal-trigger tpm-unlink" data-severity="warning" data-title="Delete this record?" data-content="' . GeneralUtility::quoteJSvalue(static::getLanguageService()->getLL('unlinkRecordMsg')) . '" data-button-close-text="Cancel" href="' . $url . '">' . $label . '</a>';
+            $icon = $this->getModuleTemplate()->getIconFactory()->getIcon('extensions-templavoila-unlink', Icon::SIZE_SMALL);
+
+            return '<a class="btn btn-default t3js-modal-trigger tpm-unlink" data-severity="warning" data-title="Unlink this record?" data-content="' . GeneralUtility::quoteJSvalue(static::getLanguageService()->getLL('unlinkRecordMsg')) . '" data-button-close-text="Cancel" href="' . $url . '">' . $icon . '</a>';
         }
     }
 
