@@ -211,7 +211,7 @@ class NonUsedElementsTab implements Renderable
                 ]
             );
 
-            return '<a title="' . static::getLanguageService()->getLL('renderreferencecount_delete', true) . '" class="tpm-countRef" href="' . $url .  '">' .
+            return '<a title="' . static::getLanguageService()->getLL('renderreferencecount_delete', true) . '" class="tpm-countRef" href="' . $url . '">' .
             $this->controller->getModuleTemplate()->getIconFactory()->getIcon('actions-edit-delete', Icon::SIZE_SMALL) .
             '</a>';
         }
