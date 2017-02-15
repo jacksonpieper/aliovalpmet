@@ -30,6 +30,7 @@ use TYPO3\CMS\Core\Log\Logger;
 use TYPO3\CMS\Core\Log\LogManager;
 use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\TypoScript\Parser\TypoScriptParser;
+use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
@@ -578,7 +579,7 @@ class FrontendController extends AbstractPlugin
                     // Overlaying local processing:
                     if (is_array($TOelements[$key]['tx_templavoila'])) {
                         if (is_array($LP[$key])) {
-                            $LP[$key] = GeneralUtility::array_merge_recursive_overrule($LP[$key], $TOelements[$key]['tx_templavoila']);
+                            ArrayUtility::mergeRecursiveWithOverrule($LP[$key], $TOelements[$key]['tx_templavoila']);
                         } else {
                             $LP[$key] = $TOelements[$key]['tx_templavoila'];
                         }

@@ -23,6 +23,7 @@ use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Resource\FileReference;
 use TYPO3\CMS\Core\Resource\FileRepository;
 use TYPO3\CMS\Core\Resource\ProcessedFile;
+use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -389,7 +390,7 @@ class Template
         $toDataprot = GeneralUtility::xml2array($this->row['localprocessing']);
 
         if (is_array($toDataprot)) {
-            $dataprot = GeneralUtility::array_merge_recursive_overrule($dataprot, $toDataprot);
+            ArrayUtility::mergeRecursiveWithOverrule($dataprot, $toDataprot);
         }
 
         return $dataprot;
