@@ -553,7 +553,11 @@ class SheetRenderer implements Renderable
 
             $columns[$fieldID] = [
                 'title' => $column->getTitle(),
-                'content' => $this->renderColumn($column, $subElementPointer, $elementContentTreeArr['ds_meta'])
+                'content' => $this->renderColumn(
+                    $column,
+                    $subElementPointer,
+                    is_array($elementContentTreeArr['ds_meta']) ? $elementContentTreeArr['ds_meta'] : []
+                )
             ];
             $columnsCount++;
         }
