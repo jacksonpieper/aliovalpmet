@@ -1,4 +1,5 @@
 /.Build
+/.idea
 /composer.lock
 /node_modules
 /Resources/Private/Sass/.sass-cache
