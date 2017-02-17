@@ -182,8 +182,8 @@ class Sheet
      */
     public function isLocalizable()
     {
-        return isset($contentTreeArr['ds_meta']['langDisable'])
-            && (int)$contentTreeArr['ds_meta']['langDisable'] === 0;
+        return isset($this->contentTreeData['ds_meta']['langDisable'])
+            && (int)$this->contentTreeData['ds_meta']['langDisable'] === 0;
     }
 
     /**
@@ -191,8 +191,8 @@ class Sheet
      */
     public function hasLocalizableChildren()
     {
-        return isset($contentTreeArr['ds_meta']['langChildren'])
-            && (int)$contentTreeArr['ds_meta']['langChildren'] === 1;
+        return isset($this->contentTreeData['ds_meta']['langChildren'])
+            && (int)$this->contentTreeData['ds_meta']['langChildren'] === 1;
     }
 
     /**
