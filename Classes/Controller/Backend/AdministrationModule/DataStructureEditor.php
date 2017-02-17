@@ -189,7 +189,7 @@ class DataStructureEditor
             $array['rows'][$rowIndex]['title']['isTranslated'] = $isTitleTranslated;
             $array['rows'][$rowIndex]['padding-left'] = $this->depth * 16;
             $array['rows'][$rowIndex]['description'] = $value['tx_templavoila']['description'];
-            $array['rows'][$rowIndex]['htmlPath'] = '';
+            $array['rows'][$rowIndex]['htmlPath'] = [];
 
             if ($this->isModeEnabled(static::MODE_MAPPING)) {
                 $isMapOK = false;
