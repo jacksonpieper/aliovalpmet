@@ -328,6 +328,9 @@ class MainController extends AbstractModuleController implements Configurable
             // Set internal variable which registers all used content elements:
             $this->global_tt_content_elementRegister = $contentTreeData['contentElementUsage'];
 
+            // Setting localization mode for root element:
+            $this->rootElementLangMode = $contentTreeData['tree']['ds_meta']['langDisable'] ? 'disable' : ($contentTreeData['tree']['ds_meta']['langChildren'] ? 'inheritance' : 'separate');
+            $this->rootElementLangParadigm = ($this->modTSconfig['properties']['translationParadigm'] === 'free') ? 'free' : 'bound';
             if ($this->modTSconfig['properties']['sideBarEnable']) {
                 $view->assign('sidebar', $this->render_sidebar());
             }
@@ -601,10 +604,6 @@ class MainController extends AbstractModuleController implements Configurable
     public function render_editPageScreen(array $contentTreeData = [])
     {
         $output = '';
-
-        // Setting localization mode for root element:
-        $this->rootElementLangMode = $contentTreeData['tree']['ds_meta']['langDisable'] ? 'disable' : ($contentTreeData['tree']['ds_meta']['langChildren'] ? 'inheritance' : 'separate');
-        $this->rootElementLangParadigm = ($this->modTSconfig['properties']['translationParadigm'] === 'free') ? 'free' : 'bound';
 
         // Create a back button if neccessary:
         if (is_array($this->altRoot)) {

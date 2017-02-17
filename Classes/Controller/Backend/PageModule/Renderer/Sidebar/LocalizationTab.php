@@ -205,22 +205,23 @@ class LocalizationTab implements Renderable
         }
 
         // enable/disable structure inheritance - see #7082 for details
-        $adminOnlySetting = isset($this->controller->modTSconfig['properties']['adminOnlyPageStructureInheritance']) ? $this->controller->modTSconfig['properties']['adminOnlyPageStructureInheritance'] : 'strict';
-        if ((static::getBackendUser()->isAdmin() || $adminOnlySetting === 'false') && $this->controller->getLanguageMode() == 'inheritance') {
-            $link = '\'index.php?' . $this->controller->link_getParameters() . '&SET[disablePageStructureInheritance]=' . ((bool)$this->controller->getSetting('disablePageStructureInheritance') ? '0' : '1') . '\'';
-            $output .= '
-                <tr class="bgColor4">
-                    <td  width="20">
-                        ' . BackendUtility::cshItem('_MOD_web_txtemplavoilaM1', 'disablePageStructureInheritance') . '
-                    </td><td width="200" style="vertical-align:middle;">
-                        ' . static::getLanguageService()->getLL('pageLocalizationMode_inheritance.disableInheritance', true) . ':
-                    </td>
-                    <td style="vertical-align:middle;">
-                        <input type="checkbox" onchange="document.location=' . $link . '" ' . ((bool)$this->controller->getSetting('disablePageStructureInheritance') ? ' checked="checked"' : '') . '/>
-                    </td>
-                </tr>
-            ';
-        }
+//        $adminOnlySetting = isset($this->controller->modTSconfig['properties']['adminOnlyPageStructureInheritance']) ? $this->controller->modTSconfig['properties']['adminOnlyPageStructureInheritance'] : 'strict';
+//        if ((static::getBackendUser()->isAdmin() || $adminOnlySetting === 'false') && $this->controller->getLanguageMode() === 'inheritance') {
+//            $link = '\'index.php?' . $this->controller->link_getParameters() . '&SET[disablePageStructureInheritance]=' . ((bool)$this->controller->getSetting('disablePageStructureInheritance') ? '0' : '1') . '\'';
+//            $output .= '
+//                <tr class="bgColor4">
+//                    <td  width="20">
+//                        ' . BackendUtility::cshItem('_MOD_web_txtemplavoilaM1', 'disablePageStructureInheritance') . '
+//                    </td><td width="200" style="vertical-align:middle;">
+//                        ' . static::getLanguageService()->getLL('pageLocalizationMode_inheritance.disableInheritance', true) . ':
+//                    </td>
+//                    <td style="vertical-align:middle;">
+//                        <input type="checkbox" onchange="document.location=' . $link . '" ' . ((bool)$this->controller->getSetting('disablePageStructureInheritance') ? ' checked="checked"' : '') . '/>
+//                    </td>
+//                </tr>
+//            ';
+//        }
+        // todo: re-implement checkbox
 
         $output .= '
             <tr class="bgColor4">
