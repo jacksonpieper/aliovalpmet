@@ -1,38 +1,132 @@
+.job_template: &lint
+  stage: lint
+  script:
+    - find . -name \*.php ! -path ".Build/*" | parallel --gnu php -d display_errors=stderr -l {} > /dev/null \;
+
+.job_template: &test
+  stage: test
+  script:
+    - rm composer.json
+    - mv Tests/Build/composer.json .
+    - composer install --no-interaction --no-progress --prefer-dist
+    - php .Build/bin/phpunit --colors --configuration .Build/Web/typo3conf/ext/templavoila/Tests/Build/UnitTests.xml
+    - php .Build/bin/phpunit --colors --configuration .Build/Web/typo3conf/ext/templavoila/Tests/Build/FunctionalTests.xml
+
+.mysql_services:
+  services: &mysql_services
+    - mysql:5.6
+
+.mysql_variables:
+  variables: &mysql_variables
+    MYSQL_ROOT_PASSWORD: root
+    typo3DatabaseHost: mysql
+    typo3DatabaseUsername: root
+    typo3DatabasePassword: root
+    typo3DatabaseName: templavoila
+
+.mariadb_services:
+  services: &mariadb_services
+    - mariadb:10.1
+
+.mariadb_variables:
+  variables: &mariadb_variables
+    MYSQL_ROOT_PASSWORD: root
+    typo3DatabaseHost: mariadb
+    typo3DatabaseUsername: root
+    typo3DatabasePassword: root
+    typo3DatabaseName: templavoila
+
+variables:
+  COMPOSER_CACHE_DIR: ".composer"
+  COMPOSER_PROCESS_TIMEOUT: "1800"
+  COMPOSER_ALLOW_SUPERUSER: "1"
+  TYPO3_PATH_WEB: "$CI_PROJECT_DIR/.Build/Web"
+  MYSQL_ROOT_PASSWORD: root
+  MYSQL_USER: templavoila
+  MYSQL_PASSWORD: templavoila
+  MYSQL_DATABASE: templavoila
+  typo3DatabaseHost: mysql
+  typo3DatabaseUsername: templavoila
+  typo3DatabasePassword: templavoila
+  typo3DatabaseName: templavoila
+
+cache:
+  key: "$CI_BUILD_REF_NAME/$CI_BUILD_STAGE"
+  paths:
+  - .composer/
+
 before_script:
-  - export COMPOSER_CACHE_DIR=/cache/composer
-  - export TYPO3_PATH_WEB=$PWD/.Build/Web
-  - export typo3DatabaseHost="mysql"
-  - export typo3DatabaseUsername="root"
-  - export typo3DatabasePassword="root"
-  - export typo3DatabaseName="templavoila"
-  - rm composer.json
-  - mv Tests/Build/composer.json .
   - php -v
   - composer -V
-  - composer install --no-interaction --no-progress --prefer-dist
 
-test:5.6:
+stages:
+  - lint
+  - test
+
+:5.6:
   tags:
     - docker
     - php56-cli
-  services:
-    - mysql:5.6
-  variables:
-    MYSQL_ROOT_PASSWORD: root
-  script:
-    - find . -name \*.php ! -path "./.Build/*" | parallel --gnu php -d display_errors=stderr -l {} > /dev/null \;
-    - php .Build/bin/phpunit --coverage-text --colors --configuration .Build/Web/typo3conf/ext/templavoila/Tests/Build/UnitTests.xml
-    - php .Build/bin/phpunit --coverage-text --colors --configuration .Build/Web/typo3conf/ext/templavoila/Tests/Build/FunctionalTests.xml
+  <<: *lint
 
-test:7.0:
+:7.0:
   tags:
     - docker
     - php70-cli
-  services:
-    - mysql:5.6
-  variables:
-    MYSQL_ROOT_PASSWORD: root
-  script:
-    - find . -name \*.php ! -path "./.Build/*" | parallel --gnu php -d display_errors=stderr -l {} > /dev/null \;
-    - php .Build/bin/phpunit --coverage-text --colors --configuration .Build/Web/typo3conf/ext/templavoila/Tests/Build/UnitTests.xml
-    - php .Build/bin/phpunit --coverage-text --colors --configuration .Build/Web/typo3conf/ext/templavoila/Tests/Build/FunctionalTests.xml
+  <<: *lint
+
+:7.1:
+  tags:
+    - docker
+    - php71-cli
+  <<: *lint
+
+5.6 @ 5.6 (MySQL):
+  tags:
+    - docker
+    - php56-cli
+  variables: *mysql_variables
+  services: *mysql_services
+  <<: *test
+
+7.0 @ 5.6 (MySQL):
+  tags:
+    - docker
+    - php70-cli
+  variables: *mysql_variables
+  services: *mysql_services
+  <<: *test
+
+7.1 @ 5.6 (MySQL):
+  tags:
+    - docker
+    - php71-cli
+  variables: *mysql_variables
+  services: *mysql_services
+  <<: *test
+  allow_failure: true
+
+5.6 @ 10.1 (MariaDB):
+  tags:
+    - docker
+    - php56-cli
+  variables: *mariadb_variables
+  services: *mariadb_services
+  <<: *test
+
+7.0 @ 10.1 (MariaDB):
+  tags:
+    - docker
+    - php70-cli
+  variables: *mariadb_variables
+  services: *mariadb_services
+  <<: *test
+
+7.1 @ 10.1 (MariaDB):
+  tags:
+    - docker
+    - php71-cli
+  variables: *mariadb_variables
+  services: *mariadb_services
+  <<: *test
+  allow_failure: true
