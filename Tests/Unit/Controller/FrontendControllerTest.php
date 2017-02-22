@@ -26,6 +26,99 @@ class FrontendControllerTest extends UnitTestCase
 {
     /**
      * @test
+     * @dataProvider resolveLanguageKeyProvider
+     *
+     * @param array $data
+     * @param string $expected
+     */
+    public function resolveLanguageKey($data, $expected)
+    {
+        list(
+            $languageUid,
+            $languageIsoCode,
+            $langDisable,
+            $langChildren
+            ) = array_values($data);
+
+        $frontendController = new \stdClass();
+        $frontendController->sys_language_uid = $languageUid;
+        $frontendController->sys_language_isocode = $languageIsoCode;
+
+        $logger = new NullLogger();
+
+        /** @var $mockObject FrontendController | \PHPUnit_Framework_MockObject_MockObject | AccessibleObjectInterface  */
+        $mockObject = $this->getAccessibleMock(FrontendController::class, ['getLogger'], [], '', false);
+        $mockObject->_set('frontendController', $frontendController);
+        $mockObject->expects($this->any())->method('getLogger')->willReturn($logger);
+
+        $this->assertSame($expected, $mockObject->_call('resolveLanguageKey', $langDisable, $langChildren));
+    }
+
+    /**
+     * @return array
+     */
+    public function resolveLanguageKeyProvider()
+    {
+        return [
+            [
+                [
+                    1,
+                    'en',
+                    false,
+                    true // trigger
+                ],
+                'lDEF'
+            ],
+            [
+                [
+                    1,
+                    'en',
+                    true, // trigger
+                    false
+                ],
+                'lDEF'
+            ],
+            [
+            [
+                0, // trigger
+                'en',
+                false,
+                false
+            ],
+                'lDEF'
+            ],
+            [
+                [
+                    1,
+                    '', // trigger
+                    false,
+                    false
+                ],
+                'lDEF'
+            ],
+            [
+                [
+                    1,
+                    'de',
+                    false,
+                    false
+                ],
+                'lDE'
+            ],
+            [
+                [
+                    1,
+                    'EN',
+                    false,
+                    false
+                ],
+                'lEN'
+            ]
+        ];
+    }
+
+    /**
+     * @test
      * @dataProvider inheritValueDataProvider
      *
      * @param array $data

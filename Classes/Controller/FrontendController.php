@@ -185,7 +185,7 @@ class FrontendController extends AbstractPlugin
                 if (is_array($DS)) {
                     $langChildren = $DS['meta']['langChildren'] ? 1 : 0;
                     $langDisabled = $DS['meta']['langDisable'] ? 1 : 0;
-                    $lKey = (!$langDisabled && !$langChildren) ? 'l' . $this->frontendController->sys_language_isocode : 'lDEF';
+                    $lKey = $this->resolveLanguageKey((bool)$langDisabled, (bool)$langChildren);
                     $vKey = (!$langDisabled && $langChildren) ? 'v' . $this->frontendController->sys_language_isocode : 'vDEF';
                 } else {
                     return $this->formatError('
@@ -377,7 +377,7 @@ class FrontendController extends AbstractPlugin
             // Data from FlexForm field:
             $data = GeneralUtility::xml2array($row['tx_templavoila_flex']);
 
-            $lKey = ($this->frontendController->sys_language_isocode && !$langDisabled && !$langChildren) ? 'l' . $this->frontendController->sys_language_isocode : 'lDEF';
+            $lKey = $this->resolveLanguageKey((bool)$langDisabled, (bool)$langChildren);
 
             /* Hook to modify language key - e.g. used for EXT:languagevisibility */
 
@@ -1177,5 +1177,25 @@ class FrontendController extends AbstractPlugin
     protected function getLogger()
     {
         return $this->logger;
+    }
+
+    /**
+     * @param bool $langDisabled
+     * @param bool $langChildren
+     * @return string
+     */
+    protected function resolveLanguageKey($langDisabled, $langChildren)
+    {
+        $languageKey = 'DEF';
+
+        if (!$langDisabled
+            && !$langChildren
+            && (int)$this->frontendController->sys_language_uid > 0
+            && strlen($this->frontendController->sys_language_isocode) > 0
+        ) {
+            $languageKey = strtoupper(trim($this->frontendController->sys_language_isocode));
+        }
+
+        return 'l' . $languageKey;
     }
 }
