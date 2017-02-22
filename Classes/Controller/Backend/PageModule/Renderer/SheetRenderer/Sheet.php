@@ -182,8 +182,11 @@ class Sheet
      */
     public function isLocalizable()
     {
-        return isset($this->contentTreeData['ds_meta']['langDisable'])
-            && (int)$this->contentTreeData['ds_meta']['langDisable'] === 0;
+        if (!isset($this->contentTreeData['ds_meta']['langDisable'])) {
+            return true;
+        }
+
+        return (int)$this->contentTreeData['ds_meta']['langDisable'] === 0;
     }
 
     /**
@@ -191,8 +194,11 @@ class Sheet
      */
     public function hasLocalizableChildren()
     {
-        return isset($this->contentTreeData['ds_meta']['langChildren'])
-            && (int)$this->contentTreeData['ds_meta']['langChildren'] === 1;
+        if (!isset($this->contentTreeData['ds_meta']['langChildren'])) {
+            return false;
+        }
+
+        return (int)$this->contentTreeData['ds_meta']['langChildren'] === 1;
     }
 
     /**

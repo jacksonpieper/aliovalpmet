@@ -48,7 +48,7 @@ class SheetTest extends UnitTestCase
             'IT'
         );
 
-        $this->assertFalse($sheet->isLocalizable());
+        $this->assertTrue($sheet->isLocalizable());
         $this->assertFalse($sheet->hasLocalizableChildren());
         $this->assertSame(12345, $sheet->getUid());
         $this->assertSame(23456, $sheet->getPid());
@@ -58,7 +58,121 @@ class SheetTest extends UnitTestCase
         $this->assertFalse($sheet->isFlexibleContentElement());
     }
 
-    public function testGetLanguageKeyWithDefaultKey()
+    public function testHasLocalizableChildrenWithoutMeta()
+    {
+        $sheet = new Sheet(
+            $this->column,
+            [
+                'el' => [
+                    'uid' => 12345,
+                    'pid' => 23456,
+                    'table' => 'pages'
+                ]
+            ],
+            'IT'
+        );
+
+        $this->assertFalse($sheet->hasLocalizableChildren());
+    }
+
+    public function testHasLocalizableChildrenWithLangChildrenSetTo0()
+    {
+        $sheet = new Sheet(
+            $this->column,
+            [
+                'el' => [
+                    'uid' => 12345,
+                    'pid' => 23456,
+                    'table' => 'pages'
+                ],
+                'ds_meta' => [
+                    'langChildren' => 0
+                ]
+            ],
+            'IT'
+        );
+
+        $this->assertFalse($sheet->hasLocalizableChildren());
+    }
+
+    public function testHasLocalizableChildrenWithLangChildrenSetTo1()
+    {
+        $sheet = new Sheet(
+            $this->column,
+            [
+                'el' => [
+                    'uid' => 12345,
+                    'pid' => 23456,
+                    'table' => 'pages'
+                ],
+                'ds_meta' => [
+                    'langChildren' => 1
+                ]
+            ],
+            'IT'
+        );
+
+        $this->assertTrue($sheet->hasLocalizableChildren());
+    }
+
+    public function testIsLocalizableWithoutMeta()
+    {
+        $sheet = new Sheet(
+            $this->column,
+            [
+                'el' => [
+                    'uid' => 12345,
+                    'pid' => 23456,
+                    'table' => 'pages'
+                ]
+            ],
+            'IT'
+        );
+
+        $this->assertTrue($sheet->isLocalizable());
+    }
+
+    public function testIsLocalizableWithLangDisableSetTo0()
+    {
+        $sheet = new Sheet(
+            $this->column,
+            [
+                'el' => [
+                    'uid' => 12345,
+                    'pid' => 23456,
+                    'table' => 'pages'
+                ],
+                'ds_meta' => [
+                    'langDisable' => 0
+                ]
+            ],
+            'IT'
+        );
+
+        $this->assertTrue($sheet->isLocalizable());
+    }
+
+    public function testIsLocalizableWithLangDisableSetTo1()
+    {
+        $sheet = new Sheet(
+            $this->column,
+            [
+                'el' => [
+                    'uid' => 12345,
+                    'pid' => 23456,
+                    'table' => 'pages'
+                ],
+                'ds_meta' => [
+                    'langDisable' => 1
+                ]
+            ],
+            'IT'
+        );
+
+        $this->assertFalse($sheet->isLocalizable());
+    }
+
+    public function testGetLanguageKeyWithoutMetaSetExcplicitly()
     {
         $sheet = new Sheet(
             $this->column,
@@ -70,16 +184,22 @@ class SheetTest extends UnitTestCase
             'IT'
         );
 
-        $this->assertSame('lDEF', $sheet->getLanguageKey());
+        /*
+         * langChildren defaults to 0
+         * langDisable defaults to 0
+         *
+         * Thus, the sheet language is lEN, the one from the parent column
+         */
+        $this->assertSame('lEN', $sheet->getLanguageKey());
     }
 
-    public function testGetLanguageKeyWithEnglishKey()
+    public function testGetLanguageKeyWithLangDisableSetTo1()
     {
         $sheet = new Sheet(
             $this->column,
             [
                 'ds_meta' => [
-                    'langDisable' => 0,
+                    'langDisable' => 1,
                     'langChildren' => 0
                 ],
                 'el' => [
@@ -89,9 +209,9 @@ class SheetTest extends UnitTestCase
             'IT'
         );
 
-        $this->assertTrue($sheet->isLocalizable());
+        $this->assertFalse($sheet->isLocalizable());
         $this->assertFalse($sheet->hasLocalizableChildren());
-        $this->assertSame('lEN', $sheet->getLanguageKey());
+        $this->assertSame('lDEF', $sheet->getLanguageKey());
     }
 
     public function testIsContainerElement()
