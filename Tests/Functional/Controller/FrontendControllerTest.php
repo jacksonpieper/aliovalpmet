@@ -1,6 +1,6 @@
 <?php
 
-namespace Schnitzler\Templavoila\Tests\Functional\Service;
+namespace Schnitzler\Templavoila\Tests\Functional\Controller;
 
 /*
  * This file is part of the TYPO3 CMS project.
@@ -65,7 +65,7 @@ class FrontendControllerTest extends FunctionalTestCase
         /** @var PageRepository $pageRepository */
         $pageRepository = GeneralUtility::makeInstance(PageRepository::class);
         /** @var TypoScriptFrontendController $TSFE */
-        $TSFE = GeneralUtility::makeInstance(TypoScriptFrontendController::class);
+        $TSFE = GeneralUtility::makeInstance(TypoScriptFrontendController::class, [], 0, 0);
         $TSFE->sys_page = $pageRepository;
 
         $GLOBALS['TSFE'] = $TSFE;
