@@ -8,8 +8,8 @@ mod.web_txtemplavoilaM1.useLiveWorkspaceForReferenceListUpdates = 1
 mod.web_txtemplavoilaM1.adminOnlyPageStructureInheritance = fallback
 
 mod.wizards.newContentElement.wizardItems {
-	fce.header = LLL:EXT:templavoila/Resources/Private/Language/PageModule/CreateContentController/locallang.xlf:fce
-	fce.elements {
-	}
-	fce.show = *
+    fce.header = LLL:EXT:templavoila/Resources/Private/Language/PageModule/CreateContentController/locallang.xlf:fce
+    fce.elements {
+    }
+    fce.show = *
 }

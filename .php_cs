@@ -24,8 +24,8 @@
  * inside the TYPO3 directory. Warning: This may take up to 10 minutes.
  *
  * For more information read:
- * 	 http://www.php-fig.org/psr/psr-2/
- * 	 http://cs.sensiolabs.org
+ * http://www.php-fig.org/psr/psr-2/
+ * http://cs.sensiolabs.org
  */
 
 if (PHP_SAPI !== 'cli') {

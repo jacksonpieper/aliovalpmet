@@ -170,19 +170,19 @@ class NewContentElementController extends \TYPO3\CMS\Backend\Controller\ContentE
                     }
                     $icon = $this->moduleTemplate->getIconFactory()->getIcon($wInfo['iconIdentifier'])->render();
                     $menuItems[$key]['content'] .= '
-						<div class="media">
-							<a href="' . $url . '">
-								' . $content . '
-								<div class="media-left">
-									' . $icon . '
-								</div>
-								<div class="media-body">
-									<strong>' . htmlspecialchars($wInfo['title']) . '</strong>' .
+                        <div class="media">
+                            <a href="' . $url . '">
+                                ' . $content . '
+                                <div class="media-left">
+                                    ' . $icon . '
+                                </div>
+                                <div class="media-body">
+                                    <strong>' . htmlspecialchars($wInfo['title']) . '</strong>' .
                         '<br />' .
                         nl2br(htmlspecialchars(trim($wInfo['description']))) .
                         '</div>
-							</a>
-						</div>';
+                            </a>
+                        </div>';
                     $cc++;
                 }
             }
