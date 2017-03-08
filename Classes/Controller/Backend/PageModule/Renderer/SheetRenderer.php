@@ -294,8 +294,9 @@ class SheetRenderer implements Renderable
             );
         }
 
+        $toolTip = BackendUtility::getRecordToolTip($sheetData['el'], $sheetData['el']['table']);
         $return .= $this->getRecordStatHookValue($table, $uid);
-        return $return;
+        return '<span  ' . $toolTip . '>' . $return . '</span>';
     }
 
     /**
