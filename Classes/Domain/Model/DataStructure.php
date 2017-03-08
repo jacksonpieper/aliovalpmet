@@ -1,7 +1,5 @@
 <?php
 
-namespace Schnitzler\Templavoila\Domain\Model;
-
 /*
  * This file is part of the TemplaVoilà project.
  *
@@ -12,6 +10,8 @@ namespace Schnitzler\Templavoila\Domain\Model;
  * For the full copyright and license information, please read the
  * LICENSE.md file that was distributed with this source code.
  */
+
+namespace Schnitzler\Templavoila\Domain\Model;
 
 use Schnitzler\Templavoila\Traits\BackendUser;
 use Schnitzler\Templavoila\Utility\PermissionUtility;

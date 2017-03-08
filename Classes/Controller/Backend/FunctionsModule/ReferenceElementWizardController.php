@@ -1,7 +1,5 @@
 <?php
 
-namespace Schnitzler\Templavoila\Controller\Backend\FunctionsModule;
-
 /*
  * This file is part of the TemplaVoilà project.
  *
@@ -12,6 +10,8 @@ namespace Schnitzler\Templavoila\Controller\Backend\FunctionsModule;
  * For the full copyright and license information, please read the
  * LICENSE.md file that was distributed with this source code.
  */
+
+namespace Schnitzler\Templavoila\Controller\Backend\FunctionsModule;
 
 use Schnitzler\Templavoila\Service\ApiService;
 use Schnitzler\Templavoila\Traits\BackendUser;

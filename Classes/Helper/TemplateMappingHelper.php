@@ -1,5 +1,4 @@
 <?php
-namespace Schnitzler\Templavoila\Helper;
 
 /*
  * This file is part of the TemplaVoilà project.
@@ -11,6 +10,8 @@ namespace Schnitzler\Templavoila\Helper;
  * For the full copyright and license information, please read the
  * LICENSE.md file that was distributed with this source code.
  */
+
+namespace Schnitzler\Templavoila\Helper;
 
 /**
  * Class Schnitzler\Templavoila\Helper\TemplateMappingHelper

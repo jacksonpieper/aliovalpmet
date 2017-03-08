@@ -1,7 +1,5 @@
 <?php
 
-namespace Schnitzler\Templavoila\Utility\StaticDataStructure;
-
 /*
  * This file is part of the TemplaVoilà project.
  *
@@ -12,6 +10,8 @@ namespace Schnitzler\Templavoila\Utility\StaticDataStructure;
  * For the full copyright and license information, please read the
  * LICENSE.md file that was distributed with this source code.
  */
+
+namespace Schnitzler\Templavoila\Utility\StaticDataStructure;
 
 use Schnitzler\Templavoila\Domain\Model\AbstractDataStructure;
 use Schnitzler\Templavoila\Templavoila;

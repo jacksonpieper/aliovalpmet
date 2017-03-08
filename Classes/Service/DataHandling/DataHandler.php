@@ -1,7 +1,5 @@
 <?php
 
-namespace Schnitzler\Templavoila\Service\DataHandling;
-
 /*
  * This file is part of the TemplaVoilà project.
  *
@@ -12,6 +10,8 @@ namespace Schnitzler\Templavoila\Service\DataHandling;
  * For the full copyright and license information, please read the
  * LICENSE.md file that was distributed with this source code.
  */
+
+namespace Schnitzler\Templavoila\Service\DataHandling;
 
 use Schnitzler\Templavoila\Service\ApiService;
 use Schnitzler\Templavoila\Templavoila;

@@ -1,5 +1,4 @@
 <?php
-namespace Schnitzler\Templavoila\Container;
 
 /*
  * This file is part of the TemplaVoilà project.
@@ -11,6 +10,9 @@ namespace Schnitzler\Templavoila\Container;
  * For the full copyright and license information, please read the
  * LICENSE.md file that was distributed with this source code.
  */
+
+namespace Schnitzler\Templavoila\Container;
+
 use Schnitzler\Templavoila\ContainerInterface;
 use Schnitzler\Templavoila\Controller\Backend\PageModule\Renderer\AbstractContentElementRenderer;
 use Schnitzler\Templavoila\Exception\Container\NotFoundException;

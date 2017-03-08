@@ -1,5 +1,4 @@
 <?php
-namespace Schnitzler\Templavoila\Controller\Backend\AdministrationModule\Renderer;
 
 /*
  * This file is part of the TemplaVoilà project.
@@ -11,6 +10,9 @@ namespace Schnitzler\Templavoila\Controller\Backend\AdministrationModule\Rendere
  * For the full copyright and license information, please read the
  * LICENSE.md file that was distributed with this source code.
  */
+
+namespace Schnitzler\Templavoila\Controller\Backend\AdministrationModule\Renderer;
+
 use Schnitzler\Templavoila\Controller\Backend\AdministrationModule\ElementController;
 use Schnitzler\Templavoila\Templavoila;
 use Schnitzler\Templavoila\Traits\BackendUser;

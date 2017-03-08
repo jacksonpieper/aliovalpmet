@@ -1,7 +1,5 @@
 <?php
 
-namespace Schnitzler\Templavoila\Controller;
-
 /*
  * This file is part of the TemplaVoilà project.
  *
@@ -12,6 +10,8 @@ namespace Schnitzler\Templavoila\Controller;
  * For the full copyright and license information, please read the
  * LICENSE.md file that was distributed with this source code.
  */
+
+namespace Schnitzler\Templavoila\Controller;
 
 use Schnitzler\Templavoila\Domain\Model\HtmlMarkup;
 use Schnitzler\Templavoila\Domain\Repository\DataStructureRepository;

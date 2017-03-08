@@ -10,6 +10,7 @@
  * For the full copyright and license information, please read the
  * LICENSE.md file that was distributed with this source code.
  */
+
 namespace Schnitzler\Templavoila;
 
 use Schnitzler\Templavoila\Exception\Container\NotFoundException;

@@ -1,7 +1,5 @@
 <?php
 
-namespace Schnitzler\Templavoila\Tests\Unit\Controller;
-
 /*
  * This file is part of the TemplaVoilà project.
  *
@@ -12,6 +10,9 @@ namespace Schnitzler\Templavoila\Tests\Unit\Controller;
  * For the full copyright and license information, please read the
  * LICENSE.md file that was distributed with this source code.
  */
+
+namespace Schnitzler\Templavoila\Tests\Unit\Controller;
+
 use Psr\Log\NullLogger;
 use Schnitzler\Templavoila\Controller\FrontendController;
 use TYPO3\CMS\Core\Tests\AccessibleObjectInterface;

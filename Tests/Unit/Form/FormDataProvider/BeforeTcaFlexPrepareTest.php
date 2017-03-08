@@ -1,7 +1,5 @@
 <?php
 
-namespace Schnitzler\Templavoila\Tests\Unit\Form\FormDataProvider;
-
 /*
  * This file is part of the TemplaVoilà project.
  *
@@ -12,6 +10,9 @@ namespace Schnitzler\Templavoila\Tests\Unit\Form\FormDataProvider;
  * For the full copyright and license information, please read the
  * LICENSE.md file that was distributed with this source code.
  */
+
+namespace Schnitzler\Templavoila\Tests\Unit\Form\FormDataProvider;
+
 use Schnitzler\Templavoila\Form\FormDataProvider\BeforeTcaFlexPrepare;
 use TYPO3\CMS\Core\Tests\UnitTestCase;
 

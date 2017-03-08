@@ -1,7 +1,5 @@
 <?php
 
-namespace Schnitzler\Templavoila\Tests\Functional\Service;
-
 /*
  * This file is part of the TemplaVoilà project.
  *
@@ -12,6 +10,8 @@ namespace Schnitzler\Templavoila\Tests\Functional\Service;
  * For the full copyright and license information, please read the
  * LICENSE.md file that was distributed with this source code.
  */
+
+namespace Schnitzler\Templavoila\Tests\Functional\Service;
 
 use Schnitzler\Templavoila\Service\ApiService;
 use TYPO3\CMS\Backend\Utility\BackendUtility;

@@ -1,5 +1,4 @@
 <?php
-namespace Schnitzler\Templavoila\Controller\Backend\AdministrationModule;
 
 /*
  * This file is part of the TemplaVoilà project.
@@ -11,6 +10,9 @@ namespace Schnitzler\Templavoila\Controller\Backend\AdministrationModule;
  * For the full copyright and license information, please read the
  * LICENSE.md file that was distributed with this source code.
  */
+
+namespace Schnitzler\Templavoila\Controller\Backend\AdministrationModule;
+
 use Psr\Http\Message\ResponseInterface;
 use Schnitzler\Templavoila\Traits\BackendUser;
 use TYPO3\CMS\Core\Http\Response;
