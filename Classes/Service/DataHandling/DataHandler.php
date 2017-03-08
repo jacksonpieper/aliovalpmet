@@ -20,13 +20,11 @@ use Schnitzler\Templavoila\Traits\LanguageService;
 use Schnitzler\Templavoila\Utility\ReferenceIndexUtility;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
+use TYPO3\CMS\Core\DataHandling\DataHandler as CoreDataHandler;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
- * Class being included by TCEmain using a hook
- *
- *
- *
+ * Class Schnitzler\Templavoila\Service\DataHandling\DataHandler
  */
 class DataHandler
 {
@@ -64,9 +62,9 @@ class DataHandler
      * @param array $incomingFieldArray The original field names and their values before they are processed
      * @param string $table The table TCEmain is currently processing
      * @param string $id The records id (if any)
-     * @param \TYPO3\CMS\Core\DataHandling\DataHandler $reference Reference to the parent object (TCEmain)
+     * @param CoreDataHandler $reference Reference to the parent object (TCEmain)
      */
-    public function processDatamap_preProcessFieldArray(array &$incomingFieldArray, $table, $id, \TYPO3\CMS\Core\DataHandling\DataHandler $reference)
+    public function processDatamap_preProcessFieldArray(array &$incomingFieldArray, $table, $id, CoreDataHandler $reference)
     {
         if ($this->debug) {
             GeneralUtility::devLog('processDatamap_preProcessFieldArray', Templavoila::EXTKEY, 0, [$incomingFieldArray, $table, $id]);
@@ -81,7 +79,7 @@ class DataHandler
             $this->updateDataSourceFromTemplateObject($table, $incomingFieldArray, $reference->BE_USER);
         }
 
-        if ($table == 'tt_content') {
+        if ($table === 'tt_content') {
             $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tx_templavoila_tcemain']['preProcessFieldArrays'][$id] = $incomingFieldArray;
         }
     }
@@ -96,16 +94,16 @@ class DataHandler
      * @param string $table The table TCEmain is currently processing
      * @param string $id The records id (if any)
      * @param array $fieldArray The field names and their values to be processed
-     * @param object $reference Reference to the parent object (TCEmain)
+     * @param CoreDataHandler $dataHandler Reference to the parent object (TCEmain)
      */
-    public function processDatamap_postProcessFieldArray($status, $table, $id, &$fieldArray, &$reference)
+    public function processDatamap_postProcessFieldArray($status, $table, $id, &$fieldArray, CoreDataHandler $dataHandler)
     {
         if ($this->debug) {
             GeneralUtility::devLog('processDatamap_postProcessFieldArray', Templavoila::EXTKEY, 0, [$status, $table, $id, $fieldArray]);
         }
 
         // If the references for content element changed at the current page, save that information into the reference table:
-        if ($status == 'update' && $table == 'pages' && isset($fieldArray['tx_templavoila_flex'])) {
+        if ($status === 'update' && $table === 'pages' && isset($fieldArray['tx_templavoila_flex'])) {
             $this->correctSortingAndColposFieldsForPage($fieldArray['tx_templavoila_flex'], $id);
 
             // If a new data structure has been selected, set a valid template object automatically:
@@ -113,13 +111,13 @@ class DataHandler
 
                 // Determine the page uid which ds_getAvailablePageTORecords() can use for finding the storage folder:
                 $pid = null;
-                if ($status == 'update') {
+                if ($status === 'update') {
                     $pid = $id;
-                } elseif ($status == 'new' && (int)$fieldArray['storage_pid'] == 0) {
+                } elseif ($status === 'new' && (int)$fieldArray['storage_pid'] === 0) {
                     $pid = $fieldArray['pid'];
                 }
 
-                if (!is_null($pid)) {
+                if ($pid !== null) {
                     $templaVoilaAPI = GeneralUtility::makeInstance(ApiService::class);
                     $templateObjectRecords = $templaVoilaAPI->ds_getAvailablePageTORecords($pid);
 
@@ -135,10 +133,10 @@ class DataHandler
                             }
                         }
                         // Finally set the Template Objects if one was found:
-                        if ((int)$fieldArray['tx_templavoila_ds'] && ($fieldArray['tx_templavoila_to'] == 0)) {
+                        if ((int)$fieldArray['tx_templavoila_ds'] && ((int)$fieldArray['tx_templavoila_to'] === 0)) {
                             $fieldArray['tx_templavoila_to'] = $matchingTOUid;
                         }
-                        if ((int)$fieldArray['tx_templavoila_next_ds'] && ($fieldArray['tx_templavoila_next_to'] == 0)) {
+                        if ((int)$fieldArray['tx_templavoila_next_ds'] && ((int)$fieldArray['tx_templavoila_next_to'] === 0)) {
                             $fieldArray['tx_templavoila_next_to'] = $matchingNextTOUid;
                         }
                     }
@@ -147,29 +145,28 @@ class DataHandler
         }
 
         // Access check for FCE
-        if ($table == 'tt_content') {
-            if ($status != 'new') {
+        if ($table === 'tt_content') {
+            $row = & $fieldArray;
+            if ($status !== 'new') {
                 $row = BackendUtility::getRecord($table, $id);
-            } else {
-                $row = & $fieldArray;
             }
-            if ($row['CType'] == 'templavoila_pi1') {
+
+            if ($row['CType'] === 'templavoila_pi1') {
                 $params = [
                     'table' => $table,
                     'row' => $row,
                 ];
                 $ref = null;
                 if (!GeneralUtility::callUserFunction('EXT:templavoila/Classes/Service/UserFunc/Access.php:&Schnitzler\Templavoila\Service\UserFunc\Access->recordEditAccessInternals', $params, $ref)) {
-                    $reference->newlog(sprintf(static::getLanguageService()->getLL($status != 'new' ? 'access_noModifyAccess' : 'access_noCrateAccess'), $table, $id), 1);
-                    $fieldArray = null;
+                    $dataHandler->newlog(sprintf(static::getLanguageService()->getLL($status !== 'new' ? 'access_noModifyAccess' : 'access_noCrateAccess'), $table, $id), 1);
+                    $fieldArray = [];
                 }
             }
         } else {
-            if ($table == 'sys_template'
-                && $status == 'new'
-                && isset($fieldArray['root'])
+            if ($table === 'sys_template'
+                && $status === 'new'
+                && isset($fieldArray['root'], $fieldArray['clear'])
                 && $fieldArray['root'] === 1
-                && isset($fieldArray['clear'])
                 && $fieldArray['clear'] === 3
             ) {
                 $fieldArray['config'] = '
@@ -190,9 +187,9 @@ page.10.disableExplosivePreview = 1
      * @param string $table    The table we're dealing with
      * @param mixed $id Either the record UID or a string if a new record has been created
      * @param array $fieldArray The record row how it has been inserted into the database
-     * @param object $reference A reference to the TCEmain instance
+     * @param CoreDataHandler $dataHandler A reference to the TCEmain instance
      */
-    public function processDatamap_afterDatabaseOperations($status, $table, $id, $fieldArray, &$reference)
+    public function processDatamap_afterDatabaseOperations($status, $table, $id, $fieldArray, CoreDataHandler $dataHandler)
     {
         if ($this->debug) {
             GeneralUtility::devLog('processDatamap_afterDatabaseOperations ', Templavoila::EXTKEY, 0, [$status, $table, $id, $fieldArray]);
@@ -200,7 +197,7 @@ page.10.disableExplosivePreview = 1
         if ($GLOBALS ['TYPO3_CONF_VARS']['SC_OPTIONS']['tx_templavoila_api']['apiIsRunningTCEmain']) {
             return;
         }
-        if ($table != 'tt_content') {
+        if ($table !== 'tt_content') {
             return;
         }
 
@@ -209,7 +206,7 @@ page.10.disableExplosivePreview = 1
         switch ($status) {
             case 'new':
                 if (!isset($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tx_templavoila_tcemain']['doNotInsertElementRefsToPage'])) {
-                    $destinationFlexformPointer = false;
+                    $destinationFlexformPointer = [];
 
                     BackendUtility::fixVersioningPid($table, $fieldArray);
 
@@ -225,7 +222,7 @@ page.10.disableExplosivePreview = 1
                         }
                     }
 
-                    if (!is_array($destinationFlexformPointer)) {
+                    if (count($destinationFlexformPointer) === 0) {
                         $mainContentAreaFieldName = $templaVoilaAPI->ds_getFieldNameByColumnPosition($fieldArray['pid'], (int)$fieldArray['colPos']);
                         if ($mainContentAreaFieldName !== false) {
                             $sorting_field = $GLOBALS['TCA'][$table]['ctrl']['sortby'];
@@ -246,24 +243,24 @@ page.10.disableExplosivePreview = 1
                                 $currentReferencesArr = $templaVoilaAPI->flexform_getElementReferencesFromXML($parentRecord['tx_templavoila_flex'], $destinationFlexformPointer);
                                 if (count($currentReferencesArr)) {
                                     $rows = static::getDatabaseConnection()->exec_SELECTgetRows('uid,' . $sorting_field, $table, 'uid IN (' . implode(',', $currentReferencesArr) . ')' . BackendUtility::deleteClause($table));
-                                    $sort = [$reference->substNEWwithIDs[$id] => -$sorting];
+                                    $sort = [$dataHandler->substNEWwithIDs[$id] => -$sorting];
                                     foreach ($rows as $row) {
                                         $sort[$row['uid']] = $row[$sorting_field];
                                     }
                                     asort($sort, SORT_NUMERIC);
-                                    $destinationFlexformPointer['position'] = array_search($reference->substNEWwithIDs[$id], array_keys($sort));
+                                    $destinationFlexformPointer['position'] = array_search($dataHandler->substNEWwithIDs[$id], array_keys($sort));
                                 }
                             }
                         }
                     } else {
-                        $templaVoilaAPI->insertElement_setElementReferences($destinationFlexformPointer, $reference->substNEWwithIDs[$id]);
+                        $templaVoilaAPI->insertElement_setElementReferences($destinationFlexformPointer, $dataHandler->substNEWwithIDs[$id]);
                     }
                 }
                 break;
         }
 
         // clearing the cache of all related pages - see #1332
-        if (method_exists($reference, 'clear_cacheCmd')) {
+        if (is_callable([$dataHandler, 'clear_cacheCmd'])) {
             $element = [
                 'table' => $table,
                 'uid' => $id
@@ -271,7 +268,7 @@ page.10.disableExplosivePreview = 1
             $references = ReferenceIndexUtility::getElementForeignReferences($element, $fieldArray['pid']);
             if (is_array($references) && is_array($references['pages'])) {
                 foreach ($references['pages'] as $pageUid => $__) {
-                    $reference->clear_cacheCmd($pageUid);
+                    $dataHandler->clear_cacheCmd($pageUid);
                 }
             }
         }
@@ -286,11 +283,11 @@ page.10.disableExplosivePreview = 1
      * @param string $table The table TCEmain is currently processing
      * @param string $id The records id (if any)
      * @param array $value The field names and their values to be processed
-     * @param object $reference Reference to the parent object (TCEmain)
+     * @param CoreDataHandler $dataHandler Reference to the parent object (TCEmain)
      *
      * @todo "delete" should search for all references to the element.
      */
-    public function processCmdmap_preProcess(&$command, $table, $id, $value, &$reference)
+    public function processCmdmap_preProcess(&$command, $table, $id, $value, CoreDataHandler $dataHandler)
     {
         if ($this->debug) {
             GeneralUtility::devLog('processCmdmap_preProcess', Templavoila::EXTKEY, 0, [$command, $table, $id, $value]);
@@ -304,7 +301,7 @@ page.10.disableExplosivePreview = 1
             $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tx_templavoila_tcemain']['doNotInsertElementRefsToPage'] = 1;
         }
 
-        if ($table != 'tt_content') {
+        if ($table !== 'tt_content') {
             return;
         }
 
@@ -320,10 +317,10 @@ page.10.disableExplosivePreview = 1
                 ];
                 $ref = null;
                 if (!GeneralUtility::callUserFunction('EXT:templavoila/Classes/Service/UserFunc/Access.php:&Schnitzler\Templavoila\Service\UserFunc\Access->recordEditAccessInternals', $params, $ref)) {
-                    $reference->newlog(sprintf(static::getLanguageService()->getLL('access_noModifyAccess'), $table, $id), 1);
+                    $dataHandler->newlog(sprintf(static::getLanguageService()->getLL('access_noModifyAccess'), $table, $id), 1);
                     $command = ''; // Do not delete! A hack but there is no other way to prevent deletion...
                 } else {
-                    if ((int)$record['t3ver_oid'] > 0 && $record['pid'] == -1) {
+                    if ((int)$record['t3ver_oid'] > 0 && (int)$record['pid'] === -1) {
                         // we unlink a offline version in a workspace
                         if (abs($record['t3ver_wsid']) !== 0) {
                             $record = BackendUtility::getRecord('tt_content', (int)$record['t3ver_oid']);
@@ -353,9 +350,9 @@ page.10.disableExplosivePreview = 1
      * @param string $table The table TCEmain is currently processing
      * @param string $id The records id (if any)
      * @param array $value The field names and their values to be processed
-     * @param object &$reference Reference to the parent object (TCEmain)
+     * @param CoreDataHandler $dataHandler Reference to the parent object (TCEmain)
      */
-    public function processCmdmap_postProcess($command, $table, $id, $value, &$reference)
+    public function processCmdmap_postProcess($command, $table, $id, $value, CoreDataHandler $dataHandler)
     {
         if ($this->debug) {
             GeneralUtility::devLog('processCmdmap_postProcess', Templavoila::EXTKEY, 0, [$command, $table, $id, $value]);
@@ -378,9 +375,9 @@ page.10.disableExplosivePreview = 1
      * @param int $destPid The page UID of the page the element has been moved to
      * @param array $sourceRecordBeforeMove (A part of) the record before it has been moved (and thus the PID has possibly been changed)
      * @param array $updateFields The updated fields of the record row in question (we don't use that)
-     * @param object $reference A reference to the TCEmain instance
+     * @param CoreDataHandler $dataHandler A reference to the TCEmain instance
      */
-    public function moveRecord_firstElementPostProcess($table, $uid, $destPid, $sourceRecordBeforeMove, $updateFields, &$reference)
+    public function moveRecord_firstElementPostProcess($table, $uid, $destPid, $sourceRecordBeforeMove, $updateFields, CoreDataHandler $dataHandler)
     {
         if ($this->debug) {
             GeneralUtility::devLog('moveRecord_firstElementPostProcess', Templavoila::EXTKEY, 0, [$table, $uid, $destPid, $sourceRecordBeforeMove, $updateFields]);
@@ -388,7 +385,7 @@ page.10.disableExplosivePreview = 1
         if ($GLOBALS ['TYPO3_CONF_VARS']['SC_OPTIONS']['tx_templavoila_api']['apiIsRunningTCEmain']) {
             return;
         }
-        if ($table != 'tt_content') {
+        if ($table !== 'tt_content') {
             return;
         }
 
@@ -422,9 +419,9 @@ page.10.disableExplosivePreview = 1
      * @param int $origDestPid The "original" PID: This tells us more about after which record our record wants to be moved. So it's not a page uid but a tt_content uid!
      * @param array $sourceRecordBeforeMove (A part of) the record before it has been moved (and thus the PID has possibly been changed)
      * @param array $updateFields The updated fields of the record row in question (we don't use that)
-     * @param object $reference A reference to the TCEmain instance
+     * @param CoreDataHandler $dataHandler A reference to the TCEmain instance
      */
-    public function moveRecord_afterAnotherElementPostProcess($table, $uid, $destPid, $origDestPid, $sourceRecordBeforeMove, $updateFields, &$reference)
+    public function moveRecord_afterAnotherElementPostProcess($table, $uid, $destPid, $origDestPid, $sourceRecordBeforeMove, $updateFields, CoreDataHandler $dataHandler)
     {
         if ($this->debug) {
             GeneralUtility::devLog('moveRecord_afterAnotherElementPostProcess', Templavoila::EXTKEY, 0, [$table, $uid, $destPid, $origDestPid, $sourceRecordBeforeMove, $updateFields]);
@@ -432,7 +429,7 @@ page.10.disableExplosivePreview = 1
         if ($GLOBALS ['TYPO3_CONF_VARS']['SC_OPTIONS']['tx_templavoila_api']['apiIsRunningTCEmain']) {
             return;
         }
-        if ($table != 'tt_content') {
+        if ($table !== 'tt_content') {
             return;
         }
 
@@ -447,7 +444,7 @@ page.10.disableExplosivePreview = 1
         // One-line-fix for frontend editing (see Bug #2154).
         // NOTE: This fix leads to unwanted behaviour in one special and unrealistic situation: If you move the second
         // element to after the first element, it will move to the very first position instead of staying where it is.
-        if ($neighbourFlexformPointer['position'] == 1 && $sourceFlexformPointer['position'] == 2) {
+        if ((int)$neighbourFlexformPointer['position'] === 1 && (int)$sourceFlexformPointer['position'] === 2) {
             $neighbourFlexformPointer['position'] = 0;
         }
 
@@ -463,8 +460,6 @@ page.10.disableExplosivePreview = 1
      */
     public function correctSortingAndColposFieldsForPage($flexformXML, $pid)
     {
-        global $TCA;
-
         $elementsOnThisPage = [];
         $templaVoilaAPI = GeneralUtility::makeInstance(ApiService::class);
         /* @var $templaVoilaAPI ApiService */
@@ -513,7 +508,7 @@ page.10.disableExplosivePreview = 1
 
         $sortNumber = 100;
 
-        $sortByField = $TCA['tt_content']['ctrl']['sortby'];
+        $sortByField = $GLOBALS['TCA']['tt_content']['ctrl']['sortby'];
         if ($sortByField) {
             foreach ($elementsOnThisPage as $elementArr) {
                 $colPos = $templaVoilaAPI->ds_getColumnPositionByFieldName($pid, $elementArr['field']);
@@ -541,12 +536,11 @@ page.10.disableExplosivePreview = 1
      */
     protected function updateDataSourceFromTemplateObject($table, array &$incomingFieldArray, BackendUserAuthentication $beUser)
     {
-        if (($table == 'pages' || $table == 'tt_content') &&
-            isset($incomingFieldArray['tx_templavoila_to'])
-        ) {
+        if (($table === 'pages' || $table === 'tt_content') && isset($incomingFieldArray['tx_templavoila_to'])) {
             $this->updateDataSourceFieldFromTemplateObjectField($incomingFieldArray, 'tx_templavoila_ds', 'tx_templavoila_to', $beUser);
         }
-        if ($table == 'pages' && isset($incomingFieldArray['tx_templavoila_next_to'])) {
+
+        if ($table === 'pages' && isset($incomingFieldArray['tx_templavoila_next_to'])) {
             $this->updateDataSourceFieldFromTemplateObjectField($incomingFieldArray, 'tx_templavoila_next_ds', 'tx_templavoila_next_to', $beUser);
         }
     }
@@ -563,7 +557,7 @@ page.10.disableExplosivePreview = 1
     protected function updateDataSourceFieldFromTemplateObjectField(array &$incomingFieldArray, $dsField, $toField, BackendUserAuthentication $beUser)
     {
         $toId = $incomingFieldArray[$toField];
-        if ((int)$toId == 0) {
+        if ((int)$toId === 0) {
             $incomingFieldArray[$dsField] = '';
         } else {
             if ($beUser->workspace) {
@@ -590,17 +584,17 @@ page.10.disableExplosivePreview = 1
      * @param int $id
      * @param array $data
      * @param bool $res
-     * @param object $pObj
+     * @param CoreDataHandler $dataHandler
      *
-     * @return mixed - "1" if we grant access and "false" if we can't decide whether to give access or not
+     * @return bool - "true" if we grant access and "false" if we can't decide whether to give access or not
      */
-    public function checkRecordUpdateAccess($table, $id, $data, $res, &$pObj)
+    public function checkRecordUpdateAccess($table, $id, $data, $res, CoreDataHandler $dataHandler)
     {
-        global $TCA;
         // Only perform additional checks if not admin and just for pages table.
-        if (($table == 'pages') && is_array($data) && !$pObj->admin) {
-            $res = 1;
+        if (($table === 'pages') && is_array($data) && !$dataHandler->admin) {
+            $res = true;
             $excludedTablesAndFields = array_flip($dataHandler->getExcludeListArray());
+
             foreach ($data as $field => $value) {
                 if ($dataHandler->data_disableFields[$table][$id][$field]
                     || in_array($table . '-' . $field, $excludedTablesAndFields, true)) {
@@ -612,14 +606,14 @@ page.10.disableExplosivePreview = 1
                     break;
                 }
                 // we're not inserting operating on an flex field - can't make a decission
-                if (!is_array($TCA[$table]['columns'][$field]['config']) ||
-                    $TCA[$table]['columns'][$field]['config']['type'] != 'flex'
+                if (!is_array($GLOBALS['TCA'][$table]['columns'][$field]['config']) ||
+                    $GLOBALS['TCA'][$table]['columns'][$field]['config']['type'] !== 'flex'
                 ) {
                     $res = false;
                     break;
                 }
                 // get the field-information and check if only "ce" fields are updated
-                $conf = $TCA[$table]['columns'][$field]['config'];
+                $conf = $GLOBALS['TCA'][$table]['columns'][$field]['config'];
                 $currentRecord = BackendUtility::getRecord($table, $id);
                 $dataStructArray = BackendUtility::getFlexFormDS($conf, $currentRecord, $table, $field, true);
                 foreach ($data[$field]['data'] as $sheetData) {
@@ -632,6 +626,7 @@ page.10.disableExplosivePreview = 1
                             $res = false;
                             break;
                         }
+                        /** @var array $lData */
                         foreach ($lData as $fieldName => $fieldData) {
                             if (!isset($dataStructArray['ROOT']['el'][$fieldName])) {
                                 $res = false;
@@ -639,7 +634,7 @@ page.10.disableExplosivePreview = 1
                             }
 
                             $fieldConf = $dataStructArray['ROOT']['el'][$fieldName];
-                            if ($fieldConf['tx_templavoila']['eType'] != 'ce') {
+                            if ($fieldConf['tx_templavoila']['eType'] !== 'ce') {
                                 $res = false;
                                 break;
                             }
@@ -647,7 +642,7 @@ page.10.disableExplosivePreview = 1
                     }
                 }
             }
-            if (($res == 1) && !$pObj->doesRecordExist($table, $id, 'editcontent')) {
+            if ($res && !$dataHandler->doesRecordExist($table, $id, 'editcontent')) {
                 $res = false;
             }
         }
