@@ -600,8 +600,10 @@ page.10.disableExplosivePreview = 1
         // Only perform additional checks if not admin and just for pages table.
         if (($table == 'pages') && is_array($data) && !$pObj->admin) {
             $res = 1;
+            $excludedTablesAndFields = array_flip($dataHandler->getExcludeListArray());
             foreach ($data as $field => $value) {
-                if (in_array($table . '-' . $field, $pObj->exclude_array) || $pObj->data_disableFields[$table][$id][$field]) {
+                if ($dataHandler->data_disableFields[$table][$id][$field]
+                    || in_array($table . '-' . $field, $excludedTablesAndFields, true)) {
                     continue;
                 }
                 // we're not inserting useful data - can't make a decission
