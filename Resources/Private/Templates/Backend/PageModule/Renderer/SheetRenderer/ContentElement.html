@@ -1,7 +1,9 @@
 {namespace core = TYPO3\CMS\Core\ViewHelpers}
 <!-- ContentElement.html -->
 <!-- ⇩ -->
-<div class="t3-page-ce t3js-page-ce t3js-page-ce-sortable"
+<div class="t3-page-ce t3js-page-ce t3js-page-ce-sortable tpm-ctype-{contentType} {f:if( condition:isFlexibleContentElement,then:'tpm-fce' )} {f:if( condition:dataStructureUid,then:'tpm-fce_{dataStructureUid}' )}"
+    data-content-type="{contentType}"
+    data-fce="{f:if( condition:isFlexibleContentElement,then:'true',else:'false' )}"
     data-table="{pointer.table}"
     data-uid="{pointer.uid}"
     data-sheet="{pointer.sheet}"

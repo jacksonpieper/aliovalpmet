@@ -442,6 +442,11 @@ class SheetRenderer implements Renderable
             'isSortable' => !PermissionUtility::isInTranslatorMode() && $canDragDrop,
             'bottomControls' => $canCreateNew && !PermissionUtility::isInTranslatorMode() ? $this->controller->link_bottomControls($parentPointer, $canCreateNew) : '',
             'pointer' => $parentPointer,
+            'contentType' => $sheet->getContentType(),
+            'isFlexibleContentElement' => $sheet->isFlexibleContentElement(),
+            'dataStructureUid' => $sheet->isFlexibleContentElement() && isset($sheet->getPreviewDataRow()['tx_templavoila_ds'])
+                ? $sheet->getPreviewDataRow()['tx_templavoila_ds']
+                : 0
         ]);
 
         return $contentElementView->render();
