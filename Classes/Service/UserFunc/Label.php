@@ -20,7 +20,7 @@ use Schnitzler\Templavoila\Traits\LanguageService;
  *
  * This library contains several functions for displaying the labels in the list view.
  *
- * @author  Michael Klapper <michael.klapper@aoemedia.de>
+ *
  */
 class Label
 {

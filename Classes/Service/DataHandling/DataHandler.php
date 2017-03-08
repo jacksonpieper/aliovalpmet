@@ -25,7 +25,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 /**
  * Class being included by TCEmain using a hook
  *
- * @author Robert Lemke <robert@typo3.org>
+ *
  *
  */
 class DataHandler

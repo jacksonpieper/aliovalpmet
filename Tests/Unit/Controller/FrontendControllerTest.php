@@ -18,7 +18,7 @@ use TYPO3\CMS\Core\Tests\AccessibleObjectInterface;
 use TYPO3\CMS\Core\Tests\UnitTestCase;
 
 /**
- * @author Alexander Schnitzler <typo3@alexanderschnitzler.de>
+ *
  */
 class FrontendControllerTest extends UnitTestCase
 {

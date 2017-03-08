@@ -26,7 +26,7 @@ use TYPO3\CMS\Lowlevel\CleanerCommand;
  * User function called from tx_lowlevel_cleaner_core configured in ext_localconf.php
  * See system extension, lowlevel!
  *
- * @author Kasper Skårhøj <kasperYYYY@typo3.com>
+ *
  */
 class UnusedContentElementComand extends CleanerCommand
 {

@@ -21,7 +21,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  * Finding used content elements on pages. Used as a filter for other extensions
  * which wants to know which elements are used on a templavoila page.
  *
- * @author Kasper Skårhøj <kasperYYYY@typo3.com>
+ *
  */
 class UsedContentElement
 {

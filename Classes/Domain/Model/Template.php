@@ -27,7 +27,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 /**
  * Class to provide unique access to template
  *
- * @author Tolleiv Nietsch <tolleiv.nietsch@typo3.org>
+ *
  */
 class Template
 {

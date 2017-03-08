@@ -19,7 +19,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 /**
  * Syntax Highlighting class.
  *
- * @author Kasper Skårhøj <kasperYYYY@typo3.com>
+ *
  */
 class SyntaxHighlightingService
 {

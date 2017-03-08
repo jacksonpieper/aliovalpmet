@@ -24,7 +24,7 @@ use TYPO3\CMS\Frontend\Page\PageRepository;
 /**
  * Class to provide unique access to datastructure
  *
- * @author Tolleiv Nietsch <tolleiv.nietsch@typo3.org>
+ *
  */
 class TemplateRepository
 {

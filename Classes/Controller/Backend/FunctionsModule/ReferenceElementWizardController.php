@@ -26,7 +26,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  * Reference elements wizard,
  * References all unused elements in a treebranch to a specific point in the TV-DS
  *
- * @author Robert Lemke <robert@typo3.org>
+ *
  */
 class ReferenceElementWizardController extends AbstractFunctionModule
 {

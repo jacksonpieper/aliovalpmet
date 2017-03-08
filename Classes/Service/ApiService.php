@@ -27,7 +27,7 @@ use TYPO3\CMS\Core\Utility\MathUtility;
 /**
  * Public API class for proper handling of content elements and other useful TemplaVoila related functions
  *
- * @author Robert Lemke <robert@typo3.org>
+ *
  */
 class ApiService
 {

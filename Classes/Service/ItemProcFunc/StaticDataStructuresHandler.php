@@ -27,7 +27,7 @@ use TYPO3\CMS\Core\Utility\MathUtility;
 /**
  * Class/Function which manipulates the item-array for table/field tx_templavoila_tmplobj_datastructure.
  *
- * @author Kasper Skaarhoj <kasper@typo3.com>
+ *
  */
 class StaticDataStructuresHandler
 {

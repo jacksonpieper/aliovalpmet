@@ -24,7 +24,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  * This wizard renames a field in pages.tx_templavoila_flex, to avoid
  * a remapping
  *
- * @author Kay Strobach <typo3@kay-strobach.de>
+ *
  */
 class RenameFieldInPageFlexWizardController extends AbstractFunctionModule
 {

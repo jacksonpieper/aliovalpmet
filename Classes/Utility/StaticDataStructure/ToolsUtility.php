@@ -20,7 +20,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 /**
  * Class for userFuncs within the Extension Manager.
  *
- * @author Steffen Kamper  <info@sk-typo3.de>
+ *
  */
 class ToolsUtility
 {

@@ -20,7 +20,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 /**
  * Class being included by UserAuthGroup using a hook
  *
- * @author Dmitry Dulepov <dmitry@typo3.org>
+ *
  */
 class Access
 {

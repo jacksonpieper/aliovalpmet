@@ -19,8 +19,8 @@ use TYPO3\CMS\Core\Core\Bootstrap;
 use TYPO3\CMS\Core\Tests\FunctionalTestCase;
 
 /**
- * @author Robert Lemke <robert@typo3.org>
- * @author Alexander Schnitzler <typo3@alexanderschnitzler.de>
+ *
+ *
  */
 class ApiServiceTest extends FunctionalTestCase
 {

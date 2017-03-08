@@ -31,8 +31,8 @@ use TYPO3\CMS\Core\Utility\MathUtility;
 /**
  * Class which will add menu items to click menus for the extension TemplaVoila
  *
- * @author Kasper Skaarhoj <kasper@typo3.com>
- * @coauthor Robert Lemke <robert@typo3.org>
+ *
+ *
  */
 class MainClickMenu
 {

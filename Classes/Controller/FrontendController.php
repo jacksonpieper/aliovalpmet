@@ -39,8 +39,8 @@ use TYPO3\CMS\Frontend\Plugin\AbstractPlugin;
 /**
  * Plugin 'Flexible Content' for the 'templavoila' extension.
  *
- * @author Kasper Skaarhoj <kasper@typo3.com>
- * @coauthor Robert Lemke <robert@typo3.org>
+ *
+ *
  */
 class FrontendController extends AbstractPlugin
 {
