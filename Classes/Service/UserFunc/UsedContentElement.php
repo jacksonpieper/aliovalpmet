@@ -60,7 +60,7 @@ class UsedContentElement
      */
     public function filter($table, $uid)
     {
-        if ($table != 'tt_content' || in_array($uid, $this->usedUids)) {
+        if ($table !== 'tt_content' || in_array($uid, $this->usedUids)) {
             return true;
         }
 

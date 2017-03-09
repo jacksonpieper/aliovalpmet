@@ -141,7 +141,7 @@ class ApiService
              * @todo: check why $currentReferencesArr isn't used
              */
         }
-        $newRecordPid = ($destinationPointer['table'] == 'pages' ? ($parentRecord['pid'] == -1 ? $parentRecord['t3ver_oid'] : $parentRecord['uid']) : $parentRecord['pid']);
+        $newRecordPid = ($destinationPointer['table'] === 'pages' ? ($parentRecord['pid'] == -1 ? $parentRecord['t3ver_oid'] : $parentRecord['uid']) : $parentRecord['pid']);
 
         $dataArr = [];
         $dataArr['tt_content']['NEW'] = $row;
@@ -149,8 +149,8 @@ class ApiService
         unset($dataArr['tt_content']['NEW']['uid']);
 
         // If the destination is not the default language, try to set the old-style sys_language_uid field accordingly
-        if ($destinationPointer['sLang'] != 'lDEF' || $destinationPointer['vLang'] != 'vDEF') {
-            $languageKey = $destinationPointer['vLang'] != 'vDEF' ? $destinationPointer['vLang'] : $destinationPointer['sLang'];
+        if ($destinationPointer['sLang'] !== 'lDEF' || $destinationPointer['vLang'] !== 'vDEF') {
+            $languageKey = $destinationPointer['vLang'] !== 'vDEF' ? $destinationPointer['vLang'] : $destinationPointer['sLang'];
             $languageRecord = BackendUtility::getRecordRaw(
                 'sys_language',
                 'language_isocode=' . static::getDatabaseConnection()->fullQuoteStr(
@@ -423,7 +423,7 @@ class ApiService
                 $this->logger->error('process: Parent record of the element specified by destination pointer does not exist!', [$destinationPointer]);
 
                 return false;
-            } elseif ($destinationParentRecord['pid'] < 0 && $destinationPointer['table'] != 'pages') {
+            } elseif ($destinationParentRecord['pid'] < 0 && $destinationPointer['table'] !== 'pages') {
                 $this->logger->error('process: The destination pointer must always point to a live record, not an offline version!', [$destinationPointer]);
 
                 return false;
@@ -524,8 +524,8 @@ class ApiService
 
             // Move the records to the new page as well
             if (!$onlyHandleReferences) {
-                $sourcePID = $sourcePointer['table'] == 'pages' ? $sourceParentRecord['uid'] : $sourceParentRecord['pid'];
-                $destinationPID = $destinationPointer['table'] == 'pages' ? $destinationParentRecord['uid'] : $destinationParentRecord['pid'];
+                $sourcePID = $sourcePointer['table'] === 'pages' ? $sourceParentRecord['uid'] : $sourceParentRecord['pid'];
+                $destinationPID = $destinationPointer['table'] === 'pages' ? $destinationParentRecord['uid'] : $destinationParentRecord['pid'];
 
                 // Determine uids of all sub elements of the element to be moved:
                 $dummyArr = [];
@@ -568,7 +568,7 @@ class ApiService
      */
     public function process_copy($sourceElementUid, $destinationPointer, $destinationReferencesArr, $destinationParentRecord)
     {
-        $destinationPID = $destinationPointer['table'] == 'pages' ? $destinationParentRecord['uid'] : $destinationParentRecord['pid'];
+        $destinationPID = $destinationPointer['table'] === 'pages' ? $destinationParentRecord['uid'] : $destinationParentRecord['pid'];
 
         // Initialize TCEmain and create configuration for copying the specified record
         $tce = GeneralUtility::makeInstance(DataHandler::class);
@@ -607,7 +607,7 @@ class ApiService
 
         // Determine the PID of the new location and get uids of all sub elements of the element to be copied:
         $dummyArr = [];
-        $destinationPID = $destinationPointer['table'] == 'pages' ? $destinationParentRecord['uid'] : $destinationParentRecord['pid'];
+        $destinationPID = $destinationPointer['table'] === 'pages' ? $destinationParentRecord['uid'] : $destinationParentRecord['pid'];
         $subElementUids = $this->flexform_getListOfSubElementUidsRecursively('tt_content', $sourceElementUid, $dummyArr);
 
         // Initialize TCEmain and create configuration for copying the specified record (the parent element) and all sub elements:
@@ -997,7 +997,7 @@ class ApiService
                             foreach ($fieldsArr as $fieldName => $valuesArr) {
                                 if (is_array($valuesArr)) {
                                     foreach ($valuesArr as $value) {
-                                        if ($expandedDataStructure[$sheetKey]['ROOT']['el'][$fieldName]['tx_templavoila']['eType'] == 'ce') {
+                                        if ($expandedDataStructure[$sheetKey]['ROOT']['el'][$fieldName]['tx_templavoila']['eType'] === 'ce') {
                                             $valueItems = GeneralUtility::intExplode(',', $value);
                                             if (is_array($valueItems)) {
                                                 foreach ($valueItems as $subElementUid) {
@@ -1049,7 +1049,7 @@ class ApiService
                             foreach ($fieldsArr as $fieldName => $valuesArr) {
                                 if (is_array($valuesArr)) {
                                     foreach ($valuesArr as $valueName => $value) {
-                                        if ($expandedDataStructure[$sheetKey]['ROOT']['el'][$fieldName]['tx_templavoila']['eType'] == 'ce') {
+                                        if ($expandedDataStructure[$sheetKey]['ROOT']['el'][$fieldName]['tx_templavoila']['eType'] === 'ce') {
                                             $valueItems = GeneralUtility::intExplode(',', $value);
                                             if (is_array($valueItems)) {
                                                 $position = 1;
@@ -1248,7 +1248,7 @@ class ApiService
                                     $columnsAndFieldNamesArr[$columnNumber] = $fieldName;
                                 }
                             }
-                            if ($fieldConfiguration['tx_templavoila']['eType'] == 'ce' && !isset($fieldNameOfFirstCEField)) {
+                            if ($fieldConfiguration['tx_templavoila']['eType'] === 'ce' && !isset($fieldNameOfFirstCEField)) {
                                 $fieldNameOfFirstCEField = $fieldName;
                             }
                         }
@@ -1449,7 +1449,7 @@ class ApiService
         }
 
         // If element is a Flexible Content Element (or a page) then look at the content inside:
-        if ($table == 'pages' || $table == $this->rootTable || ($table == 'tt_content' && $row['CType'] == 'templavoila_pi1')) {
+        if ($table === 'pages' || $table == $this->rootTable || ($table === 'tt_content' && $row['CType'] === 'templavoila_pi1')) {
             $rawDataStructureArr = BackendUtility::getFlexFormDS($GLOBALS['TCA'][$table]['columns']['tx_templavoila_flex']['config'], $row, $table);
             if (!is_array($rawDataStructureArr)) {
                 return [];
@@ -1518,7 +1518,7 @@ class ApiService
                                     }
                                 }
 
-                                if ($fieldData['type'] == 'array') {
+                                if ($fieldData['type'] === 'array') {
                                     $tree['previewData']['sheets'][$sheetKey][$fieldKey]['subElements'][$lKey] = $flexformContentArr['data'][$sheetKey][$lKey][$fieldKey]['el'];
                                     $tree['previewData']['sheets'][$sheetKey][$fieldKey]['childElements'][$lKey] = $this->getContentTree_processSubFlexFields($table, $row, [$fieldKey => $fieldData], $tt_content_elementRegister, $flexformContentArr['data'][$sheetKey][$lKey], $vKeys);
                                 }
@@ -1526,9 +1526,9 @@ class ApiService
                         }
 
                         // If the current field points to other content elements, process them:
-                        if ($fieldData['TCEforms']['config']['type'] == 'group' &&
-                            $fieldData['TCEforms']['config']['internal_type'] == 'db' &&
-                            $fieldData['TCEforms']['config']['allowed'] == 'tt_content'
+                        if ($fieldData['TCEforms']['config']['type'] === 'group' &&
+                            $fieldData['TCEforms']['config']['internal_type'] === 'db' &&
+                            $fieldData['TCEforms']['config']['allowed'] === 'tt_content'
                         ) {
                             foreach ($lKeys as $lKey) {
                                 foreach ($vKeys as $vKey) {
@@ -1538,7 +1538,7 @@ class ApiService
                                     $tree['sub'][$sheetKey][$lKey][$fieldKey][$vKey]['meta']['title'] = $fieldData['TCEforms']['label'];
                                 }
                             }
-                        } elseif ($fieldData['type'] != 'array' && $fieldData['TCEforms']['config']) { // If generally there are non-container fields, register them:
+                        } elseif ($fieldData['type'] !== 'array' && $fieldData['TCEforms']['config']) { // If generally there are non-container fields, register them:
                             $tree['contentFields'][$sheetKey][] = $fieldKey;
                         }
                     }
@@ -1571,7 +1571,7 @@ class ApiService
         }
         $result = [];
         foreach ($fieldData as $fieldKey => $fieldValue) {
-            if ($fieldValue['type'] == 'array') {
+            if ($fieldValue['type'] === 'array') {
                 if (is_array($contentArr) && isset($contentArr[$fieldKey]) && is_array($contentArr[$fieldKey]['el'])) {
                     $result[$fieldKey]['config'] = $fieldValue;
                     unset($result[$fieldKey]['config']['el']);
@@ -1653,7 +1653,7 @@ class ApiService
     public function getContentTree_getLocalizationInfoForElement($contentTreeArr, &$tt_content_elementRegister)
     {
         $localizationInfoArr = [];
-        if ($contentTreeArr['el']['table'] == 'tt_content' && $contentTreeArr['el']['sys_language_uid'] <= 0) {
+        if ($contentTreeArr['el']['table'] === 'tt_content' && $contentTreeArr['el']['sys_language_uid'] <= 0) {
 
             // Finding translations of this record and select overlay record:
             $fakeElementRow = ['uid' => $contentTreeArr['el']['uid'], 'pid' => $contentTreeArr['el']['pid']];

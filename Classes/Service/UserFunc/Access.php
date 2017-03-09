@@ -37,7 +37,7 @@ class Access
      */
     public function recordEditAccessInternals($params, $ref)
     {
-        if ($params['table'] == 'tt_content' && is_array($params['idOrRow']) && $params['idOrRow']['CType'] == 'templavoila_pi1') {
+        if ($params['table'] === 'tt_content' && is_array($params['idOrRow']) && $params['idOrRow']['CType'] === 'templavoila_pi1') {
             if (!$ref) {
                 $user = & static::getBackendUser();
             } else {

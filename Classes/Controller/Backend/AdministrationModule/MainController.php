@@ -1309,12 +1309,12 @@ class MainController extends AbstractModuleController implements Configurable
                 }
 
                 $HTML .= '<dt>';
-                $HTML .= ($elm == 'meta' ? static::getLanguageService()->getLL('configuration', true) : $def['tx_templavoila']['title'] . ' (' . $elm . ')');
+                $HTML .= ($elm === 'meta' ? static::getLanguageService()->getLL('configuration', true) : $def['tx_templavoila']['title'] . ' (' . $elm . ')');
                 $HTML .= '</dt>';
                 $HTML .= '<dd>';
 
                 /* this is the configuration-entry ------------------------------ */
-                if ($elm == 'meta') {
+                if ($elm === 'meta') {
                     /* The basic XML-structure of an meta-entry is:
                      *
                      * <meta>
@@ -1362,7 +1362,7 @@ class MainController extends AbstractModuleController implements Configurable
                     $HTML .= '<p>[..., ..., ...]</p>';
                 } /* this a container for cellections of elements ----------------- */
                 else {
-                    if (isset($def['type']) && ($def['type'] == 'array')) {
+                    if (isset($def['type']) && ($def['type'] === 'array')) {
                         $HTML .= '<p>[...]</p>';
                     } /* this a regular entry ----------------------------------------- */
                     else {
@@ -1513,13 +1513,13 @@ class MainController extends AbstractModuleController implements Configurable
                             }
 
                             $notes = '';
-                            if (($tv['eType'] != 'TypoScriptObject') && isset($tv['TypoScriptObjPath'])) {
+                            if (($tv['eType'] !== 'TypoScriptObject') && isset($tv['TypoScriptObjPath'])) {
                                 $notes .= '<li>' . static::getLanguageService()->getLL('redundant', true) . ' &lt;TypoScriptObjPath&gt;-entry</li>';
                             }
-                            if (($tv['eType'] == 'TypoScriptObject') && isset($tv['TypoScript'])) {
+                            if (($tv['eType'] === 'TypoScriptObject') && isset($tv['TypoScript'])) {
                                 $notes .= '<li>' . static::getLanguageService()->getLL('redundant', true) . ' &lt;TypoScript&gt;-entry</li>';
                             }
-                            if ((($tv['eType'] == 'TypoScriptObject') || !isset($tv['TypoScript'])) && isset($tv['TypoScript_constants'])) {
+                            if ((($tv['eType'] === 'TypoScriptObject') || !isset($tv['TypoScript'])) && isset($tv['TypoScript_constants'])) {
                                 $notes .= '<li>' . static::getLanguageService()->getLL('redundant', true) . ' &lt;TypoScript_constants&gt;-' . static::getLanguageService()->getLL('entry', true) . '</li>';
                             }
                             if (isset($tv['proc']) && isset($tv['proc']['int']) && ($tv['proc']['int'] == 1) && isset($tv['proc']['HSC'])) {
@@ -1574,7 +1574,7 @@ class MainController extends AbstractModuleController implements Configurable
                 }
 
                 /* there are some childs to process ----------------------------- */
-                if (isset($def['type']) && ($def['type'] == 'array')) {
+                if (isset($def['type']) && ($def['type'] === 'array')) {
                     if (isset($def['section']))
                         ;
                     if (isset($def['el'])) {
@@ -1871,7 +1871,7 @@ class MainController extends AbstractModuleController implements Configurable
         $paths = $this->getTemplatePaths();
         $files = [];
         foreach ($paths as $path) {
-            $files = array_merge(GeneralUtility::getAllFilesAndFoldersInPath([], $path . ((substr($path, -1) != '/') ? '/' : ''), 'html,htm,tmpl', 0), $files);
+            $files = array_merge(GeneralUtility::getAllFilesAndFoldersInPath([], $path . ((substr($path, -1) !== '/') ? '/' : ''), 'html,htm,tmpl', 0), $files);
         }
 
         return $files;

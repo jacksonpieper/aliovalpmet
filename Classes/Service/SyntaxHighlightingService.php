@@ -140,10 +140,10 @@ class SyntaxHighlightingService
                         break;
                     case 'el':
                     default:
-                        if ($parent == 'el') {
+                        if ($parent === 'el') {
                             $wrap = $this->DS_wrapTags['parent:el'];
                             $nextApp = 'el';
-                        } elseif ($parent == 'sheets') {
+                        } elseif ($parent === 'sheets') {
                             $wrap = $this->DS_wrapTags['parent:sheets'];
                         } else {
                             $wrap = $this->DS_wrapTags[$v['tagName']];
@@ -156,7 +156,7 @@ class SyntaxHighlightingService
                         }
 
                         // Check for application sections in the XML:
-                        if ($app == 'el' || $parent == 'ROOT') {
+                        if ($app === 'el' || $parent === 'ROOT') {
                             switch ($v['tagName']) {
                                 case 'TCEforms':
                                 case 'tx_templavoila':
@@ -229,22 +229,22 @@ class SyntaxHighlightingService
         $output = '';
 
         // Setting levels:
-        if ($parent == 'data') {
+        if ($parent === 'data') {
             $app = 'sheet';
-        } elseif ($app == 'sheet') {
+        } elseif ($app === 'sheet') {
             $app = 'language';
-        } elseif ($app == 'language') {
+        } elseif ($app === 'language') {
             $app = 'fieldname';
-        } elseif ($app == 'fieldname') {
+        } elseif ($app === 'fieldname') {
             $app = 'value';
-        } elseif ($app == 'el' || $app == 'numIndex') {
+        } elseif ($app === 'el' || $app === 'numIndex') {
             $app = 'fieldname';
         }
 
         // Traverse structure:
         foreach ($struct as $k => $v) {
             if ($k % 2) {
-                if ($v['tagName'] == 'numIndex') {
+                if ($v['tagName'] === 'numIndex') {
                     $app = 'numIndex';
                 }
 
@@ -266,7 +266,7 @@ class SyntaxHighlightingService
                     }
                 }
 
-                if ($v['tagName'] == 'el') {
+                if ($v['tagName'] === 'el') {
                     $app = 'el';
                 }
 

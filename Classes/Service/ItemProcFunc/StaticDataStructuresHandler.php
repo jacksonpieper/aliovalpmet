@@ -181,7 +181,7 @@ class StaticDataStructuresHandler
     {
         // Get DS
         $tsConfig = & $pObj->cachedTSconfig[$params['table'] . ':' . $params['row']['uid']];
-        $fieldName = $params['field'] == 'tx_templavoila_next_to' ? 'tx_templavoila_next_ds' : 'tx_templavoila_ds';
+        $fieldName = $params['field'] === 'tx_templavoila_next_to' ? 'tx_templavoila_next_ds' : 'tx_templavoila_ds';
         $dataSource = $tsConfig['_THIS_ROW'][$fieldName];
 
         $storagePid = $this->getStoragePid($params, $pObj);
@@ -283,7 +283,7 @@ class StaticDataStructuresHandler
         $storagePid = 0;
 
         // Check for alternative storage folder
-        $field = $params['table'] == 'pages' ? 'uid' : 'pid';
+        $field = $params['table'] === 'pages' ? 'uid' : 'pid';
         $modTSConfig = BackendUtility::getModTSconfig($params['row'][$field], 'tx_templavoila.storagePid');
         if (is_array($modTSConfig) && MathUtility::canBeInterpretedAsInteger($modTSConfig['value'])) {
             $storagePid = (int)$modTSConfig['value'];
@@ -302,9 +302,9 @@ class StaticDataStructuresHandler
     protected function getScope(array $params)
     {
         $scope = AbstractDataStructure::SCOPE_UNKNOWN;
-        if ($params['table'] == 'pages') {
+        if ($params['table'] === 'pages') {
             $scope = AbstractDataStructure::SCOPE_PAGE;
-        } elseif ($params['table'] == 'tt_content') {
+        } elseif ($params['table'] === 'tt_content') {
             $scope = AbstractDataStructure::SCOPE_FCE;
         }
 
@@ -321,7 +321,7 @@ class StaticDataStructuresHandler
      */
     protected function getRemoveItems($params, $field)
     {
-        $pid = $params['row'][$params['table'] == 'pages' ? 'uid' : 'pid'];
+        $pid = $params['row'][$params['table'] === 'pages' ? 'uid' : 'pid'];
         $modTSConfig = BackendUtility::getModTSconfig($pid, 'TCEFORM.' . $params['table'] . '.' . $field . '.removeItems');
 
         return GeneralUtility::trimExplode(',', $modTSConfig['value'], true);

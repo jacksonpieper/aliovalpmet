@@ -370,7 +370,7 @@ class WizardController extends AbstractModuleController implements Configurable
         $paths = $this->getTemplatePaths();
         $files = [];
         foreach ($paths as $path) {
-            $files = array_merge(GeneralUtility::getAllFilesAndFoldersInPath([], $path . ((substr($path, -1) != '/') ? '/' : ''), 'html,htm,tmpl', 0), $files);
+            $files = array_merge(GeneralUtility::getAllFilesAndFoldersInPath([], $path . ((substr($path, -1) !== '/') ? '/' : ''), 'html,htm,tmpl', 0), $files);
         }
 
         return $files;
