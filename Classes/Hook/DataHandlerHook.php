@@ -14,6 +14,7 @@
 namespace Schnitzler\Templavoila\Hook;
 
 use Schnitzler\Templavoila\Service\ApiService;
+use Schnitzler\Templavoila\Service\UserFunc\Access as AccessUserFunction;
 use Schnitzler\Templavoila\Templavoila;
 use Schnitzler\Templavoila\Traits\DatabaseConnection;
 use Schnitzler\Templavoila\Traits\LanguageService;
@@ -157,7 +158,7 @@ class DataHandlerHook
                     'row' => $row,
                 ];
                 $ref = null;
-                if (!GeneralUtility::callUserFunction('EXT:templavoila/Classes/Service/UserFunc/Access.php:&Schnitzler\Templavoila\Service\UserFunc\Access->recordEditAccessInternals', $params, $ref)) {
+                if (!GeneralUtility::callUserFunction(AccessUserFunction::class . '->recordEditAccessInternals', $params, $ref)) {
                     $dataHandler->newlog(sprintf(static::getLanguageService()->getLL($status !== 'new' ? 'access_noModifyAccess' : 'access_noCrateAccess'), $table, $id), 1);
                     $fieldArray = [];
                 }
@@ -316,7 +317,7 @@ page.10.disableExplosivePreview = 1
                     'row' => $record,
                 ];
                 $ref = null;
-                if (!GeneralUtility::callUserFunction('EXT:templavoila/Classes/Service/UserFunc/Access.php:&Schnitzler\Templavoila\Service\UserFunc\Access->recordEditAccessInternals', $params, $ref)) {
+                if (!GeneralUtility::callUserFunction(AccessUserFunction::class . '->recordEditAccessInternals', $params, $ref)) {
                     $dataHandler->newlog(sprintf(static::getLanguageService()->getLL('access_noModifyAccess'), $table, $id), 1);
                     $command = ''; // Do not delete! A hack but there is no other way to prevent deletion...
                 } else {
