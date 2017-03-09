@@ -87,9 +87,9 @@ $tvSetup[] = 'tt_content.menu.20.3 = USER
 $GLOBALS['TYPO3_CONF_VARS']['FE']['addRootLineFields'] .= ',tx_templavoila_ds,tx_templavoila_to,tx_templavoila_next_ds,tx_templavoila_next_to';
 
 // Register our classes at a the hooks:
-$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['processDatamapClass'][$_EXTKEY] = 'EXT:templavoila/Classes/Service/DataHandling/DataHandler.php:Schnitzler\Templavoila\Service\DataHandling\DataHandler';
-$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['processCmdmapClass'][$_EXTKEY] = 'EXT:templavoila/Classes/Service/DataHandling/DataHandler.php:Schnitzler\Templavoila\Service\DataHandling\DataHandler';
-$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['moveRecordClass'][$_EXTKEY] = 'EXT:templavoila/Classes/Service/DataHandling/DataHandler.php:Schnitzler\Templavoila\Service\DataHandling\DataHandler';
+$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['processDatamapClass'][$_EXTKEY] = \Schnitzler\Templavoila\Hook\DataHandlerHook::class;
+$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['processCmdmapClass'][$_EXTKEY] = \Schnitzler\Templavoila\Hook\DataHandlerHook::class;
+$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['moveRecordClass'][$_EXTKEY] = \Schnitzler\Templavoila\Hook\DataHandlerHook::class;
 $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_userauthgroup.php']['recordEditAccessInternals'][$_EXTKEY] = 'EXT:templavoila/Classes/Service/UserFunc/Access.php:Schnitzler\Templavoila\Service\UserFunc\Access->recordEditAccessInternals';
 
 $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['lowlevel']['cleanerModules']['tx_templavoila_unusedce'] = ['EXT:templavoila/Classes/Comand/UnusedContentElementComand.php:Schnitzler\Templavoila\Comand\UnusedContentElementComand'];

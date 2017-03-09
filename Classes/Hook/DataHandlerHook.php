@@ -11,7 +11,7 @@
  * LICENSE.md file that was distributed with this source code.
  */
 
-namespace Schnitzler\Templavoila\Service\DataHandling;
+namespace Schnitzler\Templavoila\Hook;
 
 use Schnitzler\Templavoila\Service\ApiService;
 use Schnitzler\Templavoila\Templavoila;
@@ -24,9 +24,9 @@ use TYPO3\CMS\Core\DataHandling\DataHandler as CoreDataHandler;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
- * Class Schnitzler\Templavoila\Service\DataHandling\DataHandler
+ * Class Schnitzler\Templavoila\Service\DataHandling\DataHandlerHook
  */
-class DataHandler
+class DataHandlerHook
 {
     use DatabaseConnection;
     use LanguageService;
