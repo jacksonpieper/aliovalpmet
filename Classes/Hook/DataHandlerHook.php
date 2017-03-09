@@ -147,11 +147,13 @@ class DataHandlerHook
 
         // Access check for FCE
         if ($table === 'tt_content') {
-            $row = & $fieldArray;
             if ($status !== 'new') {
                 $row = BackendUtility::getRecord($table, $id);
+            } else {
+                // do not put this line before the if statement.
+                // it breaks moving records
+                $row = &$fieldArray;
             }
-
             if ($row['CType'] === 'templavoila_pi1') {
                 $params = [
                     'table' => $table,
