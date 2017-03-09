@@ -37,7 +37,7 @@
     typo3DatabaseName: templavoila
 
 variables:
-  COMPOSER_CACHE_DIR: ".composer"
+  COMPOSER_CACHE_DIR: "/composer"
   COMPOSER_PROCESS_TIMEOUT: "1800"
   COMPOSER_ALLOW_SUPERUSER: "1"
   TYPO3_PATH_WEB: "$CI_PROJECT_DIR/.Build/Web"
@@ -53,7 +53,7 @@ variables:
 cache:
   key: "$CI_BUILD_REF_NAME/$CI_BUILD_STAGE"
   paths:
-  - .composer/
+  - /composer/
 
 before_script:
   - php -v
