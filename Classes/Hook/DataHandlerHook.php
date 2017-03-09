@@ -584,16 +584,16 @@ page.10.disableExplosivePreview = 1
      * @param string $table
      * @param int $id
      * @param array $data
-     * @param bool $res
+     * @param int $res
      * @param CoreDataHandler $dataHandler
      *
-     * @return bool - "true" if we grant access and "false" if we can't decide whether to give access or not
+     * @return int - "1" if we grant access and "0" if we can't decide whether to give access or not
      */
     public function checkRecordUpdateAccess($table, $id, $data, $res, CoreDataHandler $dataHandler)
     {
         // Only perform additional checks if not admin and just for pages table.
         if (($table === 'pages') && is_array($data) && !$dataHandler->admin) {
-            $res = true;
+            $res = 1;
             $excludedTablesAndFields = array_flip($dataHandler->getExcludeListArray());
 
             foreach ($data as $field => $value) {
@@ -603,14 +603,14 @@ page.10.disableExplosivePreview = 1
                 }
                 // we're not inserting useful data - can't make a decission
                 if (!is_array($data[$field]) || !is_array($data[$field]['data'])) {
-                    $res = false;
+                    $res = 0;
                     break;
                 }
                 // we're not inserting operating on an flex field - can't make a decission
                 if (!is_array($GLOBALS['TCA'][$table]['columns'][$field]['config']) ||
                     $GLOBALS['TCA'][$table]['columns'][$field]['config']['type'] !== 'flex'
                 ) {
-                    $res = false;
+                    $res = 0;
                     break;
                 }
                 // get the field-information and check if only "ce" fields are updated
@@ -619,32 +619,32 @@ page.10.disableExplosivePreview = 1
                 $dataStructArray = BackendUtility::getFlexFormDS($conf, $currentRecord, $table, $field, true);
                 foreach ($data[$field]['data'] as $sheetData) {
                     if (!is_array($sheetData) || !is_array($dataStructArray['ROOT']['el'])) {
-                        $res = false;
+                        $res = 0;
                         break;
                     }
                     foreach ($sheetData as $lData) {
                         if (!is_array($lData)) {
-                            $res = false;
+                            $res = 0;
                             break;
                         }
                         /** @var array $lData */
                         foreach ($lData as $fieldName => $fieldData) {
                             if (!isset($dataStructArray['ROOT']['el'][$fieldName])) {
-                                $res = false;
+                                $res = 0;
                                 break;
                             }
 
                             $fieldConf = $dataStructArray['ROOT']['el'][$fieldName];
                             if ($fieldConf['tx_templavoila']['eType'] !== 'ce') {
-                                $res = false;
+                                $res = 0;
                                 break;
                             }
                         }
                     }
                 }
             }
-            if ($res && !$dataHandler->doesRecordExist($table, $id, 'editcontent')) {
-                $res = false;
+            if ($res === 1 && !$dataHandler->doesRecordExist($table, $id, 'editcontent')) {
+                $res = 0;
             }
         }
 
