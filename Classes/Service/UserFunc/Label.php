@@ -30,9 +30,8 @@ class Label
      * Retrive the label for TCAFORM title attribute.
      *
      * @param array $params Current record array
-     * @param object
      */
-    public function getLabel(&$params, &$pObj)
+    public function getLabel(&$params)
     {
         $params['title'] = static::getLanguageService()->sL($params['row']['title']);
     }

@@ -46,7 +46,7 @@ class SheetRenderer implements Renderable
     /**
      * @var array
      */
-    private $contentTree = [];
+    private $contentTree;
 
     /**
      * @var array

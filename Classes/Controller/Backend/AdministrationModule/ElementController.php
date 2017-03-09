@@ -84,7 +84,7 @@ class ElementController extends AbstractModuleController implements Configurable
      *
      * @var bool
      */
-    private $staticDS = false;
+    private $staticDS;
 
     public function __construct()
     {

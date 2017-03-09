@@ -15,6 +15,7 @@ namespace Schnitzler\Templavoila\Service\UserFunc;
 
 use Schnitzler\Templavoila\Traits\BackendUser;
 use Schnitzler\Templavoila\Traits\LanguageService;
+use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -70,7 +71,7 @@ class Access
      *
      * @param string $table Table name
      * @param int $uid UID of the record
-     * @param object $be_user BE user object
+     * @param BackendUserAuthentication $be_user BE user object
      *
      * @return bool <code>true</code> if access is allowed
      */

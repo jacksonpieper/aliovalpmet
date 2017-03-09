@@ -474,7 +474,7 @@ class MainController extends AbstractModuleController implements Configurable
         }
 
         if ($dsObj->isFilebased()) {
-            $onClick = 'document.location=\'' . $this->doc->backPath . 'file_edit.php?target=' . rawurlencode(GeneralUtility::getFileAbsFileName($dsObj->getKey())) . '&returnUrl=' . rawurlencode(GeneralUtility::sanitizeLocalUrl(GeneralUtility::getIndpEnv('REQUEST_URI'))) . '\';';
+            $onClick = 'document.location=\'' . 'file_edit.php?target=' . rawurlencode(GeneralUtility::getFileAbsFileName($dsObj->getKey())) . '&returnUrl=' . rawurlencode(GeneralUtility::sanitizeLocalUrl(GeneralUtility::getIndpEnv('REQUEST_URI'))) . '\';';
             $dsIcon = '<a href="#" onclick="' . htmlspecialchars($onClick) . '">' . $dsObj->getKey() . '</a>';
         } else {
             $dsIcon = $this->getModuleTemplate()->getIconFactory()->getIconForRecord('tx_templavoila_datastructure', [], Icon::SIZE_SMALL);
@@ -499,7 +499,7 @@ class MainController extends AbstractModuleController implements Configurable
             $editLink = $editDataprotLink = '';
             $dsTitle = $dsObj->getLabel();
         } else {
-            $editLink = $lpXML .= '<a href="#" onclick="' . htmlspecialchars(BackendUtility::editOnClick('&edit[tx_templavoila_datastructure][' . $dsObj->getKey() . ']=edit', $this->doc->backPath)) . '">' . $this->getModuleTemplate()->getIconFactory()->getIcon('actions-document-open', Icon::SIZE_SMALL) . '</a>';
+            $editLink = $lpXML .= '<a href="#" onclick="' . htmlspecialchars(BackendUtility::editOnClick('&edit[tx_templavoila_datastructure][' . $dsObj->getKey() . ']=edit')) . '">' . $this->getModuleTemplate()->getIconFactory()->getIcon('actions-document-open', Icon::SIZE_SMALL) . '</a>';
 
             $editUrl = BackendUtility::getModuleUrl('record_edit', [
                 'edit' => [
@@ -720,14 +720,14 @@ class MainController extends AbstractModuleController implements Configurable
             $hlObj = GeneralUtility::makeInstance(SyntaxHighlightingService::class);
             $lpXML = '<pre>' . str_replace(chr(9), '&nbsp;&nbsp;&nbsp;', $hlObj->highLight_DS($toObj->getLocalDataprotXML(true))) . '</pre>';
         }
-        $lpXML .= '<a href="#" onclick="' . htmlspecialchars(BackendUtility::editOnClick('&edit[tx_templavoila_tmplobj][' . $toObj->getKey() . ']=edit&columnsOnly=localprocessing', $this->doc->backPath)) . '">' . $this->getModuleTemplate()->getIconFactory()->getIcon('actions-document-open', Icon::SIZE_SMALL) . '</a>';
+        $lpXML .= '<a href="#" onclick="' . htmlspecialchars(BackendUtility::editOnClick('&edit[tx_templavoila_tmplobj][' . $toObj->getKey() . ']=edit&columnsOnly=localprocessing')) . '">' . $this->getModuleTemplate()->getIconFactory()->getIcon('actions-document-open', Icon::SIZE_SMALL) . '</a>';
 
         // Compile info table:
         $tableAttribs = ' border="0" cellpadding="1" cellspacing="1" width="98%" style="margin-top: 3px;" class="lrPadding"';
 
         // Links:
         $toTitle = '<a href="' . htmlspecialchars($linkUrl) . '">' . htmlspecialchars(static::getLanguageService()->sL($toObj->getLabel())) . '</a>';
-        $editLink = '<a href="#" onclick="' . htmlspecialchars(BackendUtility::editOnClick('&edit[tx_templavoila_tmplobj][' . $toObj->getKey() . ']=edit', $this->doc->backPath)) . '">' . $this->getModuleTemplate()->getIconFactory()->getIcon('actions-document-open', Icon::SIZE_SMALL) . '</a>';
+        $editLink = '<a href="#" onclick="' . htmlspecialchars(BackendUtility::editOnClick('&edit[tx_templavoila_tmplobj][' . $toObj->getKey() . ']=edit')) . '">' . $this->getModuleTemplate()->getIconFactory()->getIcon('actions-document-open', Icon::SIZE_SMALL) . '</a>';
 
         $fRWTOUres = [];
 
@@ -884,14 +884,14 @@ class MainController extends AbstractModuleController implements Configurable
                         $output[] = '
                             <tr class="bgColor4-20">
                                 <td nowrap="nowrap">' .
-                            '<a href="#" onclick="' . htmlspecialchars(BackendUtility::editOnClick('&edit[pages][' . $pRow['uid'] . ']=edit', $this->doc->backPath)) . '" title="Edit">' .
+                            '<a href="#" onclick="' . htmlspecialchars(BackendUtility::editOnClick('&edit[pages][' . $pRow['uid'] . ']=edit')) . '" title="Edit">' .
                             htmlspecialchars($pRow['uid']) .
                             '</a></td>
                         <td nowrap="nowrap">' .
                             htmlspecialchars($pRow['title']) .
                             '</td>
                         <td nowrap="nowrap">' .
-                            '<a href="#" onclick="' . htmlspecialchars(BackendUtility::viewOnClick($pRow['uid'], $this->doc->backPath) . 'return false;') . '" title="View">' .
+                            '<a href="#" onclick="' . htmlspecialchars(BackendUtility::viewOnClick($pRow['uid']) . 'return false;') . '" title="View">' .
                             htmlspecialchars($path) .
                             '</a></td>
                         <td nowrap="nowrap">' .
@@ -942,14 +942,14 @@ class MainController extends AbstractModuleController implements Configurable
                         $output[] = '
                             <tr class="bgColor4-20">
                                 <td nowrap="nowrap">' .
-                            '<a href="#" onclick="' . htmlspecialchars(BackendUtility::editOnClick('&edit[tt_content][' . $pRow['uid'] . ']=edit', $this->doc->backPath)) . '" title="Edit">' .
+                            '<a href="#" onclick="' . htmlspecialchars(BackendUtility::editOnClick('&edit[tt_content][' . $pRow['uid'] . ']=edit')) . '" title="Edit">' .
                             htmlspecialchars($pRow['uid']) .
                             '</a></td>
                         <td nowrap="nowrap">' .
                             htmlspecialchars($pRow['header']) .
                             '</td>
                         <td nowrap="nowrap">' .
-                            '<a href="#" onclick="' . htmlspecialchars(BackendUtility::viewOnClick($pRow['pid'], $this->doc->backPath) . 'return false;') . '" title="View page">' .
+                            '<a href="#" onclick="' . htmlspecialchars(BackendUtility::viewOnClick($pRow['pid']) . 'return false;') . '" title="View page">' .
                             htmlspecialchars($path) .
                             '</a></td>
                         <td nowrap="nowrap">' .
@@ -1028,11 +1028,11 @@ class MainController extends AbstractModuleController implements Configurable
                         $output[] = '
                             <tr class="bgColor4-20">
                                 <td nowrap="nowrap">' .
-                            '<a href="#" onclick="' . htmlspecialchars(BackendUtility::editOnClick('&edit[pages][' . $pRow['uid'] . ']=edit', $this->doc->backPath)) . '">' .
+                            '<a href="#" onclick="' . htmlspecialchars(BackendUtility::editOnClick('&edit[pages][' . $pRow['uid'] . ']=edit')) . '">' .
                             htmlspecialchars($pRow['title']) .
                             '</a></td>
                         <td nowrap="nowrap">' .
-                            '<a href="#" onclick="' . htmlspecialchars(BackendUtility::viewOnClick($pRow['uid'], $this->doc->backPath) . 'return false;') . '">' .
+                            '<a href="#" onclick="' . htmlspecialchars(BackendUtility::viewOnClick($pRow['uid']) . 'return false;') . '">' .
                             htmlspecialchars($path) .
                             '</a></td>
                     </tr>';
@@ -1074,11 +1074,11 @@ class MainController extends AbstractModuleController implements Configurable
                         $output[] = '
                             <tr class="bgColor4-20">
                                 <td nowrap="nowrap">' .
-                            '<a href="#" onclick="' . htmlspecialchars(BackendUtility::editOnClick('&edit[tt_content][' . $pRow['uid'] . ']=edit', $this->doc->backPath)) . '" title="Edit">' .
+                            '<a href="#" onclick="' . htmlspecialchars(BackendUtility::editOnClick('&edit[tt_content][' . $pRow['uid'] . ']=edit')) . '" title="Edit">' .
                             htmlspecialchars($pRow['header']) .
                             '</a></td>
                         <td nowrap="nowrap">' .
-                            '<a href="#" onclick="' . htmlspecialchars(BackendUtility::viewOnClick($pRow['pid'], $this->doc->backPath) . 'return false;') . '" title="View page">' .
+                            '<a href="#" onclick="' . htmlspecialchars(BackendUtility::viewOnClick($pRow['pid']) . 'return false;') . '" title="View page">' .
                             htmlspecialchars($path) .
                             '</a></td>
                     </tr>';
@@ -1157,7 +1157,7 @@ class MainController extends AbstractModuleController implements Configurable
                 $tRows[] = '
                     <tr class="' . ($i++ % 2 == 0 ? 'bgColor4' : 'bgColor6') . '">
                         <td>' .
-                    '<a href="' . htmlspecialchars($this->doc->backPath . '../' . substr($tFile, strlen(PATH_site))) . '" target="_blank">' .
+                    '<a href="' . htmlspecialchars('../' . substr($tFile, strlen(PATH_site))) . '" target="_blank">' .
                     $this->getModuleTemplate()->getIconFactory()->getIcon('actions-document-view', Icon::SIZE_SMALL) . ' ' . htmlspecialchars(substr($tFile, strlen(PATH_site))) .
                     '</a></td>
                 <td align="center">' . $count . '</td>
@@ -1194,7 +1194,7 @@ class MainController extends AbstractModuleController implements Configurable
                     $tRows[] = '
                         <tr class="' . ($i++ % 2 == 0 ? 'bgColor4' : 'bgColor6') . '">
                             <td>' .
-                        '<a href="' . htmlspecialchars($this->doc->backPath . '../' . substr($tFile, strlen(PATH_site))) . '" target="_blank">' .
+                        '<a href="' . htmlspecialchars('../' . substr($tFile, strlen(PATH_site))) . '" target="_blank">' .
                         $this->getModuleTemplate()->getIconFactory()->getIcon('actions-document-view', Icon::SIZE_SMALL) . ' ' . htmlspecialchars(substr($tFile, strlen(PATH_site))) .
                         '</a></td>
                     <td align="center">' . ($this->tFileList[$tFile] ? $this->tFileList[$tFile] : '-') . '</td>

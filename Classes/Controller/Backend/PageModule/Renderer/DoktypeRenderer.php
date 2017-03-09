@@ -26,12 +26,6 @@ use TYPO3\CMS\Frontend\Page\PageRepository;
  */
 class DoktypeRenderer
 {
-
-    /**
-     * @var MainController
-     */
-    private $controller;
-
     /**
      * @var array
      */
@@ -47,8 +41,7 @@ class DoktypeRenderer
      */
     public function __construct(MainController $controller)
     {
-        $this->controller = $controller;
-        $this->row = BackendUtility::getRecordWSOL('pages', $this->controller->getId());
+        $this->row = BackendUtility::getRecordWSOL('pages', $controller->getId());
 
         $this->addItem(PageRepository::DOKTYPE_LINK, Link::class);
         $this->addItem(PageRepository::DOKTYPE_SHORTCUT, Shortcut::class);

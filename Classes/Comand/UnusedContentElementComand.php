@@ -43,16 +43,6 @@ class UnusedContentElementComand extends CleanerCommand
     public $checkRefIndex = true;
 
     /**
-     * @var bool
-     */
-    public $genTree_traverseDeleted = false;
-
-    /**
-     * @var bool
-     */
-    public $genTree_traverseVersions = false;
-
-    /**
      * @var array
      */
     protected $excludePageIdList = [];
@@ -60,6 +50,9 @@ class UnusedContentElementComand extends CleanerCommand
     public function __construct()
     {
         parent::__construct();
+
+        $this->genTree_traverseDeleted = false;
+        $this->genTree_traverseVersions = false;
 
         // Setting up help:
         $this->cli_options[] = ['--echotree level', 'When "level" is set to 1 or higher you will see the page of the page tree outputted as it is traversed. A value of 2 for "level" will show even more information.'];

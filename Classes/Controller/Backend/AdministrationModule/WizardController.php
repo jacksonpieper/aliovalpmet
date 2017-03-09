@@ -35,7 +35,7 @@ class WizardController extends AbstractModuleController implements Configurable
     /**
      * @var array
      */
-    private $modTSconfig = [];
+    private $modTSconfig;
 
     /**
      * @var int

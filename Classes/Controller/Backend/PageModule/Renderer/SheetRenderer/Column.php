@@ -30,7 +30,7 @@ class Column implements \Countable, \Iterator
     /**
      * @var array
      */
-    private $elements = [];
+    private $elements;
 
     /**
      * @var bool
@@ -50,12 +50,12 @@ class Column implements \Countable, \Iterator
     /**
      * @var array
      */
-    private $keys = [];
+    private $keys;
 
     /**
      * @var array
      */
-    private $languageKey = [];
+    private $languageKey;
 
     /**
      * @param array $configuration

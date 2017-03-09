@@ -1088,9 +1088,9 @@ class FrontendController extends AbstractPlugin
      * @param array $MappingInfo_head ...
      * @param array $MappingData_head_cached ...
      * @param string $BodyTag_cached ...
-     * @param bool $pageRenderer try to use the pageRenderer for script and style inclusion
+     * @param bool $usePageRenderer try to use the pageRenderer for script and style inclusion
      */
-    private function setHeaderBodyParts($MappingInfo_head, $MappingData_head_cached, $BodyTag_cached = '', $pageRenderer = false)
+    private function setHeaderBodyParts($MappingInfo_head, $MappingData_head_cached, $BodyTag_cached = '', $usePageRenderer = false)
     {
         /* @var $htmlParse HtmlParser */
         $htmlParse = GeneralUtility::makeInstance(HtmlParser::class);
@@ -1108,7 +1108,7 @@ class FrontendController extends AbstractPlugin
                     $tag = strtoupper($htmlParse->getFirstTagName($MappingData_head_cached['cArray']['el_' . $kk]));
                     $attr = $htmlParse->get_tag_attributes($MappingData_head_cached['cArray']['el_' . $kk]);
                     if (isset($GLOBALS['TSFE']) &&
-                        $pageRenderer &&
+                        $usePageRenderer &&
                         isset($attr[0]['type']) &&
                         isset($types[$tag]) &&
                         $types[$tag] == $attr[0]['type']
