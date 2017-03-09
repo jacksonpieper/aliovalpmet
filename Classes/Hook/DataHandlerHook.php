@@ -163,20 +163,20 @@ class DataHandlerHook
                     $fieldArray = [];
                 }
             }
-        } else {
-            if ($table === 'sys_template'
-                && $status === 'new'
-                && isset($fieldArray['root'], $fieldArray['clear'])
-                && $fieldArray['root'] === 1
-                && $fieldArray['clear'] === 3
-            ) {
-                $fieldArray['config'] = '
+        }
+
+        if ($table === 'sys_template'
+            && $status === 'new'
+            && isset($fieldArray['root'], $fieldArray['clear'])
+            && $fieldArray['root'] === 1
+            && $fieldArray['clear'] === 3
+        ) {
+            $fieldArray['config'] = '
 page = PAGE
 page.10 = USER
 page.10.userFunc = Schnitzler\Templavoila\Controller\FrontendController->renderPage
 page.10.disableExplosivePreview = 1
-                ';
-            }
+            ';
         }
     }
 
