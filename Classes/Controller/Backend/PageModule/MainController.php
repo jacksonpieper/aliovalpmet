@@ -923,7 +923,7 @@ class MainController extends AbstractModuleController implements Configurable
 
             $icon = $this->getModuleTemplate()->getIconFactory()->getIcon('extensions-templavoila-delete', Icon::SIZE_SMALL);
 
-            return '<a class="btn btn-default t3js-modal-trigger tpm-unlink" data-severity="warning" data-title="Delete this record?" data-content="' . static::getLanguageService()->getLL($LLlabel) . '" data-button-close-text="Cancel" href="' . $url . '">' . $icon . '</a>';
+            return '<a class="btn btn-default t3js-modal-trigger tpm-unlink" data-severity="warning" data-title="' . static::getLanguageService()->getLL($LLlabel) . '" data-button-close-text="Cancel" href="' . $url . '">' . $icon . '</a>';
         } else {
             $url = BackendUtility::getModuleUrl(
                 'tv_mod_pagemodule_contentcontroller',
@@ -936,7 +936,7 @@ class MainController extends AbstractModuleController implements Configurable
 
             $icon = $this->getModuleTemplate()->getIconFactory()->getIcon('extensions-templavoila-unlink', Icon::SIZE_SMALL);
 
-            return '<a class="btn btn-default t3js-modal-trigger tpm-unlink" data-severity="warning" data-title="Unlink this record?" data-content="' . GeneralUtility::quoteJSvalue(static::getLanguageService()->getLL('unlinkRecordMsg')) . '" data-button-close-text="Cancel" href="' . $url . '">' . $icon . '</a>';
+            return '<a class="btn btn-default t3js-modal-trigger tpm-unlink" data-severity="warning" data-title="' . static::getLanguageService()->getLL('unlinkRecordMsg') . '" data-button-close-text="Cancel" href="' . $url . '">' . $icon . '</a>';
         }
     }
 
@@ -959,7 +959,7 @@ class MainController extends AbstractModuleController implements Configurable
             ]
         );
 
-        return '<a class="btn btn-default t3js-modal-trigger tpm-makeLocal" href="' . $url . '" data-severity="warning" data-title="Make local copy?" data-content="' . static::getLanguageService()->getLL('makeLocalMsg') . '" data-button-close-text="Cancel">' . $label . '</a>';
+        return '<a class="btn btn-default t3js-modal-trigger tpm-makeLocal" href="' . $url . '" data-severity="warning" data-title="' . static::getLanguageService()->getLL('makeLocalMsg') . '" data-button-close-text="Cancel">' . $label . '</a>';
     }
 
     /**
