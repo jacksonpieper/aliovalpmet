@@ -373,7 +373,7 @@ class ElementTypesRenderer implements SingletonInterface
                 unset($elArray[$key]['type']);
             }
             if (!$elArray[$key]['section']) {
-                unset($elArray[$key]['section']);
+                unset($elArray[$key]['type'], $elArray[$key]['section']);
             } else {
                 unset($elArray[$key]['tx_templavoila']['TypoScript_constants']);
                 unset($elArray[$key]['tx_templavoila']['TypoScript']);
