@@ -808,7 +808,7 @@ class MainController extends AbstractModuleController implements Configurable
                             ]
                         );
 
-                        return '<a href="' . $url . '" class="btn btn-default tpm-hide">' . $label . '</a>';
+                        return '<a href="' . $url . '" class="btn btn-default tpm-hide t3js-record-hide" data-state="hidden" data-table="' . $table . '" data-uid="' . $uid . '" data-value="0">' . $label . '</a>';
                     } else {
                         $url = BackendUtility::getModuleUrl(
                             'tce_db',
@@ -824,7 +824,7 @@ class MainController extends AbstractModuleController implements Configurable
                             ]
                         );
 
-                        return '<a href="' . $url . '" class="btn btn-default tpm-hide">' . $label . '</a>';
+                        return '<a href="' . $url . '" class="btn btn-default tpm-hide t3js-record-hide" data-state="visible" data-table="' . $table . '" data-uid="' . $uid . '" data-value="1">' . $label . '</a>';
                     }
                 }
             } else {
@@ -923,7 +923,7 @@ class MainController extends AbstractModuleController implements Configurable
 
             $icon = $this->getModuleTemplate()->getIconFactory()->getIcon('extensions-templavoila-delete', Icon::SIZE_SMALL);
 
-            return '<a class="btn btn-default t3js-modal-trigger tpm-unlink" data-severity="warning" data-title="' . static::getLanguageService()->getLL($LLlabel) . '" data-button-close-text="Cancel" href="' . $url . '">' . $icon . '</a>';
+            return '<a class="btn btn-default t3js-record-delete tpm-unlink" data-pointer="' . $unlinkPointerString . '" data-title="' . static::getLanguageService()->getLL($LLlabel) . '" href="' . $url . '">' . $icon . '</a>';
         } else {
             $url = BackendUtility::getModuleUrl(
                 'tv_mod_pagemodule_contentcontroller',
@@ -936,7 +936,7 @@ class MainController extends AbstractModuleController implements Configurable
 
             $icon = $this->getModuleTemplate()->getIconFactory()->getIcon('extensions-templavoila-unlink', Icon::SIZE_SMALL);
 
-            return '<a class="btn btn-default t3js-modal-trigger tpm-unlink" data-severity="warning" data-title="' . static::getLanguageService()->getLL('unlinkRecordMsg') . '" data-button-close-text="Cancel" href="' . $url . '">' . $icon . '</a>';
+            return '<a class="btn btn-default t3js-record-delete tpm-unlink" data-pointer="' . $unlinkPointerString . '" data-title="' . static::getLanguageService()->getLL('unlinkRecordMsg') . '" href="' . $url . '">' . $icon . '</a>';
         }
     }
 

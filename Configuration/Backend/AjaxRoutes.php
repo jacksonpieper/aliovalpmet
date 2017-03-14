@@ -16,5 +16,13 @@ return [
     'TemplaVoila::AdministrationModule::getFileContent' => [
         'path' => '/templavoila/admininstration/ajax',
         'target' => \Schnitzler\Templavoila\Controller\Backend\AdministrationModule\AjaxController::class . '::getFileContent'
+    ],
+    'TemplaVoila::Api::Unlink' => [
+        'path' => '/templavoila/api/unlink',
+        'target' => \Schnitzler\Templavoila\Controller\Backend\Ajax\ApiController::class. '::unlink'
+    ],
+    'TemplaVoila::Api::Paste' => [
+        'path' => '/templavoila/api/paste',
+        'target' => \Schnitzler\Templavoila\Controller\Backend\Ajax\ApiController::class. '::paste'
     ]
 ];

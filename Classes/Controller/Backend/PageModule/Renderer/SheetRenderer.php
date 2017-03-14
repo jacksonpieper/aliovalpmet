@@ -192,15 +192,21 @@ class SheetRenderer implements Renderable
 
         if ($canCreateNew && !PermissionUtility::isInTranslatorMode()) {
             $content .= '<div 
-                class="t3-page-ce t3js-page-ce" 
-                data-table="' . $parentPointer['table'] . '" 
-                data-uid="' . (int)$parentPointer['uid'] . '" 
-                data-sheet="' . $parentPointer['sheet'] . '" 
-                data-sLang="' . $parentPointer['sLang'] . '" 
-                data-field="' . $parentPointer['field'] . '" 
-                data-vLang="' . $parentPointer['vLang'] . '" 
-                data-position="' . (int)$parentPointer['position'] . '"
-            >' . $this->controller->link_bottomControls($parentPointer, $canCreateNew) . '</div>';
+                class="t3-page-ce t3js-page-ce t3js-page-ce-sortable" 
+                data-pointer-table="' . $parentPointer['table'] . '" 
+                data-pointer-uid="' . (int)$parentPointer['uid'] . '" 
+                data-pointer-sheet="' . $parentPointer['sheet'] . '" 
+                data-pointer-sLang="' . $parentPointer['sLang'] . '" 
+                data-pointer-field="' . $parentPointer['field'] . '" 
+                data-pointer-vLang="' . $parentPointer['vLang'] . '" 
+                data-pointer-position="' . (int)$parentPointer['position'] . '"
+            >' . $this->controller->link_bottomControls($parentPointer, $canCreateNew) .
+                (
+                    $column->isDragAndDropAllowed()
+                    ? '<div class="t3-page-ce-dropzone-available t3js-page-ce-dropzone-available"></div>'
+                    : ''
+                ) .
+                '</div>';
             // todo: this belongs into the fluid template
         }
 
@@ -296,7 +302,7 @@ class SheetRenderer implements Renderable
 
         $toolTip = BackendUtility::getRecordToolTip($sheetData['el'], $sheetData['el']['table']);
         $return .= $this->getRecordStatHookValue($table, $uid);
-        return '<span  ' . $toolTip . '>' . $return . '</span>';
+        return '<span  ' . $toolTip . '><span class="t3-page-ce-icon">' . $return . '</span></span>';
     }
 
     /**
@@ -447,7 +453,8 @@ class SheetRenderer implements Renderable
             'isFlexibleContentElement' => $sheet->isFlexibleContentElement(),
             'dataStructureUid' => $sheet->isFlexibleContentElement() && isset($sheet->getPreviewDataRow()['tx_templavoila_ds'])
                 ? $sheet->getPreviewDataRow()['tx_templavoila_ds']
-                : 0
+                : 0,
+            'uid' => $sheet->getUid()
         ]);
 
         return $contentElementView->render();
@@ -575,6 +582,8 @@ class SheetRenderer implements Renderable
         $templateName = $template->hasBackendGridTemplateName() ? $template->getBackendGridTemplateName() : 'Backend/Grid/Default';
         $contentElementView = $this->controller->getStandaloneView($templateName);
         $contentElementView->assign('columns', $columns);
+        $contentElementView->assign('table', $sheet->getTable());
+        $contentElementView->assign('uid', $sheet->getUid());
 
         return $contentElementView->render();
     }

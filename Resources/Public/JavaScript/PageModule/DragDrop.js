@@ -14,163 +14,221 @@
  * this JS code does the drag+drop logic for the Layout module (Web => Page)
  * based on jQuery UI
  */
-define(['jquery', 'jquery-ui/sortable'], function ($) {
+define(['jquery', 'jquery-ui/droppable', 'TYPO3/CMS/Backend/Notification'], function ($, Droppable, Notification) {
     'use strict';
 
     /**
      *
-     * @type {{contentIdentifier: string, dragIdentifier: string, dropZoneAvailableIdentifier: string, dropPossibleClass: string, sortableItemsIdentifier: string, columnIdentifier: string, columnHolderIdentifier: string, addContentIdentifier: string, langClassPrefix: string}}
+     * @type {{contentIdentifier: string, dragIdentifier: string, dragHeaderIdentifier: string, dropZoneIdentifier: string, columnIdentifier: string, validDropZoneClass: string, dropPossibleHoverClass: string, addContentIdentifier: string, originalStyles: string}}
      * @exports TYPO3/CMS/Backend/LayoutModule/DragDrop
      */
     var DragDrop = {
         contentIdentifier: '.t3js-page-ce',
-        dragIdentifier: '.t3js-page-ce-draghandle',
-        dropZoneAvailableIdentifier: '.t3js-page-ce-dropzone-available',
-        dropPossibleClass: 't3-page-ce-dropzone-possible',
-        sortableItemsIdentifier: '.t3js-page-ce-sortable',
+        dragIdentifier: '.t3-page-ce-dragitem',
+        dragHeaderIdentifier: '.t3js-page-ce-draghandle',
+        dropZoneIdentifier: '.t3js-page-ce-dropzone-available',
         columnIdentifier: '.t3js-page-column',
-        columnHolderIdentifier: '.t3js-page-columns',
+        validDropZoneClass: 'active',
+        dropPossibleHoverClass: 't3-page-ce-dropzone-possible',
         addContentIdentifier: '.t3js-page-new-ce',
-        langClassPrefix: '.t3-page-ce-wrapper'
+        clone: true,
+        originalStyles: ''
     };
 
     /**
      * initializes Drag+Drop for all content elements on the page
      */
-    DragDrop.initialize = function() {
-        $('td.t3-page-column').each(function() {
-            var connectWithClassName = DragDrop.langClassPrefix + $(this).data('language-uid');
-            $('.sortable').sortable({
-                items: DragDrop.sortableItemsIdentifier,
-                connectWith: '.t3-page-ce-wrapper',
-                handle: DragDrop.dragIdentifier,
-                distance: 20,
-                cursor: 'move',
-                helper: 'clone',
-                placeholder: DragDrop.dropPossibleClass,
-                tolerance: 'pointer',
-                start: function (e, ui) {
-                    DragDrop.onSortStart($(this), ui);
-                    $(this).addClass('t3-is-dragged');
-                },
-                stop: function (e, ui) {
-                    DragDrop.onSortStop($(this), ui);
-                    $(this).removeClass('t3-is-dragged');
-                },
-                change: function (e, ui) {
-                    DragDrop.onSortChange($(this), ui);
-                },
-                update: function (e, ui) {
-                    if (this === ui.item.parent()[0]) {
-                        DragDrop.onSortUpdate($(this), ui);
-                    }
-                }
-            }).disableSelection();
+    DragDrop.initialize = function () {
+        $(DragDrop.contentIdentifier).draggable({
+            handle: this.dragHeaderIdentifier,
+            scope: 'tt_content',
+            cursor: 'move',
+            distance: 20,
+            addClasses: 'active-drag',
+            revert: 'invalid',
+            zIndex: 100,
+            start: function (evt, ui) {
+                DragDrop.onDragStart($(this));
+            },
+            stop: function (evt, ui) {
+                DragDrop.onDragStop($(this));
+            }
+        });
+
+        $(DragDrop.dropZoneIdentifier).droppable({
+            accept: this.contentIdentifier,
+            scope: 'tt_content',
+            tolerance: 'pointer',
+            over: function (evt, ui) {
+                DragDrop.onDropHoverOver($(ui.draggable), $(this));
+            },
+            out: function (evt, ui) {
+                DragDrop.onDropHoverOut($(ui.draggable), $(this));
+            },
+            drop: function (evt, ui) {
+                DragDrop.onDrop($(ui.draggable), $(this), evt);
+            }
         });
     };
 
     /**
-     * Called when an item is about to be moved
-     *
-     * @param {Object} $container
-     * @param {Object} ui
+     * called when a draggable is selected to be moved
+     * @param $element a jQuery object for the draggable
+     * @private
      */
-    DragDrop.onSortStart = function($container, ui) {
-        var $item = $(ui.item),
-            $helper = $(ui.helper),
-            $placeholder = $(ui.placeholder);
+    DragDrop.onDragStart = function ($element) {
+        // Add css class for the drag shadow
+        DragDrop.originalStyles = $element.get(0).style.cssText;
+        $element.children(DragDrop.dragIdentifier).addClass('dragitem-shadow');
+        $element.append('<div class="ui-draggable-copy-message">' + TYPO3.lang['dragdrop.copy.message'] + '</div>');
+        // Hide create new element button
+        $element.children(DragDrop.dropZoneIdentifier).addClass('drag-start');
+        $element.closest(DragDrop.columnIdentifier).removeClass('active');
 
-        $placeholder.height($item.height() - $helper.find(DragDrop.addContentIdentifier).height());
-        DragDrop.changeDropzoneVisibility($container, $item);
+        $element.parents(DragDrop.columnHolderIdentifier).find(DragDrop.addContentIdentifier).hide();
+        $element.find(DragDrop.dropZoneIdentifier).hide();
 
-        // show all dropzones, except the own
-        $helper.find(DragDrop.dropZoneAvailableIdentifier).removeClass('active');
-        $container.parents(DragDrop.columnHolderIdentifier).find(DragDrop.addContentIdentifier).hide();
+        // make the drop zones visible
+        $(DragDrop.dropZoneIdentifier).each(function () {
+            if (
+                $(this).parent().find('.icon-actions-document-new').length
+            ) {
+                $(this).addClass(DragDrop.validDropZoneClass);
+            } else {
+                $(this).closest(DragDrop.contentIdentifier).find('> ' + DragDrop.addContentIdentifier + ', > > ' + DragDrop.addContentIdentifier).show();
+            }
+        });
     };
 
     /**
-     * Called when the sorting stopped
-     *
-     * @param {Object} $container
-     * @param {Object} ui
+     * called when a draggable is released
+     * @param $element a jQuery object for the draggable
+     * @private
      */
-    DragDrop.onSortStop = function($container, ui) {
-        var $allColumns = $container.parents(DragDrop.columnHolderIdentifier);
-        $allColumns.find(DragDrop.addContentIdentifier).show();
-        $allColumns.find(DragDrop.dropZoneAvailableIdentifier + '.active').removeClass('active');
+    DragDrop.onDragStop = function ($element) {
+        // Remove css class for the drag shadow
+        $element.children(DragDrop.dragIdentifier).removeClass('dragitem-shadow');
+        // Show create new element button
+        $element.children(DragDrop.dropZoneIdentifier).removeClass('drag-start');
+        $element.closest(DragDrop.columnIdentifier).addClass('active');
+        $element.parents(DragDrop.columnHolderIdentifier).find(DragDrop.addContentIdentifier).show();
+        $element.find(DragDrop.dropZoneIdentifier).show();
+        $element.find('.ui-draggable-copy-message').remove();
+
+        // Reset inline style
+        $element.get(0).style.cssText = DragDrop.originalStyles;
+
+        $(DragDrop.dropZoneIdentifier + '.' + DragDrop.validDropZoneClass).removeClass(DragDrop.validDropZoneClass);
     };
 
     /**
-     * Called when the index of the element in the sortable list has changed
-     *
-     * @param {Object} $container
-     * @param {Object} ui
+     * adds CSS classes when hovering over a dropzone
+     * @param $draggableElement
+     * @param $droppableElement
+     * @private
      */
-    DragDrop.onSortChange = function($container, ui) {
-        var $placeholder = $(ui.placeholder);
-        DragDrop.changeDropzoneVisibility($container, $placeholder);
-    };
-
-    /**
-     *
-     * @param {Object} $container
-     * @param {Object} $subject
-     */
-    DragDrop.changeDropzoneVisibility = function($container, $subject) {
-        var $prev = $subject.prev(':visible'),
-            droppableClassName = DragDrop.langClassPrefix + $container.data('language-uid');
-
-        if ($prev.length === 0) {
-            $prev = $subject.prevUntil(':visible').last().prev();
+    DragDrop.onDropHoverOver = function ($draggableElement, $droppableElement) {
+        if ($droppableElement.hasClass(DragDrop.validDropZoneClass)) {
+            $droppableElement.addClass(DragDrop.dropPossibleHoverClass);
         }
-        $container.parents(DragDrop.columnHolderIdentifier).find(droppableClassName).find(DragDrop.contentIdentifier + ':not(.ui-sortable-helper)').not($prev).find(DragDrop.dropZoneAvailableIdentifier).addClass('active');
-        $prev.find(DragDrop.dropZoneAvailableIdentifier + '.active').removeClass('active');
     };
 
     /**
-     * Called when the new position of the element gets stored
-     *
-     * @param {Object} $container
-     * @param {Object} ui
+     * removes the CSS classes after hovering out of a dropzone again
+     * @param $draggableElement
+     * @param $droppableElement
+     * @private
      */
-    DragDrop.onSortUpdate = function($container, ui) {
+    DragDrop.onDropHoverOut = function ($draggableElement, $droppableElement) {
+        $droppableElement.removeClass(DragDrop.dropPossibleHoverClass);
+    };
 
-        var $selectedItem = $(ui.item),
-            $previousItem = $selectedItem.prev(),
+    /**
+     * this method does the whole logic when a draggable is dropped on to a dropzone
+     * sending out the request and afterwards move the HTML element in the right place.
+     *
+     * @param $draggableElement
+     * @param $droppableElement
+     * @param {Event} evt the event
+     * @private
+     */
+    DragDrop.onDrop = function ($draggableElement, $droppableElement, evt) {
+
+        var parameters = {},
+            $previousItem = $droppableElement.parent(),
             sourcePointer = {
-                'table': $selectedItem.data('table'),
-                'uid': $selectedItem.data('uid'),
-                'sheet': $selectedItem.data('sheet'),
-                'sLang': $selectedItem.data('slang'),
-                'field': $selectedItem.data('field'),
-                'vLang': $selectedItem.data('vlang'),
-                'position': $selectedItem.data('position'),
+                'uid':      $draggableElement.data('pointer-uid'),
+                'table':    $draggableElement.data('pointer-table'),
+                'sheet':    $draggableElement.data('pointer-sheet'),
+                'sLang':    $draggableElement.data('pointer-slang'),
+                'field':    $draggableElement.data('pointer-field'),
+                'vLang':    $draggableElement.data('pointer-vlang'),
+                'position': $draggableElement.data('pointer-position')
             },
             destinationPointer = {
-                'table': $previousItem.data('table'),
-                'uid': $previousItem.data('uid'),
-                'sheet': $previousItem.data('sheet'),
-                'sLang': $previousItem.data('slang'),
-                'field': $previousItem.data('field'),
-                'vLang': $previousItem.data('vlang'),
-                'position': $previousItem.data('position'),
-            },
-            parameters = {
-                source: sourcePointer,
-                destination: destinationPointer,
+                'uid':      $previousItem.data('pointer-uid'),
+                'table':    $previousItem.data('pointer-table'),
+                'sheet':    $previousItem.data('pointer-sheet'),
+                'sLang':    $previousItem.data('pointer-slang'),
+                'field':    $previousItem.data('pointer-field'),
+                'vLang':    $previousItem.data('pointer-vlang'),
+                'position': $previousItem.data('pointer-position')
             };
 
-        $.getJSON(TYPO3.settings.ajaxUrls['TemplaVoila::PageModule::moveRecord'], parameters);
+        parameters.table = $droppableElement.closest('table.t3js-page-columns').data('table');
+        parameters.pid = $droppableElement.closest('table.t3js-page-columns').data('uid');
+        parameters.uid = $draggableElement.data('uid');
+        parameters.source = sourcePointer;
+        parameters.destination = destinationPointer;
 
-        $.each($('.sortable'), function (k, v) {
-            $.each($(v).find('.t3js-page-ce'), function (kk, vv) {
-                $(vv).data('position', kk)
-                console.log($(vv).data('position'));
+        $droppableElement.removeClass(DragDrop.dropPossibleHoverClass);
+
+        DragDrop.ajaxAction($droppableElement, $draggableElement, parameters, false, false);
+    };
+
+    /**
+     * this method does the actual AJAX request for both, the  move and the copy action.
+     *
+     * @param $droppableElement
+     * @param $draggableElement
+     * @param parameters
+     * @param $copyAction
+     * @param $pasteAction
+     * @private
+     */
+    DragDrop.ajaxAction = function ($droppableElement, $draggableElement, parameters, $copyAction, $pasteAction) {
+        require(['TYPO3/CMS/Templavoila/AjaxDataHandler'], function (DataHandler) {
+            DataHandler.paste(parameters).done(function (result) {
+                if (result.hasErrors) {
+                    Notification.error('Error', 'Could not paste record, will reload page');
+                    window.location.reload(true);
+                } else {
+                    $draggableElement.data('pointer-uid', result.pointer.uid);
+                    $draggableElement.data('pointer-table', result.pointer.table);
+                    $draggableElement.data('pointer-sheet', result.pointer.sheet);
+                    $draggableElement.data('pointer-slang', result.pointer.slang);
+                    $draggableElement.data('pointer-field', result.pointer.field);
+                    $draggableElement.data('pointer-vlang', result.pointer.vlang);
+                    $draggableElement.data('pointer-position', result.pointer.position);
+
+                    if (!$droppableElement.parent().hasClass(DragDrop.contentIdentifier.substring(1))) {
+                        $draggableElement.detach().css({top: 0, left: 0})
+                            .insertAfter($droppableElement.closest(DragDrop.dropZoneIdentifier));
+                    } else {
+                        $draggableElement.detach().css({top: 0, left: 0})
+                            .insertAfter($droppableElement.closest(DragDrop.contentIdentifier));
+                    }
+
+                    $.each($('.sortable'), function (k, v) {
+                        $.each($(v).children('.t3js-page-ce'), function (kk, vv) {
+                            var pointer = $(vv).data('pointer-position', kk);
+                        });
+                    });
+                }
             });
         });
     };
 
     $(DragDrop.initialize);
-
     return DragDrop;
 });

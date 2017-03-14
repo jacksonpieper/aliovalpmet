@@ -218,10 +218,5 @@ $iconRegistry->registerIcon(
     ]
 );
 
-\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::registerAjaxHandler(
-    'TemplaVoila::PageModule::moveRecord',
-    \Schnitzler\Templavoila\Controller\Backend\PageModule\AjaxController::class . '->moveRecord'
-);
-
 $GLOBALS['TBE_MODULES_EXT']['xMOD_db_new_content_el']['addElClasses'][\Schnitzler\Templavoila\Hook\NewContentElementControllerHook::class] =
     \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($_EXTKEY, 'Classes/Hook/NewContentElementControllerHook.php');
