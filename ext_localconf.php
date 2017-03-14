@@ -152,6 +152,50 @@ $GLOBALS['TYPO3_CONF_VARS']['SYS']['formEngine']['formDataGroup']['inlineParentR
     ],
 ];
 
+// Register language aware flex form handling in FormEngine
+// Register render elements
+$GLOBALS['TYPO3_CONF_VARS']['SYS']['formEngine']['nodeRegistry'][1489490491267] = [
+    'nodeName' => 'flex',
+    'priority' => 40,
+    'class' => \Schnitzler\Templavoila\Form\Container\FlexFormEntryContainer::class
+];
+$GLOBALS['TYPO3_CONF_VARS']['SYS']['formEngine']['nodeRegistry'][1489490494732] = [
+    'nodeName' => 'flexFormNoTabsContainer',
+    'priority' => 40,
+    'class' => \Schnitzler\Templavoila\Form\Container\FlexFormNoTabsContainer::class
+];
+$GLOBALS['TYPO3_CONF_VARS']['SYS']['formEngine']['nodeRegistry'][1489490496647] = [
+    'nodeName' => 'flexFormTabsContainer',
+    'priority' => 40,
+    'class' => \Schnitzler\Templavoila\Form\Container\FlexFormTabsContainer::class
+];
+$GLOBALS['TYPO3_CONF_VARS']['SYS']['formEngine']['nodeRegistry'][1489490498553] = [
+    'nodeName' => 'flexFormElementContainer',
+    'priority' => 40,
+    'class' => \Schnitzler\Templavoila\Form\Container\FlexFormElementContainer::class
+];
+
+// Unregister stock TcaFlexProcess data provider and substitute with own data provider at the same position
+unset($GLOBALS['TYPO3_CONF_VARS']['SYS']['formEngine']['formDataGroup']['inlineParentRecord'][TYPO3\CMS\Backend\Form\FormDataProvider\TcaFlexProcess::class]);
+$GLOBALS['TYPO3_CONF_VARS']['SYS']['formEngine']['formDataGroup']['inlineParentRecord'][\Schnitzler\Templavoila\Form\FormDataProvider\TcaFlexProcess::class] = [
+    'depends' => [
+        TYPO3\CMS\Backend\Form\FormDataProvider\TcaFlexPrepare::class
+    ]
+];
+
+unset($GLOBALS['TYPO3_CONF_VARS']['SYS']['formEngine']['formDataGroup']['tcaDatabaseRecord'][TYPO3\CMS\Backend\Form\FormDataProvider\TcaFlexProcess::class]);
+$GLOBALS['TYPO3_CONF_VARS']['SYS']['formEngine']['formDataGroup']['tcaDatabaseRecord'][\Schnitzler\Templavoila\Form\FormDataProvider\TcaFlexProcess::class] = [
+    'depends' => [
+        TYPO3\CMS\Backend\Form\FormDataProvider\TcaFlexPrepare::class
+    ]
+];
+
+// Register "XCLASS" of FlexFormTools for language parsing
+$GLOBALS['TYPO3_CONF_VARS']['SYS']['Objects'][\TYPO3\CMS\Core\Configuration\FlexForm\FlexFormTools::class]['className'] = \Schnitzler\Templavoila\Configuration\FlexForm\FlexFormTools::class;
+
+// Language diff updating in flex
+$GLOBALS['TYPO3_CONF_VARS']['BE']['flexFormXMLincludeDiffBase'] = true;
+
 $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_befunc.php']['getFlexFormDSClass'][] = \Schnitzler\Templavoila\Hook\BackendUtilityHook::class;
 
 $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/install']['update']['TemplateObjectPreviewIconMigrationWizard'] = \Schnitzler\Templavoila\Update\TemplateObjectPreviewIconMigrationWizard::class;
