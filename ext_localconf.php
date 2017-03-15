@@ -156,22 +156,22 @@ $GLOBALS['TYPO3_CONF_VARS']['SYS']['formEngine']['formDataGroup']['inlineParentR
 // Register render elements
 $GLOBALS['TYPO3_CONF_VARS']['SYS']['formEngine']['nodeRegistry'][1489490491267] = [
     'nodeName' => 'flex',
-    'priority' => 40,
+    'priority' => 50,
     'class' => \Schnitzler\Templavoila\Form\Container\FlexFormEntryContainer::class
 ];
 $GLOBALS['TYPO3_CONF_VARS']['SYS']['formEngine']['nodeRegistry'][1489490494732] = [
     'nodeName' => 'flexFormNoTabsContainer',
-    'priority' => 40,
+    'priority' => 50,
     'class' => \Schnitzler\Templavoila\Form\Container\FlexFormNoTabsContainer::class
 ];
 $GLOBALS['TYPO3_CONF_VARS']['SYS']['formEngine']['nodeRegistry'][1489490496647] = [
     'nodeName' => 'flexFormTabsContainer',
-    'priority' => 40,
+    'priority' => 50,
     'class' => \Schnitzler\Templavoila\Form\Container\FlexFormTabsContainer::class
 ];
 $GLOBALS['TYPO3_CONF_VARS']['SYS']['formEngine']['nodeRegistry'][1489490498553] = [
     'nodeName' => 'flexFormElementContainer',
-    'priority' => 40,
+    'priority' => 50,
     'class' => \Schnitzler\Templavoila\Form\Container\FlexFormElementContainer::class
 ];
 
@@ -183,6 +183,9 @@ $GLOBALS['TYPO3_CONF_VARS']['SYS']['formEngine']['formDataGroup']['inlineParentR
     ]
 ];
 
+if (\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('compatibility6')) {
+    unset($GLOBALS['TYPO3_CONF_VARS']['SYS']['formEngine']['formDataGroup']['tcaDatabaseRecord']['TYPO3\CMS\Compatibility6\Form\FormDataProvider\TcaFlexProcess']);
+}
 unset($GLOBALS['TYPO3_CONF_VARS']['SYS']['formEngine']['formDataGroup']['tcaDatabaseRecord'][TYPO3\CMS\Backend\Form\FormDataProvider\TcaFlexProcess::class]);
 $GLOBALS['TYPO3_CONF_VARS']['SYS']['formEngine']['formDataGroup']['tcaDatabaseRecord'][\Schnitzler\Templavoila\Form\FormDataProvider\TcaFlexProcess::class] = [
     'depends' => [
