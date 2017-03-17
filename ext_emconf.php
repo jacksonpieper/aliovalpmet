@@ -13,7 +13,7 @@
 
 $EM_CONF[$_EXTKEY] = [
     'title' => 'TemplaVoila!',
-    'description' => 'Point-and-click, popular and easy template engine for TYPO3. Public free support is provided only through TYPO3 mailing lists! Contact by e-mail for commercial support.',
+    'description' => 'Point-and-click, popular and easy template engine for TYPO3.',
     'category' => 'misc',
     'version' => '7.6.0',
     'state' => 'stable',
@@ -24,6 +24,7 @@ $EM_CONF[$_EXTKEY] = [
     'author_company' => 'Schnitzler Softwarelösungen',
     'constraints' => [
         'depends' => [
+            'php' => '5.5.0-7.1.99',
             'typo3' => '7.6.0-7.6.99'
         ],
         'conflicts' => [
@@ -32,6 +33,7 @@ $EM_CONF[$_EXTKEY] = [
             'eu_tradvoila' => '-0.0.2',
             'me_templavoilalayout' => '',
             'me_templavoilalayout2' => '',
+            'templavoilaplus' => ''
         ],
         'suggests' => [],
     ],
