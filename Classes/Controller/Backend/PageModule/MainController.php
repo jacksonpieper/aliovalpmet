@@ -845,17 +845,19 @@ class MainController extends AbstractModuleController implements Configurable
      */
     public function link_browse($label, $parentPointer)
     {
-        $parameters =
-            $this->link_getParameters() .
-            '&pasteRecord=ref' .
-            '&source=' . rawurlencode('###') .
-            '&destination=' . rawurlencode($this->getApiService()->flexform_getStringFromPointer($parentPointer));
-        $onClick =
-            'browserPos = this;' .
-            'setFormValueOpenBrowser(\'db\',\'browser[communication]|||tt_content\');' .
-            'return false;';
+        return '';
 
-        return '<a title="' . static::getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:labels.browse_db') . '" href="#" class="btn btn-default btn-sm tpm-browse browse" rel="index.php?' . htmlspecialchars($parameters) . '" onclick="' . htmlspecialchars($onClick) . '">' . $label . '</a>';
+//        $parameters =
+//            $this->link_getParameters() .
+//            '&pasteRecord=ref' .
+//            '&source=' . rawurlencode('###') .
+//            '&destination=' . rawurlencode($this->getApiService()->flexform_getStringFromPointer($parentPointer));
+//        $onClick =
+//            'browserPos = this;' .
+//            'setFormValueOpenBrowser(\'db\',\'browser[communication]|||tt_content\');' .
+//            'return false;';
+//
+//        return '<a title="' . static::getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:labels.browse_db') . '" href="#" class="btn btn-default btn-sm tpm-browse browse" rel="index.php?' . htmlspecialchars($parameters) . '" onclick="' . htmlspecialchars($onClick) . '">' . $label . '</a>';
     }
 
     /**
