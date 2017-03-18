@@ -63,12 +63,6 @@ stages:
   - lint
 #  - test
 
-:5.6:
-  tags:
-    - docker
-    - php56-cli
-  <<: *lint
-
 :7.0:
   tags:
     - docker
@@ -81,14 +75,6 @@ stages:
     - php71-cli
   <<: *lint
 
-#5.6 @ 5.6 (MySQL):
-#  tags:
-#    - docker
-#    - php56-cli
-#  variables: *mysql_variables
-#  services: *mysql_services
-#  <<: *test
-#
 #7.0 @ 5.6 (MySQL):
 #  tags:
 #    - docker
@@ -105,14 +91,6 @@ stages:
 #  services: *mysql_services
 #  <<: *test
 #  allow_failure: true
-#
-#5.6 @ 10.1 (MariaDB):
-#  tags:
-#    - docker
-#    - php56-cli
-#  variables: *mariadb_variables
-#  services: *mariadb_services
-#  <<: *test
 #
 #7.0 @ 10.1 (MariaDB):
 #  tags:
