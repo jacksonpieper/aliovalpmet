@@ -11,7 +11,7 @@
  * LICENSE.md file that was distributed with this source code.
  */
 
-namespace Schnitzler\Templavoila\Tests\Functional\Service;
+namespace Schnitzler\Templavoila\Tests\Functional\Utility;
 
 use Schnitzler\Templavoila\Utility\PermissionUtility;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
