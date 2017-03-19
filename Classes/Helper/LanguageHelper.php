@@ -74,14 +74,15 @@ final class LanguageHelper
             $sysLanguageRecords = $repository->findAll();
 
             $languages[-1] = [
-                'uid' => '-1',
-                'pid' => '0',
-                'tstamp' => '0',
-                'hidden' => '0',
+                'uid' => -1,
+                'pid' => 0,
+                'tstamp' => 0,
+                'hidden' => 0,
                 'title' => 'All',
                 'flag' => 'multiple',
                 'language_isocode' => 'DEF',
-                'static_lang_isocode' => '0',
+                'static_lang_isocode' => 0,
+                'sorting' => -1,
                 'flagIconIdentifier' => 'flags-multiple'
             ];
 
@@ -314,14 +315,15 @@ final class LanguageHelper
     private static function addDefaultLanguageEntry(array $languages, $pageId)
     {
         $languages[0] = [
-            'uid' => '0',
-            'pid' => '0',
-            'tstamp' => '0',
-            'hidden' => '0',
+            'uid' => 0,
+            'pid' => 0,
+            'tstamp' => 0,
+            'hidden' => 0,
             'title' => static::getDefaultLanguageLabel($pageId),
             'flag' => '',
             'language_isocode' => 'DEF',
-            'static_lang_isocode' => '0',
+            'static_lang_isocode' => 0,
+            'sorting' => 0,
             'flagIconIdentifier' => ''
         ];
 

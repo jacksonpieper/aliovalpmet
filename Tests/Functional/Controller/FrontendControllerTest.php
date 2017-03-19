@@ -80,9 +80,9 @@ class FrontendControllerTest extends FunctionalTestCase
         $record = $this->frontendController->_call('getTemplateRecord', $uid, $renderType, $sysLanguageUid);
 
         static::assertTrue(is_array($record));
-        static::assertSame((string)$expectedUid, $record['uid']);
+        static::assertSame($expectedUid, $record['uid']);
         static::assertSame((string)$renderType, $record['rendertype']);
-        static::assertSame((string)$sysLanguageUid, $record['sys_language_uid']);
+        static::assertSame($sysLanguageUid, $record['sys_language_uid']);
     }
 
     public function testGetTemplateRecordDataProvider()

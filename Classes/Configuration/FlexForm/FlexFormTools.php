@@ -19,7 +19,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 /**
  * Class Schnitzler\Templavoila\Configuration\FlexForm\FlexFormTools
  */
-class FlexFormTools
+class FlexFormTools extends \TYPO3\CMS\Core\Configuration\FlexForm\FlexFormTools
 {
     /**
      * If set, the charset of data XML is converted to system charset.
