@@ -1,3 +1,8 @@
+7.6.1 / 2017-03-20
+==================
+
+  * 2017-03-20  85a581c  [SECURITY] Remove possibility to access arbitrary session data (Alexander Schnitzler)
+
 7.6.0 / 2017-03-17
 ==================
 
