@@ -16,9 +16,11 @@ defined('TYPO3_MODE') or die();
 if (TYPO3_MODE === 'BE') {
 
     // Adding click menu item:
-    $GLOBALS['TBE_MODULES_EXT']['xMOD_alt_clickmenu']['extendCMclasses'][] = [
-        'name' => 'Schnitzler\\Templavoila\\Service\\ClickMenu\\MainClickMenu',
-    ];
+    $GLOBALS['TYPO3_CONF_VARS']['BE']['ContextMenu']['ItemProviders'][1490001262219] = Schnitzler\Templavoila\ContextMenu\ItemProviders\FileProvider::class;
+    $GLOBALS['TYPO3_CONF_VARS']['BE']['ContextMenu']['ItemProviders'][1490010182645] = Schnitzler\Templavoila\ContextMenu\ItemProviders\DataStructureProvider::class;
+    $GLOBALS['TYPO3_CONF_VARS']['BE']['ContextMenu']['ItemProviders'][1490010719903] = Schnitzler\Templavoila\ContextMenu\ItemProviders\TemplateObjectProvider::class;
+    $GLOBALS['TYPO3_CONF_VARS']['BE']['ContextMenu']['ItemProviders'][1490011359914] = Schnitzler\Templavoila\ContextMenu\ItemProviders\PageProvider::class;
+    $GLOBALS['TYPO3_CONF_VARS']['BE']['ContextMenu']['ItemProviders'][1490011370583] = Schnitzler\Templavoila\ContextMenu\ItemProviders\ContentProvider::class;
 
     // Adding backend modules:
     \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addModule(
