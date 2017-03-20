@@ -12,10 +12,7 @@
                 "Classes/",
                 "Interface/"
             ]
-        },
-        "classmap": [
-            "Compatibility/"
-        ]
+        }
     },
     "autoload-dev": {
         "psr-4": {

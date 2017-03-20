@@ -10,10 +10,7 @@
   "autoload": {
     "psr-4": {
       "Schnitzler\\Templavoila\\": ["Classes/", "Interface/"]
-    },
-    "classmap": [
-      "Compatibility/"
-    ]
+    }
   },
   "autoload-dev": {
     "psr-4": {
