@@ -185,8 +185,6 @@ class ElementController extends AbstractModuleController implements Configurable
             $this->moduleTemplate->getDocHeaderComponent()->getButtonBar()->addButton($this->getClearButton(), ButtonBar::BUTTON_POSITION_LEFT, 3);
             $this->moduleTemplate->getDocHeaderComponent()->getButtonBar()->addButton($this->getShowXmlButton(), ButtonBar::BUTTON_POSITION_RIGHT, 1);
         } catch (\Exception $e) {
-            static::getBackendUser()->setAndSaveSessionData($this->getSessionKey(), null);
-
             $templateObjectRecord = [];
             $dataStructureRecord = [];
 

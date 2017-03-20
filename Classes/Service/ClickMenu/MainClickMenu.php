@@ -78,6 +78,7 @@ class MainClickMenu
                 $url = BackendUtility::getModuleUrl(
                     'tv_mod_admin_element',
                     [
+                        'action' => 'clear',
                         'file' => $table
                     ]
                 );
