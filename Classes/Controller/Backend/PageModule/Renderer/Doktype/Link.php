@@ -17,6 +17,7 @@ namespace Schnitzler\Templavoila\Controller\Backend\PageModule\Renderer\Doktype;
 use Schnitzler\Templavoila\Controller\Backend\PageModule\Renderer\Renderable;
 use Schnitzler\Templavoila\Traits\LanguageService;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
+use TYPO3\CMS\Core\Messaging\Renderer\BootstrapRenderer;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -79,6 +80,9 @@ class Link implements Renderable
             FlashMessage::INFO
         );
 
-        return $flashMessage->render() . $urlInfo;
+        /** @var BootstrapRenderer $flashmessageRenderer */
+        $flashmessageRenderer = GeneralUtility::makeInstance(BootstrapRenderer::class);
+
+        return $flashmessageRenderer->render([$flashMessage]) . $urlInfo;
     }
 }

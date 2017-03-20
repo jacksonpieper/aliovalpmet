@@ -21,6 +21,7 @@ use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
+use TYPO3\CMS\Core\Messaging\Renderer\BootstrapRenderer;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -68,7 +69,10 @@ class SysFolder implements Renderable
             FlashMessage::INFO
         );
 
-        return $flashMessage->render() . $listModuleLink;
+        /** @var BootstrapRenderer $flashmessageRenderer */
+        $flashmessageRenderer = GeneralUtility::makeInstance(BootstrapRenderer::class);
+
+        return $flashmessageRenderer->render([$flashMessage]) . $listModuleLink;
     }
 
     /**

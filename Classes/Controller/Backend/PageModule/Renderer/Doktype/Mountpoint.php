@@ -17,9 +17,9 @@ namespace Schnitzler\Templavoila\Controller\Backend\PageModule\Renderer\Doktype;
 use Schnitzler\Templavoila\Controller\Backend\PageModule\Renderer\Renderable;
 use Schnitzler\Templavoila\Traits\LanguageService;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
-use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
+use TYPO3\CMS\Core\Messaging\Renderer\BootstrapRenderer;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -55,15 +55,6 @@ class Mountpoint implements Renderable
         }
 
         $mountSourcePageRecord = BackendUtility::getRecordWSOL('pages', $this->row['mount_pid']);
-        $mountSourceIcon = $this->iconFactory->getIconForRecord('pages', $mountSourcePageRecord, Icon::SIZE_SMALL);
-        $mountSourceButton = BackendUtility::wrapClickMenuOnIcon(
-            $mountSourceIcon,
-            'pages',
-            $mountSourcePageRecord['uid'],
-            true,
-            '',
-            'new,copy,cut,pasteinto,pasteafter,delete'
-        );
 
         $link = BackendUtility::getModuleUrl(
             'web_txtemplavoilaM1',
@@ -78,11 +69,14 @@ class Mountpoint implements Renderable
 
         $flashMessage = GeneralUtility::makeInstance(
             FlashMessage::class,
-            sprintf(static::getLanguageService()->getLL('cannotedit_doktypemountpoint'), $mountSourceButton . $mountSourcePageRecord['title']),
+            sprintf(static::getLanguageService()->getLL('cannotedit_doktypemountpoint'), $mountSourcePageRecord['title']),
             '',
             FlashMessage::INFO
         );
 
-        return $flashMessage->render() . '<strong>' . $mountSourceLink . '</strong>';
+        /** @var BootstrapRenderer $flashmessageRenderer */
+        $flashmessageRenderer = GeneralUtility::makeInstance(BootstrapRenderer::class);
+
+        return $flashmessageRenderer->render([$flashMessage]) . '<strong>' . $mountSourceLink . '</strong>';
     }
 }

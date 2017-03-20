@@ -20,6 +20,7 @@ use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
+use TYPO3\CMS\Core\Messaging\Renderer\BootstrapRenderer;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -69,6 +70,9 @@ class Shortcut implements Renderable
             $shortcutSourcePageRecord['title'] = '';
         }
 
+        /** @var BootstrapRenderer $flashmessageRenderer */
+        $flashmessageRenderer = GeneralUtility::makeInstance(BootstrapRenderer::class);
+
         $flashMessage = GeneralUtility::makeInstance(
             FlashMessage::class,
             sprintf(static::getLanguageService()->getLL('cannotedit_shortcut_' . (int)$this->row['shortcut_mode']), $shortcutSourcePageRecord['title']),
@@ -76,6 +80,6 @@ class Shortcut implements Renderable
             FlashMessage::INFO
         );
 
-        return $flashMessage->render() . $jumpToShortcutSourceLink;
+        return $flashmessageRenderer->render([$flashMessage]) . $jumpToShortcutSourceLink;
     }
 }
