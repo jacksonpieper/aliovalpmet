@@ -51,7 +51,11 @@ return [
                 'renderType' => 'selectSingle',
                 'foreign_table' => 'tx_templavoila_tmplobj',
                 'foreign_table_where' => 'AND tx_templavoila_tmplobj.parent=0 AND tx_templavoila_tmplobj.uid!=\'###REC_FIELD_uid###\' ORDER BY tx_templavoila_tmplobj.title',
-                'showIconTable' => true,
+                'fieldWizard' => [
+                    'selectIcons' => [
+                        'disabled' => false
+                    ]
+                ],
                 'items' => [
                     ['', 0]
                 ]
@@ -65,7 +69,11 @@ return [
                 'renderType' => 'selectSingle',
                 'foreign_table' => 'tx_templavoila_tmplobj',
                 'foreign_table_where' => 'AND tx_templavoila_tmplobj.parent=0 AND tx_templavoila_tmplobj.uid!=\'###REC_FIELD_uid###\' ORDER BY tx_templavoila_tmplobj.title',
-                'showIconTable' => true,
+                'fieldWizard' => [
+                    'selectIcons' => [
+                        'disabled' => false
+                    ]
+                ],
                 'items' => [
                     ['', 0]
                 ]
@@ -78,6 +86,16 @@ return [
             'config' => [
                 'type' => 'select',
                 'renderType' => 'selectSingle',
+                'fieldControl' => [
+                    'addRecord' => [
+                        'options' => [
+                            'pid' => '###CURRENT_PID###',
+                            'setValue' => 'set',
+                            'table' => 'tx_templavoila_datastructure',
+                            'title' => 'LLL:EXT:templavoila/Resources/Private/Language/locallang_db.xlf:tx_templavoila_tmplobj.ds_createnew',
+                        ]
+                    ]
+                ],
                 'items' => [
                     ['', 0],
                 ],
@@ -88,23 +106,10 @@ return [
                 'maxitems' => 1,
                 'itemsProcFunc' => \Schnitzler\Templavoila\Service\ItemProcFunc\StaticDataStructuresHandler::class . '->main',
                 'allowNonIdValues' => 1,
-                'showIconTable' => true,
-                'wizards' => [
-                    '_PADDING' => 2,
-                    '_VERTICAL' => 1,
-                    'add' => [
-                        'type' => 'script',
-                        'title' => 'LLL:EXT:templavoila/Resources/Private/Language/locallang_db.xlf:tx_templavoila_tmplobj.ds_createnew',
-                        'icon' => 'actions-add',
-                        'params' => [
-                            'table' => 'tx_templavoila_datastructure',
-                            'pid' => '###CURRENT_PID###',
-                            'setValue' => 'set'
-                        ],
-                        'module' => [
-                            'name' => 'wizard_add'
-                        ]
-                    ],
+                'fieldWizard' => [
+                    'selectIcons' => [
+                        'disabled' => false
+                    ]
                 ]
             ],
             'displayCond' => 'FIELD:parent:=:0'
@@ -114,26 +119,18 @@ return [
             'label' => 'LLL:EXT:templavoila/Resources/Private/Language/locallang_db.xlf:tx_templavoila_tmplobj.fileref',
             'config' => [
                 'type' => 'input',
-                'size' => '48',
-                'wizards' => [
-                    '_PADDING' => 2,
-                    'link' => [
-                        'type' => 'popup',
-                        'title' => 'Link',
-                        'icon' => 'actions-wizard-link',
-                        'module' => [
-                            'name' => 'wizard_link',
-                            'urlParameters' => [
-                                'mode' => 'wizard',
-                            ],
-                        ],
-                        'JSopenParams' => 'height=300,width=500,status=0,menubar=0,scrollbars=1',
-                        'params' => [
+                'renderType' => 'inputLink',
+                'fieldControl' => [
+                    'linkPopup' => [
+                        'options' => [
+                            'allowedExtensions' => 'txt,htm,html,xml',
                             'blindLinkOptions' => 'page,url,mail,spec,folder',
-                            'allowedExtensions' => $GLOBALS['TYPO3_CONF_VARS']['SYS']['textfile_ext'],
+                            'title' => 'Link',
+                            'windowOpenParameters' => 'height=300,width=500,status=0,menubar=0,scrollbars=1'
                         ]
-                    ],
+                    ]
                 ],
+                'size' => '48',
                 'eval' => 'required,nospace',
                 'softref' => 'typolink'
             ]
@@ -210,9 +207,10 @@ return [
                 'type' => 'text',
                 'wrap' => 'OFF',
                 'cols' => '30',
+                'enableTabulator' => 1,
+                'fixedFont' => 1,
                 'rows' => '2',
             ],
-            'defaultExtras' => 'fixed-font:enable-tab'
         ],
     ],
     'types' => [

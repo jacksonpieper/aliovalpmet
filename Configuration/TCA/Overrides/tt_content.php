@@ -29,8 +29,11 @@ $tempColumns = [
             'size' => 1,
             'minitems' => 0,
             'maxitems' => 1,
-            'showIconTable' => true,
-            'selicon_cols' => 10,
+            'fieldWizard' => [
+                'selectIcons' => [
+                    'disabled' => false
+                ]
+            ]
         ]
     ],
     'tx_templavoila_to' => [
@@ -47,8 +50,11 @@ $tempColumns = [
             'size' => 1,
             'minitems' => 0,
             'maxitems' => 1,
-            'showIconTable' => true,
-            'selicon_cols' => 10,
+            'fieldWizard' => [
+                'selectIcons' => [
+                    'disabled' => false
+                ]
+            ]
         ]
     ],
     'tx_templavoila_flex' => [
@@ -75,8 +81,11 @@ $tempColumns = [
             'size' => 1,
             'minitems' => 0,
             'maxitems' => 1,
-            'showIconTable' => true,
-            'selicon_cols' => 10,
+            'fieldWizard' => [
+                'selectIcons' => [
+                    'disabled' => false
+                ]
+            ]
         ]
     ],
 ];

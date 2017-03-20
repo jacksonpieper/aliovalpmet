@@ -26,8 +26,7 @@ $tempColumns = [
             'autoSizeMax' => 15,
             'multiple' => 1,
             'minitems' => 0,
-            'maxitems' => 1000,
-            'show_thumbs' => 1,
+            'maxitems' => 1000
         ],
     ]
 ];

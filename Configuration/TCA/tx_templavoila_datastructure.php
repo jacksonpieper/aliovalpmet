@@ -50,8 +50,9 @@ return [
                 'wrap' => 'OFF',
                 'cols' => '48',
                 'rows' => '20',
+                'enableTabulator' => 1,
+                'fixedFont' => 1
             ],
-            'defaultExtras' => 'fixed-font:enable-tab'
         ],
         'scope' => [
             'exclude' => 1,
