@@ -123,17 +123,19 @@ class ElementController extends AbstractModuleController implements Configurable
             return $response;
         }
 
-        if (($returnUrl = $request->getQueryParams()['returnUrl']) !== null) {
-            $this->returnUrl = $returnUrl;
-
-            $backButton = $this->moduleTemplate->getDocHeaderComponent()->getButtonBar()->makeLinkButton()
-                ->setTitle(static::getLanguageService()->sL('LLL:EXT:lang/Resources/Private/Language/locallang.xlf:button.cancel'))
-                ->setHref($returnUrl)
-                ->setIcon($this->moduleTemplate->getIconFactory()->getIcon('actions-document-close', Icon::SIZE_SMALL))
-            ;
-
-            $this->moduleTemplate->getDocHeaderComponent()->getButtonBar()->addButton($backButton);
+        if (($returnUrl = (string)$request->getQueryParams()['returnUrl']) === '') {
+            $returnUrl = GeneralUtility::getIndpEnv('TYPO3_REQUEST_URL');
         }
+
+        $this->returnUrl = $returnUrl;
+
+        $backButton = $this->moduleTemplate->getDocHeaderComponent()->getButtonBar()->makeLinkButton()
+            ->setTitle(static::getLanguageService()->sL('LLL:EXT:lang/Resources/Private/Language/locallang.xlf:button.cancel'))
+            ->setHref($returnUrl)
+            ->setIcon($this->moduleTemplate->getIconFactory()->getIcon('actions-document-close', Icon::SIZE_SMALL))
+        ;
+
+        $this->moduleTemplate->getDocHeaderComponent()->getButtonBar()->addButton($backButton);
 
         return parent::processRequest($request, $response);
     }
