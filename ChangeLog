@@ -1,3 +1,8 @@
+7.6.2 / 2017-03-21
+==================
+
+  * 2017-03-21  948856c  [BUGFIX] Do not clear session in index controller (Alexander Schnitzler)
+
 7.6.1 / 2017-03-20
 ==================
 
