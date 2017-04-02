@@ -31,3 +31,7 @@ Once it is installed, you need to run the migration scripts in the TYPO3 install
 - [COMMUNIACS](http://www.communiacs.de/) 
 - [Simple Things GmbH](https://www.simplethings.de/)
 - [INOVANET](http://www.inovanet.de/)
+
+## Known limitations
+
+- This version does not support static data structures at all.
