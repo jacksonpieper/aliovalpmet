@@ -32,7 +32,7 @@ script:
   - >
     echo;
     echo "Running unit tests";
-    php .Build/bin/phpunit --colors --configuration .Build/Web/typo3conf/ext/templavoila/Tests/Build/UnitTests.xml
+    php .Build/bin/phpunit --coverage-clover=unittests.clover --colors --configuration .Build/Web/typo3conf/ext/templavoila/Tests/Build/UnitTests.xml;
   - >
     echo;
     echo "Running functional tests";
@@ -40,4 +40,9 @@ script:
     export typo3DatabaseHost="localhost";
     export typo3DatabaseUsername="root";
     export typo3DatabasePassword="";
-    php .Build/bin/phpunit --colors --configuration .Build/Web/typo3conf/ext/templavoila/Tests/Build/FunctionalTests.xml
+    php .Build/bin/phpunit --coverage-clover=functionaltests.clover --colors --configuration .Build/Web/typo3conf/ext/templavoila/Tests/Build/FunctionalTests.xml;
+
+after_script:
+  - wget https://scrutinizer-ci.com/ocular.phar
+  - php ocular.phar code-coverage:upload --format=php-clover unittests.clover;
+  - php ocular.phar code-coverage:upload --format=php-clover functionaltests.clover;
