@@ -108,6 +108,11 @@ define(['jquery',
         var $anchorElement = $element.find(PageModule.identifier.hide);
         var newValue, nextState, iconName;
         var value = $anchorElement.data('value');
+        var title = $anchorElement.attr('title');
+        var titleToggle = $anchorElement.data('title-toggle');
+
+        $anchorElement.attr('title', titleToggle);
+        $anchorElement.data('title-toggle', title);
 
         if ($anchorElement.data('state') === 'hidden') {
             nextState = 'visible';

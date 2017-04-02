@@ -808,7 +808,15 @@ class MainController extends AbstractModuleController implements Configurable
                             ]
                         );
 
-                        return '<a href="' . $url . '" class="btn btn-default tpm-hide t3js-record-hide" data-state="hidden" data-table="' . $table . '" data-uid="' . $uid . '" data-value="0">' . $label . '</a>';
+                        return '<a href="' . $url . '"
+                                   class="btn btn-default tpm-hide t3js-record-hide"
+                                   title="' . static::getLanguageService()->getLL('unHide') . '"
+                                   data-state="hidden"
+                                   data-table="' . $table . '"
+                                   data-uid="' . $uid . '"
+                                   data-value="0"
+                                   data-title-toggle="' . static::getLanguageService()->getLL('hide') . '"
+                               >' . $label . '</a>';
                     } else {
                         $url = BackendUtility::getModuleUrl(
                             'tce_db',
@@ -824,7 +832,15 @@ class MainController extends AbstractModuleController implements Configurable
                             ]
                         );
 
-                        return '<a href="' . $url . '" class="btn btn-default tpm-hide t3js-record-hide" data-state="visible" data-table="' . $table . '" data-uid="' . $uid . '" data-value="1">' . $label . '</a>';
+                        return '<a href="' . $url . '"
+                                   class="btn btn-default tpm-hide t3js-record-hide"
+                                   title="' . static::getLanguageService()->getLL('hide') . '"
+                                   data-state="visible"
+                                   data-table="' . $table . '"
+                                   data-uid="' . $uid . '"
+                                   data-value="1"
+                                   data-title-toggle="' . static::getLanguageService()->getLL('unHide') . '"
+                                >' . $label . '</a>';
                     }
                 }
             } else {
