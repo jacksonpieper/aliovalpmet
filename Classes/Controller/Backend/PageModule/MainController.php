@@ -731,7 +731,10 @@ class MainController extends AbstractModuleController implements Configurable
                         ]
                     );
 
-                    return '<a href="' . $url . '" class="' . $class . '">' . $label . '</a>';
+                    return '<a href="' . $url . '"
+                               class="' . $class . '"
+                               title="' . static::getLanguageService()->getLL('edit') . '"
+                            >' . $label . '</a>';
                 }
             } else {
                 return $label;
@@ -941,7 +944,12 @@ class MainController extends AbstractModuleController implements Configurable
 
             $icon = $this->getModuleTemplate()->getIconFactory()->getIcon('extensions-templavoila-delete', Icon::SIZE_SMALL);
 
-            return '<a class="btn btn-default t3js-record-delete tpm-unlink" data-pointer="' . $unlinkPointerString . '" data-title="' . static::getLanguageService()->getLL($LLlabel) . '" href="' . $url . '">' . $icon . '</a>';
+            return '<a href="' . $url . '"
+                       class="btn btn-default t3js-record-delete tpm-unlink"
+                       title="' . static::getLanguageService()->getLL('deleteRecord') . '"
+                       data-pointer="' . $unlinkPointerString . '"
+                       data-title="' . static::getLanguageService()->getLL($LLlabel) . '"
+                    >' . $icon . '</a>';
         } else {
             $url = BackendUtility::getModuleUrl(
                 'tv_mod_pagemodule_contentcontroller',
@@ -954,7 +962,12 @@ class MainController extends AbstractModuleController implements Configurable
 
             $icon = $this->getModuleTemplate()->getIconFactory()->getIcon('extensions-templavoila-unlink', Icon::SIZE_SMALL);
 
-            return '<a class="btn btn-default t3js-record-delete tpm-unlink" data-pointer="' . $unlinkPointerString . '" data-title="' . static::getLanguageService()->getLL('unlinkRecordMsg') . '" href="' . $url . '">' . $icon . '</a>';
+            return '<a href="' . $url . '"
+                       class="btn btn-default t3js-record-delete tpm-unlink"
+                       title="' . static::getLanguageService()->getLL('unlinkRecord') . '"
+                       data-pointer="' . $unlinkPointerString . '"
+                       data-title="' . static::getLanguageService()->getLL('unlinkRecordMsg') . '"
+                    >' . $icon . '</a>';
         }
     }
 
