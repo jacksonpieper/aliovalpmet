@@ -226,6 +226,7 @@ class StaticDataStructuresHandler
      */
     protected function templateObjectItemsProcFuncForAllDSes(array &$params, TcaSelectItems $pObj)
     {
+        $storagePid = $this->getStoragePid($params, $pObj);
         $scope = $this->getScope($params);
 
         $removeDSItems = $this->getRemoveItems($params, substr($params['field'], 0, -2) . 'ds');
@@ -233,7 +234,7 @@ class StaticDataStructuresHandler
 
         $dsRepo = GeneralUtility::makeInstance(DataStructureRepository::class);
         $toRepo = GeneralUtility::makeInstance(TemplateRepository::class);
-        $dsList = $dsRepo->findByScope($scope);
+        $dsList = $dsRepo->getDatastructuresByStoragePidAndScope($storagePid, $scope);
 
         $params['items'] = [
             [
@@ -280,11 +281,14 @@ class StaticDataStructuresHandler
      */
     protected function getStoragePid(array &$params, TcaSelectItems $pObj)
     {
-        $storagePid = 0;
+        $field = $params['table'] === 'pages' ? 'uid' : 'pid';
+        $uid = (int)$params['row'][$field];
+
+        $pageTsConfig = BackendUtility::getPagesTSconfig($uid);
+        $storagePid = (int)$pageTsConfig['mod.']['tx_templavoila.']['storagePid'];
 
         // Check for alternative storage folder
-        $field = $params['table'] === 'pages' ? 'uid' : 'pid';
-        $modTSConfig = BackendUtility::getModTSconfig($params['row'][$field], 'tx_templavoila.storagePid');
+        $modTSConfig = BackendUtility::getModTSconfig($uid, 'tx_templavoila.storagePid');
         if (is_array($modTSConfig) && MathUtility::canBeInterpretedAsInteger($modTSConfig['value'])) {
             $storagePid = (int)$modTSConfig['value'];
         }

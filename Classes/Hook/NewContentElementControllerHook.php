@@ -17,6 +17,7 @@ use Schnitzler\Templavoila\Domain\Model\AbstractDataStructure;
 use Schnitzler\Templavoila\Domain\Model\Template;
 use Schnitzler\Templavoila\Domain\Repository\TemplateRepository;
 use Schnitzler\Templavoila\Traits\LanguageService;
+use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Imaging\IconProvider\BitmapIconProvider;
 use TYPO3\CMS\Core\Imaging\IconRegistry;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -38,9 +39,12 @@ class NewContentElementControllerHook
         $templateRepository = GeneralUtility::makeInstance(TemplateRepository::class);
         $templates = $templateRepository->findByScope(AbstractDataStructure::SCOPE_FCE);
 
+        $pageTsConfig = BackendUtility::getPagesTSconfig((int)GeneralUtility::_GP('id'));
+        $storagePid = (int)$pageTsConfig['mod.']['tx_templavoila.']['storagePid'];
+
         foreach ($templates as $template) {
             /** @var Template $template  */
-            if ($template->isPermittedForUser()) {
+            if ($template->isPermittedForUser() && $template->isOnPage($storagePid)) {
                 $identifier = 'extensions-templavoila-type-fce';
 
                 $icon = $template->getIcon();

@@ -492,4 +492,13 @@ class Template
     {
         return $this->parent > 0;
     }
+
+    /**
+     * @param int $pageId
+     * @return bool
+     */
+    public function isOnPage($pageId)
+    {
+        return (int)$this->row['pid'] === (int)$pageId;
+    }
 }

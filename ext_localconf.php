@@ -203,3 +203,4 @@ $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_befunc.php']['getFl
 
 $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/install']['update']['TemplateObjectPreviewIconMigrationWizard'] = \Schnitzler\Templavoila\Update\TemplateObjectPreviewIconMigrationWizard::class;
 $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/install']['update']['DataStructurePreviewIconMigrationWizard'] = \Schnitzler\Templavoila\Update\DataStructurePreviewIconMigrationWizard::class;
+$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/install']['update']['StoragePidMigrationWizard'] = \Schnitzler\Templavoila\Update\StorageFolderMigrationWizard::class;
