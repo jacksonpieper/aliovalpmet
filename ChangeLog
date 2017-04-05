@@ -1,3 +1,15 @@
+7.6.3 / 2017-04-05
+==================
+
+  * 2017-04-05  4a8e4ff  [BUGFIX] Fix missing storage_pid field with PageTS (Alexander Schnitzler)
+  * 2017-04-02  41ced01  [TASK] Create code coverage with scrutinizer (Alexander Schnitzler)
+  * 2017-04-02  c72f9cc  [TASK] Add known limitations to README.md (Alexander Schnitzler)
+  * 2017-04-02  24ae1e4  [BUGFIX] Add missing titles for edit/unlink/delete buttons (Alexander Schnitzler)
+  * 2017-04-02  1c0a0dc  [BUGFIX] Add missing title for hide/unhide buttons (Alexander Schnitzler)
+  * 2017-03-31  a8d410c  [TASK] Add .github/ISSUE_TEMPLATE.md (Alexander Schnitzler)
+  * 2017-03-31  7c1a65f  [TASK] Add README.md (Alexander Schnitzler)
+  * 2017-03-30  9da2a91  [TASK] Re-enable travis-ci (Alexander Schnitzler)
+
 7.6.2 / 2017-03-21
 ==================
 
