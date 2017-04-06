@@ -11,7 +11,7 @@
  * LICENSE.md file that was distributed with this source code.
  */
 
-namespace Schnitzler\Templavoila\Exception\Serialization;
+namespace Schnitzler\Templavoila\Exception\Runtime;
 
 use Schnitzler\Templavoila\Exception\RuntimeException;
 

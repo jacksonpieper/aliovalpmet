@@ -18,7 +18,7 @@ use Schnitzler\Templavoila\Domain\Repository\DataStructureRepository;
 use Schnitzler\Templavoila\Domain\Repository\TemplateRepository;
 use Schnitzler\Templavoila\Exception\Data\ObjectNotFoundException;
 use Schnitzler\Templavoila\Exception\RuntimeException;
-use Schnitzler\Templavoila\Exception\Serialization\SerializationException;
+use Schnitzler\Templavoila\Exception\Runtime\SerializationException;
 use Schnitzler\Templavoila\Templavoila;
 use Schnitzler\Templavoila\Traits\BackendUser;
 use TYPO3\CMS\Core\Configuration\FlexForm\FlexFormTools;
