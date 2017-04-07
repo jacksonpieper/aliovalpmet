@@ -50,7 +50,7 @@ class DataStructureRepository
         if ((int)$uidOrFile > 0) {
             $className = 'Schnitzler\\Templavoila\\Domain\\Model\\DataStructure';
         } else {
-            if (($staticKey = $this->validateStaticDS($uidOrFile)) !== false) {
+            if (($staticKey = $this->validateStaticDS((string)$uidOrFile)) !== false) {
                 $uidOrFile = $staticKey;
                 $className = 'Schnitzler\\Templavoila\\Domain\\Model\\StaticDataStructure';
             } else {
@@ -79,7 +79,7 @@ class DataStructureRepository
             foreach ($confArr as $conf) {
                 $ds = $this->getDatastructureByUidOrFilename($conf['path']);
                 $pids = $ds->getStoragePids();
-                if ($pids === '' || GeneralUtility::inList($pids, $pid)) {
+                if ($pids === '' || GeneralUtility::inList($pids, (string)$pid)) {
                     $dscollection[] = $ds;
                 }
             }
@@ -120,7 +120,7 @@ class DataStructureRepository
                 if ($conf['scope'] == $scope) {
                     $ds = $this->getDatastructureByUidOrFilename($conf['path']);
                     $pids = $ds->getStoragePids();
-                    if ($pids === '' || GeneralUtility::inList($pids, $pid)) {
+                    if ($pids === '' || GeneralUtility::inList($pids, (string)$pid)) {
                         $dscollection[] = $ds;
                     }
                 }

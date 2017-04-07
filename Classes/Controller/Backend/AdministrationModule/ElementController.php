@@ -65,7 +65,7 @@ class ElementController extends AbstractModuleController implements Configurable
     private $file = '';
 
     /**
-     * @var string
+     * @var int
      */
     private $dataStructureUid;
 
@@ -276,7 +276,7 @@ class ElementController extends AbstractModuleController implements Configurable
         $select->addAttribute('class', 'form-control');
 
         $option = TagBuilderHelper::getOption();
-        $option->addAttribute('value', 0);
+        $option->addAttribute('value', '0');
         $select->setContent($option->render());
 
         foreach ($optionGroups as $optionGroup) {
@@ -303,15 +303,15 @@ class ElementController extends AbstractModuleController implements Configurable
         $select->addAttribute('class', 'form-control');
 
         $option1 = TagBuilderHelper::getOption();
-        $option1->addAttribute('value', DataStructure::SCOPE_PAGE);
+        $option1->addAttribute('value', (string)DataStructure::SCOPE_PAGE);
         $option1->setContent('Page Template');
 
         $option2 = TagBuilderHelper::getOption();
-        $option2->addAttribute('value', DataStructure::SCOPE_FCE);
+        $option2->addAttribute('value', (string)DataStructure::SCOPE_FCE);
         $option2->setContent('Content Element');
 
         $option3 = TagBuilderHelper::getOption();
-        $option3->addAttribute('value', DataStructure::SCOPE_UNKNOWN);
+        $option3->addAttribute('value', (string)DataStructure::SCOPE_UNKNOWN);
         $option3->setContent('Undefined');
 
         $select->setContent(

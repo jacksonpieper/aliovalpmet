@@ -700,7 +700,7 @@ class DataStructureEditor
         $textarea = TagBuilderHelper::getTextarea();
         $textarea->addAttribute('name', $formFieldName . '[tx_templavoila][sample_data][]');
         $textarea->addAttribute('class', 'form-control');
-        $textarea->addAttribute('rows', 10);
+        $textarea->addAttribute('rows', '10');
         $textarea->setContent(htmlspecialchars($insertDataArray['tx_templavoila']['sample_data'][0]));
 
         $array['input']['sample_data'] = [
@@ -732,7 +732,7 @@ class DataStructureEditor
             $textarea = TagBuilderHelper::getTextarea();
             $textarea->addAttribute('name', $formFieldName . '[tx_templavoila][TypoScript_constants]');
             $textarea->addAttribute('class', 'form-control');
-            $textarea->addAttribute('rows', 10);
+            $textarea->addAttribute('rows', '10');
             $textarea->setContent(htmlspecialchars($this->flattenarray($insertDataArray['tx_templavoila']['TypoScript_constants'])));
 
             $array['input']['TypoScript_constants'] = [
@@ -744,7 +744,7 @@ class DataStructureEditor
             $textarea = TagBuilderHelper::getTextarea();
             $textarea->addAttribute('name', $formFieldName . '[tx_templavoila][TypoScript]');
             $textarea->addAttribute('class', 'form-control');
-            $textarea->addAttribute('rows', 10);
+            $textarea->addAttribute('rows', '10');
             $textarea->setContent(htmlspecialchars($this->flattenarray($insertDataArray['tx_templavoila']['TypoScript'])));
 
             $array['input']['TypoScript'] = [
@@ -767,7 +767,7 @@ class DataStructureEditor
             $textarea = TagBuilderHelper::getTextarea();
             $textarea->addAttribute('name', $formFieldName . '[TCEforms][config]');
             $textarea->addAttribute('class', 'form-control');
-            $textarea->addAttribute('rows', 10);
+            $textarea->addAttribute('rows', '10');
             $textarea->setContent(htmlspecialchars($this->flattenarray($insertDataArray['TCEforms']['config'])));
 
             $array['input']['TCEforms']['config'] = [
@@ -826,7 +826,7 @@ class DataStructureEditor
 
         $textarea = TagBuilderHelper::getTextarea();
         $textarea->addAttribute('name', $formFieldName . '[tx_templavoila][proc][stdWrap]');
-        $textarea->addAttribute('rows', 10);
+        $textarea->addAttribute('rows', '10');
         $textarea->addAttribute('class', 'form-control');
         $textarea->setContent($insertDataArray['tx_templavoila']['proc']['stdWrap']);
 
@@ -842,7 +842,7 @@ class DataStructureEditor
 
             $textField = TagBuilderHelper::getTextField();
             $textField->addAttribute('name', $formFieldName . '[tx_templavoila][oldStyleColumnNumber]');
-            $textField->addAttribute('value', (int)$insertDataArray['tx_templavoila']['oldStyleColumnNumber']);
+            $textField->addAttribute('value', (string)(int)$insertDataArray['tx_templavoila']['oldStyleColumnNumber']);
             $textField->addAttribute('class', 'form-control');
 
             $array['input']['oldStyleColumnNumber'] = [
@@ -1043,7 +1043,7 @@ class DataStructureEditor
         $checkbox = TagBuilderHelper::getCheckbox();
         $checkbox->addAttribute('class', 'checkbox');
         $checkbox->addAttribute('data-id', 'tv_proc_int');
-        $checkbox->addAttribute('value', 1);
+        $checkbox->addAttribute('value', '1');
 
         if ($value === 1) {
             $checkbox->addAttribute('checked', 'checked');
@@ -1051,7 +1051,7 @@ class DataStructureEditor
 
         $hidden = TagBuilderHelper::getHiddenField();
         $hidden->addAttribute('name', $name);
-        $hidden->addAttribute('value', $value);
+        $hidden->addAttribute('value', (string)$value);
         $hidden->addAttribute('id', 'tv_proc_int');
 
         return $checkbox->render() . $hidden->render();
@@ -1068,7 +1068,7 @@ class DataStructureEditor
         $checkbox = TagBuilderHelper::getCheckbox();
         $checkbox->addAttribute('class', 'checkbox');
         $checkbox->addAttribute('data-id', 'tv_proc_hsc');
-        $checkbox->addAttribute('value', 1);
+        $checkbox->addAttribute('value', '1');
 
         if ($value === 1) {
             $checkbox->addAttribute('checked', 'checked');
@@ -1076,7 +1076,7 @@ class DataStructureEditor
 
         $hidden = TagBuilderHelper::getHiddenField();
         $hidden->addAttribute('name', $name);
-        $hidden->addAttribute('value', $value);
+        $hidden->addAttribute('value', (string)$value);
         $hidden->addAttribute('id', 'tv_proc_hsc');
 
         return $checkbox->render() . $hidden->render();
@@ -1091,7 +1091,7 @@ class DataStructureEditor
     private function renderDragAndDropCheckbox($name, $value)
     {
         $checkbox = TagBuilderHelper::getCheckbox();
-        $checkbox->addAttribute('value', 1);
+        $checkbox->addAttribute('value', '1');
         $checkbox->addAttribute('data-id', 'tv_enabledragdrop');
 
         if ($value === 1) {
@@ -1100,7 +1100,7 @@ class DataStructureEditor
 
         $hidden = TagBuilderHelper::getHiddenField();
         $hidden->addAttribute('name', $name);
-        $hidden->addAttribute('value', $value);
+        $hidden->addAttribute('value', (string)$value);
         $hidden->addAttribute('id', 'tv_enabledragdrop');
 
         return $checkbox->render() . $hidden->render();

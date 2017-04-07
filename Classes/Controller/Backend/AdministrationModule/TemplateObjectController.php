@@ -171,7 +171,7 @@ class TemplateObjectController extends AbstractModuleController implements Linka
         $informationTabView = $this->getStandaloneView('Backend/AdministrationModule/TemplateObject/Information');
         $informationTabView->assign('title', static::getLanguageService()->getLL('renderTO_toInfo'));
         $informationTabView->assign('templateObject', [
-            'icon' => BackendUtility::wrapClickMenuOnIcon($icon, 'tx_templavoila_tmplobj', $templateObjectRecord['uid'], 1),
+            'icon' => BackendUtility::wrapClickMenuOnIcon($icon, 'tx_templavoila_tmplobj', $templateObjectRecord['uid']),
             'title' => $title
         ]);
         $informationTabView->assign('templateFile', [
@@ -187,7 +187,7 @@ class TemplateObjectController extends AbstractModuleController implements Linka
             $title = BackendUtility::getRecordTitlePrep(static::getLanguageService()->sL($title));
 
             $informationTabView->assign('dataStructure', [
-                'icon' => BackendUtility::wrapClickMenuOnIcon($icon, 'tx_templavoila_datastructure', $dataStructureRow['uid'], 1),
+                'icon' => BackendUtility::wrapClickMenuOnIcon($icon, 'tx_templavoila_datastructure', $dataStructureRow['uid']),
                 'title' => $title
             ]);
 
@@ -397,7 +397,7 @@ class TemplateObjectController extends AbstractModuleController implements Linka
         $templatemapping['MappingData_cached'] = $contentSplittedByMapping['sub']['ROOT'];
 
         // Get HEAD content for caching:
-        list($htmlHeader) = $this->htmlMarkup->htmlParse->getAllParts($htmlParser->splitIntoBlock('head', $fileContent), 1, 0);
+        list($htmlHeader) = $this->htmlMarkup->htmlParse->getAllParts($htmlParser->splitIntoBlock('head', $fileContent), true, false);
         $this->htmlMarkup->tags = static::$htmlHeadTags; // Set up the markupObject to process only header-section tags:
 
         $h_currentMappingInfo = [];
@@ -728,7 +728,7 @@ class TemplateObjectController extends AbstractModuleController implements Linka
 
         // Get <head>...</head> from template:
         $splitByHeader = $this->htmlMarkup->htmlParse->splitIntoBlock('head', $fileContent);
-        list($html_header) = $this->htmlMarkup->htmlParse->getAllParts($splitByHeader, 1, 0);
+        list($html_header) = $this->htmlMarkup->htmlParse->getAllParts($splitByHeader, true, false);
 
         // Set up the markupObject to process only header-section tags:
         $this->htmlMarkup->tags = static::$htmlHeadTags;

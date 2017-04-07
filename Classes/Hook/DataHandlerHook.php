@@ -93,7 +93,7 @@ class DataHandlerHook
      *
      * @param string $status The TCEmain operation status, fx. 'update'
      * @param string $table The table TCEmain is currently processing
-     * @param string $id The records id (if any)
+     * @param int $id The records id (if any)
      * @param array $fieldArray The field names and their values to be processed
      * @param CoreDataHandler $dataHandler Reference to the parent object (TCEmain)
      */
@@ -312,7 +312,7 @@ page.10.disableExplosivePreview = 1
 
         switch ($command) {
             case 'delete':
-                $record = BackendUtility::getRecord('tt_content', $id);
+                $record = BackendUtility::getRecord('tt_content', (int)$id);
                 // Check for FCE access
                 $params = [
                     'table' => $table,

@@ -89,9 +89,9 @@ Automatic Repair:
             'deleteMe' => [],
         ];
 
-        $startingPoint = $this->cli_isArg('--pid') ? MathUtility::forceIntegerInRange($this->cli_argValue('--pid'), 0) : 0;
-        $depth = $this->cli_isArg('--depth') ? MathUtility::forceIntegerInRange($this->cli_argValue('--depth'), 0) : 1000;
-        $this->excludePageIdList = $this->cli_isArg('--excludePageIdList') ? GeneralUtility::intExplode(',', $this->cli_argValue('--excludePageIdList')) : [];
+        $startingPoint = $this->cli_isArg('--pid') ? MathUtility::forceIntegerInRange((int)$this->cli_argValue('--pid'), 0) : 0;
+        $depth = $this->cli_isArg('--depth') ? MathUtility::forceIntegerInRange((int)$this->cli_argValue('--depth'), 0) : 1000;
+        $this->excludePageIdList = $this->cli_isArg('--excludePageIdList') ? GeneralUtility::intExplode(',', (string)$this->cli_argValue('--excludePageIdList')) : [];
 
         $this->resultArray = & $resultArray;
         $this->genTree($startingPoint, $depth, (int) $this->cli_argValue('--echotree'), 'main_parseTreeCallBack');

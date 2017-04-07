@@ -83,7 +83,7 @@ class Access
         if (!$be_user->isAdmin()) {
             $prefLen = strlen($table) + 1;
             foreach ($be_user->userGroups as $group) {
-                $items = GeneralUtility::trimExplode(',', $group['tx_templavoila_access'], 1);
+                $items = GeneralUtility::trimExplode(',', $group['tx_templavoila_access'], true);
                 foreach ($items as $ref) {
                     if (strstr($ref, $table)) {
                         if ($uid == (int)substr($ref, $prefLen)) {

@@ -1143,7 +1143,7 @@ class FrontendController extends AbstractPlugin
                         }
                     } else {
                         $uKey = md5(trim($MappingData_head_cached['cArray']['el_' . $kk]));
-                        $extraHeaderData['TV_' . $uKey] = chr(10) . chr(9) . trim($htmlParse->HTMLcleaner($MappingData_head_cached['cArray']['el_' . $kk], [], 1, 0, ['xhtml' => 1]));
+                        $extraHeaderData['TV_' . $uKey] = chr(10) . chr(9) . trim($htmlParse->HTMLcleaner($MappingData_head_cached['cArray']['el_' . $kk], [], '1', 0, ['xhtml' => 1]));
                     }
                 }
             }

@@ -592,7 +592,7 @@ class SheetRenderer implements Renderable
      * Renders a little table containing previews of translated version of the current content element.
      *
      * @param Sheet $sheet
-     * @param string $parentPointer Flexform pointer pointing to the current element (from the parent's perspective)
+     * @param array $parentPointer Flexform pointer pointing to the current element (from the parent's perspective)
      * @param array $parentDsMeta Meta array from parent DS (passing information about parent containers localization mode)
      *
      * @return string HTML
@@ -630,7 +630,7 @@ class SheetRenderer implements Renderable
                             // Put together the records icon including content sensitive menu link wrapped around it:
                             $recordIcon_l10n = $this->controller->getModuleTemplate()->getIconFactory()->getIconForRecord('tt_content', $localizedRecordInfo['row'], Icon::SIZE_SMALL);
                             if (!PermissionUtility::isInTranslatorMode()) {
-                                $recordIcon_l10n = BackendUtility::wrapClickMenuOnIcon($recordIcon_l10n, 'tt_content', $localizedRecordInfo['uid'], 1, '', 'new,copy,cut,pasteinto,pasteafter');
+                                $recordIcon_l10n = BackendUtility::wrapClickMenuOnIcon($recordIcon_l10n, 'tt_content', $localizedRecordInfo['uid'], true, '', 'new,copy,cut,pasteinto,pasteafter');
                             }
                             $l10nInfo =
                                 '<a name="c' . md5($this->controller->getApiService()->flexform_getStringFromPointer($this->controller->getCurrentElementParentPointer()) . $localizedRecordInfo['row']['uid']) . '"></a>' .
@@ -758,6 +758,7 @@ class SheetRenderer implements Renderable
 
         $row = $sheet->getPreviewDataRow();
 
+        // @todo: Fix $this->currentElementBelongsToCurrentPage
         $this->currentElementBelongsToCurrentPage = $sheet->getTable() === 'pages' || $sheet->getPid() === $this->controller->getPid();
 
         // General preview of the row:
@@ -773,7 +774,7 @@ class SheetRenderer implements Renderable
             }
 
             $TCEformsConfiguration = $fieldData['TCEforms']['config'];
-            $TCEformsLabel = $this->localizedFFLabel($fieldData['TCEforms']['label'], 1); // title for non-section elements
+            $TCEformsLabel = $this->localizedFFLabel($fieldData['TCEforms']['label'], true); // title for non-section elements
 
             if ($fieldData['type'] === 'array') { // Making preview for array/section parts of a FlexForm structure:;
                 if (is_array($fieldData['childElements'][$lKey])) {
@@ -839,7 +840,7 @@ class SheetRenderer implements Renderable
                     if ($fieldValue['config']['section']) {
                         $result .= '<strong>';
                         $label = ($fieldValue['config']['TCEforms']['label'] ? $fieldValue['config']['TCEforms']['label'] : $fieldValue['config']['tx_templavoila']['title']);
-                        $result .= $this->localizedFFLabel($label, 1);
+                        $result .= $this->localizedFFLabel($label, true);
                         $result .= '</strong>';
                         $result .= '<ul>';
                         foreach ($fieldValue['data']['el'] as $sub) {
@@ -860,7 +861,7 @@ class SheetRenderer implements Renderable
                         // Render preview for images:
                         $thumbnail = BackendUtility::thumbCode(['dummyFieldName' => $fieldValue['data'][$vKey]], '', 'dummyFieldName', '', '', $fieldValue['config']['TCEforms']['config']['uploadfolder']);
                         if (isset($fieldValue['config']['TCEforms']['label'])) {
-                            $label = $this->localizedFFLabel($fieldValue['config']['TCEforms']['label'], 1);
+                            $label = $this->localizedFFLabel($fieldValue['config']['TCEforms']['label'], true);
                         }
                         $data = $thumbnail;
                     }
@@ -868,7 +869,7 @@ class SheetRenderer implements Renderable
                     if (isset($fieldValue['config']['TCEforms']['config']['type']) && $fieldValue['config']['TCEforms']['config']['type'] !== '') {
                         // Render for everything else:
                         if (isset($fieldValue['config']['TCEforms']['label'])) {
-                            $label = $this->localizedFFLabel($fieldValue['config']['TCEforms']['label'], 1);
+                            $label = $this->localizedFFLabel($fieldValue['config']['TCEforms']['label'], true);
                         }
                         $data = (!$fieldValue['data'][$vKey] ? '' : $this->controller->link_edit(htmlspecialchars(GeneralUtility::fixed_lgd_cs(strip_tags($fieldValue['data'][$vKey]), 200)), $table, $uid));
                     } else {
@@ -1007,7 +1008,7 @@ class SheetRenderer implements Renderable
             }
         }
 
-        return $displayElement;
+        return (bool)$displayElement;
     }
 
     /**

@@ -131,7 +131,7 @@ class TemplateMapper
         $fileContent = GeneralUtility::getUrl($displayFile);
 
         // Show path:
-        $pathRendered = GeneralUtility::trimExplode('|', $path, 1);
+        $pathRendered = GeneralUtility::trimExplode('|', $path, true);
         $acc = [];
         foreach ($pathRendered as $k => $v) {
             $acc[] = $v;
@@ -142,7 +142,7 @@ class TemplateMapper
         // Get attributes of the extracted content:
         $contentFromPath = $htmlMarkup->splitByPath($fileContent, $path); // ,'td#content table[1] tr[1]','td#content table[1]','map#cdf / INNER','td#content table[2] tr[1] td[1] table[1] tr[4] td.bckgd1[2] table[1] tr[1] td[1] table[1] tr[1] td.bold1px[1] img[1] / RANGE:img[2]'
         $firstTag = $htmlMarkup->htmlParse->getFirstTag($contentFromPath[1]);
-        list($attributeData) = $htmlMarkup->htmlParse->get_tag_attributes($firstTag, 1);
+        list($attributeData) = $htmlMarkup->htmlParse->get_tag_attributes($firstTag, true);
 
         // Make options:
         $pathLevels = $htmlMarkup->splitPath($path);

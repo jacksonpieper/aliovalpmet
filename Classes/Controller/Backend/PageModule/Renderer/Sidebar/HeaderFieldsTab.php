@@ -27,7 +27,7 @@ class HeaderFieldsTab implements Renderable
     use LanguageService;
 
     /**
-     * @var PageModuleController
+     * @var MainController
      */
     private $controller;
 
@@ -60,7 +60,7 @@ class HeaderFieldsTab implements Renderable
         $dataStructureArr = BackendUtility::getFlexFormDS($conf, $this->controller->getRecord(), 'pages');
 
         if (is_array($dataStructureArr) && is_array($dataStructureArr['ROOT']['tx_templavoila']['pageModule'])) {
-            $headerTablesAndFieldNames = GeneralUtility::trimExplode(chr(10), str_replace(chr(13), '', $dataStructureArr['ROOT']['tx_templavoila']['pageModule']['displayHeaderFields']), 1);
+            $headerTablesAndFieldNames = GeneralUtility::trimExplode(chr(10), str_replace(chr(13), '', $dataStructureArr['ROOT']['tx_templavoila']['pageModule']['displayHeaderFields']), true);
             if (is_array($headerTablesAndFieldNames)) {
                 $fieldNames = [];
                 $headerFieldRows = [];

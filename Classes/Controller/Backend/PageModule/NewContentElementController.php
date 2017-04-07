@@ -192,7 +192,7 @@ class NewContentElementController extends \TYPO3\CMS\Backend\Controller\ContentE
                 $menuItems[$key]['content'] .= $this->elementWrapper['section'][1];
             }
             // Add the wizard table to the content, wrapped in tabs
-            $code = '<p>' . $lang->getLL('sel1', 1) . '</p>' . $this->moduleTemplate->getDynamicTabMenu(
+            $code = '<p>' . $lang->getLL('sel1', true) . '</p>' . $this->moduleTemplate->getDynamicTabMenu(
                     $menuItems,
                     'new-content-element-wizard'
                 );

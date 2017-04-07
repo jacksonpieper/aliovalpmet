@@ -87,7 +87,7 @@ class MainClickMenu
                     static::getLanguageService()->getLLL('cm1_title', $LL, true),
                     $this->iconFactory->getIcon('extensions-templavoila-logo', Icon::SIZE_SMALL),
                     $clickMenu->urlRefForCM($url, 'returnUrl'),
-                    true // Disables the item in the top-bar. Set this to zero if you wish the item to appear in the top bar!
+                    1 // Disables the item in the top-bar. Set this to zero if you wish the item to appear in the top bar!
                 );
             } else {
                 if ($table === DataStructure::TABLE) {
@@ -102,7 +102,7 @@ class MainClickMenu
                         static::getLanguageService()->getLLL('cm1_title', $LL, true),
                         $this->iconFactory->getIcon('extensions-templavoila-logo', Icon::SIZE_SMALL),
                         $clickMenu->urlRefForCM($url, 'returnUrl'),
-                        true // Disables the item in the top-bar. Set this to zero if you wish the item to appear in the top bar!
+                        1 // Disables the item in the top-bar. Set this to zero if you wish the item to appear in the top bar!
                     );
                 }
 
@@ -118,7 +118,7 @@ class MainClickMenu
                         static::getLanguageService()->getLLL('cm1_title', $LL, true),
                         $this->iconFactory->getIcon('extensions-templavoila-logo', Icon::SIZE_SMALL),
                         $clickMenu->urlRefForCM($url, 'returnUrl'),
-                        true // Disables the item in the top-bar. Set this to zero if you wish the item to appear in the top bar!
+                        1 // Disables the item in the top-bar. Set this to zero if you wish the item to appear in the top bar!
                     );
                 }
             }
@@ -165,7 +165,7 @@ class MainClickMenu
                     static::getLanguageService()->getLLL('cm1_viewflexformxml', $LL, true),
                     $this->iconFactory->getIcon('extensions-templavoila-logo', Icon::SIZE_SMALL),
                     $clickMenu->urlRefForCM($url, 'returnUrl'),
-                    true // Disables the item in the top-bar. Set this to zero if you wish the item to appear in the top bar!
+                    1 // Disables the item in the top-bar. Set this to zero if you wish the item to appear in the top bar!
                 );
 
                 // todo: add file to the url to make this link working again
@@ -209,7 +209,7 @@ class MainClickMenu
                             $icon,
                             BackendUtility::getRecordTitle('pages', $pageRecord, true),
                             $clickMenu->urlRefForCM($url . $pageRecord['uid'], 'returnUrl'),
-                            true // Disables the item in the top-bar. Set this to zero if you wish the item to appear in the top bar!
+                            1 // Disables the item in the top-bar. Set this to zero if you wish the item to appear in the top bar!
                         );
                     }
                 }

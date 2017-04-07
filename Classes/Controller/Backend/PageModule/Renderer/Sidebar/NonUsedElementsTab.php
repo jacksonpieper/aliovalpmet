@@ -33,7 +33,7 @@ class NonUsedElementsTab implements Renderable
     use BackendUser;
 
     /**
-     * @var PageModuleController
+     * @var MainController
      */
     private $controller;
 
@@ -97,7 +97,7 @@ class NonUsedElementsTab implements Renderable
             $cutButton = '';
 //            $cutButton = $this->element_getSelectButtons($elementPointerString, 'ref'); // todo: implement
             $recordIcon = $this->controller->getModuleTemplate()->getIconFactory()->getIconForRecord('tt_content', $row, Icon::SIZE_SMALL);
-            $recordButton = BackendUtility::wrapClickMenuOnIcon($recordIcon, 'tt_content', $row['uid'], 1, '', 'new,copy,cut,pasteinto,pasteafter,delete');
+            $recordButton = BackendUtility::wrapClickMenuOnIcon($recordIcon, 'tt_content', $row['uid'], true, '', 'new,copy,cut,pasteinto,pasteafter,delete');
 
             if (static::getBackendUser()->workspace) {
                 $wsRow = BackendUtility::getRecordWSOL('tt_content', $row['uid']);

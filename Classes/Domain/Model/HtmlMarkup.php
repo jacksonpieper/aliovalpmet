@@ -628,7 +628,7 @@ class HtmlMarkup
                             $currentMappingInfo['cArray'][$key] = $editStruct[$key][$valueKey];
                         }
                     } else {
-                        $currentMappingInfo['cArray'][$key] = $htmlParse->HTMLcleaner($currentMappingInfo['cArray'][$key], [], 1, 0, ['xhtml' => 1]);
+                        $currentMappingInfo['cArray'][$key] = $htmlParse->HTMLcleaner($currentMappingInfo['cArray'][$key], [], '1', 0, ['xhtml' => 1]);
                     }
                 }
                 $out = implode($firstLevelImplodeToken, $currentMappingInfo['cArray']);
@@ -647,20 +647,20 @@ class HtmlMarkup
      */
     public function splitPath($pathStr)
     {
-        $subPaths = GeneralUtility::trimExplode('|', $pathStr, 1);
+        $subPaths = GeneralUtility::trimExplode('|', $pathStr, true);
 
         foreach ($subPaths as $index => $path) {
             $subPaths[$index] = [];
             $subPaths[$index]['fullpath'] = $path;
 
             // Get base parts of the page: the PATH and the COMMAND
-            list($thePath, $theCmd) = GeneralUtility::trimExplode('/', $path, 1);
+            list($thePath, $theCmd) = GeneralUtility::trimExplode('/', $path, true);
 
             // Split the path part into its units: results in an array with path units.
             $splitParts = preg_split('/\s+/', $thePath);
 
             // modifier:
-            $modArr = GeneralUtility::trimExplode(':', $theCmd, 1);
+            $modArr = GeneralUtility::trimExplode(':', $theCmd, true);
             if ($modArr[0]) {
                 $subPaths[$index]['modifier'] = $modArr[0];
                 $subPaths[$index]['modifier_value'] = $modArr[1];
@@ -725,7 +725,7 @@ class HtmlMarkup
      */
     protected function splitTagTypes($showTags)
     {
-        $showTagsArr = GeneralUtility::trimExplode(',', strtolower($showTags), 1);
+        $showTagsArr = GeneralUtility::trimExplode(',', strtolower($showTags), true);
         $showTagsArr = array_flip($showTagsArr);
         $tagList_elements = [];
         $tagList_single = [];
@@ -764,7 +764,7 @@ class HtmlMarkup
     {
 
         // Splitting HTML string by all block-tags
-        $blocks = $this->htmlParse->splitIntoBlock($tagsBlock, $content, 1);
+        $blocks = $this->htmlParse->splitIntoBlock($tagsBlock, $content, true);
         $this->rangeEndSearch[$recursion] = '';
         $this->rangeStartPath[$recursion] = '';
 
@@ -800,7 +800,7 @@ class HtmlMarkup
                 $firstTagName = strtolower($this->htmlParse->getFirstTagName($v)); // The 'name' of the first tag
                 $endTag = $firstTag == $startCCTag ? $endCCTag : '</' . $firstTagName . '>'; // Create proper end-tag
                 $v = $this->htmlParse->removeFirstAndLastTag($v); // Finally remove the first tag (unless we do this, the recursivity will be eternal!
-                $params = $this->htmlParse->get_tag_attributes($firstTag, 1); // Get attributes
+                $params = $this->htmlParse->get_tag_attributes($firstTag, true); // Get attributes
 
                 // IF pathMode is set:
                 $subPath = $this->makePath($path, $firstTagName, $params[0]);
@@ -858,7 +858,7 @@ class HtmlMarkup
                         if ($kk % 2) {
                             $firstTag = $vv; // The first tag's content
                             $firstTagName = strtolower($this->htmlParse->getFirstTagName($vv)); // The 'name' of the first tag
-                            $params = $this->htmlParse->get_tag_attributes($firstTag, 1);
+                            $params = $this->htmlParse->get_tag_attributes($firstTag, true);
 
                             // Get path for THIS element:
                             $subPath = $this->makePath($path, $firstTagName, $params[0]);
@@ -1013,7 +1013,7 @@ class HtmlMarkup
                 case 'INNER+ATTR':
                     // Attribute
                     if ($this->searchPaths[$subPath]['modifier_value']) {
-                        $attributeArray = array_unique(GeneralUtility::trimExplode(',', $this->searchPaths[$subPath]['modifier_value'], 1));
+                        $attributeArray = array_unique(GeneralUtility::trimExplode(',', $this->searchPaths[$subPath]['modifier_value'], true));
                         foreach ($attributeArray as $attr) {
                             $placeholder = '###' . $placeholder . '###';
                             $this->searchPaths[$subPath]['attr'][$attr]['placeholder'] = $placeholder;

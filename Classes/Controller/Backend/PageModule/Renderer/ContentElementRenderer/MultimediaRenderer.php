@@ -20,6 +20,7 @@ class MultimediaRenderer extends UploadsRenderer
 {
     public function __construct()
     {
+        parent::__construct();
         $this->previewField = 'multimedia';
     }
 }

@@ -35,7 +35,7 @@ class LocalizationTab implements Renderable
     use DatabaseConnection;
 
     /**
-     * @var PageModuleController
+     * @var MainController
      */
     private $controller;
 

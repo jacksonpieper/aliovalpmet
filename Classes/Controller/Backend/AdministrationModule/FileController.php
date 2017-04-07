@@ -179,7 +179,8 @@ class FileController extends AbstractModuleController implements Configurable
         }
 
         // Getting session data to get currentMapping info:
-        $sessionData = static::getBackendUser()->getSessionData($this->sessionKey); // todo: inject session
+        // @todo: Fix $this->sessionKey
+        $sessionData = static::getBackendUser()->getSessionData($this->sessionKey);
         $currentMappingInfo = is_array($sessionData['currentMappingInfo']) ? $sessionData['currentMappingInfo'] : [];
 
         // Init mark up object.

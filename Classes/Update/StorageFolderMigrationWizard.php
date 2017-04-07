@@ -39,7 +39,7 @@ class StorageFolderMigrationWizard extends AbstractUpdate
             return $updateNeeded;
         }
 
-        $fields = (array)$this->getDatabaseConnection()->admin_get_fields(static::TABLE);
+        $fields = $this->getDatabaseConnection()->admin_get_fields(static::TABLE);
         if (!isset($fields[static::FIELD])) {
             return $updateNeeded;
         }

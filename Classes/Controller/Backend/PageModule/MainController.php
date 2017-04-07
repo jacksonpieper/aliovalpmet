@@ -318,7 +318,7 @@ class MainController extends AbstractModuleController implements Configurable
         $doktypeRenderer = new DoktypeRenderer($this);
         $doktype = $this->getDoktype($this->rootElementRecord);
 
-        if (!$doktype !== PageRepository::DOKTYPE_DEFAULT && $doktypeRenderer->canRender($doktype)) {
+        if ($doktype !== PageRepository::DOKTYPE_DEFAULT && $doktypeRenderer->canRender($doktype)) {
             $view->assign('content', $doktypeRenderer->render($doktype));
         } else {
             // Fetch the content structure of page:
@@ -372,7 +372,7 @@ class MainController extends AbstractModuleController implements Configurable
                 $link = htmlspecialchars($title) . ' (PID ' . (int)$this->rootElementRecord['content_from_pid'] . ')';
                 $this->moduleTemplate->addFlashMessage(
                     sprintf(static::getLanguageService()->getLL('content_from_pid_title'), $link),
-                    null,
+                    '',
                     FlashMessage::INFO
                 );
             }
@@ -484,111 +484,6 @@ class MainController extends AbstractModuleController implements Configurable
      *
      *************************/
 
-    /**
-     * Create the panel of buttons for submitting the form or otherwise perform operations.
-     *
-     * @param bool $noButtons Determine whether to show any icons or not
-     *
-     * @return array all available buttons as an assoc. array
-     */
-    protected function getDocHeaderButtons($noButtons = false)
-    {
-        global $BACK_PATH;
-
-        $buttons = [
-            'csh' => '',
-            'view' => '',
-            'history_page' => '',
-            'move_page' => '',
-            'move_record' => '',
-            'new_page' => '',
-            'edit_page' => '',
-            'record_list' => '',
-            'shortcut' => '',
-            'cache' => ''
-        ];
-
-        if ($noButtons) {
-            return $buttons;
-        }
-
-        // View page
-        $viewAddGetVars = $this->currentLanguageUid ? '&L=' . $this->currentLanguageUid : '';
-        $buttons['view'] = '<a title="' . static::getLanguageService()->sL('LLL:EXT:lang/locallang_core.php:labels.showPage', 1) . ' "href="#" onclick="' . htmlspecialchars(BackendUtility::viewOnClick($this->getId(), $BACK_PATH, BackendUtility::BEgetRootLine($this->getId()), '', '', $viewAddGetVars)) . '">' .
-            $this->getModuleTemplate()->getIconFactory()->getIcon('actions-document-view', Icon::SIZE_SMALL) .
-            '</a>';
-
-        // Shortcut
-        if (static::getBackendUser()->mayMakeShortcut()) {
-            $buttons['shortcut'] = $this->getModuleTemplate()->makeShortcutIcon('id, edit_record, pointer, new_unique_uid, search_field, search_levels, showLimit', implode(',', array_keys($this->MOD_MENU)), $this->moduleName);
-        }
-
-        // If access to Web>List for user, then link to that module.
-        if (static::getBackendUser()->check('modules', 'web_list')) {
-            $href = BackendUtility::getModuleUrl('web_list', ['id' => $this->getId(), 'returnUrl' => GeneralUtility::getIndpEnv('REQUEST_URI')]);
-            $buttons['record_list'] = '<a title="' . static::getLanguageService()->sL('LLL:EXT:lang/locallang_core.php:labels.showList', 1) . ' href="' . htmlspecialchars($href) . '">' .
-                $this->getModuleTemplate()->getIconFactory()->getIcon('actions-system-list-open', Icon::SIZE_SMALL) .
-                '</a>';
-        }
-
-        if (!$this->modTSconfig['properties']['disableIconToolbar']) {
-
-            // Page history
-            $buttons['history_page'] = '<a title="' . static::getLanguageService()->sL('LLL:EXT:cms/layout/locallang.xlf:recordHistory', 1) . ' href="#" onclick="' . htmlspecialchars('jumpToUrl(\'' . $BACK_PATH . 'show_rechis.php?element=' . rawurlencode('pages:' . $this->getId()) . '&returnUrl=' . rawurlencode(GeneralUtility::getIndpEnv('REQUEST_URI')) . '#latest\');return false;') . '">' .
-                $this->getModuleTemplate()->getIconFactory()->getIcon('actions-document-history-open', Icon::SIZE_SMALL) .
-                '</a>';
-
-            if (!$this->translatorMode && static::getBackendUser()->isPSet($this->calcPerms, 'pages', 'new')) {
-                // Create new page (wizard)
-                $buttons['new_page'] = '<a title="' . static::getLanguageService()->sL('LLL:EXT:cms/layout/locallang.xlf:newPage', 1) . ' href="#" onclick="' . htmlspecialchars('jumpToUrl(\'' . $BACK_PATH . 'db_new.php?id=' . $this->getId() . '&pagesOnly=1&returnUrl=' . rawurlencode(GeneralUtility::getIndpEnv('REQUEST_URI') . '&updatePageTree=true') . '\');return false;') . '">' .
-                    $this->getModuleTemplate()->getIconFactory()->getIcon('actions-page-new', Icon::SIZE_SMALL) .
-                    '</a>';
-            }
-
-            if (!$this->translatorMode && static::getBackendUser()->isPSet($this->calcPerms, 'pages', 'edit')) {
-                // Edit page properties
-                $params = '&edit[pages][' . $this->getId() . ']=edit';
-                $buttons['edit_page'] = '<a title="' . static::getLanguageService()->sL('LLL:EXT:cms/layout/locallang.xlf:editPageProperties', 1) . ' href="#" onclick="' . htmlspecialchars(BackendUtility::editOnClick($params, $BACK_PATH)) . '">' .
-                    $this->getModuleTemplate()->getIconFactory()->getIcon('actions-document-open', Icon::SIZE_SMALL) .
-                    '</a>';
-                // Move page
-                $buttons['move_page'] = '<a title="' . static::getLanguageService()->sL('LLL:EXT:cms/layout/locallang.xlf:move_page', 1) . ' href="' . htmlspecialchars($BACK_PATH . 'move_el.php?table=pages&uid=' . $this->getId() . '&returnUrl=' . rawurlencode(GeneralUtility::getIndpEnv('REQUEST_URI'))) . '">' .
-                    $this->getModuleTemplate()->getIconFactory()->getIcon('actions-page-move', Icon::SIZE_SMALL) .
-                    '</a>';
-            }
-
-            $buttons['csh'] = BackendUtility::cshItem('_MOD_web_txtemplavoilaM1', 'pagemodule', $BACK_PATH);
-
-            if ($this->getId()) {
-                $cacheUrl = $GLOBALS['BACK_PATH'] . 'tce_db.php?vC=' . static::getBackendUser()->veriCode() .
-                    FormProtectionFactory::get()->generateToken('tceAction') .
-                    '&redirect=' . rawurlencode(GeneralUtility::getIndpEnv('REQUEST_URI')) .
-                    '&cacheCmd=' . $this->getId();
-
-                $buttons['cache'] = '<a href="' . $cacheUrl . '" title="' . static::getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:labels.clear_cache', true) . '">' .
-                    $this->getModuleTemplate()->getIconFactory()->getIcon('actions-system-cache-clear', Icon::SIZE_SMALL) .
-                    '</a>';
-            }
-        }
-
-        return $buttons;
-    }
-
-    /**
-     * Gets the button to set a new shortcut in the backend (if current user is allowed to).
-     *
-     * @return string HTML representiation of the shortcut button
-     */
-    protected function getShortcutButton()
-    {
-        $result = '';
-        if (static::getBackendUser()->mayMakeShortcut()) {
-            $result = $this->getModuleTemplate()->makeShortcutIcon('', 'function', $this->moduleName);
-        }
-
-        return $result;
-    }
-
     /********************************************
      *
      * Rendering functions
@@ -657,7 +552,7 @@ class MainController extends AbstractModuleController implements Configurable
         if (false) {
             $sys_notes = '';
             // @todo: Check if and how this is to replace
-            $output .= '</div><div>' . $this->getModuleTemplate()->section(static::getLanguageService()->sL('LLL:EXT:cms/layout/locallang.xlf:internalNotes'), str_replace('sysext/sys_note/ext_icon.gif', $GLOBALS['BACK_PATH'] . 'sysext/sys_note/ext_icon.gif', $sys_notes), 0, 1);
+            $output .= '</div><div>' . $this->getModuleTemplate()->section(static::getLanguageService()->sL('LLL:EXT:cms/layout/locallang.xlf:internalNotes'), $sys_notes, false, true);
         }
 
         return $output;

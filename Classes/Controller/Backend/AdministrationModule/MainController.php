@@ -213,7 +213,7 @@ class MainController extends AbstractModuleController implements Configurable
             }
 
             // Error/Warning log:
-            $errStat = $this->getErrorLog($dataStructureScope);
+            $errStat = $this->getErrorLog((string)$dataStructureScope);
 
             // Add parts for Tab menu:
             $parts[] = [
@@ -282,7 +282,6 @@ class MainController extends AbstractModuleController implements Configurable
 
         $content = '';
         $content .= $this->renderModuleContent_searchForTODS();
-        $content .= $this->renderNewSiteWizard_overview();
 
         $view->assign('content', $content);
         $this->moduleTemplate->setContent($view->render());
@@ -338,7 +337,7 @@ class MainController extends AbstractModuleController implements Configurable
         $outputString .= '<br /><table border="0" cellpadding="1" cellspacing="1" class="typo3-dblist">' . implode('', $tRows) . '</table>';
 
         // Add output:
-        return $this->getModuleTemplate()->section('', $outputString, 0, 1);
+        return $this->getModuleTemplate()->section('', $outputString, false, true);
     }
 
     /**
@@ -462,7 +461,7 @@ class MainController extends AbstractModuleController implements Configurable
      * @param int $scope Scope.
      * @param array $toIdArray
      *
-     * @return string HTML content
+     * @return array HTML content
      */
     public function renderDataStructureDisplay(AbstractDataStructure $dsObj, $scope, $toIdArray)
     {
@@ -478,7 +477,7 @@ class MainController extends AbstractModuleController implements Configurable
             $dsIcon = '<a href="#" onclick="' . htmlspecialchars($onClick) . '">' . $dsObj->getKey() . '</a>';
         } else {
             $dsIcon = $this->getModuleTemplate()->getIconFactory()->getIconForRecord('tx_templavoila_datastructure', [], Icon::SIZE_SMALL);
-            $dsIcon = BackendUtility::wrapClickMenuOnIcon($dsIcon, 'tx_templavoila_datastructure', $dsObj->getKey(), 1, '&callingScriptId=' . rawurlencode($this->doc->scriptID));
+            $dsIcon = BackendUtility::wrapClickMenuOnIcon($dsIcon, 'tx_templavoila_datastructure', (int)$dsObj->getKey());
         }
 
         $showPreviewIcon = true;
@@ -592,7 +591,7 @@ class MainController extends AbstractModuleController implements Configurable
      * @param int $scope Scope of DS
      * @param int $children If set, the function is asked to render children to template objects (and should not call it self recursively again).
      *
-     * @return string HTML content
+     * @return array HTML content
      *
      * @throws \RuntimeException
      * @throws \InvalidArgumentException
@@ -602,7 +601,7 @@ class MainController extends AbstractModuleController implements Configurable
 
         // Put together the records icon including content sensitive menu link wrapped around it:
         $recordIcon = $this->getModuleTemplate()->getIconFactory()->getIconForRecord('tx_templavoila_tmplobj', [], Icon::SIZE_SMALL);
-        $recordIcon = BackendUtility::wrapClickMenuOnIcon($recordIcon, 'tx_templavoila_tmplobj', $toObj->getKey(), 1, '&callingScriptId=' . rawurlencode($this->doc->scriptID));
+        $recordIcon = BackendUtility::wrapClickMenuOnIcon($recordIcon, 'tx_templavoila_tmplobj', (int)$toObj->getKey());
 
         // Preview icon:
         $iconIdentifier = 'extensions-templavoila-type-fce';
@@ -689,7 +688,7 @@ class MainController extends AbstractModuleController implements Configurable
             if ($modified) {
                 $mappingStatus = $mappingStatus_index = $this->getModuleTemplate()->getIconFactory()->getIcon('status-dialog-warning', Icon::SIZE_SMALL);
                 $mappingStatus .= sprintf(static::getLanguageService()->getLL('towasupdated', true), BackendUtility::datetime($toObj->getTstamp()));
-                $this->setErrorLog($scope, 'warning', sprintf(static::getLanguageService()->getLL('warning_mappingstatus', true), $mappingStatus, $toObj->getLabel()));
+                $this->setErrorLog((string)$scope, 'warning', sprintf(static::getLanguageService()->getLL('warning_mappingstatus', true), $mappingStatus, $toObj->getLabel()));
             } else {
                 $mappingStatus = $mappingStatus_index = $this->getModuleTemplate()->getIconFactory()->getIcon('status-dialog-ok', Icon::SIZE_SMALL);
                 $mappingStatus .= static::getLanguageService()->getLL('mapping_uptodate', true);
@@ -698,7 +697,7 @@ class MainController extends AbstractModuleController implements Configurable
         } elseif (!$fileMtime) {
             $mappingStatus = $mappingStatus_index = $this->getModuleTemplate()->getIconFactory()->getIcon('status-dialog-error', Icon::SIZE_SMALL);
             $mappingStatus .= static::getLanguageService()->getLL('notmapped', true);
-            $this->setErrorLog($scope, 'fatal', sprintf(static::getLanguageService()->getLL('warning_mappingstatus', true), $mappingStatus, $toObj->getLabel()));
+            $this->setErrorLog((string)$scope, 'fatal', sprintf(static::getLanguageService()->getLL('warning_mappingstatus', true), $mappingStatus, $toObj->getLabel()));
 
             $mappingStatus .= static::getLanguageService()->getLL('updatemapping_info');
             $mappingStatus .= '<br/><a type="button" class="btn btn-default" href="' . $linkUrl . '">' . static::getLanguageService()->getLL('map', true) . '</a>';
@@ -804,7 +803,7 @@ class MainController extends AbstractModuleController implements Configurable
                 </tr>
                 <tr class="bgColor4">
                     <td>' . static::getLanguageService()->getLL('language', true) . ':</td>
-                    <td>' . $this->getProcessedValue('tx_templavoila_tmplobj', 'sys_language_uid', $toObj->getSyslang()) . '</td>
+                    <td>' . $this->getProcessedValue('tx_templavoila_tmplobj', 'sys_language_uid', (string)$toObj->getSyslang()) . '</td>
                 </tr>
                 <tr class="bgColor4">
                     <td>' . static::getLanguageService()->getLL('localprocessing_xml') . ':</td>
@@ -849,7 +848,7 @@ class MainController extends AbstractModuleController implements Configurable
      * @param \Schnitzler\Templavoila\Domain\Model\Template $toObj Template Object record
      * @param int $scope Scope value. 1) page,  2) content elements
      *
-     * @return string HTML table listing usages.
+     * @return array HTML table listing usages.
      */
     public function findRecordsWhereTOUsed($toObj, $scope)
     {
@@ -982,7 +981,7 @@ class MainController extends AbstractModuleController implements Configurable
                 </table>';
             } else {
                 $outputString = $this->getModuleTemplate()->getIconFactory()->getIcon('status-dialog-warning', Icon::SIZE_SMALL) . 'No usage!';
-                $this->setErrorLog($scope, 'warning', sprintf(static::getLanguageService()->getLL('warning_mappingstatus', true), $outputString, $toObj->getLabel()));
+                $this->setErrorLog((string)$scope, 'warning', sprintf(static::getLanguageService()->getLL('warning_mappingstatus', true), $outputString, $toObj->getLabel()));
             }
         }
 
@@ -1100,7 +1099,7 @@ class MainController extends AbstractModuleController implements Configurable
             if (count($output) > 1) {
                 $outputString = $this->getModuleTemplate()->getIconFactory()->getIcon('status-dialog-error', Icon::SIZE_SMALL) .
                     sprintf(static::getLanguageService()->getLL('invalidtemplatevalues', true), count($output) - 1);
-                $this->setErrorLog($scope, 'fatal', $outputString);
+                $this->setErrorLog((string)$scope, 'fatal', $outputString);
 
                 $outputString .= '<table border="0" cellspacing="1" cellpadding="1" class="lrPadding">' . implode('', $output) . '</table>';
             } else {
@@ -1125,6 +1124,7 @@ class MainController extends AbstractModuleController implements Configurable
         if (!isset($this->pidCache[$pid])) {
             $this->pidCache[$pid] = [];
 
+            // @todo: fix $this->perms_clause
             $pageinfo = BackendUtility::readPageAccess($pid, $this->perms_clause);
             $this->pidCache[$pid]['path'] = $pageinfo['_thePath'];
         }
@@ -1659,172 +1659,6 @@ class MainController extends AbstractModuleController implements Configurable
      *****************************/
 
     /**
-     * Wizard overview page - before the wizard is started.
-     *
-     * @return string
-     *
-     * @throws \InvalidArgumentException
-     */
-    public function renderNewSiteWizard_overview()
-    {
-        $content = '';
-        //if (!static::getBackendUser()->isAdmin() || $this->modTSconfig['properties']['hideNewSiteWizard']) {
-        //    return $content;
-        //}
-        //
-        //// Introduction:
-        //$outputString = nl2br(sprintf(static::getLanguageService()->getLL('newsitewizard_intro', true), implode('", "', $this->getTemplatePaths(true, false))));
-        //
-        //// Checks:
-        //$missingExt = $this->wizard_checkMissingExtensions();
-        //$missingConf = $this->wizard_checkConfiguration();
-        //$missingDir = $this->wizard_checkDirectory();
-        //if (!$missingExt && !$missingConf) {
-        //    $url = BackendUtility::getModuleUrl(
-        //        'tv_mod_admin_wizard'
-        //    );
-        //
-        //    $outputString .= '
-        //    <br/>
-        //    <br/>
-        //    <a href="' . $url . '" class="btn btn-primary">' . static::getLanguageService()->getLL('newsitewizard_startnow', true) . '</a>';
-        //} else {
-        //    $outputString .= '<br/><br/>' . static::getLanguageService()->getLL('newsitewizard_problem');
-        //}
-        //
-        //// Add output:
-        //$content .= $this->getModuleTemplate()->section(static::getLanguageService()->getLL('wiz_title'), $outputString, 0, 1);
-        //
-        //// Missing extension warning:
-        //if ($missingExt) {
-        //    $msg = GeneralUtility::makeInstance(FlashMessage::class, $missingExt, static::getLanguageService()->getLL('newsitewizard_missingext'), FlashMessage::ERROR);
-        //    $content .= $msg->render();
-        //}
-        //
-        //// Missing configuration warning:
-        //if ($missingConf) {
-        //    $msg = GeneralUtility::makeInstance(FlashMessage::class, static::getLanguageService()->getLL('newsitewizard_missingconf_description'), static::getLanguageService()->getLL('newsitewizard_missingconf'), FlashMessage::ERROR);
-        //    $content .= $msg->render();
-        //}
-        //
-        //// Missing directory warning:
-        //if ($missingDir) {
-        //    $content .= $this->getModuleTemplate()->section(static::getLanguageService()->getLL('newsitewizard_missingdir'), $missingDir, 0, 1, 3);
-        //}
-
-        return $content;
-    }
-
-    /**
-     * Running the wizard. Basically branching out to sub functions.
-     * Also gets and saves session data in $this->wizardData
-     */
-    public function renderNewSiteWizard_run()
-    {
-        // Getting session data:
-        $this->wizardData = static::getBackendUser()->getSessionData('tx_templavoila_wizard');
-
-        if (static::getBackendUser()->isAdmin()) {
-            $outputString = '';
-
-            switch ($this->MOD_SETTINGS['wiz_step']) {
-                case 1:
-                    $this->wizard_step1();
-                    break;
-                case 2:
-                    $this->wizard_step2();
-                    break;
-                case 3:
-                    $this->wizard_step3();
-                    break;
-                case 4:
-                    $this->wizard_step4();
-                    break;
-                case 5:
-                    $this->wizard_step5('field_menu');
-                    break;
-                case 5.1:
-                    $this->wizard_step5('field_submenu');
-                    break;
-                case 6:
-                    $this->wizard_step6();
-                    break;
-            }
-
-            $outputString .= '<hr/><input type="submit" value="' . static::getLanguageService()->getLL('newsitewizard_cancel', true) . '" onclick="' . htmlspecialchars('document.location=\'index.php?SET[wiz_step]=0\'; return false;') . '" />';
-
-            // Add output:
-            $this->content .= $this->getModuleTemplate()->section('', $outputString, 0, 1);
-        }
-
-        // Save session data:
-        static::getBackendUser()->setAndSaveSessionData('tx_templavoila_wizard', $this->wizardData);
-    }
-
-    /**
-     * Pre-checking for extensions
-     *
-     * @return string If string is returned, an error occured.
-     */
-    public function wizard_checkMissingExtensions()
-    {
-        $outputString = static::getLanguageService()->getLL('newsitewizard_missingext_description', true);
-
-        // Create extension status:
-        $checkExtensions = explode(',', 'css_styled_content,impexp');
-        $missingExtensions = false;
-
-        $tRows = [];
-        $tRows[] = '<tr class="tableheader bgColor5">
-            <td>' . static::getLanguageService()->getLL('newsitewizard_missingext_extkey', true) . '</td>
-            <td>' . static::getLanguageService()->getLL('newsitewizard_missingext_installed', true) . '</td>
-        </tr>';
-
-        foreach ($checkExtensions as $extKey) {
-            $tRows[] = '<tr class="bgColor4">
-                <td>' . $extKey . '</td>
-                <td align="center">' . (ExtensionManagementUtility::isLoaded($extKey) ? static::getLanguageService()->getLL('newsitewizard_missingext_yes', true) : '<span class="typo3-red">' . static::getLanguageService()->getLL('newsitewizard_missingext_no', true) . '</span>') . '</td>
-            </tr>';
-
-            if (!ExtensionManagementUtility::isLoaded($extKey)) {
-                $missingExtensions = true;
-            }
-        }
-
-        $outputString .= '<table border="0" cellpadding="1" cellspacing="1">' . implode('', $tRows) . '</table>';
-
-        // If no extensions are missing, simply go to step two:
-        return ($missingExtensions) ? $outputString : '';
-    }
-
-    /**
-     * Pre-checking for TemplaVoila configuration
-     *
-     * @return bool If string is returned, an error occured.
-     */
-    public function wizard_checkConfiguration()
-    {
-        $TVconfig = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf'][Templavoila::EXTKEY]);
-
-        return !is_array($TVconfig);
-    }
-
-    /**
-     * Pre-checking for directory of extensions.
-     *
-     * @return string If string is returned, an error occured.
-     */
-    public function wizard_checkDirectory()
-    {
-        $paths = $this->getTemplatePaths(true);
-        if (empty($paths)) {
-            return nl2br(sprintf(static::getLanguageService()->getLL('newsitewizard_missingdir_instruction'), implode(' or ', $this->getTemplatePaths(true, false)), $GLOBALS['TYPO3_CONF_VARS']['BE']['fileadminDir']));
-        }
-
-        return false;
-    }
-
-    /**
      * Find and check all template paths
      *
      * @param bool $relative if true returned paths are relative
@@ -1871,7 +1705,7 @@ class MainController extends AbstractModuleController implements Configurable
         $paths = $this->getTemplatePaths();
         $files = [];
         foreach ($paths as $path) {
-            $files = array_merge(GeneralUtility::getAllFilesAndFoldersInPath([], $path . ((substr($path, -1) !== '/') ? '/' : ''), 'html,htm,tmpl', 0), $files);
+            $files = array_merge(GeneralUtility::getAllFilesAndFoldersInPath([], $path . ((substr($path, -1) !== '/') ? '/' : ''), 'html,htm,tmpl'), $files);
         }
 
         return $files;

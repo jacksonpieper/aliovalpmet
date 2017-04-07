@@ -61,7 +61,7 @@ class RenameFieldInPageFlexWizardController extends AbstractFunctionModule
      */
     protected function getAllSubPages($uid)
     {
-        $completeRecords = BackendUtility::getRecordsByField('pages', 'pid', $uid);
+        $completeRecords = BackendUtility::getRecordsByField('pages', 'pid', (string)$uid);
         $return = [$uid];
         if (count($completeRecords) > 0) {
             foreach ($completeRecords as $record) {
@@ -147,11 +147,11 @@ class RenameFieldInPageFlexWizardController extends AbstractFunctionModule
         unset($message);
         $buffer .= '<form action="' . $this->getLinkModuleRoot() . '"><div id="formFieldContainer">';
         $options = $this->getDSFieldOptionCode();
-        $buffer .= $this->addFormField('sourceField', null, 'select_optgroup', $options);
-        $buffer .= $this->addFormField('destinationField', null, 'select_optgroup', $options);
-        $buffer .= $this->addFormField('simulateField', 1, 'checkbox');
-        $buffer .= $this->addFormField('executeRename', 1, 'hidden');
-        $buffer .= $this->addFormField('submit', null, 'submit');
+        $buffer .= $this->addFormField('sourceField', '', 'select_optgroup', $options);
+        $buffer .= $this->addFormField('destinationField', '', 'select_optgroup', $options);
+        $buffer .= $this->addFormField('simulateField', '1', 'checkbox');
+        $buffer .= $this->addFormField('executeRename', '1', 'hidden');
+        $buffer .= $this->addFormField('submit', '', 'submit');
         $buffer .= '</div></form>';
         $this->getKnownPageDS();
 
@@ -168,7 +168,7 @@ class RenameFieldInPageFlexWizardController extends AbstractFunctionModule
      */
     protected function addFormField($name, $value = '', $type = 'text', $options = [])
     {
-        if ($value === null) {
+        if ($value === '') {
             $value = GeneralUtility::_GP($name);
         }
         switch ($type) {

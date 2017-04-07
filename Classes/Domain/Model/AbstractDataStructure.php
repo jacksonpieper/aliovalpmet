@@ -183,21 +183,21 @@ abstract class AbstractDataStructure
     /**
      * Retrieve the filereference of the template
      *
-     * @return string
+     * @return int
      */
     abstract public function getTstamp();
 
     /**
      * Retrieve the filereference of the template
      *
-     * @return string
+     * @return int
      */
     abstract public function getCrdate();
 
     /**
      * Retrieve the filereference of the template
      *
-     * @return string
+     * @return int
      */
     abstract public function getCruser();
 

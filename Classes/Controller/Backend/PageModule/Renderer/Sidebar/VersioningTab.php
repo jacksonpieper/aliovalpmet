@@ -27,7 +27,7 @@ class VersioningTab implements Renderable
     use LanguageService;
 
     /**
-     * @var PageModuleController
+     * @var MainController
      */
     private $controller;
 

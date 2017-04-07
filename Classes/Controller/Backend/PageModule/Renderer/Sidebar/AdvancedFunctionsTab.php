@@ -27,7 +27,7 @@ class AdvancedFunctionsTab implements Renderable
     use BackendUser;
 
     /**
-     * @var PageModuleController
+     * @var MainController
      */
     private $controller;
 

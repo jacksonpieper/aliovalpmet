@@ -33,7 +33,7 @@ class RecordsTab implements Renderable
     use BackendUser;
 
     /**
-     * @var PageModuleController
+     * @var MainController
      */
     private $controller;
 
@@ -108,7 +108,7 @@ class RecordsTab implements Renderable
             $backpath = '../../../../typo3/';
             $params = '&edit[' . $this->table . '][' . $this->controller->getId() . ']=new';
             $content .= '&nbsp;&nbsp;';
-            $content .= '<a title="' . static::getLanguageService()->getLL('createnewrecord') . '" href="#" onclick="' . htmlspecialchars(BackendUtility::editOnClick($params, $backpath, -1)) . '">';
+            $content .= '<a title="' . static::getLanguageService()->getLL('createnewrecord') . '" href="#" onclick="' . htmlspecialchars(BackendUtility::editOnClick($params, $backpath, '-1')) . '">';
             $content .= $this->controller->getModuleTemplate()->getIconFactory()->getIcon('actions-document-new', Icon::SIZE_SMALL);
             $content .= '</a>';
         }
@@ -128,8 +128,8 @@ class RecordsTab implements Renderable
             $this->dblist = GeneralUtility::makeInstance(DatabaseRecordList::class);
             $this->dblist->calcPerms = 0; // todo :change this
             $this->dblist->thumbs = static::getBackendUser()->uc['thumbnailsByDefault'];
-            $this->dblist->returnUrl = $GLOBALS['BACK_PATH'] . TYPO3_MOD_PATH . 'index.php?' . $this->controller->link_getParameters();
-            $this->dblist->allFields = true;
+            $this->dblist->returnUrl = 'index.php?' . $this->controller->link_getParameters();
+            $this->dblist->allFields = 1;
             $this->dblist->localizationView = true;
             $this->dblist->showClipboard = false;
             $this->dblist->disableSingleTableView = true;

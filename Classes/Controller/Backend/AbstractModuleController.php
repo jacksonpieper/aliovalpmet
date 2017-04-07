@@ -229,7 +229,7 @@ abstract class AbstractModuleController extends AbstractModule
 
             /** @var $template TemplateService */
             $template = GeneralUtility::makeInstance(TemplateService::class);
-            $template->tt_track = 0;
+            $template->tt_track = false;
             $template->setProcessExtensionStatics(true);
             $template->init();
             $template->runThroughTemplates($rootline, 0);

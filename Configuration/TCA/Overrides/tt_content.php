@@ -97,10 +97,9 @@ $GLOBALS['TCA']['tt_content']['types']['templavoila_pi1']['showitem'] =
 
 $_EXTCONF = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf'][\Schnitzler\Templavoila\Templavoila::EXTKEY]);
 if ($_EXTCONF['enable.']['selectDataStructure']) {
-    if ($GLOBALS['TCA']['tt_content']['ctrl']['requestUpdate'] !== '') {
-        $GLOBALS['TCA']['tt_content']['ctrl']['requestUpdate'] .= ',';
-    }
-    $GLOBALS['TCA']['tt_content']['ctrl']['requestUpdate'] .= 'tx_templavoila_ds';
+    $requestUpdate = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $GLOBALS['TCA']['tt_content']['ctrl']['requestUpdate'], true);
+    $requestUpdate[] = 'tx_templavoila_ds';
+    $GLOBALS['TCA']['tt_content']['ctrl']['requestUpdate'] = implode(',', $requestUpdate);
 }
 
 if ($_EXTCONF['enable.']['selectDataStructure']) {

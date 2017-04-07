@@ -149,31 +149,31 @@ class DataStructure extends AbstractDataStructure
     /**
      * Retrieve the filereference of the template
      *
-     * @return string
+     * @return int
      */
     public function getTstamp()
     {
-        return $this->row['tstamp'];
+        return (int)$this->row['tstamp'];
     }
 
     /**
      * Retrieve the filereference of the template
      *
-     * @return string
+     * @return int
      */
     public function getCrdate()
     {
-        return $this->row['crdate'];
+        return (int)$this->row['crdate'];
     }
 
     /**
      * Retrieve the filereference of the template
      *
-     * @return string
+     * @return int
      */
     public function getCruser()
     {
-        return $this->row['cruser_id'];
+        return (int)$this->row['cruser_id'];
     }
 
     /**

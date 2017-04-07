@@ -52,7 +52,7 @@ class SidebarRenderer
         $hideIfEmpty = $this->controller->modTSconfig['properties']['showTabsIfEmpty'] ? false : true;
 
         $recordTables = GeneralUtility::trimExplode(',', $this->controller->modTSconfig['properties']['recordDisplay_tables'], true);
-        array_filter($recordTables, function ($table) use ($controller) {
+        array_filter($recordTables, function ($table) {
             return $table !== 'pages' && $table !== 'tt_content' && isset($GLOBALS['TCA'][$table]) && static::getBackendUser()->check('tables_select', $table);
         });
 

@@ -85,9 +85,9 @@ class StaticDataStructuresHandler
      * Adds Template Object records to selector box for Content Elements of the "Plugin" type.
      *
      * @param array &$params Array of items passed by reference.
-     * @param \TYPO3\CMS\Backend\Form\FormEngine|\TYPO3\CMS\Backend\Form\DataPreprocessor $pObj The parent object (\TYPO3\CMS\Backend\Form\FormEngine / \TYPO3\CMS\Backend\Form\DataPreprocessor depending on context)
+     * @param TcaSelectItems $pObj
      */
-    public function pi_templates(&$params, $pObj)
+    public function pi_templates(&$params, TcaSelectItems $pObj)
     {
         // Find the template data structure that belongs to this plugin:
         $piKey = $params['row']['list_type'];
@@ -106,7 +106,8 @@ class StaticDataStructuresHandler
             );
 
             // Traverse these and add them. Icons are set too if applicable.
-            while (false != ($row = static::getDatabaseConnection()->sql_fetch_assoc($res))) {
+            while (false !== ($row = static::getDatabaseConnection()->sql_fetch_assoc($res))) {
+                /** @var array $row */
                 if ($row['previewicon']) {
                     $icon = '../' . $GLOBALS['TCA']['tx_templavoila_tmplobj']['columns']['previewicon']['config']['uploadfolder'] . '/' . $row['previewicon'];
                 } else {
