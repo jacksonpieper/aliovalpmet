@@ -181,9 +181,14 @@ class StaticDataStructuresHandler
     protected function templateObjectItemsProcFuncForCurrentDS(array &$params, TcaSelectItems $pObj)
     {
         // Get DS
-        $tsConfig = & $pObj->cachedTSconfig[$params['table'] . ':' . $params['row']['uid']];
+        $doktypeBackup = $params['row']['doktype'];
+        $params['row']['doktype'] = (int)reset($params['row']['doktype']);
+        $tsConfig = BackendUtility::getTCEFORM_TSconfig($params['table'], $params['row']);
+        $params['row']['doktype'] = $doktypeBackup;
+
         $fieldName = $params['field'] === 'tx_templavoila_next_to' ? 'tx_templavoila_next_ds' : 'tx_templavoila_ds';
-        $dataSource = $tsConfig['_THIS_ROW'][$fieldName];
+        $dataSource = isset($tsConfig['_THIS_ROW'][$fieldName]) ? (array)$tsConfig['_THIS_ROW'][$fieldName]: [];
+        $dataSource = (int)reset($dataSource);
 
         $storagePid = $this->getStoragePid($params, $pObj);
 
