@@ -23,6 +23,7 @@ use TYPO3\CMS\Backend\Form\FormDataProvider\TcaSelectItems;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
+use TYPO3\CMS\Frontend\Page\PageRepository;
 
 /**
  * Class/Function which manipulates the item-array for table/field tx_templavoila_tmplobj_datastructure.
@@ -180,11 +181,20 @@ class StaticDataStructuresHandler
      */
     protected function templateObjectItemsProcFuncForCurrentDS(array &$params, TcaSelectItems $pObj)
     {
+        $row = isset($params['row']) && is_array($params['row']) ? $params['row'] : [];
+        $row['doktype'] = PageRepository::DOKTYPE_DEFAULT;
+
+        if (isset($params['row']['doktype'])) {
+            if (is_array($params['row']['doktype'])) {
+                $row['doktype'] = (int)reset($params['row']['doktype']);
+            } elseif (MathUtility::canBeInterpretedAsInteger($params['row']['doktype'])) {
+                $row['doktype'] = (int)$params['row']['doktype'];
+            }
+        }
+
         // Get DS
-        $doktypeBackup = $params['row']['doktype'];
-        $params['row']['doktype'] = (int)reset($params['row']['doktype']);
-        $tsConfig = BackendUtility::getTCEFORM_TSconfig($params['table'], $params['row']);
-        $params['row']['doktype'] = $doktypeBackup;
+        $tsConfig = BackendUtility::getTCEFORM_TSconfig($params['table'], $row);
+        unset($row);
 
         $fieldName = $params['field'] === 'tx_templavoila_next_to' ? 'tx_templavoila_next_ds' : 'tx_templavoila_ds';
         $dataSource = isset($tsConfig['_THIS_ROW'][$fieldName]) ? (array)$tsConfig['_THIS_ROW'][$fieldName]: [];
