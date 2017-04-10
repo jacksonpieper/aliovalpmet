@@ -1,3 +1,16 @@
+7.6.4 / 2017-04-10
+==================
+
+  * 2017-04-10  1ea3bee  [TASK] Deactivate tests in gitlab ci (Alexander Schnitzler)
+  * 2017-04-10  d39234b  [BUGFIX] Convert TCEforms config to array before update (Alexander Schnitzler)
+  * 2017-04-10  f1b52a9  [TASK] Remove executable flag for several files (Alexander Schnitzler)
+  * 2017-04-10  c351eb9  [BUGFIX] Make templateObjectItemsProcFunc even more strict (Alexander Schnitzler)
+  * 2017-04-08  e862020  [BUGFIX] Properly resolve tsconfig in templateObjectItemsProcFunc (Alexander Schnitzler)
+  * 2017-04-07  f6c48b3  [TASK] Code cleanup (Alexander Schnitzler)
+  * 2017-04-07  b2bab6e  [BUGFIX] Fix method dataSourceItemsProcFunc (Alexander Schnitzler)
+  * 2017-04-07  b626dff  [BUGFIX] Rename SerializationException according to folder structure (Alexander Schnitzler)
+  * 2017-04-07  3f78dd8  [TASK] Add .codeclimate.yml (Alexander Schnitzler)
+
 7.6.3 / 2017-04-05
 ==================
 
