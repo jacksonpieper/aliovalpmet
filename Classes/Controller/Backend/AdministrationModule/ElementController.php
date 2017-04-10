@@ -682,6 +682,8 @@ class ElementController extends AbstractModuleController implements Configurable
 
         $inDS = GeneralUtility::_GP('autoDS');
         if (is_array($inDS)) {
+            $this->convertTceFormStringToArrayRecursive($inDS);
+
             ArrayUtility::mergeRecursiveWithOverrule($dataStructure, $inDS);
 
             $this->streamlineStructureRecursive($dataStructure);
@@ -693,6 +695,32 @@ class ElementController extends AbstractModuleController implements Configurable
         return $response->withHeader('Location', $this->getModuleUrl([
             'DS_element' => $DS_element
         ]));
+    }
+
+    /**
+     * @param array $element
+     */
+    protected function convertTceFormStringToArrayRecursive(array &$element)
+    {
+        foreach ($element as $key => &$value) {
+            if ($key === 'meta') {
+                continue;
+            }
+
+            if (isset($value['el']) && is_array($value['el'])) {
+                $this->convertTceFormStringToArrayRecursive($value['el']);
+            }
+
+            if (isset($value['TCEforms']['config'])) {
+                $config = GeneralUtility::xml2array(
+                    '<root>' .
+                    $value['TCEforms']['config'] .
+                    '</root>'
+                );
+
+                $value['TCEforms']['config'] = is_array($config) ? $config : [];
+            }
+        }
     }
 
     /**
