@@ -181,24 +181,10 @@ class StaticDataStructuresHandler
      */
     protected function templateObjectItemsProcFuncForCurrentDS(array &$params, TcaSelectItems $pObj)
     {
-        $row = isset($params['row']) && is_array($params['row']) ? $params['row'] : [];
-        $row['doktype'] = PageRepository::DOKTYPE_DEFAULT;
-
-        if (isset($params['row']['doktype'])) {
-            if (is_array($params['row']['doktype'])) {
-                $row['doktype'] = (int)reset($params['row']['doktype']);
-            } elseif (MathUtility::canBeInterpretedAsInteger($params['row']['doktype'])) {
-                $row['doktype'] = (int)$params['row']['doktype'];
-            }
-        }
-
-        // Get DS
-        $tsConfig = BackendUtility::getTCEFORM_TSconfig($params['table'], $row);
-        unset($row);
-
         $fieldName = $params['field'] === 'tx_templavoila_next_to' ? 'tx_templavoila_next_ds' : 'tx_templavoila_ds';
-        $dataSource = isset($tsConfig['_THIS_ROW'][$fieldName]) ? (array)$tsConfig['_THIS_ROW'][$fieldName]: [];
-        $dataSource = (int)reset($dataSource);
+        $dataSource = (isset($params['row'][$fieldName]) && is_array($params['row']))
+            ? (int)reset($params['row'][$fieldName])
+            : 0;
 
         $storagePid = $this->getStoragePid($params, $pObj);
 
@@ -215,7 +201,7 @@ class StaticDataStructuresHandler
 
         try {
             $ds = $dsRepo->getDatastructureByUidOrFilename($dataSource);
-            if (strlen($dataSource)) {
+            if ($dataSource > 0) {
                 $toList = $toRepo->getTemplatesByDatastructure($ds, $storagePid);
                 foreach ($toList as $toObj) {
                     /** @var \Schnitzler\Templavoila\Domain\Model\Template $toObj */
