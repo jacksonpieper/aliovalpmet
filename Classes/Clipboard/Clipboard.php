@@ -160,9 +160,40 @@ class Clipboard
             $referenceUrlParams['CB']['el']['tt_content|' . $elementRecord['uid']] = 1;
         }
 
-        $linkCopy = '<a title="' . static::getLanguageService()->getLL('copyrecord') . '" class="btn btn-default tpm-copy" href="' . $this->controller->getReturnUrl($copyUrlParams) . '">' . $copyIcon . '</a>';
-        $linkCut = '<a title="' . static::getLanguageService()->getLL('cutrecord') . '" class="btn btn-default tpm-cut" href="' . $this->controller->getReturnUrl($cutUrlParams) . '">' . $cutIcon . '</a>';
-        $linkRef = '<a title="' . static::getLanguageService()->getLL('createreference') . '" class="btn btn-default tpm-ref" href="' . $this->controller->getReturnUrl($referenceUrlParams) . '">' . $refIcon . '</a>';
+        $linkCopy = $copyIcon;
+        $linkCopy = '<span
+            data-toggle="tooltip"
+            data-title="' . static::getLanguageService()->getLL('copyrecord') . '"
+            data-html="false"
+            data-placement="top"
+        >' . $linkCopy . '</span>';
+        $linkCopy = '<a
+            href="' . $this->controller->getReturnUrl($copyUrlParams) . '"
+            class="btn btn-default tpm-copy"
+        >' . $linkCopy . '</a>';
+
+        $linkCut = $cutIcon;
+        $linkCut = '<span
+            data-toggle="tooltip"
+            data-title="' . static::getLanguageService()->getLL('cutrecord') . '"
+            data-html="false"
+            data-placement="top"
+        >' . $linkCut . '</span>';
+        $linkCut = '<a
+            href="' . $this->controller->getReturnUrl($cutUrlParams) . '"
+            class="btn btn-default tpm-cut"
+        >' . $linkCut . '</a>';
+
+        $linkRef = $refIcon;
+        $linkRef = '<span
+            data-toggle="tooltip"
+            data-title="' . static::getLanguageService()->getLL('createreference') . '"
+            data-html="false"
+            data-placement="top">' . $linkRef . '</span>';
+        $linkRef = '<a
+            href="' . $this->controller->getReturnUrl($referenceUrlParams) . '"
+            class="btn btn-default tpm-ref"
+        >' . $linkRef . '</a>';
 
         $output =
             (GeneralUtility::inList($listOfButtons, 'copy') && !in_array('copy', $this->controller->getBlindIcons(), true) ? $linkCopy : '') .

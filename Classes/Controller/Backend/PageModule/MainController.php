@@ -626,10 +626,19 @@ class MainController extends AbstractModuleController implements Configurable
                         ]
                     );
 
-                    return '<a href="' . $url . '"
-                               class="' . $class . '"
-                               title="' . static::getLanguageService()->getLL('edit') . '"
-                            >' . $label . '</a>';
+                    $link = $label;
+                    $link = '<span
+                        data-toggle="tooltip"
+                        data-title="' . static::getLanguageService()->getLL('edit') . '"
+                        data-html="false"
+                        data-placement="top"
+                    >' . $link . '</span>';
+                    $link = '<a href="' . $url . '"
+                        class="' . $class . '"
+                        title="' . static::getLanguageService()->getLL('edit') . '"
+                    >' . $link . '</a>';
+
+                    return $link;
                 }
             } else {
                 return $label;
@@ -692,54 +701,46 @@ class MainController extends AbstractModuleController implements Configurable
                     // /typo3/index.php?route=/record/commit&token=95e22a63987e872bed3517f172e8a160ab70bad7&prErr=1&uPT=1&vC=363bdc1323&data[tt_content][46][hidden]=1&redirect=/typo3/index.php?M=web_layout&moduleToken=267a409d06c8b2de513cfebc280ca638a7fd6620&id=2
                     $returnUrl = $this->currentElementParentPointer ? GeneralUtility::getIndpEnv('REQUEST_URI') . '#c' . md5($this->getApiService()->flexform_getStringFromPointer($this->currentElementParentPointer) . $uid) : GeneralUtility::getIndpEnv('REQUEST_URI');
                     if ($hidden) {
-                        $url = BackendUtility::getModuleUrl(
-                            'tce_db',
-                            [
-                                'data' => [
-                                    $table => [
-                                        $uid => [
-                                            'hidden' => 0
-                                        ]
-                                    ]
-                                ],
-                                'redirect' => $returnUrl
-                            ]
-                        );
-
-                        return '<a href="' . $url . '"
-                                   class="btn btn-default tpm-hide t3js-record-hide"
-                                   title="' . static::getLanguageService()->getLL('unHide') . '"
-                                   data-state="hidden"
-                                   data-table="' . $table . '"
-                                   data-uid="' . $uid . '"
-                                   data-value="0"
-                                   data-title-toggle="' . static::getLanguageService()->getLL('hide') . '"
-                               >' . $label . '</a>';
+                        $newHiddenValue = 0;
+                        $title = static::getLanguageService()->getLL('unHide');
+                        $titleToggle = static::getLanguageService()->getLL('hide');
+                        $state = 'hidden';
+                        $value = 0;
                     } else {
-                        $url = BackendUtility::getModuleUrl(
-                            'tce_db',
-                            [
-                                'data' => [
-                                    $table => [
-                                        $uid => [
-                                            'hidden' => 1
-                                        ]
-                                    ]
-                                ],
-                                'redirect' => $returnUrl
-                            ]
-                        );
-
-                        return '<a href="' . $url . '"
-                                   class="btn btn-default tpm-hide t3js-record-hide"
-                                   title="' . static::getLanguageService()->getLL('hide') . '"
-                                   data-state="visible"
-                                   data-table="' . $table . '"
-                                   data-uid="' . $uid . '"
-                                   data-value="1"
-                                   data-title-toggle="' . static::getLanguageService()->getLL('unHide') . '"
-                                >' . $label . '</a>';
+                        $newHiddenValue = 1;
+                        $title = static::getLanguageService()->getLL('hide');
+                        $titleToggle = static::getLanguageService()->getLL('unHide');
+                        $state = 'visible';
+                        $value = 1;
                     }
+
+                    $url = BackendUtility::getModuleUrl(
+                        'tce_db',
+                        [
+                            'data' => [
+                                $table => [
+                                    $uid => [
+                                        'hidden' => $newHiddenValue
+                                    ]
+                                ]
+                            ],
+                            'redirect' => $returnUrl
+                        ]
+                    );
+
+                    $link = $label;
+                    $link = '<span data-toggle="tooltip" data-title="' . $title . '" data-html="false" data-placement="top">' . $link . '</span>';
+                    $link = '<a href="' . $url . '"
+                        title="' . $title . '"
+                        class="btn btn-default tpm-hide t3js-record-hide"
+                        data-state="' . $state . '"
+                        data-table="' . $table . '"
+                        data-uid="' . $uid . '"
+                        data-value="' . $value . '"
+                        data-title-toggle="' . $titleToggle . '"
+                    >' . $link . '</a>';
+
+                    return $link;
                 }
             } else {
                 return $label;
@@ -826,44 +827,45 @@ class MainController extends AbstractModuleController implements Configurable
         $unlinkPointerString = (string)$this->getApiService()->flexform_getStringFromPointer($unlinkPointer);
 
         if ($realDelete) {
-            $LLlabel = $foreignReferences ? 'deleteRecordWithReferencesMsg' : 'deleteRecordMsg';
-
-            $url = BackendUtility::getModuleUrl(
-                'tv_mod_pagemodule_contentcontroller',
-                [
-                    'action' => 'delete',
-                    'returnUrl' => $this->getReturnUrl(),
-                    'record' => $unlinkPointerString
-                ]
-            );
-
-            $icon = $this->getModuleTemplate()->getIconFactory()->getIcon('extensions-templavoila-delete', Icon::SIZE_SMALL);
-
-            return '<a href="' . $url . '"
-                       class="btn btn-default t3js-record-delete tpm-unlink"
-                       title="' . static::getLanguageService()->getLL('deleteRecord') . '"
-                       data-pointer="' . $unlinkPointerString . '"
-                       data-title="' . static::getLanguageService()->getLL($LLlabel) . '"
-                    >' . $icon . '</a>';
+            $titleIdentifier = 'deleteRecord';
+            $dataTitleIdentifier = $foreignReferences ? 'deleteRecordWithReferencesMsg' : 'deleteRecordMsg';
+            $action = 'delete';
+            $iconIdentifier = 'extensions-templavoila-delete';
         } else {
-            $url = BackendUtility::getModuleUrl(
-                'tv_mod_pagemodule_contentcontroller',
-                [
-                    'action' => 'unlink',
-                    'returnUrl' => $this->getReturnUrl(),
-                    'record' => $unlinkPointerString
-                ]
-            );
-
-            $icon = $this->getModuleTemplate()->getIconFactory()->getIcon('extensions-templavoila-unlink', Icon::SIZE_SMALL);
-
-            return '<a href="' . $url . '"
-                       class="btn btn-default t3js-record-delete tpm-unlink"
-                       title="' . static::getLanguageService()->getLL('unlinkRecord') . '"
-                       data-pointer="' . $unlinkPointerString . '"
-                       data-title="' . static::getLanguageService()->getLL('unlinkRecordMsg') . '"
-                    >' . $icon . '</a>';
+            $titleIdentifier = 'unlinkRecord';
+            $dataTitleIdentifier = 'unlinkRecordMsg';
+            $action = 'unlink';
+            $iconIdentifier = 'extensions-templavoila-unlink';
         }
+
+        $title = static::getLanguageService()->getLL($titleIdentifier);
+        $dataTitle = static::getLanguageService()->getLL($dataTitleIdentifier);
+
+        $url = BackendUtility::getModuleUrl(
+            'tv_mod_pagemodule_contentcontroller',
+            [
+                'action' => $action,
+                'returnUrl' => $this->getReturnUrl(),
+                'record' => $unlinkPointerString
+            ]
+        );
+
+        $linkDelete = $this->getModuleTemplate()->getIconFactory()->getIcon($iconIdentifier, Icon::SIZE_SMALL);
+        $linkDelete = '<span
+            data-toggle="tooltip"
+            data-title="' . $title . '"
+            data-html="false"
+            data-placement="top"
+        >' . $linkDelete . '</span>';
+        $linkDelete = '<a
+            class="btn btn-default t3js-record-delete tpm-unlink"
+            title="' . $title . '"
+            data-title="' . $dataTitle . '"
+            data-pointer="' . $unlinkPointerString . '"
+            href="' . $url . '"
+        >' . $linkDelete . '</a>';
+
+        return $linkDelete;
     }
 
     /**

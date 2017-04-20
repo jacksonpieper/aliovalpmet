@@ -106,6 +106,7 @@ define(['jquery',
      */
     PageModule._toggleElement = function ($element) {
         var $anchorElement = $element.find(PageModule.identifier.hide);
+        var $tooltipElement = $anchorElement.children('[data-toggle="tooltip"]');
         var newValue, nextState, iconName;
         var value = $anchorElement.data('value');
         var title = $anchorElement.attr('title');
@@ -113,6 +114,12 @@ define(['jquery',
 
         $anchorElement.attr('title', titleToggle);
         $anchorElement.data('title-toggle', title);
+
+        $tooltipElement
+            .attr('data-original-title', titleToggle)
+            .attr('data-title', titleToggle)
+            .tooltip('fixTitle')
+            .tooltip('show');
 
         if ($anchorElement.data('state') === 'hidden') {
             nextState = 'visible';
