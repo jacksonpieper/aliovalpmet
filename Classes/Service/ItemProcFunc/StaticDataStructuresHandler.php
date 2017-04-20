@@ -16,6 +16,7 @@ namespace Schnitzler\Templavoila\Service\ItemProcFunc;
 use Schnitzler\Templavoila\Domain\Model\AbstractDataStructure;
 use Schnitzler\Templavoila\Domain\Repository\DataStructureRepository;
 use Schnitzler\Templavoila\Domain\Repository\TemplateRepository;
+use Schnitzler\Templavoila\Exception\Configuration\UndefinedStorageFolderException;
 use Schnitzler\Templavoila\Templavoila;
 use Schnitzler\Templavoila\Traits\DatabaseConnection;
 use Schnitzler\Templavoila\Traits\LanguageService;
@@ -93,7 +94,11 @@ class StaticDataStructuresHandler
         // Find the template data structure that belongs to this plugin:
         $piKey = $params['row']['list_type'];
         $templateRef = $GLOBALS['TBE_MODULES_EXT']['xMOD_tx_templavoila_cm1']['piKey2DSMap'][$piKey]; // This should be a value of a Data Structure.
-        $storagePid = $this->getStoragePid($params, $pObj);
+        try {
+            $storagePid = $this->getStoragePid($params, $pObj);
+        } catch (UndefinedStorageFolderException $e) {
+            $storagePid = 0;
+        }
 
         if ($templateRef && $storagePid) {
 
@@ -128,13 +133,17 @@ class StaticDataStructuresHandler
      */
     public function dataSourceItemsProcFunc(array &$params, TcaSelectItems $pObj)
     {
-        $storagePid = $this->getStoragePid($params, $pObj);
+        $dsRepo = GeneralUtility::makeInstance(DataStructureRepository::class);
         $scope = $this->getScope($params);
 
-        $removeDSItems = $this->getRemoveItems($params, substr($params['field'], 0, -2) . 'ds');
+        try {
+            $storagePid = $this->getStoragePid($params, $pObj);
+            $dsList = $dsRepo->getDatastructuresByStoragePidAndScope($storagePid, $scope);
+        } catch (UndefinedStorageFolderException $e) {
+            $dsList = $dsRepo->findByScope($scope);
+        }
 
-        $dsRepo = GeneralUtility::makeInstance(DataStructureRepository::class);
-        $dsList = $dsRepo->getDatastructuresByStoragePidAndScope($storagePid, $scope);
+        $removeDSItems = $this->getRemoveItems($params, substr($params['field'], 0, -2) . 'ds');
 
         $params['items'] = [
             [
@@ -186,7 +195,11 @@ class StaticDataStructuresHandler
             ? (int)reset($params['row'][$fieldName])
             : 0;
 
-        $storagePid = $this->getStoragePid($params, $pObj);
+        try {
+            $storagePid = $this->getStoragePid($params, $pObj);
+        } catch (UndefinedStorageFolderException $e) {
+            $storagePid = 0;
+        }
 
         $removeTOItems = $this->getRemoveItems($params, substr($params['field'], 0, -2) . 'to');
 
@@ -228,15 +241,20 @@ class StaticDataStructuresHandler
      */
     protected function templateObjectItemsProcFuncForAllDSes(array &$params, TcaSelectItems $pObj)
     {
-        $storagePid = $this->getStoragePid($params, $pObj);
+        $dsRepo = GeneralUtility::makeInstance(DataStructureRepository::class);
+        $toRepo = GeneralUtility::makeInstance(TemplateRepository::class);
+
         $scope = $this->getScope($params);
+
+        try {
+            $storagePid = $this->getStoragePid($params, $pObj);
+            $dsList = $dsRepo->getDatastructuresByStoragePidAndScope($storagePid, $scope);
+        } catch (UndefinedStorageFolderException $e) {
+            $dsList = $dsRepo->findByScope($scope);
+        }
 
         $removeDSItems = $this->getRemoveItems($params, substr($params['field'], 0, -2) . 'ds');
         $removeTOItems = $this->getRemoveItems($params, substr($params['field'], 0, -2) . 'to');
-
-        $dsRepo = GeneralUtility::makeInstance(DataStructureRepository::class);
-        $toRepo = GeneralUtility::makeInstance(TemplateRepository::class);
-        $dsList = $dsRepo->getDatastructuresByStoragePidAndScope($storagePid, $scope);
 
         $params['items'] = [
             [
@@ -279,6 +297,8 @@ class StaticDataStructuresHandler
      * @param array $params Parameters as come to the itemsProcFunc
      * @param TcaSelectItems $pObj Calling object
      *
+     * @throws UndefinedStorageFolderException
+     *
      * @return int Storage pid
      */
     protected function getStoragePid(array &$params, TcaSelectItems $pObj)
@@ -293,6 +313,10 @@ class StaticDataStructuresHandler
         $modTSConfig = BackendUtility::getModTSconfig($uid, 'tx_templavoila.storagePid');
         if (is_array($modTSConfig) && MathUtility::canBeInterpretedAsInteger($modTSConfig['value'])) {
             $storagePid = (int)$modTSConfig['value'];
+        }
+
+        if ($storagePid === 0) {
+            throw new UndefinedStorageFolderException('Storage folder is not defined', 1492703523758);
         }
 
         return $storagePid;
