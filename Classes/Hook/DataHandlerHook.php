@@ -589,7 +589,7 @@ page.10.disableExplosivePreview = 1
      * @param int $res
      * @param CoreDataHandler $dataHandler
      *
-     * @return int - "1" if we grant access and "0" if we can't decide whether to give access or not
+     * @return int - "1" if we grant access, "0" if we do not grant access, false of we are not sure
      */
     public function checkRecordUpdateAccess($table, $id, $data, $res, CoreDataHandler $dataHandler)
     {
@@ -605,14 +605,14 @@ page.10.disableExplosivePreview = 1
                 }
                 // we're not inserting useful data - can't make a decission
                 if (!is_array($data[$field]) || !is_array($data[$field]['data'])) {
-                    $res = 0;
+                    $res = false;
                     break;
                 }
                 // we're not inserting operating on an flex field - can't make a decission
                 if (!is_array($GLOBALS['TCA'][$table]['columns'][$field]['config']) ||
                     $GLOBALS['TCA'][$table]['columns'][$field]['config']['type'] !== 'flex'
                 ) {
-                    $res = 0;
+                    $res = false;
                     break;
                 }
                 // get the field-information and check if only "ce" fields are updated
@@ -621,24 +621,24 @@ page.10.disableExplosivePreview = 1
                 $dataStructArray = BackendUtility::getFlexFormDS($conf, $currentRecord, $table, $field, true);
                 foreach ($data[$field]['data'] as $sheetData) {
                     if (!is_array($sheetData) || !is_array($dataStructArray['ROOT']['el'])) {
-                        $res = 0;
+                        $res = -1;
                         break;
                     }
                     foreach ($sheetData as $lData) {
                         if (!is_array($lData)) {
-                            $res = 0;
+                            $res = false;
                             break;
                         }
                         /** @var array $lData */
                         foreach ($lData as $fieldName => $fieldData) {
                             if (!isset($dataStructArray['ROOT']['el'][$fieldName])) {
-                                $res = 0;
+                                $res = false;
                                 break;
                             }
 
                             $fieldConf = $dataStructArray['ROOT']['el'][$fieldName];
                             if ($fieldConf['tx_templavoila']['eType'] !== 'ce') {
-                                $res = 0;
+                                $res = false;
                                 break;
                             }
                         }
@@ -646,7 +646,7 @@ page.10.disableExplosivePreview = 1
                 }
             }
             if ($res === 1 && !$dataHandler->doesRecordExist($table, $id, 'editcontent')) {
-                $res = 0;
+                $res = false;
             }
         }
 
