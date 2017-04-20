@@ -526,12 +526,16 @@ backColor = #999999
             'checkbox' => '',
             'eval' => 'trim',
             'wizards' => [
-                '_PADDING' => 2,
                 'link' => [
                     'type' => 'popup',
                     'title' => 'Link',
-                    'icon' => 'link_popup.gif',
-                    'script' => 'browse_links.php?mode=wizard',
+                    'icon' => 'actions-wizard-link',
+                    'module' => [
+                        'name' => 'wizard_element_browser',
+                        'urlParameters' => [
+                            'mode' => 'wizard'
+                        ]
+                    ],
                     'JSopenParams' => 'height=300,width=500,status=0,menubar=0,scrollbars=1'
                 ]
             ]
