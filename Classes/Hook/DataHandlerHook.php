@@ -596,7 +596,7 @@ page.10.disableExplosivePreview = 1
         // Only perform additional checks if not admin and just for pages table.
         if (($table === 'pages') && is_array($data) && !$dataHandler->admin) {
             $res = 1;
-            $excludedTablesAndFields = array_flip($dataHandler->getExcludeListArray());
+            $excludedTablesAndFields = $dataHandler->getExcludeListArray();
 
             foreach ($data as $field => $value) {
                 if ($dataHandler->data_disableFields[$table][$id][$field]
