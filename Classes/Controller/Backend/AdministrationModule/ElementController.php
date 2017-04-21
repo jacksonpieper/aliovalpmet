@@ -424,6 +424,8 @@ class ElementController extends AbstractModuleController implements Configurable
             $structure['meta']['langDisable'] = '1';
         }
 
+        $this->streamlineStructureRecursive($structure);
+
         /** @var DataStructureRepository $dataStructureRepository */
         $dataStructureRepository = GeneralUtility::makeInstance(DataStructureRepository::class);
         $dataStructureUid = $dataStructureRepository->create([
@@ -516,6 +518,8 @@ class ElementController extends AbstractModuleController implements Configurable
 
         $mapping = $this->prepareMappingDataToBeStored($mapping);
         $structure = $this->prepareStructureDataToBeStored($structure, $mapping, $datastructureRecord['scope']);
+
+        $this->streamlineStructureRecursive($structure);
 
         if ((int)$templateObjectRecord['uid'] > 0 && (int)$datastructureRecord['uid'] > 0) {
 
