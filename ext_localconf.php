@@ -180,6 +180,9 @@ unset($GLOBALS['TYPO3_CONF_VARS']['SYS']['formEngine']['formDataGroup']['inlineP
 $GLOBALS['TYPO3_CONF_VARS']['SYS']['formEngine']['formDataGroup']['inlineParentRecord'][\Schnitzler\Templavoila\Form\FormDataProvider\TcaFlexProcess::class] = [
     'depends' => [
         TYPO3\CMS\Backend\Form\FormDataProvider\TcaFlexPrepare::class
+    ],
+    'before' => [
+        \TYPO3\CMS\Backend\Form\FormDataProvider\TcaRadioItems::class
     ]
 ];
 
@@ -190,6 +193,9 @@ unset($GLOBALS['TYPO3_CONF_VARS']['SYS']['formEngine']['formDataGroup']['tcaData
 $GLOBALS['TYPO3_CONF_VARS']['SYS']['formEngine']['formDataGroup']['tcaDatabaseRecord'][\Schnitzler\Templavoila\Form\FormDataProvider\TcaFlexProcess::class] = [
     'depends' => [
         TYPO3\CMS\Backend\Form\FormDataProvider\TcaFlexPrepare::class
+    ],
+    'before' => [
+        \TYPO3\CMS\Backend\Form\FormDataProvider\TcaRadioItems::class
     ]
 ];
 
