@@ -1,3 +1,17 @@
+7.6.5 / 2017-04-21
+==================
+
+  * 2017-04-21  af4645e  [BUGFIX][FOLLOWUP] Fix return value of checkRecordUpdateAccess (Alexander Schnitzler)
+  * 2017-04-21  56d270d  [BUGFIX] Fix ordering of form data providers (Alexander Schnitzler)
+  * 2017-04-21  25e2592  [BUGFIX] Streamline data strcutures before save and create (Alexander Schnitzler)
+  * 2017-04-20  77763c1  [FEATURE] Add tooltips for content element icons (Alexander Schnitzler)
+  * 2017-04-20  81bb251  [BUGFIX] Fix template data for link elements (Alexander Schnitzler)
+  * 2017-04-20  c891375  [BUGFIX] Ignore storage folder if undefined (Alexander Schnitzler)
+  * 2017-04-20  59a089d  [BUGFIX] Remove wrong array_flip on $dataHandler->getExcludeListArray() (Alexander Schnitzler)
+  * 2017-04-20  bba9998  [TASK] Add DataHandlerHookTest (Alexander Schnitzler)
+  * 2017-04-20  e65f159  [BUGFIX] Fix return value of checkRecordUpdateAccess (Alexander Schnitzler)
+  * 2017-04-14  da3451f  [TASK] Simplify and harden templateObjectItemsProcFunc again (Alexander Schnitzler)
+
 7.6.4 / 2017-04-10
 ==================
 
