@@ -621,7 +621,7 @@ page.10.disableExplosivePreview = 1
                 $dataStructArray = BackendUtility::getFlexFormDS($conf, $currentRecord, $table, $field, true);
                 foreach ($data[$field]['data'] as $sheetData) {
                     if (!is_array($sheetData) || !is_array($dataStructArray['ROOT']['el'])) {
-                        $res = -1;
+                        $res = false;
                         break;
                     }
                     foreach ($sheetData as $lData) {
