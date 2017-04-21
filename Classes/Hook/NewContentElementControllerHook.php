@@ -40,11 +40,13 @@ class NewContentElementControllerHook
         $templates = $templateRepository->findByScope(AbstractDataStructure::SCOPE_FCE);
 
         $pageTsConfig = BackendUtility::getPagesTSconfig((int)GeneralUtility::_GP('id'));
+
+        // todo: this needs to be outsourced to a configuration manager
         $storagePid = (int)$pageTsConfig['mod.']['tx_templavoila.']['storagePid'];
 
         foreach ($templates as $template) {
             /** @var Template $template  */
-            if ($template->isPermittedForUser() && $template->isOnPage($storagePid)) {
+            if ($template->isPermittedForUser() && ($storagePid === 0 || $template->isOnPage($storagePid))) {
                 $identifier = 'extensions-templavoila-type-fce';
 
                 $icon = $template->getIcon();
