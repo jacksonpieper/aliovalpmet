@@ -18,7 +18,7 @@ use Schnitzler\Templavoila\Controller\Backend\PageModule\MainController;
 use Schnitzler\Templavoila\Controller\Backend\PageModule\Renderer\Renderable;
 use Schnitzler\Templavoila\Domain\Repository\PageOverlayRepository;
 use Schnitzler\Templavoila\Domain\Repository\PageRepository;
-use Schnitzler\Templavoila\Helper\LanguageHelper;
+use Schnitzler\System\Localization\LanguageHelper;
 use Schnitzler\Templavoila\Traits\BackendUser;
 use Schnitzler\Templavoila\Traits\LanguageService;
 use Schnitzler\Templavoila\Utility\PermissionUtility;

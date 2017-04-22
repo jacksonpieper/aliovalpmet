@@ -11,7 +11,8 @@
             "Schnitzler\\Templavoila\\": [
                 "Classes/",
                 "Interface/"
-            ]
+            ],
+            "Schnitzler\\System\\Localization\\": "src/System.Localization/src/"
         }
     },
     "autoload-dev": {

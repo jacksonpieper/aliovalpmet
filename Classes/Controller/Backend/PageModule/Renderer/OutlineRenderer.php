@@ -15,7 +15,7 @@ declare(strict_types = 1);
 namespace Schnitzler\Templavoila\Controller\Backend\PageModule\Renderer;
 
 use Schnitzler\Templavoila\Controller\Backend\PageModule\MainController;
-use Schnitzler\Templavoila\Helper\LanguageHelper;
+use Schnitzler\System\Localization\LanguageHelper;
 use Schnitzler\Templavoila\Traits\BackendUser;
 use Schnitzler\Templavoila\Traits\LanguageService;
 use Schnitzler\Templavoila\Utility\PermissionUtility;

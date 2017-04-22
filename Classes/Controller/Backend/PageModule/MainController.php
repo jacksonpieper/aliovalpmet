@@ -21,7 +21,7 @@ use Schnitzler\Templavoila\Controller\Backend\PageModule\Renderer\DoktypeRendere
 use Schnitzler\Templavoila\Controller\Backend\PageModule\Renderer\OutlineRenderer;
 use Schnitzler\Templavoila\Controller\Backend\PageModule\Renderer\SheetRenderer;
 use Schnitzler\Templavoila\Controller\Backend\PageModule\Renderer\SidebarRenderer;
-use Schnitzler\Templavoila\Helper\LanguageHelper;
+use Schnitzler\System\Localization\LanguageHelper;
 use Schnitzler\Templavoila\Service\ApiService;
 use Schnitzler\Templavoila\Templavoila;
 use Schnitzler\Templavoila\Utility\PermissionUtility;

@@ -18,7 +18,7 @@ use Schnitzler\Templavoila\Controller\Backend\PageModule\MainController;
 use Schnitzler\Templavoila\Controller\Backend\PageModule\Renderer\Renderable;
 use Schnitzler\Templavoila\Domain\Repository\ContentRepository;
 use Schnitzler\Templavoila\Domain\Repository\ReferenceIndexRepository;
-use Schnitzler\Templavoila\Helper\LanguageHelper;
+use Schnitzler\System\Localization\LanguageHelper;
 use Schnitzler\Templavoila\Traits\BackendUser;
 use Schnitzler\Templavoila\Traits\LanguageService;
 use TYPO3\CMS\Backend\Utility\BackendUtility;

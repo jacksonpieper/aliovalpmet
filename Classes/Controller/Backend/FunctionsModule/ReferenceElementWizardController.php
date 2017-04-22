@@ -13,7 +13,7 @@
 
 namespace Schnitzler\Templavoila\Controller\Backend\FunctionsModule;
 
-use Schnitzler\Templavoila\Helper\LanguageHelper;
+use Schnitzler\System\Localization\LanguageHelper;
 use Schnitzler\Templavoila\Service\ApiService;
 use Schnitzler\Templavoila\Traits\BackendUser;
 use TYPO3\CMS\Backend\Module\AbstractFunctionModule;

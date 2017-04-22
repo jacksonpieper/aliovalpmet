@@ -11,14 +11,14 @@
  * LICENSE.md file that was distributed with this source code.
  */
 
-namespace Schnitzler\Templavoila\Helper;
+namespace Schnitzler\System\Localization;
 
 use Schnitzler\Templavoila\Domain\Repository\SysLanguageRepository;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
- * Class Schnitzler\Templavoila\Helper\LanguageHelper
+ * Class Schnitzler\System\Localization\LanguageHelper
  */
 final class LanguageHelper
 {
