@@ -12,7 +12,8 @@
                 "Classes/",
                 "Interface/"
             ],
-            "Schnitzler\\System\\Localization\\": "src/System.Localization/src/"
+            "Schnitzler\\System\\Localization\\": "src/System.Localization/src/",
+            "Schnitzler\\System\\Mvc\\": "src/System.Mvc/src/"
         }
     },
     "autoload-dev": {

@@ -13,7 +13,7 @@
 
 namespace Schnitzler\System\Localization;
 
-use Schnitzler\Templavoila\Domain\Repository\SysLanguageRepository;
+use Schnitzler\System\Mvc\Domain\Repository\SysLanguageRepository;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
