@@ -14,7 +14,8 @@
             ],
             "Schnitzler\\System\\Localization\\": "src/System.Localization/src/",
             "Schnitzler\\System\\Mvc\\": "src/System.Mvc/src/",
-            "Schnitzler\\System\\Traits\\": "src/System.Traits/src/"
+            "Schnitzler\\System\\Traits\\": "src/System.Traits/src/",
+            "Schnitzler\\TYPO3\\CMS\\Core\\": "src/TYPO3.CMS.Core/src/"
         }
     },
     "autoload-dev": {

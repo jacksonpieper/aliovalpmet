@@ -194,5 +194,5 @@ $GLOBALS['TYPO3_CONF_VARS']['SYS']['Objects'][\TYPO3\CMS\Core\Configuration\Flex
 $GLOBALS['TYPO3_CONF_VARS']['BE']['flexFormXMLincludeDiffBase'] = true;
 
 $GLOBALS['TYPO3_CONF_VARS']['SYS']['Objects'][\TYPO3\CMS\Core\Html\HtmlParser::class] = [
-    'className' => \Schnitzler\Templavoila\Overwrites\Html\HtmlParser::class
+    'className' => \Schnitzler\TYPO3\CMS\Core\Html\HtmlParser::class
 ];

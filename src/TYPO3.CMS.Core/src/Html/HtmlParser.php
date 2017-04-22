@@ -13,10 +13,10 @@
  * The TYPO3 project - inspiring people to share!
  */
 
-namespace Schnitzler\Templavoila\Overwrites\Html;
+namespace Schnitzler\TYPO3\CMS\Core\Html;
 
 /**
- * Class Schnitzler\Templavoila\Overwrites\Html\HtmlParser
+ * Class Schnitzler\TYPO3\CMS\Core\Html\HtmlParser
  */
 class HtmlParser extends \TYPO3\CMS\Core\Html\HtmlParser
 {
