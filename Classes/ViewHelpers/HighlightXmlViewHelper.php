@@ -14,7 +14,7 @@
 namespace Schnitzler\Templavoila\ViewHelpers;
 
 use InvalidArgumentException;
-use Schnitzler\Templavoila\Service\SyntaxHighlightingService;
+use Schnitzler\TemplaVoila\UI\SyntaxHighlighter;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
 use TYPO3\CMS\Fluid\Core\ViewHelper\Exception\InvalidVariableException;
@@ -57,7 +57,7 @@ class HighlightXmlViewHelper extends AbstractViewHelper
             throw new InvalidVariableException('An argument "xml" needs to be provided', 1477218307618);
         }
 
-        $syntaxHighlightingService = GeneralUtility::makeInstance(SyntaxHighlightingService::class);
+        $syntaxHighlightingService = GeneralUtility::makeInstance(SyntaxHighlighter::class);
 
         if (strpos(substr($xml, 0, 100), '<T3DataStructure') !== false) {
             $title = 'Syntax highlighting <T3DataStructure> XML:';

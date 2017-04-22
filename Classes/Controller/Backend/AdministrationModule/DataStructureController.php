@@ -18,7 +18,7 @@ use Psr\Http\Message\ServerRequestInterface;
 use Schnitzler\Templavoila\Controller\Backend\AbstractModuleController;
 use Schnitzler\Templavoila\Controller\Backend\Linkable;
 use Schnitzler\TemplaVoila\Data\Domain\Repository\TemplateRepository;
-use Schnitzler\Templavoila\Service\SyntaxHighlightingService;
+use Schnitzler\TemplaVoila\UI\SyntaxHighlighter;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Http\Response;
 use TYPO3\CMS\Core\Http\ServerRequest;
@@ -173,7 +173,7 @@ class DataStructureController extends AbstractModuleController implements Linkab
             ];
         }
 
-        $syntaxHighightingService = GeneralUtility::makeInstance(SyntaxHighlightingService::class);
+        $syntaxHighightingService = GeneralUtility::makeInstance(SyntaxHighlighter::class);
         $dataStructureXML = '<?xml version="1.0" encoding="utf-8" standalone="yes" ?>' . LF . GeneralUtility::array2xml(
             $origDataStruct,
             '',

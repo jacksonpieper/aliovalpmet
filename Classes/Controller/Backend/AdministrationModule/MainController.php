@@ -21,7 +21,7 @@ use Schnitzler\TemplaVoila\Data\Domain\Repository\ContentRepository;
 use Schnitzler\TemplaVoila\Data\Domain\Repository\DataStructureRepository;
 use Schnitzler\TemplaVoila\Data\Domain\Repository\PageRepository;
 use Schnitzler\TemplaVoila\Data\Domain\Repository\TemplateRepository;
-use Schnitzler\Templavoila\Service\SyntaxHighlightingService;
+use Schnitzler\TemplaVoila\UI\SyntaxHighlighter;
 use Schnitzler\Templavoila\Templavoila;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Http\Response;
@@ -552,7 +552,7 @@ class MainController extends AbstractModuleController implements Configurable
         // Format XML if requested (renders VERY VERY slow)
         if ($this->MOD_SETTINGS['set_showDSxml']) {
             if ($dsObj->getDataprotXML()) {
-                $hlObj = GeneralUtility::makeInstance(SyntaxHighlightingService::class);
+                $hlObj = GeneralUtility::makeInstance(SyntaxHighlighter::class);
                 $content .= '<pre>' . str_replace(chr(9), '&nbsp;&nbsp;&nbsp;', $hlObj->highLight_DS($dsObj->getDataprotXML())) . '</pre>';
             }
         }
@@ -718,7 +718,7 @@ class MainController extends AbstractModuleController implements Configurable
         // Format XML if requested
         $lpXML = '';
         if ((bool)$this->getSetting('set_details') && $toObj->getLocalDataprotXML(true)) {
-            $hlObj = GeneralUtility::makeInstance(SyntaxHighlightingService::class);
+            $hlObj = GeneralUtility::makeInstance(SyntaxHighlighter::class);
             $lpXML = '<pre>' . str_replace(chr(9), '&nbsp;&nbsp;&nbsp;', $hlObj->highLight_DS($toObj->getLocalDataprotXML(true))) . '</pre>';
         }
         $lpXML .= '<a href="#" onclick="' . htmlspecialchars(BackendUtility::editOnClick('&edit[tx_templavoila_tmplobj][' . $toObj->getKey() . ']=edit&columnsOnly=localprocessing')) . '">' . $this->getModuleTemplate()->getIconFactory()->getIcon('actions-document-open', Icon::SIZE_SMALL) . '</a>';

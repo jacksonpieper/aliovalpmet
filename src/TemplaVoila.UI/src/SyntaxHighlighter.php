@@ -11,7 +11,7 @@
  * LICENSE.md file that was distributed with this source code.
  */
 
-namespace Schnitzler\Templavoila\Service;
+namespace Schnitzler\TemplaVoila\UI;
 
 use TYPO3\CMS\Core\Html\HtmlParser;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -21,7 +21,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  *
  *
  */
-class SyntaxHighlightingService
+class SyntaxHighlighter
 {
 
     /**
