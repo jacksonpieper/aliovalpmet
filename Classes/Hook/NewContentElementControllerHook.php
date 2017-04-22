@@ -15,7 +15,7 @@ namespace Schnitzler\Templavoila\Hook;
 
 use Schnitzler\Templavoila\Domain\Model\AbstractDataStructure;
 use Schnitzler\Templavoila\Domain\Model\Template;
-use Schnitzler\Templavoila\Domain\Repository\TemplateRepository;
+use Schnitzler\TemplaVoila\Data\Domain\Repository\TemplateRepository;
 use Schnitzler\System\Traits\LanguageService;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Imaging\IconProvider\BitmapIconProvider;

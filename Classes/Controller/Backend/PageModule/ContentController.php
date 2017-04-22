@@ -15,7 +15,7 @@ namespace Schnitzler\Templavoila\Controller\Backend\PageModule;
 
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
-use Schnitzler\Templavoila\Domain\Repository\TemplateRepository;
+use Schnitzler\TemplaVoila\Data\Domain\Repository\TemplateRepository;
 use Schnitzler\Templavoila\Service\ApiService;
 use Schnitzler\Templavoila\Templavoila;
 use TYPO3\CMS\Backend\Module\AbstractModule;

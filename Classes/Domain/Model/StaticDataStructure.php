@@ -13,7 +13,7 @@
 
 namespace Schnitzler\Templavoila\Domain\Model;
 
-use Schnitzler\Templavoila\Domain\Repository\DataStructureRepository;
+use Schnitzler\TemplaVoila\Data\Domain\Repository\DataStructureRepository;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
 use TYPO3\CMS\Core\Utility\GeneralUtility;

@@ -13,7 +13,7 @@
 
 namespace Schnitzler\TemplaVoila\Security\Permissions;
 
-use Schnitzler\Templavoila\Domain\Repository\PageRepository;
+use Schnitzler\TemplaVoila\Data\Domain\Repository\PageRepository;
 use Schnitzler\System\Traits\BackendUser;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Type\Bitmask\Permission;

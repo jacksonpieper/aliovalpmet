@@ -13,7 +13,7 @@
 
 namespace Schnitzler\Templavoila\Controller\Backend\FunctionsModule;
 
-use Schnitzler\Templavoila\Domain\Repository\DataStructureRepository;
+use Schnitzler\TemplaVoila\Data\Domain\Repository\DataStructureRepository;
 use Schnitzler\System\Traits\BackendUser;
 use TYPO3\CMS\Backend\Module\AbstractFunctionModule;
 use TYPO3\CMS\Backend\Utility\BackendUtility;

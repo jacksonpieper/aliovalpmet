@@ -19,7 +19,7 @@ use Schnitzler\Templavoila\Controller\Backend\AbstractModuleController;
 use Schnitzler\Templavoila\Controller\Backend\Linkable;
 use Schnitzler\Templavoila\Domain\Model\DataStructure;
 use Schnitzler\Templavoila\Domain\Model\HtmlMarkup;
-use Schnitzler\Templavoila\Domain\Repository\TemplateRepository;
+use Schnitzler\TemplaVoila\Data\Domain\Repository\TemplateRepository;
 use Schnitzler\Templavoila\Helper\TemplateMappingHelper;
 use TYPO3\CMS\Backend\Template\Components\ButtonBar;
 use TYPO3\CMS\Backend\Utility\BackendUtility;

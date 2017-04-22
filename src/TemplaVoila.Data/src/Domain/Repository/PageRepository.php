@@ -1,7 +1,7 @@
 <?php
 declare(strict_types = 1);
 
-namespace Schnitzler\Templavoila\Domain\Repository;
+namespace Schnitzler\TemplaVoila\Data\Domain\Repository;
 
 /*
  * This file is part of the TYPO3 CMS project.
@@ -25,7 +25,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
 
 /**
- * Class Schnitzler\Templavoila\Domain\Repository\PageRepository
+ * Class Schnitzler\TemplaVoila\Data\Domain\Repository\PageRepository
  */
 class PageRepository
 {

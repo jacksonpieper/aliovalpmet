@@ -11,7 +11,7 @@
  * LICENSE.md file that was distributed with this source code.
  */
 
-namespace Schnitzler\Templavoila\Domain\Repository;
+namespace Schnitzler\TemplaVoila\Data\Domain\Repository;
 
 use Schnitzler\Templavoila\Domain\Model\DataStructure;
 use Schnitzler\Templavoila\Domain\Model\Template;

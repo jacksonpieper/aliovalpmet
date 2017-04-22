@@ -14,9 +14,9 @@
 namespace Schnitzler\Templavoila\Service;
 
 use Schnitzler\Templavoila\Domain\Model\AbstractDataStructure;
-use Schnitzler\Templavoila\Domain\Repository\ContentRepository;
+use Schnitzler\TemplaVoila\Data\Domain\Repository\ContentRepository;
 use Schnitzler\System\Data\Domain\Repository\SysLanguageRepository;
-use Schnitzler\Templavoila\Domain\Repository\TemplateRepository;
+use Schnitzler\TemplaVoila\Data\Domain\Repository\TemplateRepository;
 use Schnitzler\System\Traits\LanguageService;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Configuration\FlexForm\FlexFormTools;

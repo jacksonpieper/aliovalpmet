@@ -13,7 +13,7 @@
 
 namespace Schnitzler\Templavoila\Domain\Model;
 
-use Schnitzler\Templavoila\Domain\Repository\DataStructureRepository;
+use Schnitzler\TemplaVoila\Data\Domain\Repository\DataStructureRepository;
 use Schnitzler\System\Traits\BackendUser;
 use Schnitzler\System\Traits\LanguageService;
 use Schnitzler\TemplaVoila\Security\Permissions\PermissionUtility;

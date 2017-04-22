@@ -17,7 +17,7 @@ namespace Schnitzler\Templavoila\Controller\Backend\PageModule\Renderer\Sidebar;
 use Schnitzler\Templavoila\Controller\Backend\PageModule\MainController;
 use Schnitzler\Templavoila\Controller\Backend\PageModule\Renderer\Renderable;
 use Schnitzler\System\Data\Domain\Repository\PageOverlayRepository;
-use Schnitzler\Templavoila\Domain\Repository\PageRepository;
+use Schnitzler\TemplaVoila\Data\Domain\Repository\PageRepository;
 use Schnitzler\System\Localization\LanguageHelper;
 use Schnitzler\System\Traits\BackendUser;
 use Schnitzler\System\Traits\LanguageService;

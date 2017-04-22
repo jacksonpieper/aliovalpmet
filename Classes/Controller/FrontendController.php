@@ -14,8 +14,8 @@
 namespace Schnitzler\Templavoila\Controller;
 
 use Schnitzler\Templavoila\Domain\Model\HtmlMarkup;
-use Schnitzler\Templavoila\Domain\Repository\DataStructureRepository;
-use Schnitzler\Templavoila\Domain\Repository\TemplateRepository;
+use Schnitzler\TemplaVoila\Data\Domain\Repository\DataStructureRepository;
+use Schnitzler\TemplaVoila\Data\Domain\Repository\TemplateRepository;
 use Schnitzler\System\Data\Exception\ObjectNotFoundException;
 use Schnitzler\Templavoila\Exception\RuntimeException;
 use Schnitzler\Templavoila\Exception\Runtime\SerializationException;

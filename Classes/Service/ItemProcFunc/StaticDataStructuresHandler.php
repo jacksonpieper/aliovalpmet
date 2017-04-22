@@ -15,8 +15,8 @@ namespace Schnitzler\Templavoila\Service\ItemProcFunc;
 
 use Schnitzler\Templavoila\Domain\Model\AbstractDataStructure;
 use Schnitzler\Templavoila\Domain\Model\Template;
-use Schnitzler\Templavoila\Domain\Repository\DataStructureRepository;
-use Schnitzler\Templavoila\Domain\Repository\TemplateRepository;
+use Schnitzler\TemplaVoila\Data\Domain\Repository\DataStructureRepository;
+use Schnitzler\TemplaVoila\Data\Domain\Repository\TemplateRepository;
 use Schnitzler\Templavoila\Exception\Configuration\UndefinedStorageFolderException;
 use Schnitzler\Templavoila\Templavoila;
 use Schnitzler\System\Traits\LanguageService;
