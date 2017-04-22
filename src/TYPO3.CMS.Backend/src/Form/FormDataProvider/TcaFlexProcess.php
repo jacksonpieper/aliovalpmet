@@ -11,7 +11,7 @@
  * LICENSE.md file that was distributed with this source code.
  */
 
-namespace Schnitzler\Templavoila\Form\FormDataProvider;
+namespace Schnitzler\TYPO3\CMS\Backend\Form\FormDataProvider;
 
 use TYPO3\CMS\Backend\Form\FormDataCompiler;
 use TYPO3\CMS\Backend\Form\FormDataGroup\FlexFormSegment;
@@ -20,7 +20,7 @@ use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
- * Class Schnitzler\Templavoila\Form\FormDataProvider\TcaFlexProcess
+ * Class Schnitzler\TYPO3\CMS\Backend\Form\FormDataProvider\TcaFlexProcess
  */
 class TcaFlexProcess implements FormDataProviderInterface
 {

@@ -11,7 +11,7 @@
  * LICENSE.md file that was distributed with this source code.
  */
 
-namespace Schnitzler\Templavoila\Form\Container;
+namespace Schnitzler\TYPO3\CMS\Backend\Form\Container;
 
 use TYPO3\CMS\Backend\Form\Container\AbstractContainer;
 use TYPO3\CMS\Core\Imaging\Icon;
@@ -23,7 +23,7 @@ use TYPO3\CMS\Core\Type\Bitmask\JsConfirmation;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 
 /**
- * Class Schnitzler\Templavoila\Form\Container\FlexFormElementContainer
+ * Class Schnitzler\TYPO3\CMS\Backend\Form\Container\FlexFormElementContainer
  */
 class FlexFormElementContainer extends AbstractContainer
 {

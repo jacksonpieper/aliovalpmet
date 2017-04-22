@@ -16,6 +16,7 @@
             "Schnitzler\\System\\Mvc\\": "src/System.Mvc/src/",
             "Schnitzler\\System\\Traits\\": "src/System.Traits/src/",
             "Schnitzler\\TemplaVoila\\Security\\Permissions\\": "src/TemplaVoila.Security.Permissions/src/",
+            "Schnitzler\\TYPO3\\CMS\\Backend\\": "src/TYPO3.CMS.Backend/src/",
             "Schnitzler\\TYPO3\\CMS\\Core\\": "src/TYPO3.CMS.Core/src/"
         }
     },

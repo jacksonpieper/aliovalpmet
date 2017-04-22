@@ -145,27 +145,27 @@ if (\TYPO3\CMS\Core\Utility\GeneralUtility::getApplicationContext()->isDevelopme
 $GLOBALS['TYPO3_CONF_VARS']['SYS']['formEngine']['nodeRegistry'][1489490491267] = [
     'nodeName' => 'flex',
     'priority' => 50,
-    'class' => \Schnitzler\Templavoila\Form\Container\FlexFormEntryContainer::class
+    'class' => \Schnitzler\TYPO3\CMS\Backend\Form\Container\FlexFormEntryContainer::class
 ];
 $GLOBALS['TYPO3_CONF_VARS']['SYS']['formEngine']['nodeRegistry'][1489490494732] = [
     'nodeName' => 'flexFormNoTabsContainer',
     'priority' => 50,
-    'class' => \Schnitzler\Templavoila\Form\Container\FlexFormNoTabsContainer::class
+    'class' => \Schnitzler\TYPO3\CMS\Backend\Form\Container\FlexFormNoTabsContainer::class
 ];
 $GLOBALS['TYPO3_CONF_VARS']['SYS']['formEngine']['nodeRegistry'][1489490496647] = [
     'nodeName' => 'flexFormTabsContainer',
     'priority' => 50,
-    'class' => \Schnitzler\Templavoila\Form\Container\FlexFormTabsContainer::class
+    'class' => \Schnitzler\TYPO3\CMS\Backend\Form\Container\FlexFormTabsContainer::class
 ];
 $GLOBALS['TYPO3_CONF_VARS']['SYS']['formEngine']['nodeRegistry'][1489490498553] = [
     'nodeName' => 'flexFormElementContainer',
     'priority' => 50,
-    'class' => \Schnitzler\Templavoila\Form\Container\FlexFormElementContainer::class
+    'class' => \Schnitzler\TYPO3\CMS\Backend\Form\Container\FlexFormElementContainer::class
 ];
 
 // Unregister stock TcaFlexProcess data provider and substitute with own data provider at the same position
 unset($GLOBALS['TYPO3_CONF_VARS']['SYS']['formEngine']['formDataGroup']['inlineParentRecord'][TYPO3\CMS\Backend\Form\FormDataProvider\TcaFlexProcess::class]);
-$GLOBALS['TYPO3_CONF_VARS']['SYS']['formEngine']['formDataGroup']['inlineParentRecord'][\Schnitzler\Templavoila\Form\FormDataProvider\TcaFlexProcess::class] = [
+$GLOBALS['TYPO3_CONF_VARS']['SYS']['formEngine']['formDataGroup']['inlineParentRecord'][\Schnitzler\TYPO3\CMS\Backend\Form\FormDataProvider\TcaFlexProcess::class] = [
     'depends' => [
         TYPO3\CMS\Backend\Form\FormDataProvider\TcaFlexPrepare::class
     ],
@@ -178,7 +178,7 @@ if (\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('compatibility6
     unset($GLOBALS['TYPO3_CONF_VARS']['SYS']['formEngine']['formDataGroup']['tcaDatabaseRecord']['TYPO3\CMS\Compatibility6\Form\FormDataProvider\TcaFlexProcess']);
 }
 unset($GLOBALS['TYPO3_CONF_VARS']['SYS']['formEngine']['formDataGroup']['tcaDatabaseRecord'][TYPO3\CMS\Backend\Form\FormDataProvider\TcaFlexProcess::class]);
-$GLOBALS['TYPO3_CONF_VARS']['SYS']['formEngine']['formDataGroup']['tcaDatabaseRecord'][\Schnitzler\Templavoila\Form\FormDataProvider\TcaFlexProcess::class] = [
+$GLOBALS['TYPO3_CONF_VARS']['SYS']['formEngine']['formDataGroup']['tcaDatabaseRecord'][\Schnitzler\TYPO3\CMS\Backend\Form\FormDataProvider\TcaFlexProcess::class] = [
     'depends' => [
         TYPO3\CMS\Backend\Form\FormDataProvider\TcaFlexPrepare::class
     ],

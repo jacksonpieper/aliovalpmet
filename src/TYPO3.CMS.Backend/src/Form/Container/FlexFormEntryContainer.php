@@ -11,7 +11,7 @@
  * LICENSE.md file that was distributed with this source code.
  */
 
-namespace Schnitzler\Templavoila\Form\Container;
+namespace Schnitzler\TYPO3\CMS\Backend\Form\Container;
 
 use TYPO3\CMS\Backend\Form\Container\AbstractContainer;
 use TYPO3\CMS\Core\Imaging\Icon;
@@ -19,7 +19,7 @@ use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
- * Class Schnitzler\Templavoila\Form\Container\FlexFormEntryContainer
+ * Class Schnitzler\TYPO3\CMS\Backend\Form\Container\FlexFormEntryContainer
  */
 class FlexFormEntryContainer extends AbstractContainer
 {
