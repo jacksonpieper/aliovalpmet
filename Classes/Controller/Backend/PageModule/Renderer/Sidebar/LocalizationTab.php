@@ -16,7 +16,7 @@ namespace Schnitzler\Templavoila\Controller\Backend\PageModule\Renderer\Sidebar;
 
 use Schnitzler\Templavoila\Controller\Backend\PageModule\MainController;
 use Schnitzler\Templavoila\Controller\Backend\PageModule\Renderer\Renderable;
-use Schnitzler\Templavoila\Domain\Repository\PageOverlayRepository;
+use Schnitzler\System\Mvc\Domain\Repository\PageOverlayRepository;
 use Schnitzler\Templavoila\Domain\Repository\PageRepository;
 use Schnitzler\System\Localization\LanguageHelper;
 use Schnitzler\System\Traits\BackendUser;
@@ -91,7 +91,7 @@ class LocalizationTab implements Renderable
         /** @var PageRepository $pageRepository */
         $pageRepository = GeneralUtility::makeInstance(PageRepository::class);
 
-        /** @var PageOverlayRepository $pageOverlayRepository */
+        /** @var \Schnitzler\System\Mvc\Domain\Repository\PageOverlayRepository $pageOverlayRepository */
         $pageOverlayRepository = GeneralUtility::makeInstance(PageOverlayRepository::class);
 
         $optionsArr = [];
