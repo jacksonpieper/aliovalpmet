@@ -11,7 +11,7 @@
  * LICENSE.md file that was distributed with this source code.
  */
 
-namespace Schnitzler\Templavoila\Service\UserFunc;
+namespace Schnitzler\TemplaVoila\Security\AccessControl;
 
 use Schnitzler\System\Traits\BackendUser;
 use Schnitzler\System\Traits\LanguageService;

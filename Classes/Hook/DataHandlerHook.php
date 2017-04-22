@@ -14,7 +14,7 @@
 namespace Schnitzler\Templavoila\Hook;
 
 use Schnitzler\Templavoila\Service\ApiService;
-use Schnitzler\Templavoila\Service\UserFunc\Access as AccessUserFunction;
+use Schnitzler\TemplaVoila\Security\AccessControl\Access as AccessUserFunction;
 use Schnitzler\Templavoila\Templavoila;
 use Schnitzler\System\Traits\LanguageService;
 use Schnitzler\Templavoila\Utility\ReferenceIndexUtility;
