@@ -16,7 +16,7 @@ namespace Schnitzler\Templavoila\Hook;
 use Schnitzler\Templavoila\Service\ApiService;
 use Schnitzler\Templavoila\Service\UserFunc\Access as AccessUserFunction;
 use Schnitzler\Templavoila\Templavoila;
-use Schnitzler\Templavoila\Traits\LanguageService;
+use Schnitzler\System\Traits\LanguageService;
 use Schnitzler\Templavoila\Utility\ReferenceIndexUtility;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;

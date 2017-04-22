@@ -21,8 +21,8 @@ use Schnitzler\Templavoila\Controller\Backend\PageModule\Renderer\SheetRenderer\
 use Schnitzler\Templavoila\Domain\Repository\TemplateRepository;
 use Schnitzler\Templavoila\Exception;
 use Schnitzler\System\Localization\LanguageHelper;
-use Schnitzler\Templavoila\Traits\BackendUser;
-use Schnitzler\Templavoila\Traits\LanguageService;
+use Schnitzler\System\Traits\BackendUser;
+use Schnitzler\System\Traits\LanguageService;
 use Schnitzler\Templavoila\Utility\PermissionUtility;
 use Schnitzler\Templavoila\Utility\ReferenceIndexUtility;
 use TYPO3\CMS\Backend\Template\ModuleTemplate;

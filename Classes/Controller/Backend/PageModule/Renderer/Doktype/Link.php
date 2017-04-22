@@ -15,7 +15,7 @@ declare(strict_types = 1);
 namespace Schnitzler\Templavoila\Controller\Backend\PageModule\Renderer\Doktype;
 
 use Schnitzler\Templavoila\Controller\Backend\PageModule\Renderer\Renderable;
-use Schnitzler\Templavoila\Traits\LanguageService;
+use Schnitzler\System\Traits\LanguageService;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Messaging\Renderer\BootstrapRenderer;
 use TYPO3\CMS\Core\Utility\GeneralUtility;

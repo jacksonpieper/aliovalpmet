@@ -15,8 +15,8 @@ namespace Schnitzler\Templavoila\Controller\Backend;
 
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
-use Schnitzler\Templavoila\Traits\BackendUser;
-use Schnitzler\Templavoila\Traits\LanguageService;
+use Schnitzler\System\Traits\BackendUser;
+use Schnitzler\System\Traits\LanguageService;
 use Schnitzler\Templavoila\Utility\PermissionUtility;
 use TYPO3\CMS\Backend\Module\AbstractModule;
 use TYPO3\CMS\Backend\Template\ModuleTemplate;

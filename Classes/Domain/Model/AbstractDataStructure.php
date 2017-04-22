@@ -13,7 +13,7 @@
 
 namespace Schnitzler\Templavoila\Domain\Model;
 
-use Schnitzler\Templavoila\Traits\LanguageService;
+use Schnitzler\System\Traits\LanguageService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**

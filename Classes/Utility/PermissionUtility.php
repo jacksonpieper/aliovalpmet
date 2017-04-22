@@ -14,7 +14,7 @@
 namespace Schnitzler\Templavoila\Utility;
 
 use Schnitzler\Templavoila\Domain\Repository\PageRepository;
-use Schnitzler\Templavoila\Traits\BackendUser;
+use Schnitzler\System\Traits\BackendUser;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Type\Bitmask\Permission;
 use TYPO3\CMS\Core\Utility\GeneralUtility;

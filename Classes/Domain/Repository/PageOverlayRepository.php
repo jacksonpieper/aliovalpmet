@@ -17,7 +17,7 @@ namespace Schnitzler\Templavoila\Domain\Repository;
  */
 
 use Schnitzler\Templavoila\Exception\Data\ObjectNotFoundException;
-use Schnitzler\Templavoila\Traits\BackendUser;
+use Schnitzler\System\Traits\BackendUser;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;

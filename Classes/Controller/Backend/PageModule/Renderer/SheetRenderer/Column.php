@@ -13,7 +13,7 @@
 
 namespace Schnitzler\Templavoila\Controller\Backend\PageModule\Renderer\SheetRenderer;
 
-use Schnitzler\Templavoila\Traits\LanguageService;
+use Schnitzler\System\Traits\LanguageService;
 
 /**
  * Class Schnitzler\Templavoila\Controller\Backend\PageModule\Renderer\SheetRenderer\Column

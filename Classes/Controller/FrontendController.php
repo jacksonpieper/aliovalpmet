@@ -20,7 +20,7 @@ use Schnitzler\Templavoila\Exception\Data\ObjectNotFoundException;
 use Schnitzler\Templavoila\Exception\RuntimeException;
 use Schnitzler\Templavoila\Exception\Runtime\SerializationException;
 use Schnitzler\Templavoila\Templavoila;
-use Schnitzler\Templavoila\Traits\BackendUser;
+use Schnitzler\System\Traits\BackendUser;
 use TYPO3\CMS\Core\Configuration\FlexForm\FlexFormTools;
 use TYPO3\CMS\Core\Database\DatabaseConnection;
 use TYPO3\CMS\Core\Html\HtmlParser;

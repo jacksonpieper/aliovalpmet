@@ -17,7 +17,7 @@ use Schnitzler\Templavoila\Domain\Model\AbstractDataStructure;
 use Schnitzler\Templavoila\Domain\Repository\ContentRepository;
 use Schnitzler\System\Mvc\Domain\Repository\SysLanguageRepository;
 use Schnitzler\Templavoila\Domain\Repository\TemplateRepository;
-use Schnitzler\Templavoila\Traits\LanguageService;
+use Schnitzler\System\Traits\LanguageService;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Configuration\FlexForm\FlexFormTools;
 use TYPO3\CMS\Core\Database\ConnectionPool;

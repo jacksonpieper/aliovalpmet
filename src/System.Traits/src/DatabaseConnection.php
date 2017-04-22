@@ -11,19 +11,19 @@
  * LICENSE.md file that was distributed with this source code.
  */
 
-namespace Schnitzler\Templavoila\Traits;
+namespace Schnitzler\System\Traits;
 
 /**
- * Trait Schnitzler\Templavoila\Traits\LanguageService
+ * Trait Schnitzler\System\Traits\DatabaseConnection
  */
-trait LanguageService
+trait DatabaseConnection
 {
 
     /**
-     * @return \TYPO3\CMS\Lang\LanguageService
+     * @return \TYPO3\CMS\Core\Database\DatabaseConnection
      */
-    public static function getLanguageService()
+    public static function getDatabaseConnection()
     {
-        return $GLOBALS['LANG'];
+        return $GLOBALS['TYPO3_DB'];
     }
 }

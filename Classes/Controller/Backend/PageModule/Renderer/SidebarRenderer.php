@@ -20,8 +20,8 @@ use Schnitzler\Templavoila\Controller\Backend\PageModule\Renderer\Sidebar\Locali
 use Schnitzler\Templavoila\Controller\Backend\PageModule\Renderer\Sidebar\NonUsedElementsTab;
 use Schnitzler\Templavoila\Controller\Backend\PageModule\Renderer\Sidebar\RecordsTab;
 use Schnitzler\Templavoila\Controller\Backend\PageModule\Renderer\Sidebar\VersioningTab;
-use Schnitzler\Templavoila\Traits\BackendUser;
-use Schnitzler\Templavoila\Traits\LanguageService;
+use Schnitzler\System\Traits\BackendUser;
+use Schnitzler\System\Traits\LanguageService;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 

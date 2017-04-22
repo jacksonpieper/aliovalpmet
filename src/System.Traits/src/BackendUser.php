@@ -11,10 +11,10 @@
  * LICENSE.md file that was distributed with this source code.
  */
 
-namespace Schnitzler\Templavoila\Traits;
+namespace Schnitzler\System\Traits;
 
 /**
- * Trait Schnitzler\Templavoila\Traits\BackendUser
+ * Trait Schnitzler\System\Traits\BackendUser
  */
 trait BackendUser
 {

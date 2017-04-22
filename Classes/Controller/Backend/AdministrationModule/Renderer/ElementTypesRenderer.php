@@ -15,8 +15,8 @@ namespace Schnitzler\Templavoila\Controller\Backend\AdministrationModule\Rendere
 
 use Schnitzler\Templavoila\Controller\Backend\AdministrationModule\ElementController;
 use Schnitzler\Templavoila\Templavoila;
-use Schnitzler\Templavoila\Traits\BackendUser;
-use Schnitzler\Templavoila\Traits\LanguageService;
+use Schnitzler\System\Traits\BackendUser;
+use Schnitzler\System\Traits\LanguageService;
 use TYPO3\CMS\Core\SingletonInterface;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;

@@ -17,7 +17,7 @@ use Schnitzler\Templavoila\Controller\Backend\AdministrationModule\Renderer\Elem
 use Schnitzler\Templavoila\Controller\Backend\Linkable;
 use Schnitzler\Templavoila\Domain\Model\HtmlMarkup;
 use Schnitzler\Templavoila\Helper\TagBuilderHelper;
-use Schnitzler\Templavoila\Traits\LanguageService;
+use Schnitzler\System\Traits\LanguageService;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Utility\GeneralUtility;

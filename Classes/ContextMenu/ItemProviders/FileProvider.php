@@ -15,7 +15,7 @@ declare(strict_types=1);
 namespace Schnitzler\Templavoila\ContextMenu\ItemProviders;
 
 use Schnitzler\Templavoila\Templavoila;
-use Schnitzler\Templavoila\Traits\BackendUser;
+use Schnitzler\System\Traits\BackendUser;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Filelist\ContextMenu\ItemProviders\FileProvider as CoreFileProvider;

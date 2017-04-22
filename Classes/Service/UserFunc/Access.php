@@ -13,8 +13,8 @@
 
 namespace Schnitzler\Templavoila\Service\UserFunc;
 
-use Schnitzler\Templavoila\Traits\BackendUser;
-use Schnitzler\Templavoila\Traits\LanguageService;
+use Schnitzler\System\Traits\BackendUser;
+use Schnitzler\System\Traits\LanguageService;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 

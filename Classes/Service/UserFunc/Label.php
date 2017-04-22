@@ -13,7 +13,7 @@
 
 namespace Schnitzler\Templavoila\Service\UserFunc;
 
-use Schnitzler\Templavoila\Traits\LanguageService;
+use Schnitzler\System\Traits\LanguageService;
 
 /**
  * Class 'tx_templavoila_label' for the 'templavoila' extension.

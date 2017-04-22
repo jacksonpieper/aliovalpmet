@@ -11,12 +11,12 @@
  * LICENSE.md file that was distributed with this source code.
  */
 
-namespace Schnitzler\Templavoila\Traits;
+namespace Schnitzler\System\Traits;
 
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
- * Trait Schnitzler\Templavoila\Traits\DataHandler
+ * Trait Schnitzler\System\Traits\DataHandler
  */
 trait DataHandler
 {
