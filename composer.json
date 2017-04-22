@@ -8,10 +8,7 @@
     ],
     "autoload": {
         "psr-4": {
-            "Schnitzler\\Templavoila\\": [
-                "Classes/",
-                "Interface/"
-            ],
+            "Schnitzler\\Templavoila\\": "Classes/",
             "Schnitzler\\System\\Localization\\": "src/System.Localization/src/",
             "Schnitzler\\System\\Mvc\\": "src/System.Mvc/src/",
             "Schnitzler\\System\\Traits\\": "src/System.Traits/src/",
@@ -28,10 +25,12 @@
         }
     },
     "require": {
-        "php": ">=5.5.0"
+        "php": ">=5.5.0",
+        "psr/container": "1.0.0"
     },
     "require-dev": {
-        "friendsofphp/php-cs-fixer": "^2.1.1"
+        "friendsofphp/php-cs-fixer": "^2.1.1",
+        "clue/phar-composer": "1.0.0"
     },
     "replace": {
         "templavoila": "self.version",

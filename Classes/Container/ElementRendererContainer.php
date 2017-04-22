@@ -13,9 +13,8 @@
 
 namespace Schnitzler\Templavoila\Container;
 
-use Schnitzler\Templavoila\ContainerInterface;
+use Psr\Container\ContainerInterface;
 use Schnitzler\Templavoila\Controller\Backend\PageModule\Renderer\AbstractContentElementRenderer;
-use Schnitzler\Templavoila\Exception\Container\NotFoundException;
 use Schnitzler\Templavoila\Templavoila;
 
 /**

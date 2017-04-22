@@ -14,6 +14,8 @@
 defined('TYPO3_MODE') or die();
 /** @var string $_EXTKEY */
 
+require_once 'phar://' . \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($_EXTKEY) . 'src/Psr.Container.phar/vendor/autoload.php';
+
 // unserializing the configuration so we can use it here:
 $_EXTCONF = unserialize($_EXTCONF);
 
