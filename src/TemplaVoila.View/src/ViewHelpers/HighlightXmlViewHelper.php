@@ -11,7 +11,7 @@
  * LICENSE.md file that was distributed with this source code.
  */
 
-namespace Schnitzler\Templavoila\ViewHelpers;
+namespace Schnitzler\TemplaVoila\View\ViewHelpers;
 
 use InvalidArgumentException;
 use Schnitzler\TemplaVoila\UI\SyntaxHighlighter;
@@ -22,7 +22,7 @@ use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
 use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
 
 /**
- * Class Schnitzler\Templavoila\ViewHelpers\HighlightXmlViewHelper
+ * Class Schnitzler\TemplaVoila\View\ViewHelpers\HighlightXmlViewHelper
  */
 class HighlightXmlViewHelper extends AbstractViewHelper
 {

@@ -18,6 +18,7 @@
             "Schnitzler\\TemplaVoila\\Data\\": "src/TemplaVoila.Data/src/",
             "Schnitzler\\TemplaVoila\\Security\\Permissions\\": "src/TemplaVoila.Security.Permissions/src/",
             "Schnitzler\\TemplaVoila\\UI\\": "src/TemplaVoila.UI/src/",
+            "Schnitzler\\TemplaVoila\\View\\": "src/TemplaVoila.View/src/",
             "Schnitzler\\TYPO3\\CMS\\Backend\\": "src/TYPO3.CMS.Backend/src/",
             "Schnitzler\\TYPO3\\CMS\\Core\\": "src/TYPO3.CMS.Core/src/"
         }
