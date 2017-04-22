@@ -11,7 +11,7 @@
  * LICENSE.md file that was distributed with this source code.
  */
 
-namespace Schnitzler\Templavoila\Comand;
+namespace Schnitzler\TemplaVoila\Console\Command;
 
 use Schnitzler\Templavoila\Domain\Repository\ReferenceIndexRepository;
 use Schnitzler\Templavoila\Service\ApiService;
