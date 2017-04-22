@@ -12,27 +12,25 @@ declare(strict_types=1);
  * LICENSE.md file that was distributed with this source code.
  */
 
-namespace Schnitzler\Templavoila\ContextMenu\ItemProviders;
+namespace Schnitzler\TemplaVoila\ContextMenu\ItemProviders;
 
+use Schnitzler\Templavoila\Domain\Model\Template;
 use Schnitzler\Templavoila\Templavoila;
-use Schnitzler\System\Traits\BackendUser;
+use TYPO3\CMS\Backend\ContextMenu\ItemProviders\RecordProvider;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Filelist\ContextMenu\ItemProviders\FileProvider as CoreFileProvider;
 
 /**
- * Class Schnitzler\Templavoila\ContextMenu\ItemProviders\FileProvider
+ * Class Schnitzler\TemplaVoila\ContextMenu\ItemProviders\TemplateObjectProvider
  */
-class FileProvider extends CoreFileProvider
+class TemplateObjectProvider extends RecordProvider
 {
-    use BackendUser;
-
     /**
      * @param string $table
      * @param string $identifier
      * @param string $context
      */
-    public function __construct(string $table, string $identifier, string $context='')
+    public function __construct(string $table, string $identifier, string $context = '')
     {
         parent::__construct($table, $identifier, $context);
 
@@ -53,10 +51,10 @@ class FileProvider extends CoreFileProvider
 
         if ($itemName === Templavoila::EXTKEY) {
             $url = BackendUtility::getModuleUrl(
-                'tv_mod_admin_element',
+                'tv_mod_admin_templateobject',
                 [
-                    'action' => 'clear',
-                    'file' => $this->record->getCombinedIdentifier()
+                    'templateObjectUid' => $this->record['uid'],
+                    'returnUrl' => GeneralUtility::getIndpEnv('HTTP_REFERER')
                 ]
             );
 
@@ -81,7 +79,7 @@ class FileProvider extends CoreFileProvider
         }
 
         if ($itemName === Templavoila::EXTKEY) {
-            return $this->isXmlFile();
+            return $this->backendUser->isAdmin();
         }
 
         return false;
@@ -90,13 +88,8 @@ class FileProvider extends CoreFileProvider
     /**
      * @return bool
      */
-    protected function isXmlFile(): bool
+    public function canHandle(): bool
     {
-        return $this->isFile()
-            && static::getBackendUser()->isAdmin()
-            && (
-                GeneralUtility::inList('text/html,application/xml', $this->record->getMimeType())
-                || GeneralUtility::inList($GLOBALS['TYPO3_CONF_VARS']['SYS']['textfile_ext'], $this->record->getExtension())
-            );
+        return $this->table === Template::TABLE;
     }
 }

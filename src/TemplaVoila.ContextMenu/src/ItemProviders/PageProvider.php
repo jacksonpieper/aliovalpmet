@@ -12,18 +12,16 @@ declare(strict_types=1);
  * LICENSE.md file that was distributed with this source code.
  */
 
-namespace Schnitzler\Templavoila\ContextMenu\ItemProviders;
+namespace Schnitzler\TemplaVoila\ContextMenu\ItemProviders;
 
-use Schnitzler\Templavoila\Domain\Model\DataStructure;
 use Schnitzler\Templavoila\Templavoila;
-use TYPO3\CMS\Backend\ContextMenu\ItemProviders\RecordProvider;
+use TYPO3\CMS\Backend\ContextMenu\ItemProviders\PageProvider as CorePageProvider;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
- * Class Schnitzler\Templavoila\ContextMenu\ItemProviders\DataStructureProvider
+ * Class Schnitzler\TemplaVoila\ContextMenu\ItemProviders\PageProvider
  */
-class DataStructureProvider extends RecordProvider
+class PageProvider extends CorePageProvider
 {
     /**
      * @param string $table
@@ -35,7 +33,7 @@ class DataStructureProvider extends RecordProvider
         parent::__construct($table, $identifier, $context);
 
         $this->itemsConfiguration[Templavoila::EXTKEY] = [
-            'label' => 'LLL:EXT:templavoila/Resources/Private/Language/locallang.xlf:cm1_title',
+            'label' => 'LLL:EXT:templavoila/Resources/Private/Language/locallang.xlf:cm1_viewflexformxml',
             'iconIdentifier' => 'extensions-templavoila-logo',
             'callbackAction' => 'redirect'
         ];
@@ -51,10 +49,11 @@ class DataStructureProvider extends RecordProvider
 
         if ($itemName === Templavoila::EXTKEY) {
             $url = BackendUtility::getModuleUrl(
-                'tv_mod_admin_datastructure',
+                'tv_mod_xmlcontroller',
                 [
                     'uid' => $this->record['uid'],
-                    'returnUrl' => GeneralUtility::getIndpEnv('HTTP_REFERER')
+                    'table' => $this->table,
+                    'field_flex' => 'tx_templavoila_flex'
                 ]
             );
 
@@ -79,7 +78,8 @@ class DataStructureProvider extends RecordProvider
         }
 
         if ($itemName === Templavoila::EXTKEY) {
-            return $this->backendUser->isAdmin();
+            return $this->backendUser->isAdmin()
+                && (string)$this->record['tx_templavoila_flex'] !== '';
         }
 
         return false;
@@ -90,6 +90,6 @@ class DataStructureProvider extends RecordProvider
      */
     public function canHandle(): bool
     {
-        return $this->table === DataStructure::TABLE;
+        return $this->table === 'pages';
     }
 }

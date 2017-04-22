@@ -12,28 +12,32 @@ declare(strict_types=1);
  * LICENSE.md file that was distributed with this source code.
  */
 
-namespace Schnitzler\Templavoila\ContextMenu\ItemProviders;
+namespace Schnitzler\TemplaVoila\ContextMenu\ItemProviders;
 
 use Schnitzler\Templavoila\Templavoila;
-use TYPO3\CMS\Backend\ContextMenu\ItemProviders\RecordProvider;
+use Schnitzler\System\Traits\BackendUser;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Filelist\ContextMenu\ItemProviders\FileProvider as CoreFileProvider;
 
 /**
- * Class Schnitzler\Templavoila\ContextMenu\ItemProviders\ContentProvider
+ * Class Schnitzler\TemplaVoila\ContextMenu\ItemProviders\FileProvider
  */
-class ContentProvider extends RecordProvider
+class FileProvider extends CoreFileProvider
 {
+    use BackendUser;
+
     /**
      * @param string $table
      * @param string $identifier
      * @param string $context
      */
-    public function __construct(string $table, string $identifier, string $context = '')
+    public function __construct(string $table, string $identifier, string $context='')
     {
         parent::__construct($table, $identifier, $context);
 
         $this->itemsConfiguration[Templavoila::EXTKEY] = [
-            'label' => 'LLL:EXT:templavoila/Resources/Private/Language/locallang.xlf:cm1_viewflexformxml',
+            'label' => 'LLL:EXT:templavoila/Resources/Private/Language/locallang.xlf:cm1_title',
             'iconIdentifier' => 'extensions-templavoila-logo',
             'callbackAction' => 'redirect'
         ];
@@ -49,11 +53,10 @@ class ContentProvider extends RecordProvider
 
         if ($itemName === Templavoila::EXTKEY) {
             $url = BackendUtility::getModuleUrl(
-                'tv_mod_xmlcontroller',
+                'tv_mod_admin_element',
                 [
-                    'uid' => $this->record['uid'],
-                    'table' => $this->table,
-                    'field_flex' => 'tx_templavoila_flex'
+                    'action' => 'clear',
+                    'file' => $this->record->getCombinedIdentifier()
                 ]
             );
 
@@ -78,9 +81,7 @@ class ContentProvider extends RecordProvider
         }
 
         if ($itemName === Templavoila::EXTKEY) {
-            return $this->backendUser->isAdmin()
-                && $this->record['CType'] = 'templavoila_pi1'
-                && (string)$this->record['tx_templavoila_flex'] !== '';
+            return $this->isXmlFile();
         }
 
         return false;
@@ -89,8 +90,13 @@ class ContentProvider extends RecordProvider
     /**
      * @return bool
      */
-    public function canHandle(): bool
+    protected function isXmlFile(): bool
     {
-        return $this->table === 'tt_content';
+        return $this->isFile()
+            && static::getBackendUser()->isAdmin()
+            && (
+                GeneralUtility::inList('text/html,application/xml', $this->record->getMimeType())
+                || GeneralUtility::inList($GLOBALS['TYPO3_CONF_VARS']['SYS']['textfile_ext'], $this->record->getExtension())
+            );
     }
 }

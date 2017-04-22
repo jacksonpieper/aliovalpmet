@@ -12,18 +12,18 @@ declare(strict_types=1);
  * LICENSE.md file that was distributed with this source code.
  */
 
-namespace Schnitzler\Templavoila\ContextMenu\ItemProviders;
+namespace Schnitzler\TemplaVoila\ContextMenu\ItemProviders;
 
-use Schnitzler\Templavoila\Domain\Model\Template;
+use Schnitzler\Templavoila\Domain\Model\DataStructure;
 use Schnitzler\Templavoila\Templavoila;
 use TYPO3\CMS\Backend\ContextMenu\ItemProviders\RecordProvider;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
- * Class Schnitzler\Templavoila\ContextMenu\ItemProviders\TemplateObjectProvider
+ * Class Schnitzler\TemplaVoila\ContextMenu\ItemProviders\DataStructureProvider
  */
-class TemplateObjectProvider extends RecordProvider
+class DataStructureProvider extends RecordProvider
 {
     /**
      * @param string $table
@@ -51,9 +51,9 @@ class TemplateObjectProvider extends RecordProvider
 
         if ($itemName === Templavoila::EXTKEY) {
             $url = BackendUtility::getModuleUrl(
-                'tv_mod_admin_templateobject',
+                'tv_mod_admin_datastructure',
                 [
-                    'templateObjectUid' => $this->record['uid'],
+                    'uid' => $this->record['uid'],
                     'returnUrl' => GeneralUtility::getIndpEnv('HTTP_REFERER')
                 ]
             );
@@ -90,6 +90,6 @@ class TemplateObjectProvider extends RecordProvider
      */
     public function canHandle(): bool
     {
-        return $this->table === Template::TABLE;
+        return $this->table === DataStructure::TABLE;
     }
 }

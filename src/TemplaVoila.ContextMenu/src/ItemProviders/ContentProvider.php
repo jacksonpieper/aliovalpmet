@@ -12,16 +12,16 @@ declare(strict_types=1);
  * LICENSE.md file that was distributed with this source code.
  */
 
-namespace Schnitzler\Templavoila\ContextMenu\ItemProviders;
+namespace Schnitzler\TemplaVoila\ContextMenu\ItemProviders;
 
 use Schnitzler\Templavoila\Templavoila;
-use TYPO3\CMS\Backend\ContextMenu\ItemProviders\PageProvider as CorePageProvider;
+use TYPO3\CMS\Backend\ContextMenu\ItemProviders\RecordProvider;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 
 /**
- * Class Schnitzler\Templavoila\ContextMenu\ItemProviders\PageProvider
+ * Class Schnitzler\TemplaVoila\ContextMenu\ItemProviders\ContentProvider
  */
-class PageProvider extends CorePageProvider
+class ContentProvider extends RecordProvider
 {
     /**
      * @param string $table
@@ -79,6 +79,7 @@ class PageProvider extends CorePageProvider
 
         if ($itemName === Templavoila::EXTKEY) {
             return $this->backendUser->isAdmin()
+                && $this->record['CType'] = 'templavoila_pi1'
                 && (string)$this->record['tx_templavoila_flex'] !== '';
         }
 
@@ -90,6 +91,6 @@ class PageProvider extends CorePageProvider
      */
     public function canHandle(): bool
     {
-        return $this->table === 'pages';
+        return $this->table === 'tt_content';
     }
 }
