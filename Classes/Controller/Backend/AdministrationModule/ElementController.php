@@ -23,7 +23,7 @@ use Schnitzler\TemplaVoila\Data\Domain\Model\File;
 use Schnitzler\TemplaVoila\Data\Domain\Model\HtmlMarkup;
 use Schnitzler\TemplaVoila\Data\Domain\Repository\DataStructureRepository;
 use Schnitzler\TemplaVoila\Data\Domain\Repository\TemplateRepository;
-use Schnitzler\Templavoila\Helper\TagBuilderHelper;
+use Schnitzler\System\UI\TagBuilderHelper;
 use Schnitzler\Templavoila\Helper\TemplateMappingHelper;
 use Schnitzler\Templavoila\Templavoila;
 use Schnitzler\TemplaVoila\Security\Permissions\PermissionUtility;

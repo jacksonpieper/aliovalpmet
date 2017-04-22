@@ -11,13 +11,13 @@
  * LICENSE.md file that was distributed with this source code.
  */
 
-namespace Schnitzler\Templavoila\Helper;
+namespace Schnitzler\System\UI;
 
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Fluid\Core\ViewHelper\TagBuilder;
 
 /**
- * Class Schnitzler\Templavoila\Helper\TagBuilderHelper
+ * Class Schnitzler\System\UI\TagBuilderHelper
  */
 final class TagBuilderHelper
 {

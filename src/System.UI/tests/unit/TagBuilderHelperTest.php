@@ -11,9 +11,9 @@
  * LICENSE.md file that was distributed with this source code.
  */
 
-namespace Schnitzler\Templavoila\Tests\Unit\Helper;
+namespace Schnitzler\System\UI\Tests\Unit;
 
-use Schnitzler\Templavoila\Helper\TagBuilderHelper;
+use Schnitzler\System\UI\TagBuilderHelper;
 use TYPO3\CMS\Core\Tests\UnitTestCase;
 
 /**
@@ -111,7 +111,7 @@ class TagBuilderHelperTest extends UnitTestCase
 
     public function testGetSubmitButton()
     {
-        $tag = TagBuilderHelper::getSubmitButton();
+        $tag = \Schnitzler\System\UI\TagBuilderHelper::getSubmitButton();
         $tag->render();
 
         static::assertSame(
