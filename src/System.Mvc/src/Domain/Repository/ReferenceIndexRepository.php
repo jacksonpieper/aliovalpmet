@@ -1,7 +1,7 @@
 <?php
 declare(strict_types = 1);
 
-namespace Schnitzler\Templavoila\Domain\Repository;
+namespace Schnitzler\System\Mvc\Domain\Repository;
 
 /*
  * This file is part of the TYPO3 CMS project.
@@ -21,7 +21,7 @@ use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
- * Class Schnitzler\Templavoila\Domain\Repository\ReferenceIndexRepository
+ * Class Schnitzler\System\Mvc\Domain\Repository\ReferenceIndexRepository
  */
 class ReferenceIndexRepository
 {

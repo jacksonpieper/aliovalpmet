@@ -13,7 +13,7 @@
 
 namespace Schnitzler\Templavoila\Utility;
 
-use Schnitzler\Templavoila\Domain\Repository\ReferenceIndexRepository;
+use Schnitzler\System\Mvc\Domain\Repository\ReferenceIndexRepository;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
