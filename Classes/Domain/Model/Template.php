@@ -16,7 +16,7 @@ namespace Schnitzler\Templavoila\Domain\Model;
 use Schnitzler\Templavoila\Domain\Repository\DataStructureRepository;
 use Schnitzler\System\Traits\BackendUser;
 use Schnitzler\System\Traits\LanguageService;
-use Schnitzler\Templavoila\Utility\PermissionUtility;
+use Schnitzler\TemplaVoila\Security\Permissions\PermissionUtility;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Resource\FileReference;
 use TYPO3\CMS\Core\Resource\FileRepository;

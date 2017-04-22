@@ -24,7 +24,7 @@ use Schnitzler\Templavoila\Controller\Backend\PageModule\Renderer\SidebarRendere
 use Schnitzler\System\Localization\LanguageHelper;
 use Schnitzler\Templavoila\Service\ApiService;
 use Schnitzler\Templavoila\Templavoila;
-use Schnitzler\Templavoila\Utility\PermissionUtility;
+use Schnitzler\TemplaVoila\Security\Permissions\PermissionUtility;
 use TYPO3\CMS\Backend\Template\Components\ButtonBar;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\DataHandling\DataHandler;

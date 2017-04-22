@@ -11,9 +11,9 @@
  * LICENSE.md file that was distributed with this source code.
  */
 
-namespace Schnitzler\Templavoila\Tests\Functional\Utility;
+namespace Schnitzler\TemplaVoila\Security\Permissions\Tests\Functional;
 
-use Schnitzler\Templavoila\Utility\PermissionUtility;
+use Schnitzler\TemplaVoila\Security\Permissions\PermissionUtility;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Core\Bootstrap;
 use TYPO3\CMS\Core\Database\ConnectionPool;
@@ -22,7 +22,7 @@ use TYPO3\CMS\Core\Type\Bitmask\Permission;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
- * Class Schnitzler\Templavoila\Tests\Functional\Service\PermissionUtilityTest
+ * Class Schnitzler\TemplaVoila\Security\Permissions\PermissionUtilityTest
  */
 class PermissionUtilityTest extends FunctionalTestCase
 {
@@ -113,7 +113,7 @@ class PermissionUtilityTest extends FunctionalTestCase
         $this->setUpBackendUserFromFixture(3);
         static::assertSame(
             Permission::NOTHING,
-            PermissionUtility::getCompiledPermissions(2)
+            \Schnitzler\TemplaVoila\Security\Permissions\PermissionUtility::getCompiledPermissions(2)
         );
     }
 
@@ -122,7 +122,7 @@ class PermissionUtilityTest extends FunctionalTestCase
         $this->setUpBackendUserFromFixture(2);
         static::assertSame(
             ['1', '2'],
-            PermissionUtility::getDenyListForUser()
+            \Schnitzler\TemplaVoila\Security\Permissions\PermissionUtility::getDenyListForUser()
         );
     }
 
@@ -131,7 +131,7 @@ class PermissionUtilityTest extends FunctionalTestCase
         $this->setUpBackendUserFromFixture(2);
         static::assertSame(
             [4],
-            array_keys(PermissionUtility::getAccessibleStorageFolders())
+            array_keys(\Schnitzler\TemplaVoila\Security\Permissions\PermissionUtility::getAccessibleStorageFolders())
         );
     }
 }

@@ -18,7 +18,7 @@ use Schnitzler\Templavoila\Controller\Backend\PageModule\MainController;
 use Schnitzler\System\Localization\LanguageHelper;
 use Schnitzler\System\Traits\BackendUser;
 use Schnitzler\System\Traits\LanguageService;
-use Schnitzler\Templavoila\Utility\PermissionUtility;
+use Schnitzler\TemplaVoila\Security\Permissions\PermissionUtility;
 use Schnitzler\Templavoila\Utility\ReferenceIndexUtility;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Configuration\FlexForm\FlexFormTools;

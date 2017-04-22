@@ -21,7 +21,7 @@ use Schnitzler\Templavoila\Domain\Repository\PageRepository;
 use Schnitzler\System\Localization\LanguageHelper;
 use Schnitzler\System\Traits\BackendUser;
 use Schnitzler\System\Traits\LanguageService;
-use Schnitzler\Templavoila\Utility\PermissionUtility;
+use Schnitzler\TemplaVoila\Security\Permissions\PermissionUtility;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Type\Icon\IconState;

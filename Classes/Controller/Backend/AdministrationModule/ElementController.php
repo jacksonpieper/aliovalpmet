@@ -26,7 +26,7 @@ use Schnitzler\Templavoila\Domain\Repository\TemplateRepository;
 use Schnitzler\Templavoila\Helper\TagBuilderHelper;
 use Schnitzler\Templavoila\Helper\TemplateMappingHelper;
 use Schnitzler\Templavoila\Templavoila;
-use Schnitzler\Templavoila\Utility\PermissionUtility;
+use Schnitzler\TemplaVoila\Security\Permissions\PermissionUtility;
 use TYPO3\CMS\Backend\Template\Components\ButtonBar;
 use TYPO3\CMS\Backend\Template\Components\Buttons\AbstractButton;
 use TYPO3\CMS\Backend\Utility\BackendUtility;

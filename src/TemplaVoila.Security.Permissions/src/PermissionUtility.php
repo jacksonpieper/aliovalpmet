@@ -11,7 +11,7 @@
  * LICENSE.md file that was distributed with this source code.
  */
 
-namespace Schnitzler\Templavoila\Utility;
+namespace Schnitzler\TemplaVoila\Security\Permissions;
 
 use Schnitzler\Templavoila\Domain\Repository\PageRepository;
 use Schnitzler\System\Traits\BackendUser;
@@ -21,7 +21,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Frontend\Page\PageRepository as CorePageRepository;
 
 /**
- * Class Schnitzler\Templavoila\Utility\PermissionUtility
+ * Class Schnitzler\TemplaVoila\Security\Permissions\PermissionUtility
  */
 final class PermissionUtility
 {
