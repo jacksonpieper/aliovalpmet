@@ -11,7 +11,7 @@
  * LICENSE.md file that was distributed with this source code.
  */
 
-namespace Schnitzler\Templavoila\Domain\Model;
+namespace Schnitzler\TemplaVoila\Data\Domain\Model;
 
 use Schnitzler\System\Traits\BackendUser;
 use Schnitzler\TemplaVoila\Security\Permissions\PermissionUtility;

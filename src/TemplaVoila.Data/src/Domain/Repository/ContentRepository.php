@@ -16,8 +16,8 @@ namespace Schnitzler\TemplaVoila\Data\Domain\Repository;
  * The TYPO3 project - inspiring people to share!
  */
 
-use Schnitzler\Templavoila\Domain\Model\AbstractDataStructure;
-use Schnitzler\Templavoila\Domain\Model\Template;
+use Schnitzler\TemplaVoila\Data\Domain\Model\AbstractDataStructure;
+use Schnitzler\TemplaVoila\Data\Domain\Model\Template;
 use Schnitzler\System\Traits\BackendUser;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Database\ConnectionPool;

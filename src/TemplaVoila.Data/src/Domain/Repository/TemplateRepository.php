@@ -13,9 +13,9 @@
 
 namespace Schnitzler\TemplaVoila\Data\Domain\Repository;
 
-use Schnitzler\Templavoila\Domain\Model\AbstractDataStructure;
-use Schnitzler\Templavoila\Domain\Model\DataStructure;
-use Schnitzler\Templavoila\Domain\Model\Template;
+use Schnitzler\TemplaVoila\Data\Domain\Model\AbstractDataStructure;
+use Schnitzler\TemplaVoila\Data\Domain\Model\DataStructure;
+use Schnitzler\TemplaVoila\Data\Domain\Model\Template;
 use Schnitzler\System\Traits\BackendUser;
 use Schnitzler\System\Traits\DataHandler;
 use TYPO3\CMS\Backend\Utility\BackendUtility;

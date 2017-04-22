@@ -13,7 +13,7 @@
 
 namespace Schnitzler\Templavoila\Controller;
 
-use Schnitzler\Templavoila\Domain\Model\HtmlMarkup;
+use Schnitzler\TemplaVoila\Data\Domain\Model\HtmlMarkup;
 use Schnitzler\TemplaVoila\Data\Domain\Repository\DataStructureRepository;
 use Schnitzler\TemplaVoila\Data\Domain\Repository\TemplateRepository;
 use Schnitzler\System\Data\Exception\ObjectNotFoundException;

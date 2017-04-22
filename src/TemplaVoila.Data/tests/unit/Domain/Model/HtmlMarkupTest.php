@@ -11,9 +11,9 @@
  * LICENSE.md file that was distributed with this source code.
  */
 
-namespace Schnitzler\Templavoila\Tests\Unit\Controller;
+namespace Schnitzler\TemplaVoila\Data\Tests\Unit\Domain\Model;
 
-use Schnitzler\Templavoila\Domain\Model\HtmlMarkup;
+use Schnitzler\TemplaVoila\Data\Domain\Model\HtmlMarkup;
 use TYPO3\CMS\Core\Tests\AccessibleObjectInterface;
 use TYPO3\CMS\Core\Tests\UnitTestCase;
 

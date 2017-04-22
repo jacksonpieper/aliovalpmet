@@ -13,8 +13,8 @@
 
 namespace Schnitzler\TemplaVoila\Data\Domain\Repository;
 
-use Schnitzler\Templavoila\Domain\Model\DataStructure;
-use Schnitzler\Templavoila\Domain\Model\Template;
+use Schnitzler\TemplaVoila\Data\Domain\Model\DataStructure;
+use Schnitzler\TemplaVoila\Data\Domain\Model\Template;
 use Schnitzler\Templavoila\Templavoila;
 use Schnitzler\System\Traits\BackendUser;
 use Schnitzler\System\Traits\DataHandler;
@@ -47,16 +47,16 @@ class DataStructureRepository
      *
      * @throws \InvalidArgumentException
      *
-     * @return \Schnitzler\Templavoila\Domain\Model\AbstractDataStructure
+     * @return \Schnitzler\TemplaVoila\Data\Domain\Model\AbstractDataStructure
      */
     public function getDatastructureByUidOrFilename($uidOrFile)
     {
         if ((int)$uidOrFile > 0) {
-            $className = 'Schnitzler\\Templavoila\\Domain\\Model\\DataStructure';
+            $className = \Schnitzler\TemplaVoila\Data\Domain\Model\DataStructure::class;
         } else {
             if (($staticKey = $this->validateStaticDS((string)$uidOrFile)) !== false) {
                 $uidOrFile = $staticKey;
-                $className = 'Schnitzler\\Templavoila\\Domain\\Model\\StaticDataStructure';
+                $className = \Schnitzler\TemplaVoila\Data\Domain\Model\StaticDataStructure::class;
             } else {
                 throw new \InvalidArgumentException(
                     'Argument was supposed to be either a uid or a filename',
@@ -408,8 +408,8 @@ class DataStructureRepository
     /**
      * Sorts datastructure alphabetically
      *
-     * @param \Schnitzler\Templavoila\Domain\Model\AbstractDataStructure $obj1
-     * @param \Schnitzler\Templavoila\Domain\Model\AbstractDataStructure $obj2
+     * @param \Schnitzler\TemplaVoila\Data\Domain\Model\AbstractDataStructure $obj1
+     * @param \Schnitzler\TemplaVoila\Data\Domain\Model\AbstractDataStructure $obj2
      *
      * @return int Result of the comparison (see strcmp())
      *

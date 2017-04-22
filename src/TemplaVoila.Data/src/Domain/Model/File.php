@@ -11,7 +11,7 @@
  * LICENSE.md file that was distributed with this source code.
  */
 
-namespace Schnitzler\Templavoila\Domain\Model;
+namespace Schnitzler\TemplaVoila\Data\Domain\Model;
 
 use TYPO3\CMS\Core\Resource\FileInterface;
 use TYPO3\CMS\Core\Resource\ResourceFactory;

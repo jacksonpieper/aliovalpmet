@@ -16,7 +16,7 @@ namespace Schnitzler\Templavoila\Controller\Backend\AdministrationModule;
 use Psr\Http\Message\ResponseInterface;
 use Schnitzler\Templavoila\Controller\Backend\AbstractModuleController;
 use Schnitzler\Templavoila\Controller\Backend\Configurable;
-use Schnitzler\Templavoila\Domain\Model\Template;
+use Schnitzler\TemplaVoila\Data\Domain\Model\Template;
 use Schnitzler\Templavoila\Templavoila;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Database\ConnectionPool;

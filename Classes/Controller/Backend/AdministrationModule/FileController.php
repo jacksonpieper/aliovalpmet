@@ -16,7 +16,7 @@ namespace Schnitzler\Templavoila\Controller\Backend\AdministrationModule;
 use Psr\Http\Message\ResponseInterface;
 use Schnitzler\Templavoila\Controller\Backend\AbstractModuleController;
 use Schnitzler\Templavoila\Controller\Backend\Configurable;
-use Schnitzler\Templavoila\Domain\Model\HtmlMarkup;
+use Schnitzler\TemplaVoila\Data\Domain\Model\HtmlMarkup;
 use Schnitzler\Templavoila\Exception\FileIsEmptyException;
 use Schnitzler\Templavoila\Exception\FileNotFoundException;
 use TYPO3\CMS\Core\Http\Response;

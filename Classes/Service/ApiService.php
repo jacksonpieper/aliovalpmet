@@ -13,7 +13,7 @@
 
 namespace Schnitzler\Templavoila\Service;
 
-use Schnitzler\Templavoila\Domain\Model\AbstractDataStructure;
+use Schnitzler\TemplaVoila\Data\Domain\Model\AbstractDataStructure;
 use Schnitzler\TemplaVoila\Data\Domain\Repository\ContentRepository;
 use Schnitzler\System\Data\Domain\Repository\SysLanguageRepository;
 use Schnitzler\TemplaVoila\Data\Domain\Repository\TemplateRepository;

@@ -15,7 +15,7 @@ namespace Schnitzler\Templavoila\Controller\Backend\AdministrationModule;
 
 use Schnitzler\Templavoila\Controller\Backend\AdministrationModule\Renderer\ElementTypesRenderer;
 use Schnitzler\Templavoila\Controller\Backend\Linkable;
-use Schnitzler\Templavoila\Domain\Model\HtmlMarkup;
+use Schnitzler\TemplaVoila\Data\Domain\Model\HtmlMarkup;
 use Schnitzler\Templavoila\Helper\TagBuilderHelper;
 use Schnitzler\System\Traits\LanguageService;
 use TYPO3\CMS\Backend\Utility\BackendUtility;

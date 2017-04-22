@@ -275,7 +275,7 @@ class RenameFieldInPageFlexWizardController extends AbstractFunctionModule
         $dsList = $this->getKnownPageDS();
         $return = [];
         foreach ($dsList as $ds) {
-            /* @var $ds \Schnitzler\Templavoila\Domain\Model\AbstractDataStructure */
+            /* @var $ds \Schnitzler\TemplaVoila\Data\Domain\Model\AbstractDataStructure */
             $return[$ds->getLabel()] = [];
             $t = $ds->getDataprotArray();
             foreach (array_keys($t['ROOT']['el']) as $field) {

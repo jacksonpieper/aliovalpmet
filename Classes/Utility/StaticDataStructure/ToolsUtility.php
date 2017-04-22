@@ -13,7 +13,7 @@
 
 namespace Schnitzler\Templavoila\Utility\StaticDataStructure;
 
-use Schnitzler\Templavoila\Domain\Model\AbstractDataStructure;
+use Schnitzler\TemplaVoila\Data\Domain\Model\AbstractDataStructure;
 use Schnitzler\Templavoila\Templavoila;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 

@@ -13,8 +13,8 @@
 
 namespace Schnitzler\Templavoila\Service\ItemProcFunc;
 
-use Schnitzler\Templavoila\Domain\Model\AbstractDataStructure;
-use Schnitzler\Templavoila\Domain\Model\Template;
+use Schnitzler\TemplaVoila\Data\Domain\Model\AbstractDataStructure;
+use Schnitzler\TemplaVoila\Data\Domain\Model\Template;
 use Schnitzler\TemplaVoila\Data\Domain\Repository\DataStructureRepository;
 use Schnitzler\TemplaVoila\Data\Domain\Repository\TemplateRepository;
 use Schnitzler\Templavoila\Exception\Configuration\UndefinedStorageFolderException;
@@ -223,7 +223,7 @@ class StaticDataStructuresHandler
             if ($dataSource > 0) {
                 $toList = $toRepo->getTemplatesByDatastructure($ds, $storagePid);
                 foreach ($toList as $toObj) {
-                    /** @var \Schnitzler\Templavoila\Domain\Model\Template $toObj */
+                    /** @var \Schnitzler\TemplaVoila\Data\Domain\Model\Template $toObj */
                     if (!$toObj->hasParent() && $toObj->isPermittedForUser($params['table'], $removeTOItems)) {
                         $params['items'][] = [
                             $toObj->getLabel(),
@@ -281,7 +281,7 @@ class StaticDataStructuresHandler
 
             $toList = $toRepo->findByDataStructureObject($dsObj);
             foreach ($toList as $toObj) {
-                /** @var \Schnitzler\Templavoila\Domain\Model\Template $toObj */
+                /** @var \Schnitzler\TemplaVoila\Data\Domain\Model\Template $toObj */
                 if (!$toObj->hasParent() && $toObj->isPermittedForUser($params['row'], $removeTOItems)) {
                     $curDS[] = [
                         $toObj->getLabel(),

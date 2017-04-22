@@ -13,8 +13,8 @@
 
 namespace Schnitzler\Templavoila\Hook;
 
-use Schnitzler\Templavoila\Domain\Model\AbstractDataStructure;
-use Schnitzler\Templavoila\Domain\Model\Template;
+use Schnitzler\TemplaVoila\Data\Domain\Model\AbstractDataStructure;
+use Schnitzler\TemplaVoila\Data\Domain\Model\Template;
 use Schnitzler\TemplaVoila\Data\Domain\Repository\TemplateRepository;
 use Schnitzler\System\Traits\LanguageService;
 use TYPO3\CMS\Backend\Utility\BackendUtility;

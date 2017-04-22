@@ -16,7 +16,7 @@ namespace Schnitzler\Templavoila\Controller\Backend\AdministrationModule;
 use Psr\Http\Message\ResponseInterface;
 use Schnitzler\Templavoila\Controller\Backend\AbstractModuleController;
 use Schnitzler\Templavoila\Controller\Backend\Configurable;
-use Schnitzler\Templavoila\Domain\Model\AbstractDataStructure;
+use Schnitzler\TemplaVoila\Data\Domain\Model\AbstractDataStructure;
 use Schnitzler\TemplaVoila\Data\Domain\Repository\ContentRepository;
 use Schnitzler\TemplaVoila\Data\Domain\Repository\DataStructureRepository;
 use Schnitzler\TemplaVoila\Data\Domain\Repository\PageRepository;
@@ -385,7 +385,7 @@ class MainController extends AbstractModuleController implements Configurable
                 $newTitle = $dsObj->getLabel() . ' [TEMPLATE]';
                 if (count($toList)) {
                     foreach ($toList as $toObj) {
-                        /* @var \Schnitzler\Templavoila\Domain\Model\Template $toObj */
+                        /* @var \Schnitzler\TemplaVoila\Data\Domain\Model\Template $toObj */
                         $toIdArray[] = $toObj->getKey();
                         if ($toObj->hasParentTemplate()) {
                             continue;
@@ -589,7 +589,7 @@ class MainController extends AbstractModuleController implements Configurable
     /**
      * Render display of a Template Object
      *
-     * @param \Schnitzler\Templavoila\Domain\Model\Template $toObj Template Object record to render
+     * @param \Schnitzler\TemplaVoila\Data\Domain\Model\Template $toObj Template Object record to render
      * @param int $scope Scope of DS
      * @param int $children If set, the function is asked to render children to template objects (and should not call it self recursively again).
      *
@@ -852,7 +852,7 @@ class MainController extends AbstractModuleController implements Configurable
     /**
      * Creates listings of pages / content elements where template objects are used.
      *
-     * @param \Schnitzler\Templavoila\Domain\Model\Template $toObj Template Object record
+     * @param \Schnitzler\TemplaVoila\Data\Domain\Model\Template $toObj Template Object record
      * @param int $scope Scope value. 1) page,  2) content elements
      *
      * @return array HTML table listing usages.

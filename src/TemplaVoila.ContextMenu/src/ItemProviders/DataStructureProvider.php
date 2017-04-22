@@ -14,7 +14,7 @@ declare(strict_types=1);
 
 namespace Schnitzler\TemplaVoila\ContextMenu\ItemProviders;
 
-use Schnitzler\Templavoila\Domain\Model\DataStructure;
+use Schnitzler\TemplaVoila\Data\Domain\Model\DataStructure;
 use Schnitzler\Templavoila\Templavoila;
 use TYPO3\CMS\Backend\ContextMenu\ItemProviders\RecordProvider;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
