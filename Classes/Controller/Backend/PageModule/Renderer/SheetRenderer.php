@@ -979,9 +979,8 @@ class SheetRenderer implements Renderable
         if (substr($label, 0, 4) === 'LLL:') {
             $label = static::getLanguageService()->sL($label);
         }
-        $result = htmlspecialchars($label, $hsc);
 
-        return $result;
+        return $hsc ? htmlspecialchars($label) : $label;
     }
 
     /**
