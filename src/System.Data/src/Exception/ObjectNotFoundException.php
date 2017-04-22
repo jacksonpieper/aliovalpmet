@@ -11,13 +11,13 @@
  * LICENSE.md file that was distributed with this source code.
  */
 
-namespace Schnitzler\Templavoila\Exception;
+namespace Schnitzler\System\Data\Exception;
 
-use Schnitzler\Templavoila\Exception;
+use Schnitzler\System\Data\DataException;
 
 /**
- * Class Schnitzler\Templavoila\Exception\DataException
+ * Class Schnitzler\System\Data\Exception\ObjectNotFoundException
  */
-class DataException extends Exception
+class ObjectNotFoundException extends DataException
 {
 }

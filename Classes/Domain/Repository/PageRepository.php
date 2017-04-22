@@ -18,7 +18,7 @@ namespace Schnitzler\Templavoila\Domain\Repository;
 
 use Schnitzler\Templavoila\Domain\Model\AbstractDataStructure;
 use Schnitzler\Templavoila\Domain\Model\Template;
-use Schnitzler\Templavoila\Exception\Data\ObjectNotFoundException;
+use Schnitzler\System\Data\Exception\ObjectNotFoundException;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -33,7 +33,7 @@ class PageRepository
 
     /**
      * @param int $uid
-     * @throws ObjectNotFoundException
+     * @throws \Schnitzler\System\Data\Exception\ObjectNotFoundException
      * @return array
      */
     public function findOneByIdentifier(int $uid) : array

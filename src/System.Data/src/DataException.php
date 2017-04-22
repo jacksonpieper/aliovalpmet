@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 /*
  * This file is part of the TemplaVoilà project.
@@ -11,13 +12,11 @@
  * LICENSE.md file that was distributed with this source code.
  */
 
-namespace Schnitzler\Templavoila\Exception\Data;
-
-use Schnitzler\Templavoila\Exception\DataException;
+namespace Schnitzler\System\Data;
 
 /**
- * Class Schnitzler\Templavoila\Exception\FileIsEmptyException
+ * Class Schnitzler\System\Data\DataException
  */
-class ObjectNotFoundException extends DataException
+class DataException extends \Exception
 {
 }
