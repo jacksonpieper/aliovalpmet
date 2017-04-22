@@ -11,7 +11,7 @@
  * LICENSE.md file that was distributed with this source code.
  */
 
-namespace Schnitzler\System\Mvc\Domain\Repository;
+namespace Schnitzler\System\Data\Domain\Repository;
 
 use Schnitzler\System\Traits\BackendUser;
 use TYPO3\CMS\Core\Database\ConnectionPool;
@@ -21,7 +21,7 @@ use TYPO3\CMS\Core\Database\Query\Restriction\HiddenRestriction;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
- * Class Schnitzler\System\Mvc\Domain\Repository\SysLanguageRepository
+ * Class Schnitzler\System\Data\Domain\Repository\SysLanguageRepository
  */
 class SysLanguageRepository
 {

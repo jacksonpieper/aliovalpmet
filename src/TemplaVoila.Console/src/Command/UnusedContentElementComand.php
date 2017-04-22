@@ -13,7 +13,7 @@
 
 namespace Schnitzler\TemplaVoila\Console\Command;
 
-use Schnitzler\System\Mvc\Domain\Repository\ReferenceIndexRepository;
+use Schnitzler\System\Data\Domain\Repository\ReferenceIndexRepository;
 use Schnitzler\Templavoila\Service\ApiService;
 use Schnitzler\System\Traits\BackendUser;
 use TYPO3\CMS\Backend\Utility\BackendUtility;

@@ -15,7 +15,7 @@ namespace Schnitzler\Templavoila\Controller\Backend\PageModule;
 
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
-use Schnitzler\System\Mvc\Domain\Repository\PageOverlayRepository;
+use Schnitzler\System\Data\Domain\Repository\PageOverlayRepository;
 use Schnitzler\Templavoila\Templavoila;
 use TYPO3\CMS\Backend\Module\AbstractModule;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
@@ -120,7 +120,7 @@ class PageOverlayController extends AbstractModule
         try {
             if ($sysLanguageUid !== 0) {
 
-                /** @var \Schnitzler\System\Mvc\Domain\Repository\PageOverlayRepository $pageOverlayRepository */
+                /** @var \Schnitzler\System\Data\Domain\Repository\PageOverlayRepository $pageOverlayRepository */
                 $pageOverlayRepository = GeneralUtility::makeInstance(PageOverlayRepository::class);
                 $row = $pageOverlayRepository->findOneByParentIdentifierAndLanguage($pid, $sysLanguageUid);
 

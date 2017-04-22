@@ -15,7 +15,7 @@ namespace Schnitzler\Templavoila\Service;
 
 use Schnitzler\Templavoila\Domain\Model\AbstractDataStructure;
 use Schnitzler\Templavoila\Domain\Repository\ContentRepository;
-use Schnitzler\System\Mvc\Domain\Repository\SysLanguageRepository;
+use Schnitzler\System\Data\Domain\Repository\SysLanguageRepository;
 use Schnitzler\Templavoila\Domain\Repository\TemplateRepository;
 use Schnitzler\System\Traits\LanguageService;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
@@ -1839,7 +1839,7 @@ class ApiService
         $this->allSystemWebsiteLanguages['all_lKeys'][] = 'lDEF';
         $this->allSystemWebsiteLanguages['all_vKeys'][] = 'vDEF';
 
-        /** @var \Schnitzler\System\Mvc\Domain\Repository\SysLanguageRepository $sysLanguageRepository */
+        /** @var \Schnitzler\System\Data\Domain\Repository\SysLanguageRepository $sysLanguageRepository */
         $sysLanguageRepository = GeneralUtility::makeInstance(SysLanguageRepository::class);
 
         foreach ($sysLanguageRepository->findAll() as $row) {

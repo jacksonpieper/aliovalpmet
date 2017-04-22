@@ -1,7 +1,7 @@
 <?php
 declare(strict_types = 1);
 
-namespace Schnitzler\System\Mvc\Domain\Repository;
+namespace Schnitzler\System\Data\Domain\Repository;
 
 /*
  * This file is part of the TYPO3 CMS project.
@@ -25,7 +25,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Versioning\VersionState;
 
 /**
- * Class Schnitzler\System\Mvc\Domain\Repository\PageOverlayRepository
+ * Class Schnitzler\System\Data\Domain\Repository\PageOverlayRepository
  */
 class PageOverlayRepository
 {

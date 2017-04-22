@@ -17,7 +17,7 @@ namespace Schnitzler\Templavoila\Controller\Backend\PageModule\Renderer\Sidebar;
 use Schnitzler\Templavoila\Controller\Backend\PageModule\MainController;
 use Schnitzler\Templavoila\Controller\Backend\PageModule\Renderer\Renderable;
 use Schnitzler\Templavoila\Domain\Repository\ContentRepository;
-use Schnitzler\System\Mvc\Domain\Repository\ReferenceIndexRepository;
+use Schnitzler\System\Data\Domain\Repository\ReferenceIndexRepository;
 use Schnitzler\System\Localization\LanguageHelper;
 use Schnitzler\System\Traits\BackendUser;
 use Schnitzler\System\Traits\LanguageService;
@@ -163,7 +163,7 @@ class NonUsedElementsTab implements Renderable
      */
     public function renderReferenceCount($uid)
     {
-        /** @var \Schnitzler\System\Mvc\Domain\Repository\ReferenceIndexRepository $referenceIndexRepository */
+        /** @var \Schnitzler\System\Data\Domain\Repository\ReferenceIndexRepository $referenceIndexRepository */
         $referenceIndexRepository = GeneralUtility::makeInstance(ReferenceIndexRepository::class);
         $rows = $referenceIndexRepository->findByReferenceTableAndUid('tt_content', $uid);
 
