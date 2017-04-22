@@ -178,7 +178,7 @@ class DataHandlerHook
             $fieldArray['config'] = '
 page = PAGE
 page.10 = USER
-page.10.userFunc = Schnitzler\Templavoila\Controller\FrontendController->renderPage
+page.10.userFunc = Schnitzler\TemplaVoila\Controller\FrontendController->renderPage
 page.10.disableExplosivePreview = 1
             ';
         }

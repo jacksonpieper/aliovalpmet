@@ -14,6 +14,7 @@
             "Schnitzler\\System\\Traits\\": "src/System.Traits/src/",
             "Schnitzler\\TemplaVoila\\Console\\": "src/TemplaVoila.Console/src/",
             "Schnitzler\\TemplaVoila\\ContextMenu\\": "src/TemplaVoila.ContextMenu/src/",
+            "Schnitzler\\TemplaVoila\\Controller\\": "src/TemplaVoila.Controller/src/",
             "Schnitzler\\TemplaVoila\\Data\\": "src/TemplaVoila.Data/src/",
             "Schnitzler\\TemplaVoila\\Security\\Permissions\\": "src/TemplaVoila.Security.Permissions/src/",
             "Schnitzler\\TemplaVoila\\UI\\": "src/TemplaVoila.UI/src/",

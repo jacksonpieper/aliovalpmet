@@ -14,7 +14,7 @@
 namespace Schnitzler\Templavoila\Container;
 
 use Psr\Container\ContainerInterface;
-use Schnitzler\Templavoila\Controller\Backend\PageModule\Renderer\AbstractContentElementRenderer;
+use Schnitzler\TemplaVoila\Controller\Backend\PageModule\Renderer\AbstractContentElementRenderer;
 use Schnitzler\Templavoila\Templavoila;
 
 /**

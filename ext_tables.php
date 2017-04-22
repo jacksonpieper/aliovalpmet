@@ -31,7 +31,7 @@ if (TYPO3_MODE === 'BE') {
         [
             'name' => 'web_txtemplavoilaM1',
             'access' => 'group,user',
-            'routeTarget' => \Schnitzler\Templavoila\Controller\Backend\PageModule\MainController::class . '::processRequest',
+            'routeTarget' => \Schnitzler\TemplaVoila\Controller\Backend\PageModule\MainController::class . '::processRequest',
             'iconIdentifier' => 'extensions-templavoila-module-page',
             'labels' => [
                 'll_ref' => 'LLL:EXT:templavoila/Resources/Private/Language/PageModule/locallang_mod.xlf'
@@ -47,7 +47,7 @@ if (TYPO3_MODE === 'BE') {
         [
             'name' => 'web_txtemplavoilaM2',
             'access' => 'group,user',
-            'routeTarget' => \Schnitzler\Templavoila\Controller\Backend\AdministrationModule\MainController::class . '::processRequest',
+            'routeTarget' => \Schnitzler\TemplaVoila\Controller\Backend\AdministrationModule\MainController::class . '::processRequest',
             'iconIdentifier' => 'extensions-templavoila-module-administration',
             'labels' => [
                 'll_ref' => 'LLL:EXT:templavoila/Resources/Private/Language/AdministrationModule/locallang_mod.xlf'
@@ -99,13 +99,13 @@ if (TYPO3_MODE === 'BE') {
 
     \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::insertModuleFunction(
         'web_func',
-        \Schnitzler\Templavoila\Controller\Backend\FunctionsModule\ReferenceElementWizardController::class,
+        \Schnitzler\TemplaVoila\Controller\Backend\FunctionsModule\ReferenceElementWizardController::class,
         null,
         'LLL:EXT:templavoila/Resources/Private/Language/locallang.xlf:wiz_refElements'
     );
     \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::insertModuleFunction(
         'web_func',
-        \Schnitzler\Templavoila\Controller\Backend\FunctionsModule\RenameFieldInPageFlexWizardController::class,
+        \Schnitzler\TemplaVoila\Controller\Backend\FunctionsModule\RenameFieldInPageFlexWizardController::class,
         null,
         'LLL:EXT:templavoila/Resources/Private/Language/locallang.xlf:wiz_renameFieldsInPage'
     );

@@ -14,10 +14,10 @@
 return [
     'TemplaVoila::Api::Unlink' => [
         'path' => '/templavoila/api/unlink',
-        'target' => \Schnitzler\Templavoila\Controller\Backend\Ajax\ApiController::class. '::unlink'
+        'target' => \Schnitzler\TemplaVoila\Controller\Backend\Ajax\ApiController::class. '::unlink'
     ],
     'TemplaVoila::Api::Paste' => [
         'path' => '/templavoila/api/paste',
-        'target' => \Schnitzler\Templavoila\Controller\Backend\Ajax\ApiController::class. '::paste'
+        'target' => \Schnitzler\TemplaVoila\Controller\Backend\Ajax\ApiController::class. '::paste'
     ]
 ];

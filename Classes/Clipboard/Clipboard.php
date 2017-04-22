@@ -13,7 +13,7 @@
 
 namespace Schnitzler\Templavoila\Clipboard;
 
-use Schnitzler\Templavoila\Controller\Backend\PageModule\MainController;
+use Schnitzler\TemplaVoila\Controller\Backend\PageModule\MainController;
 use Schnitzler\System\Traits\LanguageService;
 use TYPO3\CMS\Backend\Clipboard\Clipboard as CoreClipboard;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
