@@ -11,13 +11,13 @@
  * LICENSE.md file that was distributed with this source code.
  */
 
-namespace Schnitzler\Templavoila\Configuration\FlexForm;
+namespace Schnitzler\TYPO3\CMS\Core\Configuration\FlexForm;
 
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
- * Class Schnitzler\Templavoila\Configuration\FlexForm\FlexFormTools
+ * Class Schnitzler\TYPO3\CMS\Core\Configuration\FlexForm\FlexFormTools
  */
 class FlexFormTools extends \TYPO3\CMS\Core\Configuration\FlexForm\FlexFormTools
 {

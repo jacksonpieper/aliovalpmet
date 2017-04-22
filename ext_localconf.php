@@ -190,7 +190,7 @@ $GLOBALS['TYPO3_CONF_VARS']['SYS']['formEngine']['formDataGroup']['tcaDatabaseRe
 ];
 
 // Register "XCLASS" of FlexFormTools for language parsing
-$GLOBALS['TYPO3_CONF_VARS']['SYS']['Objects'][\TYPO3\CMS\Core\Configuration\FlexForm\FlexFormTools::class]['className'] = \Schnitzler\Templavoila\Configuration\FlexForm\FlexFormTools::class;
+$GLOBALS['TYPO3_CONF_VARS']['SYS']['Objects'][\TYPO3\CMS\Core\Configuration\FlexForm\FlexFormTools::class]['className'] = \Schnitzler\TYPO3\CMS\Core\Configuration\FlexForm\FlexFormTools::class;
 
 // Language diff updating in flex
 $GLOBALS['TYPO3_CONF_VARS']['BE']['flexFormXMLincludeDiffBase'] = true;
