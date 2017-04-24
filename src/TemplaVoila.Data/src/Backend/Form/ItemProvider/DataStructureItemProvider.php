@@ -14,9 +14,9 @@ declare(strict_types=1);
 
 namespace Schnitzler\TemplaVoila\Data\Backend\Form\ItemProvider;
 
+use Schnitzler\TemplaVoila\Configuration\ConfigurationException;
 use Schnitzler\TemplaVoila\Data\Domain\Model\AbstractDataStructure;
 use Schnitzler\TemplaVoila\Data\Domain\Repository\DataStructureRepository;
-use Schnitzler\Templavoila\Exception\Configuration\UndefinedStorageFolderException;
 use TYPO3\CMS\Backend\Form\FormDataProvider\TcaSelectItems;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
@@ -71,9 +71,9 @@ class DataStructureItemProvider extends AbstractItemProvider
         $pageId = (int)$params['row'][$table === 'pages' ? 'uid' : 'pid'];
 
         try {
-            $storagePid = $this->getStoragePid($pageId);
-            $dsList = $dsRepo->getDatastructuresByStoragePidAndScope($storagePid, $scope);
-        } catch (UndefinedStorageFolderException $e) {
+            $storageFolderUid = $this->configurationManager->getStorageFolderUid($pageId);
+            $dsList = $dsRepo->getDatastructuresByStoragePidAndScope($storageFolderUid, $scope);
+        } catch (ConfigurationException $e) {
             $dsList = $dsRepo->findByScope($scope);
         }
 

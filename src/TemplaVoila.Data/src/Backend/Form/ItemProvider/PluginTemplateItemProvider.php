@@ -15,8 +15,8 @@ declare(strict_types=1);
 namespace Schnitzler\TemplaVoila\Data\Backend\Form\ItemProvider;
 
 use Schnitzler\System\Traits\LanguageService;
+use Schnitzler\TemplaVoila\Configuration\ConfigurationException;
 use Schnitzler\TemplaVoila\Data\Domain\Model\Template;
-use Schnitzler\Templavoila\Exception\Configuration\UndefinedStorageFolderException;
 use TYPO3\CMS\Backend\Form\FormDataProvider\TcaSelectItems;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -39,12 +39,12 @@ class PluginTemplateItemProvider extends AbstractItemProvider
         $templateRef = $GLOBALS['TBE_MODULES_EXT']['xMOD_tx_templavoila_cm1']['piKey2DSMap'][$piKey]; // This should be a value of a Data Structure.
 
         try {
-            $storagePid = $this->getStoragePid((int)$params['row']['pid']);
-        } catch (UndefinedStorageFolderException $e) {
-            $storagePid = 0;
+            $storageFolderUid = $this->configurationManager->getStorageFolderUid((int)$params['row']['pid']);
+        } catch (ConfigurationException $e) {
+            $storageFolderUid = 0;
         }
 
-        if ($templateRef && $storagePid) {
+        if ($templateRef && $storageFolderUid) {
 
             // todo: put this into a repository
             // Select all Template Object Records from storage folder, which are parent records and which has the data structure for the plugin:
@@ -57,7 +57,7 @@ class PluginTemplateItemProvider extends AbstractItemProvider
                 ->select('*')
                 ->from(Template::TABLE)
                 ->where(
-                    $queryBuilder->expr()->eq('pid', $storagePid),
+                    $queryBuilder->expr()->eq('pid', $storageFolderUid),
                     $queryBuilder->expr()->eq('datastructure', $queryBuilder->quote($templateRef)),
                     $queryBuilder->expr()->eq('parent', 0)
                 )

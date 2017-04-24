@@ -14,10 +14,10 @@ declare(strict_types=1);
 
 namespace Schnitzler\TemplaVoila\Data\Backend\Form\ItemProvider;
 
+use Schnitzler\TemplaVoila\Configuration\ConfigurationException;
 use Schnitzler\TemplaVoila\Data\Domain\Model\AbstractDataStructure;
 use Schnitzler\TemplaVoila\Data\Domain\Repository\DataStructureRepository;
 use Schnitzler\TemplaVoila\Data\Domain\Repository\TemplateRepository;
-use Schnitzler\Templavoila\Exception\Configuration\UndefinedStorageFolderException;
 use TYPO3\CMS\Backend\Form\FormDataProvider\TcaSelectItems;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
@@ -58,9 +58,9 @@ class TemplateItemProvider extends AbstractItemProvider
         $pageId = (int)$params['row'][$table === 'pages' ? 'uid' : 'pid'];
 
         try {
-            $storagePid = $this->getStoragePid($pageId);
-        } catch (UndefinedStorageFolderException $e) {
-            $storagePid = 0;
+            $storageFolderUid = $this->configurationManager->getStorageFolderUid($pageId);
+        } catch (ConfigurationException $e) {
+            $storageFolderUid = 0;
         }
 
         $removeTOItems = $this->getRemoveItems($pageId, $table, $field);
@@ -77,7 +77,7 @@ class TemplateItemProvider extends AbstractItemProvider
         try {
             $ds = $dsRepo->getDatastructureByUidOrFilename($dataSource);
             if ($dataSource > 0) {
-                $toList = $toRepo->getTemplatesByDatastructure($ds, $storagePid);
+                $toList = $toRepo->getTemplatesByDatastructure($ds, $storageFolderUid);
                 foreach ($toList as $toObj) {
                     /** @var \Schnitzler\TemplaVoila\Data\Domain\Model\Template $toObj */
                     if (!$toObj->hasParent() && $toObj->isPermittedForUser($params['table'], $removeTOItems)) {
@@ -113,9 +113,9 @@ class TemplateItemProvider extends AbstractItemProvider
         $scope = $this->getScope($params);
 
         try {
-            $storagePid = $this->getStoragePid($pageId);
-            $dsList = $dsRepo->getDatastructuresByStoragePidAndScope($storagePid, $scope);
-        } catch (UndefinedStorageFolderException $e) {
+            $storageFolderUid = $this->configurationManager->getStorageFolderUid($pageId);
+            $dsList = $dsRepo->getDatastructuresByStoragePidAndScope($storageFolderUid, $scope);
+        } catch (ConfigurationException $e) {
             $dsList = $dsRepo->findByScope($scope);
         }
 

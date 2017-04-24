@@ -13,6 +13,8 @@
 
 namespace Schnitzler\Templavoila\Service;
 
+use Schnitzler\TemplaVoila\Configuration\ConfigurationException;
+use Schnitzler\TemplaVoila\Configuration\ConfigurationManager;
 use Schnitzler\TemplaVoila\Data\Domain\Model\AbstractDataStructure;
 use Schnitzler\TemplaVoila\Data\Domain\Repository\ContentRepository;
 use Schnitzler\System\Data\Domain\Repository\SysLanguageRepository;
@@ -27,7 +29,6 @@ use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Log\LogManager;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Core\Utility\MathUtility;
 
 /**
  * Public API class for proper handling of content elements and other useful TemplaVoila related functions
@@ -1810,21 +1811,12 @@ class ApiService
      */
     public function getStorageFolderPid($pageUid)
     {
-
-        // Negative PID values is pointing to a page on the same level as the current.
-        if ($pageUid < 0) {
-            $pidRow = BackendUtility::getRecordWSOL('pages', abs($pageUid), 'pid');
-            $pageUid = $pidRow['pid'];
-        }
-        $row = BackendUtility::getRecordWSOL('pages', $pageUid);
-
-        $TSconfig = BackendUtility::getTCEFORM_TSconfig('pages', $row);
-        $storagePid = (int)$TSconfig['_STORAGE_PID'];
-
-        // Check for alternative storage folder
-        $modTSConfig = BackendUtility::getModTSconfig($pageUid, 'tx_templavoila.storagePid');
-        if (is_array($modTSConfig) && MathUtility::canBeInterpretedAsInteger($modTSConfig['value'])) {
-            $storagePid = (int)$modTSConfig['value'];
+        try {
+            /** @var ConfigurationManager $configurationManager */
+            $configurationManager = GeneralUtility::makeInstance(ConfigurationManager::class);
+            $storagePid = $configurationManager->getStorageFolderUid((int)$pageUid);
+        } catch (ConfigurationException $e) {
+            $storagePid = 0;
         }
 
         return $storagePid;

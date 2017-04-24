@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 /*
  * This file is part of the TemplaVoilà project.
@@ -11,13 +12,11 @@
  * LICENSE.md file that was distributed with this source code.
  */
 
-namespace Schnitzler\Templavoila\Exception;
-
-use Schnitzler\Templavoila\Exception;
+namespace Schnitzler\TemplaVoila\Configuration;
 
 /**
- * Class Schnitzler\Templavoila\Exception\ConfigurationException
+ * Class Schnitzler\TemplaVoila\Configuration\ConfigurationException
  */
-class ConfigurationException extends Exception
+class ConfigurationException extends \Schnitzler\Templavoila\Exception
 {
 }

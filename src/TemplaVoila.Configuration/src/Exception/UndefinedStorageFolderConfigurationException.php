@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 /*
  * This file is part of the TemplaVoilà project.
@@ -11,12 +12,12 @@
  * LICENSE.md file that was distributed with this source code.
  */
 
-namespace Schnitzler\Templavoila\Exception\Configuration;
+namespace Schnitzler\TemplaVoila\Configuration\Exception;
 
-use Schnitzler\Templavoila\Exception\ConfigurationException;
+use Schnitzler\TemplaVoila\Configuration\ConfigurationException;
 
 /**
- * Class Schnitzler\Templavoila\Exception\ConfigurationException
+ * Class Schnitzler\TemplaVoila\Configuration\Exception\UndefinedStorageFolderException
  */
 class UndefinedStorageFolderException extends ConfigurationException
 {

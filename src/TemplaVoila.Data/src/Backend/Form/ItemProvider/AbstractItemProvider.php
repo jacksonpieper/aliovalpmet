@@ -16,10 +16,8 @@ namespace Schnitzler\TemplaVoila\Data\Backend\Form\ItemProvider;
 
 use Schnitzler\TemplaVoila\Configuration\ConfigurationManager;
 use Schnitzler\TemplaVoila\Data\Domain\Model\AbstractDataStructure;
-use Schnitzler\Templavoila\Exception\Configuration\UndefinedStorageFolderException;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Core\Utility\MathUtility;
 
 /**
  * Class Schnitzler\TemplaVoila\Data\Backend\Form\ItemProvider\AbstractItemProvider
@@ -36,31 +34,6 @@ abstract class AbstractItemProvider
     {
         /** @var ConfigurationManager $configurationManager */
         $this->configurationManager = GeneralUtility::makeInstance(ConfigurationManager::class);
-    }
-
-    /**
-     * @param int $pageId
-     * @return int
-     * @throws UndefinedStorageFolderException
-     *
-     * todo: this needs to be part of a configuration manager
-     */
-    protected function getStoragePid(int $pageId): int
-    {
-        $pageTsConfig = BackendUtility::getPagesTSconfig($pageId);
-        $storagePid = (int)$pageTsConfig['mod.']['tx_templavoila.']['storagePid'];
-
-        // Check for alternative storage folder
-        $modTSConfig = BackendUtility::getModTSconfig($pageId, 'tx_templavoila.storagePid');
-        if (is_array($modTSConfig) && MathUtility::canBeInterpretedAsInteger($modTSConfig['value'])) {
-            $storagePid = (int)$modTSConfig['value'];
-        }
-
-        if ($storagePid === 0) {
-            throw new UndefinedStorageFolderException('Storage folder is not defined', 1492703523758);
-        }
-
-        return $storagePid;
     }
 
     /**
