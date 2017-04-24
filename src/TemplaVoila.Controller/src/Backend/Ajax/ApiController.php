@@ -13,7 +13,6 @@
 
 namespace Schnitzler\TemplaVoila\Controller\Backend\Ajax;
 
-use Schnitzler\Templavoila\Exception\RuntimeException;
 use Schnitzler\Templavoila\Service\ApiService;
 use Schnitzler\System\Traits\DataHandler;
 use TYPO3\CMS\Core\Http\Response;

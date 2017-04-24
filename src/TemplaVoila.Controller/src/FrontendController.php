@@ -17,8 +17,6 @@ use Schnitzler\TemplaVoila\Data\Domain\Model\HtmlMarkup;
 use Schnitzler\TemplaVoila\Data\Domain\Repository\DataStructureRepository;
 use Schnitzler\TemplaVoila\Data\Domain\Repository\TemplateRepository;
 use Schnitzler\System\Data\Exception\ObjectNotFoundException;
-use Schnitzler\Templavoila\Exception\RuntimeException;
-use Schnitzler\Templavoila\Exception\Runtime\SerializationException;
 use Schnitzler\Templavoila\Templavoila;
 use Schnitzler\System\Traits\BackendUser;
 use TYPO3\CMS\Core\Configuration\FlexForm\FlexFormTools;
@@ -412,7 +410,7 @@ class FrontendController extends AbstractPlugin
 
             // Get template record:
             if (!$row['tx_templavoila_to']) {
-                throw new RuntimeException('
+                throw new \Schnitzler\System\Runtime\RuntimeException('
                     You haven\'t selected a Template Object yet for table/uid "' . $table . '/' . $row['uid'] . '".
                     Without a Template Object TemplaVoila cannot map the XML content into HTML.
                     Please select a Template Object now.',
@@ -446,7 +444,7 @@ class FrontendController extends AbstractPlugin
             // Get mapping information from Template Record:
             $TO = unserialize($TOrec['templatemapping']);
             if (!is_array($TO)) {
-                throw new SerializationException('
+                throw new \Schnitzler\System\Runtime\Exception\SerializationException('
                     Template Object could not be unserialized successfully.
                     Are you sure you saved mapping information into Template Object with UID "' . $row['tx_templavoila_to'] . '"?'
                 );
@@ -549,9 +547,9 @@ class FrontendController extends AbstractPlugin
             //}
         } catch (ObjectNotFoundException $e) {
             $content = $this->formatError($e->getMessage());
-        } catch (SerializationException $e) {
+        } catch (\Schnitzler\System\Runtime\Exception\SerializationException $e) {
             $content = $this->formatError($e->getMessage());
-        } catch (RuntimeException $e) {
+        } catch (\Schnitzler\System\Runtime\RuntimeException $e) {
             $content = $this->formatError($e->getMessage());
         } catch (\Exception $e) {
             // todo: log this case

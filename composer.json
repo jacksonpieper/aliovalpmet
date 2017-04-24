@@ -10,6 +10,7 @@
         "psr-4": {
             "Schnitzler\\Templavoila\\": "Classes/",
             "Schnitzler\\System\\Localization\\": "src/System.Localization/src/",
+            "Schnitzler\\System\\Runtime\\": "src/System.Runtime/src/",
             "Schnitzler\\System\\Data\\": "src/System.Data/src/",
             "Schnitzler\\System\\Traits\\": "src/System.Traits/src/",
             "Schnitzler\\TemplaVoila\\Configuration\\": "src/TemplaVoila.Configuration/src/",
