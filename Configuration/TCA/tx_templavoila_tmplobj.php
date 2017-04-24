@@ -104,7 +104,7 @@ return [
                 'size' => 1,
                 'minitems' => 0,
                 'maxitems' => 1,
-                'itemsProcFunc' => \Schnitzler\Templavoila\Service\ItemProcFunc\StaticDataStructuresHandler::class . '->main',
+                'itemsProcFunc' => \Schnitzler\TemplaVoila\Data\Backend\Form\ItemProvider\DataStructureItemProvider::class . '->findAll',
                 'allowNonIdValues' => 1,
                 'fieldWizard' => [
                     'selectIcons' => [

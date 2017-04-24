@@ -25,7 +25,7 @@ $tempColumns = [
                 ['', 0],
             ],
             'allowNonIdValues' => 1,
-            'itemsProcFunc' => 'Schnitzler\Templavoila\Service\ItemProcFunc\StaticDataStructuresHandler->dataSourceItemsProcFunc',
+            'itemsProcFunc' => \Schnitzler\TemplaVoila\Data\Backend\Form\ItemProvider\DataStructureItemProvider::class . '->findByScopeAndStorageFolder',
             'size' => 1,
             'minitems' => 0,
             'maxitems' => 1,
@@ -46,7 +46,7 @@ $tempColumns = [
             'items' => [
                 ['', 0],
             ],
-            'itemsProcFunc' => 'Schnitzler\Templavoila\Service\ItemProcFunc\StaticDataStructuresHandler->templateObjectItemsProcFunc',
+            'itemsProcFunc' => \Schnitzler\TemplaVoila\Data\Backend\Form\ItemProvider\TemplateItemProvider::class . '->findByStorageFolder',
             'size' => 1,
             'minitems' => 0,
             'maxitems' => 1,
@@ -77,7 +77,7 @@ $tempColumns = [
             'items' => [
                 ['', 0],
             ],
-            'itemsProcFunc' => 'Schnitzler\Templavoila\Service\ItemProcFunc\StaticDataStructuresHandler->pi_templates',
+            'itemsProcFunc' => \Schnitzler\TemplaVoila\Data\Backend\Form\ItemProvider\PluginTemplateItemProvider::class . '->findByStorageFolder',
             'size' => 1,
             'minitems' => 0,
             'maxitems' => 1,
