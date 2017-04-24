@@ -153,13 +153,6 @@ class MainController extends AbstractModuleController implements Configurable
     private $apiObj;
 
     /**
-     * holds the extconf configuration
-     *
-     * @var array
-     */
-    private $extConf;
-
-    /**
      * Icons which shouldn't be rendered by configuration, can contain elements of "new,edit,copy,cut,ref,paste,browse,delete,makeLocal,unlink,hide"
      *
      * @var array
@@ -206,8 +199,6 @@ class MainController extends AbstractModuleController implements Configurable
         static::getLanguageService()->includeLLFile('EXT:lang/Resources/Private/Language/locallang_core.xlf');
         static::getLanguageService()->includeLLFile('EXT:lang/Resources/Private/Language/locallang_mod_web_list.xlf');
         static::getLanguageService()->includeLLFile('EXT:templavoila/Resources/Private/Language/PageModule/MainController/locallang.xlf');
-
-        $this->extConf = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf'][Templavoila::EXTKEY]);
     }
 
     private function initializeTsConfig()

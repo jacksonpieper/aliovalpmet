@@ -13,6 +13,7 @@
 
 namespace Schnitzler\Templavoila\Hook;
 
+use Schnitzler\TemplaVoila\Configuration\ConfigurationManager;
 use Schnitzler\Templavoila\Service\ApiService;
 use Schnitzler\TemplaVoila\Security\AccessControl\Access as AccessUserFunction;
 use Schnitzler\Templavoila\Templavoila;
@@ -40,15 +41,13 @@ class DataHandlerHook
     public $debug = false;
 
     /**
-     * Extension configuration
-     *
-     * @var array
+     * @var ConfigurationManager
      */
-    protected $extConf = [];
+    protected $configurationManager;
 
     public function __construct()
     {
-        $this->extConf = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf'][Templavoila::EXTKEY]);
+        $this->configurationManager = GeneralUtility::makeInstance(ConfigurationManager::class);
     }
 
     /********************************************
@@ -77,7 +76,7 @@ class DataHandlerHook
             return;
         }
 
-        if (!$this->extConf['enable.']['selectDataStructure']) {
+        if (!$this->configurationManager->getExtensionConfiguration()['enable.']['selectDataStructure']) {
             // Update DS if TO was changed
             $this->updateDataSourceFromTemplateObject($table, $incomingFieldArray, $reference->BE_USER);
         }

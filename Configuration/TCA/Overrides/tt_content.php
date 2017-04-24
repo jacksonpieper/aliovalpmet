@@ -104,14 +104,16 @@ $GLOBALS['TCA']['tt_content']['types']['templavoila_pi1']['showitem'] =
     . '--palette--;LLL:EXT:cms/locallang_ttc.xlf:palette.frames;frames,'
     . '--div--;LLL:EXT:cms/locallang_ttc.xlf:tabs.extended';
 
-$_EXTCONF = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf'][\Schnitzler\Templavoila\Templavoila::EXTKEY]);
-if ($_EXTCONF['enable.']['selectDataStructure']) {
+$configurationManager = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(
+    \Schnitzler\TemplaVoila\Configuration\ConfigurationManager::class
+);
+if ($configurationManager->getExtensionConfiguration()['enable.']['selectDataStructure']) {
     $requestUpdate = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $GLOBALS['TCA']['tt_content']['ctrl']['requestUpdate'], true);
     $requestUpdate[] = 'tx_templavoila_ds';
     $GLOBALS['TCA']['tt_content']['ctrl']['requestUpdate'] = implode(',', $requestUpdate);
 }
 
-if ($_EXTCONF['enable.']['selectDataStructure']) {
+if ($configurationManager->getExtensionConfiguration()['enable.']['selectDataStructure']) {
     \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addToAllTCAtypes(
         'tt_content',
         'tx_templavoila_ds;;;;1-1-1,tx_templavoila_to',
@@ -126,6 +128,7 @@ if ($_EXTCONF['enable.']['selectDataStructure']) {
         'after:layout'
     );
 }
+unset($configurationManager);
 \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addToAllTCAtypes(
     'tt_content',
     'tx_templavoila_flex',

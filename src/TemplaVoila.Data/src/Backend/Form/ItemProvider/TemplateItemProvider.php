@@ -18,7 +18,6 @@ use Schnitzler\TemplaVoila\Data\Domain\Model\AbstractDataStructure;
 use Schnitzler\TemplaVoila\Data\Domain\Repository\DataStructureRepository;
 use Schnitzler\TemplaVoila\Data\Domain\Repository\TemplateRepository;
 use Schnitzler\Templavoila\Exception\Configuration\UndefinedStorageFolderException;
-use Schnitzler\Templavoila\Templavoila;
 use TYPO3\CMS\Backend\Form\FormDataProvider\TcaSelectItems;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
@@ -33,9 +32,7 @@ class TemplateItemProvider extends AbstractItemProvider
      */
     public function findByStorageFolder(array &$params, TcaSelectItems $itemProvider)
     {
-        $conf = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf'][Templavoila::EXTKEY], ['allowed_classes' => false]);
-
-        if ($conf['enable.']['selectDataStructure']) {
+        if ($this->configurationManager->getExtensionConfiguration()['enable.']['selectDataStructure']) {
             $this->templateObjectItemsProcFuncForCurrentDS($params, $itemProvider);
         } else {
             $this->templateObjectItemsProcFuncForAllDSes($params, $itemProvider);

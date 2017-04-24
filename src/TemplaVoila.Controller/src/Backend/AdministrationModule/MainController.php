@@ -14,6 +14,7 @@
 namespace Schnitzler\TemplaVoila\Controller\Backend\AdministrationModule;
 
 use Psr\Http\Message\ResponseInterface;
+use Schnitzler\TemplaVoila\Configuration\ConfigurationManager;
 use Schnitzler\TemplaVoila\Controller\Backend\AbstractModuleController;
 use Schnitzler\TemplaVoila\Controller\Backend\Configurable;
 use Schnitzler\TemplaVoila\Data\Domain\Model\AbstractDataStructure;
@@ -86,13 +87,6 @@ class MainController extends AbstractModuleController implements Configurable
     private $errorsWarnings = [];
 
     /**
-     * holds the extconf configuration
-     *
-     * @var array
-     */
-    private $extConf;
-
-    /**
      * @var string
      */
     private $cm1Link = '../cm1/index.php';
@@ -112,6 +106,11 @@ class MainController extends AbstractModuleController implements Configurable
      */
     private $templateRepository;
 
+    /**
+     * @var ConfigurationManager
+     */
+    private $configurationManager;
+
     public function __construct()
     {
         parent::__construct();
@@ -119,6 +118,7 @@ class MainController extends AbstractModuleController implements Configurable
         static::getLanguageService()->includeLLFile('EXT:templavoila/Resources/Private/Language/AdministrationModule/MainController/locallang.xlf');
         $this->dataStructureRepository = GeneralUtility::makeInstance(DataStructureRepository::class);
         $this->templateRepository = GeneralUtility::makeInstance(TemplateRepository::class);
+        $this->configurationManager = GeneralUtility::makeInstance(ConfigurationManager::class);
     }
 
     /**
@@ -134,7 +134,6 @@ class MainController extends AbstractModuleController implements Configurable
     public function init()
     {
         $this->modTSconfig = BackendUtility::getModTSconfig($this->getId(), 'mod.' . static::getModuleName());
-        $this->extConf = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf'][Templavoila::EXTKEY]);
     }
 
     /**
@@ -1782,9 +1781,7 @@ class MainController extends AbstractModuleController implements Configurable
      */
     public function wizard_checkConfiguration()
     {
-        $TVconfig = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf'][Templavoila::EXTKEY]);
-
-        return !is_array($TVconfig);
+        return !is_array($this->configurationManager->getExtensionConfiguration());
     }
 
     /**

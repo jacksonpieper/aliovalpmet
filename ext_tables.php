@@ -55,13 +55,16 @@ if (TYPO3_MODE === 'BE') {
         ]
     );
 
-    $_EXTCONF = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf'][$_EXTKEY]);
+    $configurationManager = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(
+        \Schnitzler\TemplaVoila\Configuration\ConfigurationManager::class
+    );
     // Remove default Page module (layout) manually if wanted:
-    if (!$_EXTCONF['enable.']['oldPageModule']) {
+    if (!$configurationManager->getExtensionConfiguration()['enable.']['oldPageModule']) {
         $tmp = $GLOBALS['TBE_MODULES']['web'];
         $GLOBALS['TBE_MODULES']['web'] = str_replace(',,', ',', str_replace('layout', '', $tmp));
         unset($GLOBALS['TBE_MODULES']['_PATHS']['web_layout']);
     }
+    unset($configurationManager);
 
     // Registering CSH:
     \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addLLrefForTCAdescr(

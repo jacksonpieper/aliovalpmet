@@ -14,6 +14,7 @@ declare(strict_types=1);
 
 namespace Schnitzler\TemplaVoila\Data\Backend\Form\ItemProvider;
 
+use Schnitzler\TemplaVoila\Configuration\ConfigurationManager;
 use Schnitzler\TemplaVoila\Data\Domain\Model\AbstractDataStructure;
 use Schnitzler\Templavoila\Exception\Configuration\UndefinedStorageFolderException;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
@@ -25,6 +26,18 @@ use TYPO3\CMS\Core\Utility\MathUtility;
  */
 abstract class AbstractItemProvider
 {
+
+    /**
+     * @var ConfigurationManager
+     */
+    protected $configurationManager;
+
+    public function __construct()
+    {
+        /** @var ConfigurationManager $configurationManager */
+        $this->configurationManager = GeneralUtility::makeInstance(ConfigurationManager::class);
+    }
+
     /**
      * @param int $pageId
      * @return int
