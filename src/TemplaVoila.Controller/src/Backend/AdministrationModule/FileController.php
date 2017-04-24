@@ -17,8 +17,6 @@ use Psr\Http\Message\ResponseInterface;
 use Schnitzler\TemplaVoila\Controller\Backend\AbstractModuleController;
 use Schnitzler\TemplaVoila\Controller\Backend\Configurable;
 use Schnitzler\TemplaVoila\Data\Domain\Model\HtmlMarkup;
-use Schnitzler\Templavoila\Exception\FileIsEmptyException;
-use Schnitzler\Templavoila\Exception\FileNotFoundException;
 use TYPO3\CMS\Core\Http\Response;
 use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -71,13 +69,13 @@ class FileController extends AbstractModuleController implements Configurable
     /**
      * @param string $path
      * @return string
-     * @throws FileIsEmptyException
-     * @throws FileNotFoundException
+     * @throws \Schnitzler\System\IO\Exception\FileIsEmptyException
+     * @throws \Schnitzler\System\IO\Exception\FileNotFoundException
      */
     private function getFileContent($path)
     {
         if (!file_exists($path) || !is_file($path) || ($absolutePath = GeneralUtility::getFileAbsFileName($path)) === '') {
-            throw new FileNotFoundException(
+            throw new \Schnitzler\System\IO\Exception\FileNotFoundException(
                 sprintf('File "%s" not found', $path),
                 1479904333951
             );
@@ -85,7 +83,7 @@ class FileController extends AbstractModuleController implements Configurable
 
         $content = GeneralUtility::getUrl($absolutePath);
         if ($content === false || $content === '') {
-            throw new FileIsEmptyException(
+            throw new \Schnitzler\System\IO\Exception\FileIsEmptyException(
                 sprintf('File "%s" is empty', $path),
                 1479904675357
             );
@@ -111,9 +109,9 @@ class FileController extends AbstractModuleController implements Configurable
 
         try {
             $fileContent = $this->getFileContent($path);
-        } catch (FileNotFoundException $e) {
+        } catch (\Schnitzler\System\IO\Exception\FileNotFoundException $e) {
             return $this->_404($response);
-        } catch (FileIsEmptyException $e) {
+        } catch (\Schnitzler\System\IO\Exception\FileIsEmptyException $e) {
             return $this->_500($response, $path);
         }
 
@@ -172,9 +170,9 @@ class FileController extends AbstractModuleController implements Configurable
 
         try {
             $fileContent = $this->getFileContent($path);
-        } catch (FileNotFoundException $e) {
+        } catch (\Schnitzler\System\IO\Exception\FileNotFoundException $e) {
             return $this->_404($response);
-        } catch (FileIsEmptyException $e) {
+        } catch (\Schnitzler\System\IO\Exception\FileIsEmptyException $e) {
             return $this->_500($response, $path);
         }
 

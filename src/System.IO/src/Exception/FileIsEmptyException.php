@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 /*
  * This file is part of the TemplaVoilà project.
@@ -11,13 +12,13 @@
  * LICENSE.md file that was distributed with this source code.
  */
 
-namespace Schnitzler\Templavoila\Exception;
+namespace Schnitzler\System\IO\Exception;
 
-use Schnitzler\Templavoila\Exception;
+use Schnitzler\System\IO\IOException;
 
 /**
- * Class Schnitzler\Templavoila\Exception\FileNotFoundException
+ * Class Schnitzler\System\IO\Exception\FileIsEmptyException
  */
-class FileNotFoundException extends Exception
+class FileIsEmptyException extends IOException
 {
 }
