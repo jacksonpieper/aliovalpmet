@@ -25,7 +25,6 @@ use Schnitzler\TemplaVoila\Data\Domain\Repository\DataStructureRepository;
 use Schnitzler\TemplaVoila\Data\Domain\Repository\TemplateRepository;
 use Schnitzler\System\UI\TagBuilderHelper;
 use Schnitzler\Templavoila\Helper\TemplateMappingHelper;
-use Schnitzler\Templavoila\Templavoila;
 use Schnitzler\TemplaVoila\Security\Permissions\PermissionUtility;
 use TYPO3\CMS\Backend\Template\Components\ButtonBar;
 use TYPO3\CMS\Backend\Template\Components\Buttons\AbstractButton;
@@ -79,21 +78,11 @@ class ElementController extends AbstractModuleController implements Configurable
      */
     private $returnUrl = '';
 
-    /**
-     * Boolean; if true DS records are file based
-     *
-     * @var bool
-     */
-    private $staticDS;
-
     public function __construct()
     {
         parent::__construct();
         static::getLanguageService()->includeLLFile('EXT:templavoila/Resources/Private/Language/AdministrationModule/MainController/locallang.xlf');
         static::getLanguageService()->includeLLFile('EXT:templavoila/Resources/Private/Language/AdministrationModule/ElementController/locallang.xlf');
-
-        $extConf = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf'][Templavoila::EXTKEY]);
-        $this->staticDS = (bool)$extConf['staticDS.']['enable'];
     }
 
     /**
@@ -173,12 +162,7 @@ class ElementController extends AbstractModuleController implements Configurable
 
         try {
             $templateObjectRecord = $this->getTemplateObjectRecord($this->templateObjectUid);
-            $dataStructureRecord = [];
-            if ($this->staticDS) {
-                $dataStructureRecord['dataprot'] = GeneralUtility::getUrl(GeneralUtility::getFileAbsFileName($templateObjectRecord['datastructure']));
-            } else {
-                $dataStructureRecord = BackendUtility::getRecordWSOL('tx_templavoila_datastructure', $templateObjectRecord['datastructure']);
-            }
+            $dataStructureRecord = BackendUtility::getRecordWSOL('tx_templavoila_datastructure', $templateObjectRecord['datastructure']);
 
             $this->moduleTemplate->getDocHeaderComponent()->getButtonBar()->addButton($this->getPreviewButton(), ButtonBar::BUTTON_POSITION_LEFT, 1);
             $this->moduleTemplate->getDocHeaderComponent()->getButtonBar()->addButton($this->getSaveButton(), ButtonBar::BUTTON_POSITION_LEFT, 2);
@@ -199,7 +183,7 @@ class ElementController extends AbstractModuleController implements Configurable
         // Header:
         $relFilePath = substr($this->file, strlen(PATH_site));
 
-        $view->assign('isStatic', $this->staticDS);
+        $view->assign('isStatic', false);
         $view->assign('templateFile', [
             'path' => htmlspecialchars($relFilePath),
             'onclick' => 'return top.openUrlInWindow(\'' . GeneralUtility::getIndpEnv('TYPO3_SITE_URL') . $relFilePath . '\',\'FileView\');'
@@ -360,12 +344,7 @@ class ElementController extends AbstractModuleController implements Configurable
             return $response;
         }
 
-        $dataStructureRecord = [];
-        if ($this->staticDS) {
-            $dataStructureRecord['dataprot'] = GeneralUtility::getUrl(GeneralUtility::getFileAbsFileName($templateObjectRecord['datastructure']));
-        } else {
-            $dataStructureRecord = BackendUtility::getRecordWSOL('tx_templavoila_datastructure', $templateObjectRecord['datastructure']);
-        }
+        $dataStructureRecord = BackendUtility::getRecordWSOL('tx_templavoila_datastructure', $templateObjectRecord['datastructure']);
         $dataStructure = GeneralUtility::xml2array($dataStructureRecord['dataprot']);
         $templateMapping = unserialize($templateObjectRecord['templatemapping']);
 
@@ -509,11 +488,7 @@ class ElementController extends AbstractModuleController implements Configurable
         list($mapping, $structure) = $this->getMappingAndStructureFromSession();
 
         $templateObjectRecord = BackendUtility::getRecordWSOL('tx_templavoila_tmplobj', $this->templateObjectUid);
-        if ($this->staticDS) {
-            $datastructureRecord['uid'] = $templateObjectRecord['datastructure'];
-        } else {
-            $datastructureRecord = BackendUtility::getRecordWSOL('tx_templavoila_datastructure', $templateObjectRecord['datastructure']);
-        }
+        $datastructureRecord = BackendUtility::getRecordWSOL('tx_templavoila_datastructure', $templateObjectRecord['datastructure']);
 
         $mapping = $this->prepareMappingDataToBeStored($mapping);
         $structure = $this->prepareStructureDataToBeStored($structure, $mapping, $datastructureRecord['scope']);

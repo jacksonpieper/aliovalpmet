@@ -15,10 +15,8 @@ namespace Schnitzler\TemplaVoila\Data\Domain\Repository;
 
 use Schnitzler\TemplaVoila\Data\Domain\Model\DataStructure;
 use Schnitzler\TemplaVoila\Data\Domain\Model\Template;
-use Schnitzler\Templavoila\Templavoila;
 use Schnitzler\System\Traits\BackendUser;
 use Schnitzler\System\Traits\DataHandler;
-use Schnitzler\Templavoila\Utility\StaticDataStructure\ToolsUtility;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
@@ -36,36 +34,20 @@ class DataStructureRepository
     use DataHandler;
 
     /**
-     * @var bool
+     * @param int $uid
+     *
+     * @return DataStructure
      */
-    protected static $staticDsInitComplete = false;
-
-    /**
-     * Retrieve a single datastructure by uid or xml-file path
-     *
-     * @param int $uidOrFile
-     *
-     * @throws \InvalidArgumentException
-     *
-     * @return \Schnitzler\TemplaVoila\Data\Domain\Model\AbstractDataStructure
-     */
-    public function getDatastructureByUidOrFilename($uidOrFile)
+    public function getDatastructureByUidOrFilename(int $uid): DataStructure
     {
-        if ((int)$uidOrFile > 0) {
-            $className = \Schnitzler\TemplaVoila\Data\Domain\Model\DataStructure::class;
-        } else {
-            if (($staticKey = $this->validateStaticDS((string)$uidOrFile)) !== false) {
-                $uidOrFile = $staticKey;
-                $className = \Schnitzler\TemplaVoila\Data\Domain\Model\StaticDataStructure::class;
-            } else {
-                throw new \InvalidArgumentException(
-                    'Argument was supposed to be either a uid or a filename',
-                    1273409810
-                );
-            }
+        if ($uid <= 0) {
+            throw new \InvalidArgumentException(
+                'Argument was supposed to be greater than zero',
+                1273409810
+            );
         }
 
-        return GeneralUtility::makeInstance($className, $uidOrFile);
+        return GeneralUtility::makeInstance(DataStructure::class, $uid);
     }
 
     /**
@@ -77,48 +59,35 @@ class DataStructureRepository
      */
     public function getDatastructuresByStoragePid($pid)
     {
-        $dscollection = [];
-        $confArr = self::getStaticDatastructureConfiguration();
-        if (count($confArr)) {
-            foreach ($confArr as $conf) {
-                $ds = $this->getDatastructureByUidOrFilename($conf['path']);
-                $pids = $ds->getStoragePids();
-                if ($pids === '' || GeneralUtility::inList($pids, (string)$pid)) {
-                    $dscollection[] = $ds;
-                }
-            }
+        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable(DataStructure::TABLE);
+        $queryBuilder
+            ->getRestrictions()
+            ->removeAll()
+            ->add(GeneralUtility::makeInstance(DeletedRestriction::class));
+
+        $query = $queryBuilder
+            ->select('uid')
+            ->from(DataStructure::TABLE)
+            ->where(
+                $queryBuilder->expr()->gte('pid', 0),
+                $queryBuilder->expr()->eq('pid', (int)$pid)
+            );
+
+        if (BackendUtility::isTableWorkspaceEnabled(Template::TABLE)) {
+            $query->andWhere(
+                $queryBuilder->expr()->orX(
+                    $queryBuilder->expr()->lte('t3ver_state', new VersionState(VersionState::DEFAULT_STATE)),
+                    $queryBuilder->expr()->eq('t3ver_wsid', (int)static::getBackendUser()->workspace)
+                )
+            );
         }
 
-        if (!self::isStaticDsEnabled()) {
-            $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable(DataStructure::TABLE);
-            $queryBuilder
-                ->getRestrictions()
-                ->removeAll()
-                ->add(GeneralUtility::makeInstance(DeletedRestriction::class));
+        $dsRows = $query->execute()->fetchAll();
 
-            $query = $queryBuilder
-                ->select('uid')
-                ->from(DataStructure::TABLE)
-                ->where(
-                    $queryBuilder->expr()->gte('pid', 0),
-                    $queryBuilder->expr()->eq('pid', (int)$pid)
-                );
-
-            if (BackendUtility::isTableWorkspaceEnabled(Template::TABLE)) {
-                $query->andWhere(
-                    $queryBuilder->expr()->orX(
-                        $queryBuilder->expr()->lte('t3ver_state', new VersionState(VersionState::DEFAULT_STATE)),
-                        $queryBuilder->expr()->eq('t3ver_wsid', (int)static::getBackendUser()->workspace)
-                    )
-                );
-            }
-
-            $dsRows = $query->execute()->fetchAll();
-
-            foreach ($dsRows as $ds) {
-                /** @var array $ds */
-                $dscollection[] = $this->getDatastructureByUidOrFilename($ds['uid']);
-            }
+        $dscollection = [];
+        foreach ($dsRows as $ds) {
+            /** @var array $ds */
+            $dscollection[] = $this->getDatastructureByUidOrFilename($ds['uid']);
         }
         usort($dscollection, [$this, 'sortDatastructures']);
 
@@ -135,48 +104,33 @@ class DataStructureRepository
      */
     public function getDatastructuresByStoragePidAndScope($pid, $scope)
     {
-        $dscollection = [];
-        $confArr = self::getStaticDatastructureConfiguration();
-        if (count($confArr)) {
-            foreach ($confArr as $conf) {
-                if ($conf['scope'] == $scope) {
-                    $ds = $this->getDatastructureByUidOrFilename($conf['path']);
-                    $pids = $ds->getStoragePids();
-                    if ($pids === '' || GeneralUtility::inList($pids, (string)$pid)) {
-                        $dscollection[] = $ds;
-                    }
-                }
-            }
+        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable(DataStructure::TABLE);
+        $queryBuilder
+            ->getRestrictions()
+            ->removeAll()
+            ->add(GeneralUtility::makeInstance(DeletedRestriction::class));
+
+        $query = $queryBuilder
+            ->select('uid')
+            ->from(DataStructure::TABLE)
+            ->where(
+                $queryBuilder->expr()->gte('pid', 0),
+                $queryBuilder->expr()->eq('pid', (int)$pid),
+                $queryBuilder->expr()->eq('scope', (int)$scope)
+            );
+
+        if (BackendUtility::isTableWorkspaceEnabled(Template::TABLE)) {
+            $query->andWhere(
+                $queryBuilder->expr()->orX(
+                    $queryBuilder->expr()->lte('t3ver_state', new VersionState(VersionState::DEFAULT_STATE)),
+                    $queryBuilder->expr()->eq('t3ver_wsid', (int)static::getBackendUser()->workspace)
+                )
+            );
         }
 
-        if (!self::isStaticDsEnabled()) {
-            $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable(DataStructure::TABLE);
-            $queryBuilder
-                ->getRestrictions()
-                ->removeAll()
-                ->add(GeneralUtility::makeInstance(DeletedRestriction::class));
-
-            $query = $queryBuilder
-                ->select('uid')
-                ->from(DataStructure::TABLE)
-                ->where(
-                    $queryBuilder->expr()->gte('pid', 0),
-                    $queryBuilder->expr()->eq('pid', (int)$pid),
-                    $queryBuilder->expr()->eq('scope', (int)$scope)
-                );
-
-            if (BackendUtility::isTableWorkspaceEnabled(Template::TABLE)) {
-                $query->andWhere(
-                    $queryBuilder->expr()->orX(
-                        $queryBuilder->expr()->lte('t3ver_state', new VersionState(VersionState::DEFAULT_STATE)),
-                        $queryBuilder->expr()->eq('t3ver_wsid', (int)static::getBackendUser()->workspace)
-                    )
-                );
-            }
-
-            foreach ($query->execute()->fetchAll() as $row) {
-                $dscollection[] = $this->getDatastructureByUidOrFilename($row['uid']);
-            }
+        $dscollection = [];
+        foreach ($query->execute()->fetchAll() as $row) {
+            $dscollection[] = $this->getDatastructureByUidOrFilename($row['uid']);
         }
         usort($dscollection, [$this, 'sortDatastructures']);
 
@@ -192,47 +146,35 @@ class DataStructureRepository
      */
     public function findByScope($scope)
     {
-        $dscollection = [];
-        $confArr = self::getStaticDatastructureConfiguration();
-        if (count($confArr)) {
-            foreach ($confArr as $conf) {
-                if ($conf['scope'] == $scope) {
-                    $ds = $this->getDatastructureByUidOrFilename($conf['path']);
-                    $dscollection[] = $ds;
-                }
-            }
+        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable(DataStructure::TABLE);
+        $queryBuilder
+            ->getRestrictions()
+            ->removeAll()
+            ->add(GeneralUtility::makeInstance(DeletedRestriction::class));
+
+        $query = $queryBuilder
+            ->select('uid')
+            ->from(DataStructure::TABLE)
+            ->where(
+                $queryBuilder->expr()->gte('pid', 0),
+                $queryBuilder->expr()->eq('scope', (int)$scope)
+            );
+
+        if (BackendUtility::isTableWorkspaceEnabled(Template::TABLE)) {
+            $query->andWhere(
+                $queryBuilder->expr()->orX(
+                    $queryBuilder->expr()->lte('t3ver_state', new VersionState(VersionState::DEFAULT_STATE)),
+                    $queryBuilder->expr()->eq('t3ver_wsid', (int)static::getBackendUser()->workspace)
+                )
+            );
         }
 
-        if (!self::isStaticDsEnabled()) {
-            $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable(DataStructure::TABLE);
-            $queryBuilder
-                ->getRestrictions()
-                ->removeAll()
-                ->add(GeneralUtility::makeInstance(DeletedRestriction::class));
+        $dsRows = $query->execute()->fetchAll();
 
-            $query = $queryBuilder
-                ->select('uid')
-                ->from(DataStructure::TABLE)
-                ->where(
-                    $queryBuilder->expr()->gte('pid', 0),
-                    $queryBuilder->expr()->eq('scope', (int)$scope)
-                );
-
-            if (BackendUtility::isTableWorkspaceEnabled(Template::TABLE)) {
-                $query->andWhere(
-                    $queryBuilder->expr()->orX(
-                        $queryBuilder->expr()->lte('t3ver_state', new VersionState(VersionState::DEFAULT_STATE)),
-                        $queryBuilder->expr()->eq('t3ver_wsid', (int)static::getBackendUser()->workspace)
-                    )
-                );
-            }
-
-            $dsRows = $query->execute()->fetchAll();
-
-            foreach ($dsRows as $ds) {
-                /** @var array $ds */
-                $dscollection[] = $this->getDatastructureByUidOrFilename($ds['uid']);
-            }
+        $dscollection = [];
+        foreach ($dsRows as $ds) {
+            /** @var array $ds */
+            $dscollection[] = $this->getDatastructureByUidOrFilename($ds['uid']);
         }
         usort($dscollection, [$this, 'sortDatastructures']);
 
@@ -248,44 +190,32 @@ class DataStructureRepository
      */
     public function getDatastructuresByScope($scope)
     {
-        $dscollection = [];
-        $confArr = self::getStaticDatastructureConfiguration();
-        if (count($confArr)) {
-            foreach ($confArr as $conf) {
-                if ($conf['scope'] == $scope) {
-                    $ds = $this->getDatastructureByUidOrFilename($conf['path']);
-                    $dscollection[] = $ds;
-                }
-            }
+        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable(DataStructure::TABLE);
+        $queryBuilder
+            ->getRestrictions()
+            ->removeAll()
+            ->add(GeneralUtility::makeInstance(DeletedRestriction::class));
+
+        $query = $queryBuilder
+            ->select('uid')
+            ->from(DataStructure::TABLE)
+            ->where(
+                $queryBuilder->expr()->gte('pid', 0),
+                $queryBuilder->expr()->eq('scope', (int)$scope)
+            );
+
+        if (BackendUtility::isTableWorkspaceEnabled(Template::TABLE)) {
+            $query->andWhere(
+                $queryBuilder->expr()->orX(
+                    $queryBuilder->expr()->lte('t3ver_state', new VersionState(VersionState::DEFAULT_STATE)),
+                    $queryBuilder->expr()->eq('t3ver_wsid', (int)static::getBackendUser()->workspace)
+                )
+            );
         }
 
-        if (!self::isStaticDsEnabled()) {
-            $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable(DataStructure::TABLE);
-            $queryBuilder
-                ->getRestrictions()
-                ->removeAll()
-                ->add(GeneralUtility::makeInstance(DeletedRestriction::class));
-
-            $query = $queryBuilder
-                ->select('uid')
-                ->from(DataStructure::TABLE)
-                ->where(
-                    $queryBuilder->expr()->gte('pid', 0),
-                    $queryBuilder->expr()->eq('scope', (int)$scope)
-                );
-
-            if (BackendUtility::isTableWorkspaceEnabled(Template::TABLE)) {
-                $query->andWhere(
-                    $queryBuilder->expr()->orX(
-                        $queryBuilder->expr()->lte('t3ver_state', new VersionState(VersionState::DEFAULT_STATE)),
-                        $queryBuilder->expr()->eq('t3ver_wsid', (int)static::getBackendUser()->workspace)
-                    )
-                );
-            }
-
-            foreach ($query->execute()->fetchAll() as $row) {
-                $dscollection[] = $this->getDatastructureByUidOrFilename($row['uid']);
-            }
+        $dscollection = [];
+        foreach ($query->execute()->fetchAll() as $row) {
+            $dscollection[] = $this->getDatastructureByUidOrFilename($row['uid']);
         }
         usort($dscollection, [$this, 'sortDatastructures']);
 
@@ -299,110 +229,38 @@ class DataStructureRepository
      */
     public function getAll()
     {
-        $dscollection = [];
-        $confArr = self::getStaticDatastructureConfiguration();
-        if (count($confArr)) {
-            foreach ($confArr as $conf) {
-                $ds = $this->getDatastructureByUidOrFilename($conf['path']);
-                $dscollection[] = $ds;
-            }
+        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable(DataStructure::TABLE);
+        $queryBuilder
+            ->getRestrictions()
+            ->removeAll()
+            ->add(GeneralUtility::makeInstance(DeletedRestriction::class));
+
+        $query = $queryBuilder
+            ->select('uid')
+            ->from(DataStructure::TABLE)
+            ->where(
+                $queryBuilder->expr()->gte('pid', 0)
+            );
+
+        if (BackendUtility::isTableWorkspaceEnabled(Template::TABLE)) {
+            $query->andWhere(
+                $queryBuilder->expr()->orX(
+                    $queryBuilder->expr()->lte('t3ver_state', new VersionState(VersionState::DEFAULT_STATE)),
+                    $queryBuilder->expr()->eq('t3ver_wsid', (int)static::getBackendUser()->workspace)
+                )
+            );
         }
 
-        if (!self::isStaticDsEnabled()) {
-            $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable(DataStructure::TABLE);
-            $queryBuilder
-                ->getRestrictions()
-                ->removeAll()
-                ->add(GeneralUtility::makeInstance(DeletedRestriction::class));
+        $dsRows = $queryBuilder->execute()->fetchAll();
 
-            $query = $queryBuilder
-                ->select('uid')
-                ->from(DataStructure::TABLE)
-                ->where(
-                    $queryBuilder->expr()->gte('pid', 0)
-                );
-
-            if (BackendUtility::isTableWorkspaceEnabled(Template::TABLE)) {
-                $query->andWhere(
-                    $queryBuilder->expr()->orX(
-                        $queryBuilder->expr()->lte('t3ver_state', new VersionState(VersionState::DEFAULT_STATE)),
-                        $queryBuilder->expr()->eq('t3ver_wsid', (int)static::getBackendUser()->workspace)
-                    )
-                );
-            }
-
-            $dsRows = $queryBuilder->execute()->fetchAll();
-
-            foreach ($dsRows as $ds) {
-                /** @var array $ds */
-                $dscollection[] = $this->getDatastructureByUidOrFilename($ds['uid']);
-            }
+        $dscollection = [];
+        foreach ($dsRows as $ds) {
+            /** @var array $ds */
+            $dscollection[] = $this->getDatastructureByUidOrFilename($ds['uid']);
         }
         usort($dscollection, [$this, 'sortDatastructures']);
 
         return $dscollection;
-    }
-
-    /**
-     * @param string $file
-     *
-     * @return mixed
-     */
-    protected function validateStaticDS($file)
-    {
-        $confArr = self::getStaticDatastructureConfiguration();
-        $confKey = false;
-        if (count($confArr)) {
-            $fileAbsName = GeneralUtility::getFileAbsFileName($file);
-            foreach ($confArr as $key => $conf) {
-                if (GeneralUtility::getFileAbsFileName($conf['path']) === $fileAbsName) {
-                    $confKey = $key;
-                    break;
-                }
-            }
-        }
-
-        return $confKey;
-    }
-
-    /**
-     * @return bool
-     */
-    protected static function isStaticDsEnabled()
-    {
-        $extConf = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf'][Templavoila::EXTKEY]);
-
-        return $extConf['staticDS.']['enable'];
-    }
-
-    /**
-     * @return array
-     */
-    public static function getStaticDatastructureConfiguration()
-    {
-        $config = [];
-        if (!self::$staticDsInitComplete) {
-            $extConfig = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf'][Templavoila::EXTKEY]);
-            if ($extConfig['staticDS.']['enable']) {
-                ToolsUtility::readStaticDsFilesIntoArray($extConfig);
-            }
-            self::$staticDsInitComplete = true;
-        }
-        if (is_array($GLOBALS['TBE_MODULES_EXT']['xMOD_tx_templavoila_cm1']['staticDataStructures'])) {
-            $config = $GLOBALS['TBE_MODULES_EXT']['xMOD_tx_templavoila_cm1']['staticDataStructures'];
-        }
-
-        if (is_array($GLOBALS['TYPO3_CONF_VARS']['EXTCONF'][Templavoila::EXTKEY]['staticDataStructures'])) {
-            $config = array_merge($config, $GLOBALS['TYPO3_CONF_VARS']['EXTCONF'][Templavoila::EXTKEY]['staticDataStructures']);
-        }
-
-        $finalConfig = [];
-        foreach ($config as $cfg) {
-            $key = md5($cfg['path'] . $cfg['title'] . $cfg['scope']);
-            $finalConfig[$key] = $cfg;
-        }
-
-        return array_values($finalConfig);
     }
 
     /**

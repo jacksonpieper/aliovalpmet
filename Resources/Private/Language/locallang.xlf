@@ -36,15 +36,6 @@
             <trans-unit xml:space="preserve" id="field_submit">
                 <source>submit</source>
             </trans-unit>
-            <trans-unit xml:space="preserve" id="extconf.staticWizard.header">
-                <source>Migrate</source>
-            </trans-unit>
-            <trans-unit xml:space="preserve" id="extconf.staticWizard.message">
-                <source>Please use the migration wizard to move all datastructures from your database to the filesystem.</source>
-            </trans-unit>
-            <trans-unit xml:space="preserve" id="extconf.staticWizard.link">
-                <source>Click here to run the wizard</source>
-            </trans-unit>
             <trans-unit xml:space="preserve" id="extmng.updatermsgOption">
                 <source>Updater</source>
             </trans-unit>

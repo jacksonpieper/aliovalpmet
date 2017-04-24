@@ -46,17 +46,6 @@
                 <source>submit</source>
                 <target>Absenden</target>
             </trans-unit>
-            <trans-unit xml:space="preserve" id="extconf.staticWizard.header">
-                <source>Migrate</source>
-                <target>Migrieren</target>
-            </trans-unit>
-            <trans-unit xml:space="preserve" id="extconf.staticWizard.message">
-                <source>Please use the migration wizard to move all datastructures from your database to the filesystem.</source>
-                <target>Bitte nutzen Sie den Migrations-Assistenten, um alle Datenstrukturen von der Datenbank in das Dateisystem zu verschieben.</target><alt-trans xml:space="preserve" origin="None"><target>Nutzen Sie bitte den Migrations-Assistenten, um alle Datenstrukturen von der Datenbank in das Dateisystem zu verschieben.</target></alt-trans></trans-unit>
-            <trans-unit xml:space="preserve" id="extconf.staticWizard.link">
-                <source>Click here to run the wizard</source>
-                <target>Klicken Sie hier um den Assistenten zu starten</target>
-            </trans-unit>
             <trans-unit xml:space="preserve" id="extmng.updatermsgOption">
                 <source>Updater</source>
                 <target></target>
