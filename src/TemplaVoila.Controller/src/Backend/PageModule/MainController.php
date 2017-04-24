@@ -14,7 +14,7 @@
 namespace Schnitzler\TemplaVoila\Controller\Backend\PageModule;
 
 use Psr\Http\Message\ResponseInterface;
-use Schnitzler\Templavoila\Clipboard\Clipboard;
+use Schnitzler\TemplaVoila\Core\Clipboard\Clipboard;
 use Schnitzler\TemplaVoila\Controller\Backend\AbstractModuleController;
 use Schnitzler\TemplaVoila\Controller\Backend\Configurable;
 use Schnitzler\TemplaVoila\Controller\Backend\PageModule\Renderer\DoktypeRenderer;
@@ -22,8 +22,8 @@ use Schnitzler\TemplaVoila\Controller\Backend\PageModule\Renderer\OutlineRendere
 use Schnitzler\TemplaVoila\Controller\Backend\PageModule\Renderer\SheetRenderer;
 use Schnitzler\TemplaVoila\Controller\Backend\PageModule\Renderer\SidebarRenderer;
 use Schnitzler\System\Localization\LanguageHelper;
-use Schnitzler\Templavoila\Service\ApiService;
-use Schnitzler\Templavoila\Templavoila;
+use Schnitzler\TemplaVoila\Core\Service\ApiService;
+use Schnitzler\TemplaVoila\Core\TemplaVoila;
 use Schnitzler\TemplaVoila\Security\Permissions\PermissionUtility;
 use TYPO3\CMS\Backend\Template\Components\ButtonBar;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
@@ -499,8 +499,8 @@ class MainController extends AbstractModuleController implements Configurable
         }
 
         // Hook for content at the very top (fx. a toolbar):
-        if (is_array($GLOBALS['TYPO3_CONF_VARS']['EXTCONF'][Templavoila::EXTKEY]['mod1']['renderTopToolbar'])) {
-            foreach ($GLOBALS['TYPO3_CONF_VARS']['EXTCONF'][Templavoila::EXTKEY]['mod1']['renderTopToolbar'] as $_funcRef) {
+        if (is_array($GLOBALS['TYPO3_CONF_VARS']['EXTCONF'][TemplaVoila::EXTKEY]['mod1']['renderTopToolbar'])) {
+            foreach ($GLOBALS['TYPO3_CONF_VARS']['EXTCONF'][TemplaVoila::EXTKEY]['mod1']['renderTopToolbar'] as $_funcRef) {
                 $_params = [];
                 $output .= GeneralUtility::callUserFunction($_funcRef, $_params, $this);
             }
@@ -949,8 +949,8 @@ class MainController extends AbstractModuleController implements Configurable
     public function hooks_prepareObjectsArray($hookName)
     {
         $hookObjectsArr = [];
-        if (is_array($GLOBALS['TYPO3_CONF_VARS']['EXTCONF'][Templavoila::EXTKEY]['mod1'][$hookName])) {
-            foreach ($GLOBALS['TYPO3_CONF_VARS']['EXTCONF'][Templavoila::EXTKEY]['mod1'][$hookName] as $key => $classRef) {
+        if (is_array($GLOBALS['TYPO3_CONF_VARS']['EXTCONF'][TemplaVoila::EXTKEY]['mod1'][$hookName])) {
+            foreach ($GLOBALS['TYPO3_CONF_VARS']['EXTCONF'][TemplaVoila::EXTKEY]['mod1'][$hookName] as $key => $classRef) {
                 $hookObjectsArr[$key] = & GeneralUtility::getUserObj($classRef);
             }
         }

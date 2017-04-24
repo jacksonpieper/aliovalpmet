@@ -11,10 +11,10 @@
  * LICENSE.md file that was distributed with this source code.
  */
 
-namespace Schnitzler\Templavoila\Helper;
+namespace Schnitzler\TemplaVoila\Core\Helper;
 
 /**
- * Class Schnitzler\Templavoila\Helper\TemplateMappingHelper
+ * Class Schnitzler\TemplaVoila\Core\Helper\TemplateMappingHelper
  */
 final class TemplateMappingHelper
 {

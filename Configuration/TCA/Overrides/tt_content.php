@@ -91,7 +91,7 @@ $tempColumns = [
 ];
 \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addTCAcolumns('tt_content', $tempColumns);
 
-$GLOBALS['TCA']['tt_content']['ctrl']['typeicons']['templavoila_pi1'] = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::siteRelPath(\Schnitzler\Templavoila\Templavoila::EXTKEY) . '/Resources/Public/Icon/icon_fce_ce.png';
+$GLOBALS['TCA']['tt_content']['ctrl']['typeicons']['templavoila_pi1'] = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::siteRelPath(\Schnitzler\TemplaVoila\Core\TemplaVoila::EXTKEY) . '/Resources/Public/Icon/icon_fce_ce.png';
 $GLOBALS['TCA']['tt_content']['ctrl']['typeicon_classes']['templavoila_pi1'] = 'extensions-templavoila-type-fce';
 
 $GLOBALS['TCA']['tt_content']['types']['templavoila_pi1']['showitem'] =

@@ -14,7 +14,7 @@ declare(strict_types=1);
 
 namespace Schnitzler\TemplaVoila\ContextMenu\ItemProviders;
 
-use Schnitzler\Templavoila\Templavoila;
+use Schnitzler\TemplaVoila\Core\TemplaVoila;
 use Schnitzler\System\Traits\BackendUser;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -36,7 +36,7 @@ class FileProvider extends CoreFileProvider
     {
         parent::__construct($table, $identifier, $context);
 
-        $this->itemsConfiguration[Templavoila::EXTKEY] = [
+        $this->itemsConfiguration[TemplaVoila::EXTKEY] = [
             'label' => 'LLL:EXT:templavoila/Resources/Private/Language/locallang.xlf:cm1_title',
             'iconIdentifier' => 'extensions-templavoila-logo',
             'callbackAction' => 'redirect'
@@ -51,7 +51,7 @@ class FileProvider extends CoreFileProvider
     {
         $attributes = parent::getAdditionalAttributes($itemName);
 
-        if ($itemName === Templavoila::EXTKEY) {
+        if ($itemName === TemplaVoila::EXTKEY) {
             $url = BackendUtility::getModuleUrl(
                 'tv_mod_admin_element',
                 [
@@ -80,7 +80,7 @@ class FileProvider extends CoreFileProvider
             return true;
         }
 
-        if ($itemName === Templavoila::EXTKEY) {
+        if ($itemName === TemplaVoila::EXTKEY) {
             return $this->isXmlFile();
         }
 

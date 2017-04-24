@@ -16,8 +16,8 @@ namespace Schnitzler\TemplaVoila\Controller\Backend\PageModule;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Schnitzler\TemplaVoila\Data\Domain\Repository\TemplateRepository;
-use Schnitzler\Templavoila\Service\ApiService;
-use Schnitzler\Templavoila\Templavoila;
+use Schnitzler\TemplaVoila\Core\Service\ApiService;
+use Schnitzler\TemplaVoila\Core\TemplaVoila;
 use TYPO3\CMS\Backend\Module\AbstractModule;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Http\Response;
@@ -51,7 +51,7 @@ class ContentController extends AbstractModule
 
         $this->apiService = GeneralUtility::makeInstance(ApiService::class);
         $this->templateRepository = GeneralUtility::makeInstance(TemplateRepository::class);
-        $this->hooks = Templavoila::getHooks('handleIncomingCommands');
+        $this->hooks = TemplaVoila::getHooks('handleIncomingCommands');
     }
 
     /**

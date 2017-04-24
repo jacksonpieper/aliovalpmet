@@ -11,7 +11,7 @@
  * LICENSE.md file that was distributed with this source code.
  */
 
-namespace Schnitzler\Templavoila\Service;
+namespace Schnitzler\TemplaVoila\Core\Service;
 
 use Schnitzler\TemplaVoila\Configuration\ConfigurationException;
 use Schnitzler\TemplaVoila\Configuration\ConfigurationManager;

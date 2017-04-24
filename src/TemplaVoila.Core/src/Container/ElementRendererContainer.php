@@ -11,14 +11,14 @@
  * LICENSE.md file that was distributed with this source code.
  */
 
-namespace Schnitzler\Templavoila\Container;
+namespace Schnitzler\TemplaVoila\Core\Container;
 
 use Psr\Container\ContainerInterface;
 use Schnitzler\TemplaVoila\Controller\Backend\PageModule\Renderer\AbstractContentElementRenderer;
-use Schnitzler\Templavoila\Templavoila;
+use Schnitzler\TemplaVoila\Core\TemplaVoila;
 
 /**
- * Class Schnitzler\Templavoila\Container\ElementRendererContainer
+ * Class Schnitzler\TemplaVoila\Core\Container\ElementRendererContainer
  */
 class ElementRendererContainer implements ContainerInterface
 {
@@ -67,9 +67,9 @@ class ElementRendererContainer implements ContainerInterface
      */
     public function get($id)
     {
-        if (isset($GLOBALS['TYPO3_CONF_VARS']['EXTCONF'][Templavoila::EXTKEY]['mod1']['renderPreviewContent'][$id])) {
+        if (isset($GLOBALS['TYPO3_CONF_VARS']['EXTCONF'][TemplaVoila::EXTKEY]['mod1']['renderPreviewContent'][$id])) {
             /** @var array $classes */
-            $class = $GLOBALS['TYPO3_CONF_VARS']['EXTCONF'][Templavoila::EXTKEY]['mod1']['renderPreviewContent'][$id];
+            $class = $GLOBALS['TYPO3_CONF_VARS']['EXTCONF'][TemplaVoila::EXTKEY]['mod1']['renderPreviewContent'][$id];
             try {
                 $renderer = new $class;
 

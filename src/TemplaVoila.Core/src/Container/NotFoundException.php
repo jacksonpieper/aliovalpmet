@@ -11,12 +11,12 @@
  * LICENSE.md file that was distributed with this source code.
  */
 
-namespace Schnitzler\Templavoila\Container;
+namespace Schnitzler\TemplaVoila\Core\Container;
 
 use Psr\Container\NotFoundExceptionInterface;
 
 /**
- * Class Schnitzler\Templavoila\Container\NotFoundException
+ * Class Schnitzler\TemplaVoila\Core\Container\NotFoundException
  */
 class NotFoundException extends \RuntimeException implements NotFoundExceptionInterface
 {

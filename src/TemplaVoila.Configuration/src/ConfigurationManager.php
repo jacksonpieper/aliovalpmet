@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace Schnitzler\TemplaVoila\Configuration;
 
-use Schnitzler\Templavoila\Templavoila;
+use Schnitzler\TemplaVoila\Core\TemplaVoila;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
 
@@ -24,7 +24,7 @@ class ConfigurationManager
     {
         if (static::$extensionConfiguration === null) {
             static::$extensionConfiguration = (array)unserialize(
-                $GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf'][Templavoila::EXTKEY],
+                $GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf'][TemplaVoila::EXTKEY],
                 ['allowed_classes' => false]
             );
         }

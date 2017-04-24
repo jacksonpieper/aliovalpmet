@@ -13,7 +13,7 @@
 
 namespace Schnitzler\TemplaVoila\Controller\Backend\PageModule;
 
-use Schnitzler\Templavoila\Service\ApiService;
+use Schnitzler\TemplaVoila\Core\Service\ApiService;
 use TYPO3\CMS\Backend\Tree\View\ContentCreationPagePositionMap;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Backend\Wizard\NewContentElementWizardHookInterface;

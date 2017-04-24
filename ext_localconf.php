@@ -89,16 +89,16 @@ $tvSetup[] = 'tt_content.menu.20.3 = USER
 $GLOBALS['TYPO3_CONF_VARS']['FE']['addRootLineFields'] .= ',tx_templavoila_ds,tx_templavoila_to,tx_templavoila_next_ds,tx_templavoila_next_to';
 
 // Register our classes at a the hooks:
-$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['processDatamapClass'][$_EXTKEY] = \Schnitzler\Templavoila\Hook\DataHandlerHook::class;
-$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['processCmdmapClass'][$_EXTKEY] = \Schnitzler\Templavoila\Hook\DataHandlerHook::class;
-$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['moveRecordClass'][$_EXTKEY] = \Schnitzler\Templavoila\Hook\DataHandlerHook::class;
+$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['processDatamapClass'][$_EXTKEY] = \Schnitzler\TemplaVoila\Core\Hook\DataHandlerHook::class;
+$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['processCmdmapClass'][$_EXTKEY] = \Schnitzler\TemplaVoila\Core\Hook\DataHandlerHook::class;
+$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['moveRecordClass'][$_EXTKEY] = \Schnitzler\TemplaVoila\Core\Hook\DataHandlerHook::class;
 $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_userauthgroup.php']['recordEditAccessInternals'][$_EXTKEY] = \Schnitzler\TemplaVoila\Security\AccessControl\Access::class . '->recordEditAccessInternals';
 
 $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['lowlevel']['cleanerModules']['tx_templavoila_unusedce'] = ['EXT:templavoila/src/TemplaVoila.Console/src/Command/UnusedContentElementComand.php:Schnitzler\TemplaVoila\Console\Command\UnusedContentElementComand'];
-$GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['l10nmgr']['indexFilter']['tx_templavoila_usedCE'] = ['EXT:templavoila/Classes/Service/UserFunc/UsedContentElement.php:Schnitzler\Templavoila\Service\UserFunc\UsedContentElement'];
+$GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['l10nmgr']['indexFilter']['tx_templavoila_usedCE'] = ['EXT:templavoila/src/TemplaVoila.Core/src/Service/UserFunc/UsedContentElement.php:Schnitzler\TemplaVoila\Core\Service\UserFunc\UsedContentElement'];
 
 // Register Preview Classes for Page Module
-$elementRendererContainer = \Schnitzler\Templavoila\Container\ElementRendererContainer::getInstance();
+$elementRendererContainer = \Schnitzler\TemplaVoila\Core\Container\ElementRendererContainer::getInstance();
 $elementRendererContainer->add('generic', new \Schnitzler\TemplaVoila\Controller\Backend\PageModule\Renderer\ContentElementRenderer\GenericRenderer());
 $elementRendererContainer->add('text', new \Schnitzler\TemplaVoila\Controller\Backend\PageModule\Renderer\ContentElementRenderer\TextRenderer());
 $elementRendererContainer->add('table', new \Schnitzler\TemplaVoila\Controller\Backend\PageModule\Renderer\ContentElementRenderer\TextRenderer());

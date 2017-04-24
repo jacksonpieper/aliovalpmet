@@ -14,7 +14,7 @@ declare(strict_types=1);
 
 namespace Schnitzler\TemplaVoila\ContextMenu\ItemProviders;
 
-use Schnitzler\Templavoila\Templavoila;
+use Schnitzler\TemplaVoila\Core\TemplaVoila;
 use TYPO3\CMS\Backend\ContextMenu\ItemProviders\PageProvider as CorePageProvider;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 
@@ -32,7 +32,7 @@ class PageProvider extends CorePageProvider
     {
         parent::__construct($table, $identifier, $context);
 
-        $this->itemsConfiguration[Templavoila::EXTKEY] = [
+        $this->itemsConfiguration[TemplaVoila::EXTKEY] = [
             'label' => 'LLL:EXT:templavoila/Resources/Private/Language/locallang.xlf:cm1_viewflexformxml',
             'iconIdentifier' => 'extensions-templavoila-logo',
             'callbackAction' => 'redirect'
@@ -47,7 +47,7 @@ class PageProvider extends CorePageProvider
     {
         $attributes = parent::getAdditionalAttributes($itemName);
 
-        if ($itemName === Templavoila::EXTKEY) {
+        if ($itemName === TemplaVoila::EXTKEY) {
             $url = BackendUtility::getModuleUrl(
                 'tv_mod_xmlcontroller',
                 [
@@ -77,7 +77,7 @@ class PageProvider extends CorePageProvider
             return true;
         }
 
-        if ($itemName === Templavoila::EXTKEY) {
+        if ($itemName === TemplaVoila::EXTKEY) {
             return $this->backendUser->isAdmin()
                 && (string)$this->record['tx_templavoila_flex'] !== '';
         }

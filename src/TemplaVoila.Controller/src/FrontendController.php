@@ -17,7 +17,7 @@ use Schnitzler\TemplaVoila\Data\Domain\Model\HtmlMarkup;
 use Schnitzler\TemplaVoila\Data\Domain\Repository\DataStructureRepository;
 use Schnitzler\TemplaVoila\Data\Domain\Repository\TemplateRepository;
 use Schnitzler\System\Data\Exception\ObjectNotFoundException;
-use Schnitzler\Templavoila\Templavoila;
+use Schnitzler\TemplaVoila\Core\TemplaVoila;
 use Schnitzler\System\Traits\BackendUser;
 use TYPO3\CMS\Core\Configuration\FlexForm\FlexFormTools;
 use TYPO3\CMS\Core\Database\DatabaseConnection;
@@ -315,8 +315,8 @@ class FrontendController extends AbstractPlugin
     {
         // First prepare user defined objects (if any) for hooks which extend this function:
         $hooks = [];
-        if (is_array($GLOBALS['TYPO3_CONF_VARS']['EXTCONF'][Templavoila::EXTKEY]['pi1']['renderElementClass'])) {
-            foreach ($GLOBALS['TYPO3_CONF_VARS']['EXTCONF'][Templavoila::EXTKEY]['pi1']['renderElementClass'] as $classRef) {
+        if (is_array($GLOBALS['TYPO3_CONF_VARS']['EXTCONF'][TemplaVoila::EXTKEY]['pi1']['renderElementClass'])) {
+            foreach ($GLOBALS['TYPO3_CONF_VARS']['EXTCONF'][TemplaVoila::EXTKEY]['pi1']['renderElementClass'] as $classRef) {
                 $hooks[] = & GeneralUtility::getUserObj($classRef);
             }
         }

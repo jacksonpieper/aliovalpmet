@@ -13,7 +13,7 @@
 
 namespace Schnitzler\TemplaVoila\Controller\Backend\Ajax;
 
-use Schnitzler\Templavoila\Service\ApiService;
+use Schnitzler\TemplaVoila\Core\Service\ApiService;
 use Schnitzler\System\Traits\DataHandler;
 use TYPO3\CMS\Core\Http\Response;
 use TYPO3\CMS\Core\Http\ServerRequest;

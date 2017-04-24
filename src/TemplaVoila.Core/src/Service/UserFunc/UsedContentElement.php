@@ -11,9 +11,9 @@
  * LICENSE.md file that was distributed with this source code.
  */
 
-namespace Schnitzler\Templavoila\Service\UserFunc;
+namespace Schnitzler\TemplaVoila\Core\Service\UserFunc;
 
-use Schnitzler\Templavoila\Service\ApiService;
+use Schnitzler\TemplaVoila\Core\Service\ApiService;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 

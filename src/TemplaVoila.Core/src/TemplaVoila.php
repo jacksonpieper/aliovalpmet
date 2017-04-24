@@ -11,14 +11,14 @@
  * LICENSE.md file that was distributed with this source code.
  */
 
-namespace Schnitzler\Templavoila;
+namespace Schnitzler\TemplaVoila\Core;
 
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
- * Class Schnitzler\Templavoila\Templavoila
+ * Class Schnitzler\TemplaVoila\Core\TemplaVoila
  */
-final class Templavoila
+final class TemplaVoila
 {
     const EXTKEY = 'templavoila';
 

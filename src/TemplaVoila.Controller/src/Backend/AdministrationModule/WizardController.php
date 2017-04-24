@@ -17,7 +17,7 @@ use Psr\Http\Message\ResponseInterface;
 use Schnitzler\TemplaVoila\Controller\Backend\AbstractModuleController;
 use Schnitzler\TemplaVoila\Controller\Backend\Configurable;
 use Schnitzler\TemplaVoila\Data\Domain\Model\Template;
-use Schnitzler\Templavoila\Templavoila;
+use Schnitzler\TemplaVoila\Core\TemplaVoila;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
@@ -234,7 +234,7 @@ class WizardController extends AbstractModuleController implements Configurable
             ));
         }
 
-        $inFile = ExtensionManagementUtility::extPath(Templavoila::EXTKEY) . 'Resources/Private/new_tv_site.xml';
+        $inFile = ExtensionManagementUtility::extPath(TemplaVoila::EXTKEY) . 'Resources/Private/new_tv_site.xml';
         if (isset($this->modTSconfig['properties']['newTvSiteFile'])) {
             $inFile = GeneralUtility::getFileAbsFileName($this->modTSconfig['properties']['newTVsiteTemplate']);
         }
@@ -327,7 +327,7 @@ class WizardController extends AbstractModuleController implements Configurable
         $this->updateSetting('step', --$this->step); // todo: This needs to be removed, currently only prevents a loop
 
         $view = $this->getStandaloneView('Backend/AdministrationModule/WizardController');
-        $view->assign('src', ExtensionManagementUtility::siteRelPath(Templavoila::EXTKEY) . 'Resources/Public/Image/mapbody_animation.gif');
+        $view->assign('src', ExtensionManagementUtility::siteRelPath(TemplaVoila::EXTKEY) . 'Resources/Public/Image/mapbody_animation.gif');
         $this->moduleTemplate->setContent($view->render('Map'));
         $response->getBody()->write($this->moduleTemplate->renderContent());
         return $response;

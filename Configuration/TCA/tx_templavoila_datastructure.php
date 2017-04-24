@@ -15,7 +15,7 @@ return [
     'ctrl' => [
         'title' => 'LLL:EXT:templavoila/Resources/Private/Language/locallang_db.xlf:tx_templavoila_datastructure',
         'label' => 'title',
-        'label_userFunc' => \Schnitzler\Templavoila\Service\UserFunc\Label::class . '->getLabel',
+        'label_userFunc' => \Schnitzler\TemplaVoila\Core\Service\UserFunc\Label::class . '->getLabel',
         'tstamp' => 'tstamp',
         'crdate' => 'crdate',
         'cruser_id' => 'cruser_id',

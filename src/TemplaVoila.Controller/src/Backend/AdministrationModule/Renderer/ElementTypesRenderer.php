@@ -14,7 +14,7 @@
 namespace Schnitzler\TemplaVoila\Controller\Backend\AdministrationModule\Renderer;
 
 use Schnitzler\TemplaVoila\Controller\Backend\AdministrationModule\ElementController;
-use Schnitzler\Templavoila\Templavoila;
+use Schnitzler\TemplaVoila\Core\TemplaVoila;
 use Schnitzler\System\Traits\BackendUser;
 use Schnitzler\System\Traits\LanguageService;
 use TYPO3\CMS\Core\SingletonInterface;
@@ -93,7 +93,7 @@ class ElementTypesRenderer implements SingletonInterface
 
                 // Based on the eType (the preset type) we make configuration settings.
                 // If a user function was registered, use that instead of our own handlers:
-                if (isset($GLOBALS['TYPO3_CONF_VARS']['EXTCONF'][Templavoila::EXTKEY]['cm1']['eTypesConfGen'][$elArray[$key]['tx_templavoila']['eType']])) {
+                if (isset($GLOBALS['TYPO3_CONF_VARS']['EXTCONF'][TemplaVoila::EXTKEY]['cm1']['eTypesConfGen'][$elArray[$key]['tx_templavoila']['eType']])) {
                     $_params = [
                         'key' => $key,
                         'elArray' => &$elArray,
@@ -102,7 +102,7 @@ class ElementTypesRenderer implements SingletonInterface
 
                     $bef = $elArray[$key]['tx_templavoila']['TypoScript'];
 
-                    GeneralUtility::callUserFunction($GLOBALS['TYPO3_CONF_VARS']['EXTCONF'][Templavoila::EXTKEY]['cm1']['eTypesConfGen'][$elArray[$key]['tx_templavoila']['eType']], $_params, $this, '');
+                    GeneralUtility::callUserFunction($GLOBALS['TYPO3_CONF_VARS']['EXTCONF'][TemplaVoila::EXTKEY]['cm1']['eTypesConfGen'][$elArray[$key]['tx_templavoila']['eType']], $_params, $this, '');
 
                     if (!$reset && trim($bef)) {
                         $elArray[$key]['tx_templavoila']['TypoScript'] = $bef;
@@ -669,14 +669,14 @@ backColor = #999999
         }
 
         // Hook todo: this is breaking, introduce alternative to this hook
-//        if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS'][Templavoila::EXTKEY]['eTypes'])) {
+//        if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS'][TemplaVoila::EXTKEY]['eTypes'])) {
 //            $params = [
 //                'eType' => &$eTypes['eType'],
 //                'defaultTypes_formFields' => &$eTypes['defaultTypes_formFields'],
 //                'defaultTypes_typoscriptElements' => &$eTypes['defaultTypes_typoscriptElements'],
 //                'defaultTypes_misc' => &$eTypes['defaultTypes_misc']
 //            ];
-//            foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS'][Templavoila::EXTKEY]['eTypes'] as $hook) {
+//            foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS'][TemplaVoila::EXTKEY]['eTypes'] as $hook) {
 //                GeneralUtility::callUserFunction($hook, $params, $this);
 //            }
 //        }

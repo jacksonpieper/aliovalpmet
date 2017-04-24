@@ -11,7 +11,7 @@
  * LICENSE.md file that was distributed with this source code.
  */
 
-namespace Schnitzler\Templavoila\Clipboard;
+namespace Schnitzler\TemplaVoila\Core\Clipboard;
 
 use Schnitzler\TemplaVoila\Controller\Backend\PageModule\MainController;
 use Schnitzler\System\Traits\LanguageService;

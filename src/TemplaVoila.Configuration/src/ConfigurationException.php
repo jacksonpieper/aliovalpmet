@@ -17,6 +17,6 @@ namespace Schnitzler\TemplaVoila\Configuration;
 /**
  * Class Schnitzler\TemplaVoila\Configuration\ConfigurationException
  */
-class ConfigurationException extends \Schnitzler\Templavoila\Exception
+class ConfigurationException extends \Schnitzler\TemplaVoila\Core\Exception
 {
 }

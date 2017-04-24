@@ -11,10 +11,10 @@
  * LICENSE.md file that was distributed with this source code.
  */
 
-namespace Schnitzler\Templavoila;
+namespace Schnitzler\TemplaVoila\Core;
 
 /**
- * Class Schnitzler\Templavoila\Exception\Exception
+ * Class Schnitzler\TemplaVoila\Core\Exception\Exception
  */
 class Exception extends \Exception
 {

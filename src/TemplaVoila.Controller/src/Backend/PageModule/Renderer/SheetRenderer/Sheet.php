@@ -13,7 +13,7 @@
 
 namespace Schnitzler\TemplaVoila\Controller\Backend\PageModule\Renderer\SheetRenderer;
 
-use Schnitzler\Templavoila\Exception;
+use Schnitzler\TemplaVoila\Core\Exception;
 
 /**
  * Class Schnitzler\TemplaVoila\Controller\Backend\PageModule\Renderer\SheetRenderer\Sheet

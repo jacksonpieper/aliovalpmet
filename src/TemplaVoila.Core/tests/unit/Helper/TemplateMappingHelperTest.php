@@ -13,7 +13,7 @@
 
 namespace Schnitzler\Templavoila\Tests\Unit\Helper;
 
-use Schnitzler\Templavoila\Helper\TemplateMappingHelper;
+use Schnitzler\TemplaVoila\Core\Helper\TemplateMappingHelper;
 use TYPO3\CMS\Core\Tests\UnitTestCase;
 
 /**

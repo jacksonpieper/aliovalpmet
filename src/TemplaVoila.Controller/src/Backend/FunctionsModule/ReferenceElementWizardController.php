@@ -14,7 +14,7 @@
 namespace Schnitzler\TemplaVoila\Controller\Backend\FunctionsModule;
 
 use Schnitzler\System\Localization\LanguageHelper;
-use Schnitzler\Templavoila\Service\ApiService;
+use Schnitzler\TemplaVoila\Core\Service\ApiService;
 use Schnitzler\System\Traits\BackendUser;
 use TYPO3\CMS\Backend\Module\AbstractFunctionModule;
 use TYPO3\CMS\Backend\Tree\View\PageTreeView;

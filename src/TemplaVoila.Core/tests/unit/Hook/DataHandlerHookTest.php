@@ -14,7 +14,8 @@
 namespace Schnitzler\Templavoila\Tests\Unit\Hook;
 
 use PHPUnit_Framework_TestCase;
-use Schnitzler\Templavoila\Hook\DataHandlerHook;
+
+use Schnitzler\TemplaVoila\Core\Hook\DataHandlerHook;
 use TYPO3\CMS\Core\DataHandling\DataHandler as CoreDataHandler;
 use TYPO3\CMS\Core\Tests\UnitTestCase;
 use TYPO3\CMS\Core\Utility\GeneralUtility;

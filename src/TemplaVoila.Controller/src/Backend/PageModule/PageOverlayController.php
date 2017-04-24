@@ -16,7 +16,7 @@ namespace Schnitzler\TemplaVoila\Controller\Backend\PageModule;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Schnitzler\System\Data\Domain\Repository\PageOverlayRepository;
-use Schnitzler\Templavoila\Templavoila;
+use Schnitzler\TemplaVoila\Core\TemplaVoila;
 use TYPO3\CMS\Backend\Module\AbstractModule;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Http\Response;
@@ -36,7 +36,7 @@ class PageOverlayController extends AbstractModule
     public function __construct()
     {
         parent::__construct();
-        $this->hooks = Templavoila::getHooks('handleIncomingCommands');
+        $this->hooks = TemplaVoila::getHooks('handleIncomingCommands');
     }
 
     /**

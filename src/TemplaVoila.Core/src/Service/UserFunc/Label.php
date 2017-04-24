@@ -11,7 +11,7 @@
  * LICENSE.md file that was distributed with this source code.
  */
 
-namespace Schnitzler\Templavoila\Service\UserFunc;
+namespace Schnitzler\TemplaVoila\Core\Service\UserFunc;
 
 use Schnitzler\System\Traits\LanguageService;
 

@@ -11,7 +11,7 @@
  * LICENSE.md file that was distributed with this source code.
  */
 
-namespace Schnitzler\Templavoila\Hook;
+namespace Schnitzler\TemplaVoila\Core\Hook;
 
 use Schnitzler\TemplaVoila\Data\Domain\Model\AbstractDataStructure;
 use Schnitzler\TemplaVoila\Data\Domain\Model\Template;
@@ -23,7 +23,7 @@ use TYPO3\CMS\Core\Imaging\IconRegistry;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
- * Class Schnitzler\Templavoila\Hook\NewContentElementControllerHook
+ * Class Schnitzler\TemplaVoila\Core\Hook\NewContentElementControllerHook
  */
 class NewContentElementControllerHook
 {

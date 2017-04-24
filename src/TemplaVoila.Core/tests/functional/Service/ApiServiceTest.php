@@ -13,7 +13,7 @@
 
 namespace Schnitzler\Templavoila\Tests\Functional\Service;
 
-use Schnitzler\Templavoila\Service\ApiService;
+use Schnitzler\TemplaVoila\Core\Service\ApiService;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Core\Bootstrap;
 use TYPO3\CMS\Core\Database\ConnectionPool;

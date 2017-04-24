@@ -233,5 +233,5 @@ $iconRegistry->registerIcon(
     ]
 );
 
-$GLOBALS['TBE_MODULES_EXT']['xMOD_db_new_content_el']['addElClasses'][\Schnitzler\Templavoila\Hook\NewContentElementControllerHook::class] =
-    \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($_EXTKEY, 'Classes/Hook/NewContentElementControllerHook.php');
+$GLOBALS['TBE_MODULES_EXT']['xMOD_db_new_content_el']['addElClasses'][\Schnitzler\TemplaVoila\Core\Hook\NewContentElementControllerHook::class] =
+    \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($_EXTKEY, 'src/TemplaVoila.Core/src/Hook/NewContentElementControllerHook.php');

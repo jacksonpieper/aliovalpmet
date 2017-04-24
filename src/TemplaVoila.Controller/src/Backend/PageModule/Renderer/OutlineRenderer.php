@@ -19,7 +19,7 @@ use Schnitzler\System\Localization\LanguageHelper;
 use Schnitzler\System\Traits\BackendUser;
 use Schnitzler\System\Traits\LanguageService;
 use Schnitzler\TemplaVoila\Security\Permissions\PermissionUtility;
-use Schnitzler\Templavoila\Utility\ReferenceIndexUtility;
+use Schnitzler\TemplaVoila\Core\Utility\ReferenceIndexUtility;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Configuration\FlexForm\FlexFormTools;
 use TYPO3\CMS\Core\DataHandling\DataHandler;

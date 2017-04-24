@@ -11,13 +11,13 @@
  * LICENSE.md file that was distributed with this source code.
  */
 
-namespace Schnitzler\Templavoila\Utility;
+namespace Schnitzler\TemplaVoila\Core\Utility;
 
 use Schnitzler\System\Data\Domain\Repository\ReferenceIndexRepository;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
- * Class Schnitzler\Templavoila\Utility\ReferenceIndexUtility
+ * Class Schnitzler\TemplaVoila\Core\Utility\ReferenceIndexUtility
  */
 class ReferenceIndexUtility
 {

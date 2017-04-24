@@ -14,17 +14,17 @@ declare(strict_types = 1);
 
 namespace Schnitzler\TemplaVoila\Controller\Backend\PageModule\Renderer;
 
-use Schnitzler\Templavoila\Container\ElementRendererContainer;
+use Schnitzler\TemplaVoila\Core\Container\ElementRendererContainer;
 use Schnitzler\TemplaVoila\Controller\Backend\PageModule\MainController;
 use Schnitzler\TemplaVoila\Controller\Backend\PageModule\Renderer\SheetRenderer\Column;
 use Schnitzler\TemplaVoila\Controller\Backend\PageModule\Renderer\SheetRenderer\Sheet;
 use Schnitzler\TemplaVoila\Data\Domain\Repository\TemplateRepository;
-use Schnitzler\Templavoila\Exception;
+use Schnitzler\TemplaVoila\Core\Exception;
 use Schnitzler\System\Localization\LanguageHelper;
 use Schnitzler\System\Traits\BackendUser;
 use Schnitzler\System\Traits\LanguageService;
 use Schnitzler\TemplaVoila\Security\Permissions\PermissionUtility;
-use Schnitzler\Templavoila\Utility\ReferenceIndexUtility;
+use Schnitzler\TemplaVoila\Core\Utility\ReferenceIndexUtility;
 use TYPO3\CMS\Backend\Template\ModuleTemplate;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Imaging\Icon;
