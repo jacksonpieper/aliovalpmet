@@ -18,7 +18,6 @@ namespace Schnitzler\TemplaVoila\Data\Domain\Repository;
 
 use Schnitzler\TemplaVoila\Data\Domain\Model\AbstractDataStructure;
 use Schnitzler\TemplaVoila\Data\Domain\Model\Template;
-use Schnitzler\System\Data\Exception\ObjectNotFoundException;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -27,59 +26,8 @@ use TYPO3\CMS\Core\Utility\MathUtility;
 /**
  * Class Schnitzler\TemplaVoila\Data\Domain\Repository\PageRepository
  */
-class PageRepository
+class PageRepository extends \Schnitzler\System\Data\Domain\Repository\PageRepository
 {
-    const TABLE = 'pages';
-
-    /**
-     * @param int $uid
-     * @throws \Schnitzler\System\Data\Exception\ObjectNotFoundException
-     * @return array
-     */
-    public function findOneByIdentifier(int $uid) : array
-    {
-        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable(self::TABLE);
-        $queryBuilder
-            ->getRestrictions()
-            ->removeAll();
-
-        $query = $queryBuilder
-            ->select('*')
-            ->from(self::TABLE)
-            ->where(
-                $queryBuilder->expr()->eq('uid', $uid)
-            );
-
-        $row = $query->execute()->fetch();
-
-        if (!is_array($row)) {
-            throw new ObjectNotFoundException();
-        }
-
-        return $row;
-    }
-
-    /**
-     * @param string $doktype
-     * @return array
-     */
-    public function findByDoktype(string $doktype) : array
-    {
-        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable(self::TABLE);
-        $queryBuilder
-            ->getRestrictions()
-            ->removeAll();
-
-        $query = $queryBuilder
-            ->select('*')
-            ->from(self::TABLE)
-            ->where(
-                $queryBuilder->expr()->eq('doktype', $queryBuilder->quote($doktype))
-            );
-
-        return $query->execute()->fetchAll();
-    }
-
     /**
      * @param Template $template
      * @param AbstractDataStructure $datastructure
