@@ -57,7 +57,7 @@ class ContentRepository
     }
 
     /**
-     * @param array $uids
+     * @param int[] $uids
      * @param int $pid
      * @return array
      */
@@ -67,9 +67,18 @@ class ContentRepository
             return MathUtility::canBeInterpretedAsInteger($uid);
         });
 
-        if (empty($uids)) {
-            return [];
-        }
+        $uids = array_map(function($mixed) {
+            return (int)$mixed;
+        }, $uids);
+
+        $selectFields = GeneralUtility::trimExplode(
+            ',',
+            BackendUtility::getCommonSelectFields(
+                self::TABLE,
+                '',
+                ['uid', 'header', 'bodytext', 'sys_language_uid']
+            )
+        );
 
         $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable(self::TABLE);
         $queryBuilder
@@ -78,19 +87,27 @@ class ContentRepository
             ->add(GeneralUtility::makeInstance(DeletedRestriction::class));
 
         $query = $queryBuilder
-            ->select('*')
+            ->select(...$selectFields)
             ->from(self::TABLE)
             ->where(
-                $queryBuilder->expr()->eq('pid', $pid),
-                $queryBuilder->expr()->notIn('uid', implode(',', $uids)),
-                $queryBuilder->expr()->orX(
-                    $queryBuilder->expr()->notIn('t3ver_state', '1,3'),
-                    $queryBuilder->expr()->andX(
-                        $queryBuilder->expr()->gt('t3ver_wsid', '0'),
-                        $queryBuilder->expr()->eq('t3ver_wsid', (int)static::getBackendUser()->workspace)
-                    )
-                )
+                $queryBuilder->expr()->eq('pid', $pid)
             );
+
+        if (count($uids) > 0) {
+            $query->andWhere(
+                $queryBuilder->expr()->notIn('uid', implode(',', $uids))
+            );
+        }
+
+        $query->andWhere(
+            $queryBuilder->expr()->orX(
+                $queryBuilder->expr()->notIn('t3ver_state', VersionState::NEW_PLACEHOLDER . ',' . VersionState::MOVE_PLACEHOLDER),
+                $queryBuilder->expr()->andX(
+                    $queryBuilder->expr()->gt('t3ver_wsid', 0),
+                    $queryBuilder->expr()->eq('t3ver_wsid', (int)static::getBackendUser()->workspace)
+                )
+            )
+        );
 
         if (BackendUtility::isTableWorkspaceEnabled(self::TABLE)) {
             $query->andWhere(
@@ -105,7 +122,7 @@ class ContentRepository
     }
 
     /**
-     * @param array $uids
+     * @param int[] $uids
      * @param int $pid
      * @return array
      */
@@ -114,6 +131,10 @@ class ContentRepository
         $uids = array_filter($uids, function ($uid) {
             return MathUtility::canBeInterpretedAsInteger($uid);
         });
+
+        $uids = array_map(function($mixed) {
+            return (int)$mixed;
+        }, $uids);
 
         if (empty($uids)) {
             return [];
@@ -129,7 +150,7 @@ class ContentRepository
             ->select('*')
             ->from(self::TABLE)
             ->where(
-                $queryBuilder->expr()->in('uid', implode(',', array_map('intval', $uids))),
+                $queryBuilder->expr()->in('uid', implode(',', $uids)),
                 $queryBuilder->expr()->eq('pid', $pid)
             );
 

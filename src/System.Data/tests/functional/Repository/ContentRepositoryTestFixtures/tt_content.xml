@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<dataset>
+    <tt_content>
+        <uid>1</uid>
+        <pid>1</pid>
+        <CType>text</CType>
+        <header>Test content</header>
+        <hidden>0</hidden>
+        <deleted>0</deleted>
+        <l18n_parent>0</l18n_parent>
+        <sys_language_uid>0</sys_language_uid>
+    </tt_content>
+    <tt_content>
+        <uid>2</uid>
+        <pid>1</pid>
+        <CType>text</CType>
+        <header>Test content</header>
+        <hidden>0</hidden>
+        <deleted>0</deleted>
+        <t3ver_oid>0</t3ver_oid>
+        <l18n_parent>1</l18n_parent>
+        <sys_language_uid>1</sys_language_uid>
+    </tt_content>
+    <tt_content>
+        <uid>3</uid>
+        <pid>1</pid>
+        <CType>text</CType>
+        <header>Test content</header>
+        <hidden>0</hidden>
+        <deleted>0</deleted>
+        <t3ver_oid>0</t3ver_oid>
+        <l18n_parent>1</l18n_parent>
+        <sys_language_uid>2</sys_language_uid>
+    </tt_content>
+
+    <tt_content>
+        <uid>4</uid>
+        <pid>2</pid>
+        <CType>text</CType>
+        <header>Test content</header>
+        <hidden>0</hidden>
+        <deleted>0</deleted>
+        <l18n_parent>0</l18n_parent>
+        <sys_language_uid>0</sys_language_uid>
+    </tt_content>
+    <tt_content>
+        <uid>5</uid>
+        <pid>2</pid>
+        <CType>text</CType>
+        <header>Test content</header>
+        <hidden>0</hidden>
+        <deleted>0</deleted>
+        <t3ver_oid>0</t3ver_oid>
+        <l18n_parent>0</l18n_parent>
+        <sys_language_uid>0</sys_language_uid>
+    </tt_content>
+    <tt_content>
+        <uid>6</uid>
+        <pid>2</pid>
+        <CType>text</CType>
+        <header>Test content</header>
+        <hidden>0</hidden>
+        <deleted>0</deleted>
+        <t3ver_oid>0</t3ver_oid>
+        <l18n_parent>0</l18n_parent>
+        <sys_language_uid>0</sys_language_uid>
+    </tt_content>
+    <tt_content>
+        <uid>7</uid>
+        <pid>2</pid>
+        <CType>text</CType>
+        <header>Test content</header>
+        <hidden>0</hidden>
+        <deleted>0</deleted>
+        <t3ver_state>1</t3ver_state>
+        <t3ver_wsid>1</t3ver_wsid>
+    </tt_content>
+    <tt_content>
+        <uid>8</uid>
+        <pid>2</pid>
+        <CType>text</CType>
+        <header>Test content</header>
+        <hidden>0</hidden>
+        <deleted>0</deleted>
+        <t3ver_state>3</t3ver_state>
+        <t3ver_wsid>1</t3ver_wsid>
+    </tt_content>
+    <tt_content>
+        <uid>9</uid>
+        <pid>2</pid>
+        <CType>text</CType>
+        <header>Deleted element</header>
+        <hidden>0</hidden>
+        <deleted>1</deleted>
+    </tt_content>
+</dataset>
