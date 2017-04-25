@@ -58,7 +58,7 @@ class PageOverlayRepository
         if (BackendUtility::isTableWorkspaceEnabled(self::TABLE)) {
             $query->andWhere(
                 $queryBuilder->expr()->orX(
-                    $queryBuilder->expr()->lte('t3ver_state', new VersionState(VersionState::DEFAULT_STATE)),
+                    $queryBuilder->expr()->lte('t3ver_state', VersionState::DEFAULT_STATE),
                     $queryBuilder->expr()->eq('t3ver_wsid', (int)static::getBackendUser()->workspace)
                 )
             );
