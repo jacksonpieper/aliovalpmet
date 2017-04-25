@@ -23,10 +23,20 @@ class ConfigurationManager
     public function getExtensionConfiguration(): array
     {
         if (static::$extensionConfiguration === null) {
-            static::$extensionConfiguration = (array)unserialize(
-                $GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf'][TemplaVoila::EXTKEY],
+            $unserialized = unserialize(
+                $GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf'][TemplaVoila::EXTKEY] ?? '',
                 ['allowed_classes' => false]
             );
+
+            if ($unserialized instanceof \__PHP_Incomplete_Class) {
+                $unserialized = [];
+            }
+
+            if (!is_array($unserialized)) {
+                $unserialized = [];
+            }
+
+            static::$extensionConfiguration = $unserialized;
         }
 
         return static::$extensionConfiguration;
@@ -42,6 +52,7 @@ class ConfigurationManager
     {
         // Negative PID values is pointing to a page on the same level as the current.
         if ($pageId < 0) {
+            // todo: this looks like bullshit, investigate if and when this can happen.
             $workspaceOverlayRow = BackendUtility::getRecordWSOL('pages', abs($pageId), 'pid');
             $pageId = $workspaceOverlayRow['pid'] ?? $pageId;
         }

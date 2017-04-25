@@ -18,6 +18,7 @@
     <testsuites>
         <testsuite name="TemplaVoilà Unit Test">
             <directory>../../src/System.UI/tests/unit/</directory>
+            <directory>../../src/TemplaVoila.Configuration/tests/unit/</directory>
             <directory>../../src/TemplaVoila.Controller/tests/unit/</directory>
             <directory>../../src/TemplaVoila.Core/tests/unit/</directory>
             <directory>../../src/TemplaVoila.Data/tests/unit/</directory>

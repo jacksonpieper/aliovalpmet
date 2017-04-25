@@ -18,6 +18,7 @@
         <testsuite name="TemplaVoilà Functional Test">
             <directory suffix="Test.php">../../src/System.Localization/tests/functional/</directory>
             <directory suffix="Test.php">../../src/TemplaVoila.Controller/tests/functional/</directory>
+            <directory suffix="Test.php">../../src/TemplaVoila.Configuration/tests/functional/</directory>
             <directory suffix="Test.php">../../src/TemplaVoila.Core/tests/functional/</directory>
             <directory suffix="Test.php">../../src/TemplaVoila.Security.Permissions/tests/functional/</directory>
         </testsuite>
