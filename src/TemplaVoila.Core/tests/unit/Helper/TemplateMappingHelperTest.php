@@ -14,7 +14,7 @@
 namespace Schnitzler\Templavoila\Tests\Unit\Helper;
 
 use Schnitzler\TemplaVoila\Core\Helper\TemplateMappingHelper;
-use TYPO3\CMS\Core\Tests\UnitTestCase;
+use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 /**
  * Class Schnitzler\Templavoila\Tests\Unit\Helper\TemplateMappingHelperTest

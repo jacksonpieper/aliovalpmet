@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<phpunit
+    backupGlobals="true"
+    backupStaticAttributes="false"
+    bootstrap="../../.Build/vendor/typo3/testing-framework/Resources/Core/Build/FunctionalTestsBootstrap.php"
+    colors="true"
+    convertErrorsToExceptions="true"
+    convertWarningsToExceptions="true"
+    forceCoversAnnotation="false"
+    processIsolation="true"
+    stopOnError="false"
+    stopOnFailure="false"
+    stopOnIncomplete="false"
+    stopOnSkipped="false"
+    verbose="false"
+>
+    <testsuites>
+        <testsuite name="TemplaVoilà Functional Test">
+            <directory suffix="Test.php">../../src/System.Localization/tests/functional/</directory>
+            <directory suffix="Test.php">../../src/TemplaVoila.Controller/tests/functional/</directory>
+            <directory suffix="Test.php">../../src/TemplaVoila.Core/tests/functional/</directory>
+            <directory suffix="Test.php">../../src/TemplaVoila.Security.Permissions/tests/functional/</directory>
+        </testsuite>
+    </testsuites>
+
+    <filter>
+        <whitelist processUncoveredFilesFromWhitelist="true">
+            <directory suffix=".php">../../src/</directory>
+            <exclude>
+                <directory suffix=".php">../../src/TemplaVoila.Core/src/Container/</directory>
+            </exclude>
+        </whitelist>
+    </filter>
+</phpunit>

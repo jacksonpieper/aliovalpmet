@@ -13,11 +13,13 @@
 
 namespace Schnitzler\Templavoila\Tests\Functional\Service;
 
+use PHPUnit_Framework_TestCase;
 use Schnitzler\TemplaVoila\Core\Service\ApiService;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Core\Bootstrap;
 use TYPO3\CMS\Core\Database\ConnectionPool;
-use TYPO3\CMS\Core\Tests\FunctionalTestCase;
+use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
+use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -61,9 +63,14 @@ class ApiServiceTest extends FunctionalTestCase
     public function setUp()
     {
         parent::setUp();
+
+        $fixtureRootPath = ExtensionManagementUtility::extPath('templavoila', 'src/TemplaVoila.Core/tests/functional/Service/ApiServiceTestFixtures/');
+
         $this->api = new ApiService();
 
-        $this->dataHandler = $this->getMock('TYPO3\CMS\Core\DataHandling\DataHandler', ['dummy']);
+        $this->dataHandler = PHPUnit_Framework_TestCase::getMockBuilder(\TYPO3\CMS\Core\DataHandling\DataHandler::class)
+            ->setMethods(['dummy'])
+            ->getMock();
 
         $fixtureTables = [
             'sys_language',
@@ -74,8 +81,6 @@ class ApiServiceTest extends FunctionalTestCase
             'tx_templavoila_datastructure',
             'tx_templavoila_tmplobj',
         ];
-
-        $fixtureRootPath = ORIGINAL_ROOT . 'typo3conf/ext/templavoila/Tests/Functional/Service/ApiServiceTestFixtures/';
 
         foreach ($fixtureTables as $table) {
             GeneralUtility::makeInstance(ConnectionPool::class)->getConnectionForTable($table)->truncate($table);

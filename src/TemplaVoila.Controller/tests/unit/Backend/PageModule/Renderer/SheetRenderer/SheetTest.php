@@ -15,7 +15,7 @@ namespace Schnitzler\TemplaVoila\Controller\Tests\Unit\Backend\PageModule\Render
 
 use Schnitzler\TemplaVoila\Controller\Backend\PageModule\Renderer\SheetRenderer\Column;
 use Schnitzler\TemplaVoila\Controller\Backend\PageModule\Renderer\SheetRenderer\Sheet;
-use TYPO3\CMS\Core\Tests\UnitTestCase;
+use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 /**
  * Class Schnitzler\TemplaVoila\Controller\Backend\PageModule\Renderer\SheetRenderer\SheetTest

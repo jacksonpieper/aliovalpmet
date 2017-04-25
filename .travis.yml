@@ -1,8 +1,6 @@
 language: php
 
 php:
-  - 5.5
-  - 5.6
   - 7.0
   - 7.1
 
@@ -19,10 +17,11 @@ cache:
 
 before_script:
   - export COMPOSER_PROCESS_TIMEOUT=1800;
-  - export TYPO3_PATH_WEB=$TRAVIS_BUILD_DIR/.Build/Web;
-  - rm composer.json
-  - mv Tests/Build/composer.json .
-  - composer require typo3/cms=7.6.*
+  - export TYPO3_PATH_ROOT=$TRAVIS_BUILD_DIR/.Build/Web;
+  - export CODECLIMATE_REPO_TOKEN=99b1dd6f13ad2ce5baa590c4157d18c65876e747c60b03b8b214a34324043245;
+  - cp .Build/Tests/composer.json .
+  - mkdir -p .Build/Tests/Coverage
+  - composer install
 
 script:
   - >
@@ -32,7 +31,7 @@ script:
   - >
     echo;
     echo "Running unit tests";
-    php .Build/bin/phpunit --coverage-clover=unittests.clover --colors --configuration .Build/Web/typo3conf/ext/templavoila/Tests/Build/UnitTests.xml;
+    php .Build/bin/phpunit --colors --configuration .Build/Tests/UnitTests.xml --coverage-php=.Build/Tests/Coverage/UnitTests.cov;
   - >
     echo;
     echo "Running functional tests";
@@ -40,9 +39,9 @@ script:
     export typo3DatabaseHost="localhost";
     export typo3DatabaseUsername="root";
     export typo3DatabasePassword="";
-    php .Build/bin/phpunit --coverage-clover=functionaltests.clover --colors --configuration .Build/Web/typo3conf/ext/templavoila/Tests/Build/FunctionalTests.xml;
+    php .Build/bin/phpunit --colors --configuration .Build/Tests/FunctionalTests.xml --coverage-php=.Build/Tests/Coverage/FunctionalTests.cov;
 
 after_script:
-  - wget https://scrutinizer-ci.com/ocular.phar
-  - php ocular.phar code-coverage:upload --format=php-clover unittests.clover;
-  - php ocular.phar code-coverage:upload --format=php-clover functionaltests.clover;
+  - mkdir -p build/logs/
+  - php .Build/bin/phpcov merge .Build/Tests/Coverage --clover build/logs/clover.xml
+  - php .Build/bin/test-reporter

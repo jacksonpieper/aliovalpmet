@@ -1,0 +1,96 @@
+{
+    "name": "schnitzler/templavoila",
+    "description": "",
+    "license": [
+        "GPL-2.0+"
+    ],
+    "require": {
+        "php": ">=7.0.0",
+        "typo3/cms": "8.6.*",
+        "typo3/testing-framework": "1.0.*",
+        "phpunit/phpcov": "3.1.0",
+        "codeclimate/php-test-reporter": "^0.4.4"
+    },
+    "autoload": {
+        "psr-4": {
+            "Schnitzler\\System\\Localization\\": "src/System.Localization/src/",
+            "Schnitzler\\System\\Runtime\\": "src/System.Runtime/src/",
+            "Schnitzler\\System\\Data\\": "src/System.Data/src/",
+            "Schnitzler\\System\\IO\\": "src/System.IO/src/",
+            "Schnitzler\\System\\Traits\\": "src/System.Traits/src/",
+            "Schnitzler\\TemplaVoila\\Configuration\\": "src/TemplaVoila.Configuration/src/",
+            "Schnitzler\\TemplaVoila\\Console\\": "src/TemplaVoila.Console/src/",
+            "Schnitzler\\TemplaVoila\\ContextMenu\\": "src/TemplaVoila.ContextMenu/src/",
+            "Schnitzler\\TemplaVoila\\Controller\\": "src/TemplaVoila.Controller/src/",
+            "Schnitzler\\TemplaVoila\\Core\\": "src/TemplaVoila.Core/src/",
+            "Schnitzler\\TemplaVoila\\Data\\": "src/TemplaVoila.Data/src/",
+            "Schnitzler\\TemplaVoila\\Security\\AccessControl\\": "src/TemplaVoila.Security.AccessControl/src/",
+            "Schnitzler\\TemplaVoila\\Security\\Permissions\\": "src/TemplaVoila.Security.Permissions/src/",
+            "Schnitzler\\TemplaVoila\\UI\\": "src/TemplaVoila.UI/src/",
+            "Schnitzler\\TemplaVoila\\View\\": "src/TemplaVoila.View/src/",
+            "Schnitzler\\TYPO3\\CMS\\Backend\\": "src/TYPO3.CMS.Backend/src/",
+            "Schnitzler\\TYPO3\\CMS\\Core\\": "src/TYPO3.CMS.Core/src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Schnitzler\\System\\Localization\\Tests\\Unit\\": "src/System.Localization/tests/unit/",
+            "Schnitzler\\System\\Localization\\Tests\\Functional\\": "src/System.Localization/tests/functional/",
+            "Schnitzler\\System\\Runtime\\Tests\\Unit\\": "src/System.Runtime/tests/unit/",
+            "Schnitzler\\System\\Runtime\\Tests\\Functional\\": "src/System.Runtime/tests/functional/",
+            "Schnitzler\\System\\Data\\Tests\\Unit\\": "src/System.Data/tests/unit/",
+            "Schnitzler\\System\\Data\\Tests\\Functional\\": "src/System.Data/tests/functional/",
+            "Schnitzler\\System\\IO\\Tests\\Unit\\": "src/System.IO/tests/unit/",
+            "Schnitzler\\System\\IO\\Tests\\Functional\\": "src/System.IO/tests/functional/",
+            "Schnitzler\\System\\Traits\\Tests\\Unit\\": "src/System.Traits/tests/unit/",
+            "Schnitzler\\System\\Traits\\Tests\\Functional\\": "src/System.Traits/tests/functional/",
+            "Schnitzler\\TemplaVoila\\Configuration\\Tests\\Unit\\": "src/TemplaVoila.Configuration/tests/unit/",
+            "Schnitzler\\TemplaVoila\\Configuration\\Tests\\Functional\\": "src/TemplaVoila.Configuration/tests/functional/",
+            "Schnitzler\\TemplaVoila\\Console\\Tests\\Unit\\": "src/TemplaVoila.Console/tests/unit/",
+            "Schnitzler\\TemplaVoila\\Console\\Tests\\Functional\\": "src/TemplaVoila.Console/tests/functional/",
+            "Schnitzler\\TemplaVoila\\ContextMenu\\Tests\\Unit\\": "src/TemplaVoila.ContextMenu/tests/unit/",
+            "Schnitzler\\TemplaVoila\\ContextMenu\\Tests\\Functional\\": "src/TemplaVoila.ContextMenu/tests/functional/",
+            "Schnitzler\\TemplaVoila\\Controller\\Tests\\Unit\\": "src/TemplaVoila.Controller/tests/unit/",
+            "Schnitzler\\TemplaVoila\\Controller\\Tests\\Functional\\": "src/TemplaVoila.Controller/tests/functional/",
+            "Schnitzler\\TemplaVoila\\Core\\Tests\\Unit\\": "src/TemplaVoila.Core/tests/unit/",
+            "Schnitzler\\TemplaVoila\\Core\\Tests\\Functional\\": "src/TemplaVoila.Core/tests/functional/",
+            "Schnitzler\\TemplaVoila\\Data\\Tests\\Unit\\": "src/TemplaVoila.Data/tests/unit/",
+            "Schnitzler\\TemplaVoila\\Data\\Tests\\Functional\\": "src/TemplaVoila.Data/tests/functional/",
+            "Schnitzler\\TemplaVoila\\Security\\AccessControl\\Tests\\Unit\\": "src/TemplaVoila.Security.AccessControl/tests/unit/",
+            "Schnitzler\\TemplaVoila\\Security\\AccessControl\\Tests\\Functional\\": "src/TemplaVoila.Security.AccessControl/tests/functional/",
+            "Schnitzler\\TemplaVoila\\Security\\Permissions\\Tests\\Unit\\": "src/TemplaVoila.Security.Permissions/tests/unit/",
+            "Schnitzler\\TemplaVoila\\Security\\Permissions\\Tests\\Functional\\": "src/TemplaVoila.Security.Permissions/tests/functional/",
+            "Schnitzler\\TemplaVoila\\UI\\Tests\\Unit\\": "src/TemplaVoila.UI/tests/unit/",
+            "Schnitzler\\TemplaVoila\\UI\\Tests\\Functional\\": "src/TemplaVoila.UI/tests/functional/",
+            "Schnitzler\\TemplaVoila\\View\\Tests\\Unit\\": "src/TemplaVoila.View/tests/unit/",
+            "Schnitzler\\TemplaVoila\\View\\Tests\\Functional\\": "src/TemplaVoila.View/tests/functional/",
+            "Schnitzler\\TYPO3\\CMS\\Backend\\Tests\\Unit\\": "src/TYPO3.CMS.Backend/tests/unit/",
+            "Schnitzler\\TYPO3\\CMS\\Backend\\Tests\\Functional\\": "src/TYPO3.CMS.Backend/tests/functional/",
+            "Schnitzler\\TYPO3\\CMS\\Core\\Tests\\Unit\\": "src/TYPO3.CMS.Core/tests/unit/",
+            "Schnitzler\\TYPO3\\CMS\\Core\\Tests\\Functional\\": "src/TYPO3.CMS.Core/tests/functional/"
+        }
+    },
+    "replace": {
+        "templavoila": "self.version",
+        "typo3-ter/templavoila": "self.version"
+    },
+    "config": {
+        "vendor-dir": ".Build/vendor",
+        "bin-dir": ".Build/bin",
+        "preferred-install": {
+            "*": "dist"
+        }
+    },
+    "scripts": {
+        "post-autoload-dump": [
+            "mkdir -p .Build/Web/typo3conf/ext/",
+            "[ -L .Build/Web/typo3conf/ext/templavoila ] || ln -snvf ../../../../. .Build/Web/typo3conf/ext/templavoila"
+        ]
+    },
+    "extra": {
+        "typo3/cms": {
+            "cms-package-dir": "{$vendor-dir}/typo3/cms",
+            "web-dir": ".Build/Web"
+        }
+    }
+}

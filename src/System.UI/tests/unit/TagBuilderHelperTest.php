@@ -14,7 +14,7 @@
 namespace Schnitzler\System\UI\Tests\Unit;
 
 use Schnitzler\System\UI\TagBuilderHelper;
-use TYPO3\CMS\Core\Tests\UnitTestCase;
+use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 /**
  * Class Schnitzler\Templavoila\Tests\Unit\Helper\TagBuilderHelperTest

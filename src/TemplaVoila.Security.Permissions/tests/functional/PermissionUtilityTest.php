@@ -17,7 +17,8 @@ use Schnitzler\TemplaVoila\Security\Permissions\PermissionUtility;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Core\Bootstrap;
 use TYPO3\CMS\Core\Database\ConnectionPool;
-use TYPO3\CMS\Core\Tests\FunctionalTestCase;
+use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
+use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 use TYPO3\CMS\Core\Type\Bitmask\Permission;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
@@ -40,14 +41,13 @@ class PermissionUtilityTest extends FunctionalTestCase
     {
         parent::setUp();
 
-        $this->backendUserFixture = GeneralUtility::getFileAbsFileName('EXT:templavoila/Tests/Functional/Utility/PermissionUtilityTestFixtures/be_users.xml');
+        $fixtureRootPath = ExtensionManagementUtility::extPath('templavoila', 'src/TemplaVoila.Security.Permissions/tests/functional/PermissionUtilityTestFixtures/');
+        $this->backendUserFixture = $fixtureRootPath . 'be_users.xml';
 
         $fixtureTables = [
             'be_groups',
             'pages'
         ];
-
-        $fixtureRootPath = ORIGINAL_ROOT . 'typo3conf/ext/templavoila/Tests/Functional/Utility/PermissionUtilityTestFixtures/';
 
         foreach ($fixtureTables as $table) {
             GeneralUtility::makeInstance(ConnectionPool::class)->getConnectionForTable($table)->truncate($table);

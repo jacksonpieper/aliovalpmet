@@ -16,7 +16,8 @@ namespace Schnitzler\System\Localization\Tests\Functional;
 use Schnitzler\System\Localization\LanguageHelper;
 use TYPO3\CMS\Core\Core\Bootstrap;
 use TYPO3\CMS\Core\Database\ConnectionPool;
-use TYPO3\CMS\Core\Tests\FunctionalTestCase;
+use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
+use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -38,15 +39,15 @@ class LanguageHelperTest extends FunctionalTestCase
     {
         parent::setUp();
 
-        $this->backendUserFixture = GeneralUtility::getFileAbsFileName('EXT:templavoila/Tests/Functional/Helper/LanguageHelperTestFixtures/be_users.xml');
+        $fixtureRootPath = ExtensionManagementUtility::extPath('templavoila', 'src/System.Localization/tests/functional/LanguageHelperTestFixtures/');
+
+        $this->backendUserFixture = $fixtureRootPath . 'be_users.xml';
 
         $fixtureTables = [
             'pages',
             'pages_language_overlay',
             'sys_language'
         ];
-
-        $fixtureRootPath = ORIGINAL_ROOT . 'typo3conf/ext/templavoila/Tests/Functional/Helper/LanguageHelperTestFixtures/';
 
         foreach ($fixtureTables as $table) {
             GeneralUtility::makeInstance(ConnectionPool::class)->getConnectionForTable($table)->truncate($table);

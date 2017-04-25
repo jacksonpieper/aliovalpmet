@@ -16,8 +16,9 @@ namespace Schnitzler\TemplaVoila\Controller\Tests\Functional;
 use Schnitzler\TemplaVoila\Controller\FrontendController;
 use TYPO3\CMS\Core\Core\Bootstrap;
 use TYPO3\CMS\Core\Database\ConnectionPool;
-use TYPO3\CMS\Core\Tests\AccessibleObjectInterface;
-use TYPO3\CMS\Core\Tests\FunctionalTestCase;
+use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
+use TYPO3\TestingFramework\Core\AccessibleObjectInterface;
+use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 use TYPO3\CMS\Frontend\Page\PageRepository;
@@ -46,13 +47,13 @@ class FrontendControllerTest extends FunctionalTestCase
     {
         parent::setUp();
 
+        $fixtureRootPath = ExtensionManagementUtility::extPath('templavoila', 'src/TemplaVoila.Controller/tests/functional/FrontendControllerTestFixtures/');
+
         $this->frontendController = $this->getAccessibleMock(FrontendController::class, ['getLogger'], [], '', false);
 
         $fixtureTables = [
             'tx_templavoila_tmplobj'
         ];
-
-        $fixtureRootPath = ORIGINAL_ROOT . 'typo3conf/ext/templavoila/Tests/Functional/Controller/FrontendControllerTestFixtures/';
 
         foreach ($fixtureTables as $table) {
             GeneralUtility::makeInstance(ConnectionPool::class)->getConnectionForTable($table)->truncate($table);

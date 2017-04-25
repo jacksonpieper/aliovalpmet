@@ -27,11 +27,6 @@
             "Schnitzler\\TYPO3\\CMS\\Core\\": "src/TYPO3.CMS.Core/src/"
         }
     },
-    "autoload-dev": {
-        "psr-4": {
-            "Schnitzler\\Templavoila\\": "Tests/"
-        }
-    },
     "require": {
         "php": ">=5.5.0",
         "psr/container": "1.0.0"

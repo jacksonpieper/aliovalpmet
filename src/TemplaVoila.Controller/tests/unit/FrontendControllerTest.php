@@ -15,8 +15,8 @@ namespace Schnitzler\TemplaVoila\Controller\Tests\Unit;
 
 use Psr\Log\NullLogger;
 use Schnitzler\TemplaVoila\Controller\FrontendController;
-use TYPO3\CMS\Core\Tests\AccessibleObjectInterface;
-use TYPO3\CMS\Core\Tests\UnitTestCase;
+use TYPO3\TestingFramework\Core\AccessibleObjectInterface;
+use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 /**
  * Class Schnitzler\TemplaVoila\Controller\FrontendControllerTest
